@@ -24,7 +24,7 @@ Mở http://127.0.0.1:5173/. Không có Supabase vẫn chơi/local save được
 
 Giao diện hiển thị đồng Việt Nam (₫), 1 BC nội bộ = 1.000 đồng game, cùng formatter ở tất cả màn hình. Đây là thông số cân bằng game. Giá bản nền hiện chưa thay đầy đủ theo Phụ lục A; xem docs/economy-balance.md. Vay tối đa 5 tỷ ₫ game, 5%/năm, cash và debt cùng tăng; chưa có verified BXH.
 
-Chơi 1×: một ngày mô phỏng trong 30 giây thực; Quan sát: 1 giây thực = 1 giây mô phỏng. Pause/modal/tab nền ngừng mô phỏng. Xem docs/time-model.md về timestep/ETA và giới hạn.
+Chơi 1×: 1 giây thực = 5 giây game (một ngày game mất 4 giờ 48 phút thực); Quan sát: 1 giây thực = 1 giây mô phỏng. Pause/modal/tab nền ngừng mô phỏng. Xem docs/time-model.md về timestep/ETA và giới hạn.
 
 Migration schema 1/2 →3→4 mở map 38/48/64, giữ tọa độ/seed/pop, chuyển tiền/nợ ×100 đúng một lần. Bản thô local được archive trước khi chuyển; payload cloud pending giữ nguyên để retry. Load giữa hành trình/công trường giữ IDs, vị trí, progress và receipts. Schema 4 giữ heightfield mét và nhiệm vụ/cấp. Bản schema 3 dùng nền phẳng tương thích; không hạ schema 4 về client cũ.
 
@@ -32,7 +32,7 @@ Local tự lưu 15 giây; cloud 60 giây sau lần lưu đầu, một request m�
 
 ## Supabase và tài khoản
 
-docs/SUPABASE_SETUP.md và supabase/schema.sql; project đã có bản cũ dùng migrations theo thứ tự. Đã chạy SQL schema 4 và QA RLS transaction rollback trên project thật; chưa có QA Auth/JWT hai tài khoản qua Data API. PGlite tests không thay production Auth QA.
+docs/SUPABASE_SETUP.md và supabase/schema.sql; project đã có bản cũ dùng migrations theo thứ tự. Đã chạy SQL schema 6 và QA RLS transaction rollback trên project thật; chưa có QA Auth/JWT hai tài khoản qua Data API. PGlite tests không thay production Auth QA.
 
 Luồng email cũ được giữ (xác nhận, đăng nhập, quên/đặt lại mật khẩu, logout). **Đăng ký mới đúng 3 ô Tên thành phố/Tài khoản/Mật khẩu, login username 2 ô, mã khôi phục server và legacy claim chưa triển khai**; thuộc Lệnh 17. Không coi email form hiện tại là đã đáp ứng yêu cầu mới. Server admin key chỉ đặt môi trường server; không gửi qua chat.
 
@@ -43,3 +43,8 @@ Remote người dùng chỉ định: https://github.com/supportstudy26-hue/build
 ## Cấu trúc
 
 src/game/core.js là facade; src/game/systems/ chứa hệ thống mô phỏng và save. src/game/renderer.js chỉ vẽ; src/config/ chứa catalog/đơn vị/tiền. src/app.js và index.html/style.css là UI; src/icons.js là icon SVG riêng. src/services/ chứa Auth/Data API/local/cloud sync. supabase/ chứa schema/migrations/RLS tests; scripts/verify-supabase.mjs là QA JWT Data API bằng hai tài khoản thật; tests/ gồm fixtures/migration/invariants/regressions. ASSET_LICENSES.md ghi nguồn tài nguyên.
+
+
+## Bản đồ Việt Nam (chặng A)
+
+Menu có 34 tỉnh/thành, preview địa hình/thủy hệ thật 12,8 km, 36 khu chơi tải theo lựa chọn. Khu xây vẫn 1,28 km; chưa có mua đất/full world. Hoàng Sa/Trường Sa có nhãn, phóng tới, danh sách điểm đảo/tọa độ và đường bờ Trường Sa từ nguồn thật; chưa có DEM đảo để mở khu xây. Xem docs/vietnam-map.md về nguồn, giấy phép và phần chưa kiểm chứng. Save 6 giữ địa hình; bản cũ tiếp tục mở được. Production có cache asset/public geodata offline, không cache tài khoản/API.

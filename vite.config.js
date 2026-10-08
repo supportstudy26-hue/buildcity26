@@ -1,0 +1,13 @@
+import {defineConfig} from 'vite';
+import {resolve} from 'node:path';
+import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+function offlineBuild(){return {name:'bc26-public-offline-shell',generateBundle(_,bundle){
+  // Vite emits HTML after user generateBundle hooks; list both shell entries explicitly.
+  const assets=[...new Set(['/index.html','/benchmark.html',...Object.keys(bundle).filter(p=>/\.(html|js|css)$/.test(p)).map(p=>'/'+p)])];
+  const template=readFileSync(resolve('scripts/offline-worker.template.js'),'utf8');
+  const build=createHash('sha256').update(JSON.stringify(assets)+template+readFileSync(resolve('index.html'),'utf8')+readFileSync(resolve('benchmark.html'),'utf8')).digest('hex').slice(0,16);
+  const source=template.replace('__BUILD_ID__',JSON.stringify(build)).replace('__ASSET_PATHS__',JSON.stringify(assets));
+  this.emitFile({type:'asset',fileName:'service-worker.js',source});
+}};}
+export default defineConfig({plugins:[offlineBuild()],build:{rollupOptions:{input:{game:resolve('index.html'),benchmark:resolve('benchmark.html')}}}});

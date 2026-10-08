@@ -23,7 +23,11 @@ export function loadLocal(owner = 'guest', storage = localStorage) {
 // Preserve drafts before opening/importing another city. Keep damaged saves too.
 export function archiveLocal(owner = 'guest', storage = localStorage, uuid = () => crypto.randomUUID()) {
   const raw = storage.getItem(localKey(owner));
-  if (raw) storage.setItem(`${PREFIX}backup:${owner}:${uuid()}`, raw);
+  if (raw) {
+    const prefix=`${PREFIX}backup:${owner}:`;
+    for(let i=0;i<storage.length;i++){const key=storage.key(i);if(key?.startsWith(prefix)&&storage.getItem(key)===raw)return;}
+    storage.setItem(`${prefix}${uuid()}`, raw);
+  }
 }
 export function listLocalBackups(owner = 'guest', storage = localStorage) {
   const prefix = `${PREFIX}backup:${owner}:`, rows = [];

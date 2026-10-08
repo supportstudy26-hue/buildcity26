@@ -1,0 +1,49 @@
+{
+  "status": "Đã đo xong 30 giây",
+  "report": {
+    "elapsedSeconds": 30.02,
+    "frames": 523,
+    "medianFps": 19.9,
+    "p95FrameMs": 83.40000000000146,
+    "cpuTickMedianMs": 0.3999999910593033,
+    "cpuTickP95Ms": 0.5999999940395355,
+    "longTasks": 2,
+    "longTaskMaxMs": 517,
+    "workerTickMs": null,
+    "mode": "3d",
+    "quality": "medium",
+    "qualityPreference": "medium",
+    "pixelRatio": 1,
+    "triangles": 74660,
+    "regions": 16,
+    "drawCalls": 38,
+    "geometries": 14,
+    "textures": 0,
+    "fps": 20,
+    "citizens": 1000,
+    "scenario": "sandbox",
+    "loadMs": 507.9,
+    "geographyCache": {
+      "packages": 0,
+      "sourceBytes": 0,
+      "maxPackages": 4,
+      "maxSourceBytes": 8000000
+    },
+    "population": 1000,
+    "activeAgents": 333,
+    "vehicles": 167,
+    "employed": 500,
+    "arrivals": 167,
+    "pathfindingQueue": "synchronous / not yet queued",
+    "saveBytes": 1878103,
+    "heapBytes": 25709947,
+    "viewport": [
+      1280,
+      720
+    ],
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+    "timeScale": 5,
+    "seed": 26012026,
+    "simulationSeconds": 28986
+  }
+}

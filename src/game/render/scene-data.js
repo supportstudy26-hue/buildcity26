@@ -1,7 +1,7 @@
 import {SIZE,isRoad,neighbors,CATALOG} from '../core.js';
 import {CELL_METERS} from '../../config/simulation.js';
 import {surfaceHeight,terrainHeight,cellHeights} from '../systems/terrain.js';
-export const REGION=8;
+export const REGION=16;
 export const noise=(x,y)=>{const n=Math.sin(x*127.1+y*311.7)*43758.5453;return n-Math.floor(n);};
 const palettes={residential:['#e9d3ac','#bad5c5','#e5bfa1','#c8d9df'],commercial:['#8cb8c4','#a8c8bc','#d9b087'],industrial:['#d3c29e','#b5bec1'],school:['#f1c893'],clinic:['#f0ded8'],fire:['#d3947a'],police:['#9bb9ce'],power:['#bcc7b3'],water:['#88b4bd'],sewage:['#8db7ae'],waste:['#b7bc9e'],bus:['#d8bb8d']};
 export function overlayColor(t,layer){

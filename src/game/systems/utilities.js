@@ -2,7 +2,7 @@ import { CATALOG, BUILDINGS, ZONES } from '../../config/catalog.js';
 import { isRoad, index, neighbors, distance, clamp } from './world.js';
 import { WATER_PER_PERSON } from '../../config/simulation.js';
 export function analyzeUtilities(s){
-  const connected=new Set(), q=[];const entry=index(0,18);
+  const connected=new Set(), q=[];const entry=s.world?.geography?.entryTile??index(0,18);
   if(isRoad(s.tiles[entry])){connected.add(entry);q.push(entry);}
   for(let p=0;p<q.length;p++)for(const n of neighbors(q[p]))if(isRoad(s.tiles[n])&&!connected.has(n)){connected.add(n);q.push(n);}
   const services={};for(const kind of BUILDINGS)services[kind]=[];

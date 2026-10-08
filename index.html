@@ -50,7 +50,7 @@
   <div id="toast" role="status" hidden></div>
 
   <footer class="bottom-bar">
-    <div class="time-block"><span id="date">01 / 01 / 2026</span><small id="timeScale">Chơi · 1 giây = 48 phút</small><div class="time-controls"><button id="observeBtn" title="Thời gian tự nhiên">Quan sát</button><button data-speed="0" title="Tạm dừng" aria-label="Tạm dừng">Ⅱ</button><button data-speed="1" class="active" title="Tốc độ bình thường">1×</button><button data-speed="3" title="Tốc độ nhanh">3×</button><button data-speed="8" title="Tốc độ rất nhanh">8×</button></div></div>
+    <div class="time-block"><span id="date">01 / 01 / 2026</span><small id="timeScale">1 giây thực = 5 giây game</small><div class="time-controls"><button id="observeBtn" title="Thời gian tự nhiên">Quan sát</button><button data-speed="0" title="Tạm dừng / Tiếp tục" aria-label="Tạm dừng / Tiếp tục">Ⅱ</button><button data-speed="1" class="active" title="Tốc độ bình thường">1×</button><button data-speed="3" title="Casual nhanh: 1 giây thực = 15 giây game">3×</button><button data-speed="8" title="Casual nhanh: 1 giây thực = 40 giây game">8×</button></div></div>
     <nav class="toolbar" aria-label="Công cụ xây dựng" id="toolbar"></nav>
     <div class="save-status"><span id="saveText">Lưu trên thiết bị</span><button id="saveBtn" class="icon-btn" aria-label="Lưu thành phố" title="Lưu thành phố" data-icon="save"></button></div>
   </footer>
@@ -62,4 +62,5 @@
 <dialog id="modal"><form method="dialog"><button class="modal-close" aria-label="Đóng">×</button></form><div id="modalBody"></div></dialog>
 <input type="file" id="importFile" accept=".json,application/json" hidden>
 <script type="module" src="/src/app.js"></script>
+<script>if(location.protocol==='file:'){const el=document.getElementById('loading');el.textContent='Cần mở game qua máy chủ: chạy npm run dev trong thư mục dự án, rồi mở địa chỉ localhost hiện trong terminal.';const link=document.createElement('a');link.href='http://127.0.0.1:5173/';link.textContent=' Mở localhost:5173';el.append(link);}</script>
 </body></html>

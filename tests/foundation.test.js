@@ -28,7 +28,7 @@ test('time batching and pause preserve logical results at different playback spe
   let qa=0,qb=0;for(let i=0;i<120;i++){qa+=100;qa=consumeSteps(qa,()=>stepSimulation(a)).remaining;}
   for(let i=0;i<15;i++){qb+=800;qb=consumeSteps(qb,()=>stepSimulation(b)).remaining;}
   assert.deepEqual(serialize(a),serialize(b));assert.equal(a.clock.seconds,12000);
-  const capped=consumeSteps(50000,()=>{},10);assert.equal(capped.count,10);assert.equal(capped.remaining,49900);
+  const capped=consumeSteps(50000,()=>{},10);assert.equal(capped.count,10);assert.equal(capped.remaining,49990);
 });
 test('road deletion blocks a real journey without teleporting and restoration resumes it',()=>{
   const s=createCity();until(s,8*3600);const c=s.citizens.find(c=>c.journey&&c.journey.path.slice(c.journey.segment+1).some(p=>p.road!=null));assert.ok(c);

@@ -24,3 +24,5 @@ test('migration preserves an uncertain cloud request and schedules the migrated 
   const sync=new CloudSync({snapshot:()=>serialize(loaded.city),persist:()=>true,send:async request=>{assert.deepEqual(request,pending);return{id,revision:2};}});
   sync.use('A',loaded);assert.equal(await sync.save(),true);assert.equal(sync.dirty,true);assert.equal(sync.status,'pending');assert.equal(sync.pending,null);
 });
+
+test('identical raw backup is reused without multiplying quota consumption',()=>{const s=storage();saveLocal(createCity(),'A',null,{},s);archiveLocal('A',s,()=>id);archiveLocal('A',s,()=>requestId);assert.equal(listLocalBackups('A',s).length,1);});

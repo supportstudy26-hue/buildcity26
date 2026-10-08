@@ -5,7 +5,7 @@ import {updateProgression,missionViews} from '../src/game/systems/progression.js
 import {levelFromXp,xpForLevel,LEVEL_GRANT_BC} from '../src/config/progression.js';
 import {cashBalance} from '../src/game/systems/economy.js';
 const command=(s,type,payload)=>executeCommand(s,{id:`command-${s.commandSequence+1}`,sequence:s.commandSequence+1,type,payload});
-function time(s,seconds){s.clock={step:seconds/10,seconds};s.day=Math.floor(seconds/86400);}
+function time(s,seconds){s.clock={step:seconds,seconds};s.day=Math.floor(seconds/86400);}
 test('level thresholds follow the specification and each level grant displays 100 million đồng',()=>{
   assert.equal(LEVEL_GRANT_BC*1000,100000000);for(let level=1;level<30;level++){assert.equal(levelFromXp(xpForLevel(level)),level);if(level>1)assert.equal(levelFromXp(xpForLevel(level)-1),level-1);}assert.throws(()=>levelFromXp(Infinity));
 });

@@ -1,3 +1,4 @@
+import {geographyBuildRule} from './geography/city.js';
 import {updateProgression} from './systems/progression.js';
 import { createTerrain } from './systems/terrain.js';
 import { submitCommand } from './systems/commands.js';
@@ -9,20 +10,20 @@ import { START_CASH_BC, LEGACY_BC_FACTOR, ANNUAL_INTEREST, WATER_PER_PERSON, DAY
 import { initializeFoundation, reconcileSociety } from './systems/foundation.js';
 import { foundationSnapshot, loadFoundation } from './systems/save.js';
 import { dailyFinance, recordCash } from './systems/economy.js';
-import { calendar, clockStep, createClock } from './systems/clock.js';
+import { calendar, clockStep, createClock, setPlayback } from './systems/clock.js';
 import { updateCitizens } from './systems/citizens.js';
 import { updateVehicles } from './systems/vehicles.js';
 import { startConstruction, updateConstruction, cancelConstruction } from './systems/construction.js';
 import { entityId, emit } from './systems/events.js';
 // Pure game logic. No browser, auth or rendering dependencies.
 export const SIZE = 64;
-export const SAVE_VERSION = 4;
+export const SAVE_VERSION = 6;
 import { CATALOG, BUILDINGS, ZONES, ROADS } from '../config/catalog.js';
 export { CATALOG };
 import { initializeWorld, index, inside, clamp, neighbors, distance, isRoad, terrainAt } from './systems/world.js';
 export { index, inside, clamp, neighbors, isRoad, terrainAt };
 export function createCity(){
-  const s={schemaVersion:SAVE_VERSION,mapSize:SIZE,name:'Thành phố Bình Minh',money:START_CASH_BC,currency:'BC',currencyMigration:{from:4,factor:1},day:0,taxes:{residential:10,commercial:10,industrial:10},seed:26012026,milestones:[],busLines:[],loanBalance:0,budgets:{},tiles:Array.from({length:SIZE*SIZE},(_,i)=>({terrain:terrainAt(i%SIZE,Math.floor(i/SIZE)),kind:null,zone:null,level:0,residents:0,age:0,garbage:0,hazard:0,fire:0,crime:0,health:100,education:0}))};
+  const s={schemaVersion:SAVE_VERSION,mapSize:SIZE,name:'Thành phố Bình Minh',money:START_CASH_BC,currency:'BC',currencyMigration:{from:5,factor:1},day:0,taxes:{residential:10,commercial:10,industrial:10},seed:26012026,milestones:[],busLines:[],loanBalance:0,budgets:{},tiles:Array.from({length:SIZE*SIZE},(_,i)=>({terrain:terrainAt(i%SIZE,Math.floor(i/SIZE)),kind:null,zone:null,level:0,residents:0,age:0,garbage:0,hazard:0,fire:0,crime:0,health:100,education:0}))};
   const set=(x,y,kind,residents=0)=>Object.assign(s.tiles[index(x,y)],{kind,zone:ZONES.includes(kind)?kind:null,level:1,residents,age:20});
   for(let x=0;x<=23;x++)set(x,18,'road');
   for(let y=10;y<=25;y++){set(11,y,'road');set(18,y,'road');}
@@ -73,7 +74,7 @@ export function borrow(s,amount){if(![500000,1000000,2000000].includes(amount)||
 export function repay(s,amount){if(!Number.isFinite(amount)||amount<=0||amount>(s.loanBalance||0)||amount>s.money)return {ok:false,message:'Không đủ tiền hoặc số tiền trả nợ chưa hợp lệ.'};s.loanBalance-=amount;recordCash(s,`repay-${s.nextEntityId++}`,'loan-repayment',-amount);analyze(s);return {ok:true};}
 export function place(s,x,y,kind){
   if(!inside(x,y)||!CATALOG[kind]||kind==='inspect')return {ok:false,message:'Chọn một ô trong bản đồ.'};
-  const t=s.tiles[index(x,y)];
+  const t=s.tiles[index(x,y)],georule=geographyBuildRule(s,index(x,y),kind);if(!georule.ok)return georule;
   if(kind==='bulldoze'){
     if(!t.kind&&!t.zone)return {ok:false,message:'Ô này chưa có công trình.'};
     const refund=Math.floor((t.historicalCost||0)*.25);recordCash(s,`demolish-${s.nextEntityId++}`,'salvage',refund,t.assetId);Object.assign(t,{kind:null,zone:null,level:0,residents:0,age:0,garbage:0,hazard:0,fire:0,crime:0,health:100,education:0,assetId:null,historicalCost:0});s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);return {ok:true,cost:-refund};
@@ -81,13 +82,13 @@ export function place(s,x,y,kind){
   if(t.terrain==='water'&&!ROADS.includes(kind))return {ok:false,message:'Chỉ có thể xây cầu đường trên sông.'};
   if(t.kind||t.zone){
     if(t.kind==='road'&&kind==='avenue'){
-      const cost=80*LEGACY_BC_FACTOR*(t.terrain==='water'?4:1);
+      const cost=Math.ceil(80*LEGACY_BC_FACTOR*(t.terrain==='water'?4:1)*georule.factor);
       if(s.money<cost)return {ok:false,message:'Không đủ ngân sách để nâng cấp.'};
       recordCash(s,`upgrade-${s.nextEntityId++}`,'road-upgrade',-cost,t.assetId);t.historicalCost=(t.historicalCost||0)+cost;t.kind='avenue';s.graphVersion++;analyze(s);return {ok:true,cost};
     }
     return {ok:false,message:'Ô này đã có công trình. Dùng phá dỡ để thay đổi.'};
   }
-  const cost=CATALOG[kind].cost*(t.terrain==='water'?4:1);
+  const cost=Math.ceil(CATALOG[kind].cost*(t.terrain==='water'?4:1)*georule.factor);
   if(s.money<cost)return {ok:false,message:'Không đủ ngân sách. Kiểm tra thuế và chi phí vận hành.'};
   recordCash(s,`place-${s.nextEntityId++}`,'construction-instant',-cost);t.historicalCost=cost;
   if(ZONES.includes(kind)){t.zone=kind;t.age=0;}else{t.kind=kind;t.level=1;t.assetId=entityId(s,'asset');}
@@ -107,7 +108,7 @@ function dailyUpdate(s){
 }
 export function serialize(s){return {...foundationSnapshot(s),schemaVersion:SAVE_VERSION,mapSize:SIZE,name:s.name,money:s.money,day:s.day,taxes:{...s.taxes},seed:s.seed,milestones:[...s.milestones],loanBalance:s.loanBalance||0,budgets:{...s.budgets},busLines:(s.busLines||[]).map(l=>({id:l.id,name:l.name,stops:[...l.stops],vehicles:l.vehicles})),tiles:s.tiles.map(t=>({terrain:t.terrain,kind:t.kind,zone:t.zone,level:t.level,residents:t.residents,age:t.age,garbage:t.garbage||0,hazard:t.hazard||0,fire:t.fire||0,crime:t.crime||0,health:t.health??100,education:t.education||0,id:t.id,assetId:t.assetId??null,historicalCost:t.historicalCost||0,footprint:{...t.footprint}}))};}
 export function validateSave(raw){
-  if(!raw||typeof raw!=='object'||![1,2,3,SAVE_VERSION].includes(raw.schemaVersion))throw new Error('Bản lưu không tương thích với Build City 26.');
+  if(!raw||typeof raw!=='object'||![1,2,3,4,5,SAVE_VERSION].includes(raw.schemaVersion))throw new Error('Bản lưu không tương thích với Build City 26.');
   const sourceSize=raw.schemaVersion===1?38:raw.mapSize;
   if(![38,48,SIZE].includes(sourceSize)||!Array.isArray(raw.tiles)||raw.tiles.length!==sourceSize*sourceSize)throw new Error('Bản đồ trong bản lưu không hợp lệ.');
   if(typeof raw.name!=='string'||!raw.name.trim()||raw.name.length>36)throw new Error('Tên thành phố không hợp lệ.');
@@ -137,7 +138,7 @@ export function validateSave(raw){
   const tiles=Array.from({length:SIZE*SIZE},(_,i)=>{const x=i%SIZE,y=Math.floor(i/SIZE);return x<sourceSize&&y<sourceSize?sourceTiles[y*sourceSize+x]:{terrain:terrainAt(x,y),kind:null,zone:null,level:0,residents:0,age:0,garbage:0,hazard:0,fire:0,crime:0,health:100,education:0};});
   const s={schemaVersion:SAVE_VERSION,mapSize:SIZE,name:raw.name.trim(),money:raw.money,day:raw.day,seed:raw.seed>>>0,taxes:{...raw.taxes},milestones:[...new Set(raw.milestones)],busLines:migratedLines,loanBalance,budgets:{...budgets},tiles};
   if(raw.schemaVersion<3){s.money*=LEGACY_BC_FACTOR;s.loanBalance*=LEGACY_BC_FACTOR;s.world=createTerrain(SIZE,{flat:true});s.currency='BC';s.currencyMigration={from:raw.schemaVersion,factor:LEGACY_BC_FACTOR};analyze(s);initializeFoundation(s,SIZE,random);}
-  else {loadFoundation(s,raw,SIZE);initializeWorldCompatibility(s);analyze(s);}
+  else {loadFoundation(s,raw,SIZE);if(s.world.geography&&s.tiles.some((t,i)=>(t.terrain==='water')!==!!s.world.geography.waterMask[i]))throw new Error('Mặt nước không khớp nguồn địa lý của bản lưu.');initializeWorldCompatibility(s);analyze(s);}
   return s;
 }
 
@@ -155,8 +156,9 @@ export function executeCommand(s,command){
   return submitCommand(s,command,command=>{
   const p=command.payload;let result;
   switch(command.type){
+    case 'playback':result=setPlayback(s,p);break;
     case 'place':result=place(s,p.x,p.y,p.kind);break;
-    case 'construct':result=CATALOG[p.kind]?.group==='parks'&&inside(p.x,p.y)&&!s.tiles[index(p.x,p.y)].kind&&!s.tiles[index(p.x,p.y)].zone&&s.tiles[index(p.x,p.y)].terrain!=='water'?startConstruction(s,index(p.x,p.y),p.kind,CATALOG[p.kind].cost,10):{ok:false,message:'Chỉ công viên trên đất trống hỗ trợ thi công ở chặng nền.'};break;
+    case 'construct':{const check=inside(p.x,p.y)?geographyBuildRule(s,index(p.x,p.y),p.kind):{ok:false,message:'Ô đất nằm ngoài bản đồ.'};if(!check.ok){result=check;break;}result=CATALOG[p.kind]?.group==='parks'&&inside(p.x,p.y)&&!s.tiles[index(p.x,p.y)].kind&&!s.tiles[index(p.x,p.y)].zone&&s.tiles[index(p.x,p.y)].terrain!=='water'?startConstruction(s,index(p.x,p.y),p.kind,Math.ceil(CATALOG[p.kind].cost*check.factor),10):{ok:false,message:'Chỉ công viên trên đất trống hỗ trợ thi công ở chặng nền.'};break;}
     case 'cancel-construction':result=cancelConstruction(s,p.id);break;
     case 'rename':result=typeof p.name==='string'&&p.name.trim().length>=1&&p.name.trim().length<=36?(s.name=p.name.trim(),{ok:true}):{ok:false,message:'Tên thành phố cần 1–36 ký tự.'};break;
     case 'tax':result=ZONES.includes(p.kind)&&Number.isInteger(p.value)&&p.value>=0&&p.value<=20?(s.taxes[p.kind]=p.value,analyze(s),{ok:true}):{ok:false,message:'Thuế không hợp lệ.'};break;

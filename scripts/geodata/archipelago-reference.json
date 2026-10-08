@@ -1,0 +1,20 @@
+{
+  "coordinateSource": "https://cttdt.danangportal.gov.vn/vi/w/ubnd-huyen-hoang-sa-i",
+  "administrativeSource": "https://xaydungchinhsach.chinhphu.vn/danh-sach-3321-don-vi-hanh-chinh-cap-xa-tai-34-tinh-thanh-sau-sap-xep-sap-nhap-119250710102358656.htm",
+  "verifiedAt": "2026-10-08",
+  "coordinateNotation": "Published degrees, minutes, seconds; reference locations, not surveyed island outlines.",
+  "hoangSa": [
+    ["Đảo Hoàng Sa", [111,36,7], [16,32,0]],
+    ["Đảo Hữu Nhật", [111,35,3], [16,30,3]],
+    ["Đảo Duy Mộng", [111,35,3], [16,27,6]],
+    ["Đảo Quang Hòa", [111,42,7], [16,26,9]],
+    ["Đảo Quang Ảnh", [111,30,8], [16,27,0]],
+    ["Đảo Bạch Quy", [111,46,9], [16,3,5]],
+    ["Đảo Tri Tôn", [111,11,8], [15,47,2]],
+    ["Đảo Phú Lâm", [112,20,0], [16,50,2]],
+    ["Đảo Linh Côn", [112,43,6], [16,40,3]],
+    ["Đảo Cây", [112,15,9], [16,59,0]],
+    ["Đảo Đá Bắc", [111,30,8], [17,6,0]],
+    ["Bãi cạn Gò Nổi", [112,53,4], [16,49,7]]
+  ]
+}

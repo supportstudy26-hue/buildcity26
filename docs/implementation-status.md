@@ -1,6 +1,6 @@
 # Build City 26 — trạng thái triển khai
 
-Đặc tả: Build_City_26_Full_Codex_Prompts.md, đã đọc đủ 561 dòng. Yêu cầu bổ sung mới nhất: giao diện tiền Việt (₫), nhiệm vụ và mỗi lần lên cấp cộng 100 triệu đồng game. Giữ BC trong core/bản lưu, hiển thị 1 BC = 1.000 đồng game. Không dùng API AI.
+Đặc tả mới nhất: Build_City_26_Full_Codex_Prompts.md, 1.111 dòng, bổ sung Lệnh 20 / Phụ lục H. Đã đọc toàn bộ đặc tả và kiểm tra thay đổi. Các mốc dưới đây là lịch sử triển khai, không phải xác nhận hoàn tất toàn đặc tả. Giao diện tiền Việt (₫), 1 BC nội bộ = 1.000 đồng game; không dùng API AI.
 
 ## Lệnh 0 — kiểm tra nền, cấu hình đang tiếp tục
 
@@ -61,3 +61,27 @@ GitHub: commit foundation 9c78054 đã có local, remote chưa push thành công
 | 20 | Chưa hoàn tất | Scenario toàn hệ thống và production Auth/save/deploy |
 
 Không ghi PGlite/mock là kiểm chứng production. Không nhận JSON cash/XP client làm verified score. Secret/service_role chỉ ở server, không frontend/GitHub/chat.
+
+## Chặng ưu tiên 08/10 — đồng hồ 1:5, schema 5
+
+Đã chỉnh mặc định 1 giây thực = 5 giây game; bước physics 1 giây, interpolation 3D cùng clock; Observe 1:1; Pause/Resume giữ multiplier; playback/timestamp nằm trong save. Không bỏ elapsed frame dài; batch 120 bước giữ backlog và có thông báo. Hidden/modal pause, reload không bù offline. Migration 3/4 giữ ngày giờ, cư dân/ID, tiền và EXP. Các hợp đồng cũ giữ nguyên thời lượng, preset A5 ngắn chưa làm.
+
+Kiểm tra: 78/78 tests PASS, build PASS (Three chunk vẫn 547,25 kB). Injected 10/60 giây tại 30/60/120 FPS cho 50/300 giây và state như nhau; đi bộ 65 m ở 1,3 m/s mất 50 giây game. Migration 202610080004_clock_saves.sql chạy thật trên Supabase, accepts_schema_5=true; ảnh supabase-clock-schema-verified.png. Không xóa dữ liệu cũ; chưa kiểm chứng Auth/JWT hai tài khoản.
+
+Theo yêu cầu mới nhất, chặng đang làm là mỹ thuật + tối ưu Lệnh 2/15/G5–G6. World 12,8 km, mua đất, 100 bậc/300 nhiệm vụ và hợp đồng nâng cấp F vẫn **chưa hoàn tất**. Không đánh dấu available chức năng mô phỏng chưa có.
+
+
+## Việt Nam — chặng A, địa hình thật và quần đảo (08/10/2026)
+
+Đã có màn chọn 34 tỉnh/thành; tìm tên hiện tại/tên cũ, xem ranh giới, đổi vị trí khu chơi, xem trước cao độ/thủy hệ thật rồi tạo thành phố chơi được. 36 gói địa hình tải theo lựa chọn, SHA-256, cache RAM tối đa 4 gói/8 MB dữ liệu nguồn; dữ liệu sai/mất mạng chưa cache báo lỗi và cho thử lại. Production có service worker chỉ cache asset/public geodata, tối đa 4 gói địa hình/6 MB; không cache Auth, API hoặc bản lưu riêng. File index.html hướng dẫn mở máy chủ khi truy cập file://.
+
+Danh mục hành chính kiểm chứng ngày 08/10/2026; hình ranh/thủy hệ nguồn OSM 07/05/2023 được hợp nhất theo các nhóm tỉnh 2025. Không khẳng định từng đỉnh ranh pháp lý hiện hành đã kiểm chứng. DEM Mapzen/USGS/NOAA nguồn thực, edition 2017; ô game 20 m lấy mẫu từ nguồn khoảng 30–38 m, không phải khảo sát độ phân giải 20 m. Preview 12,8 km nhưng khu xây vẫn 1,28 km (64×64); ghi rõ trên giao diện. Cổng đường là connector game; khởi đầu dân số 0.
+
+Save 6 giữ DEM/metadata trong bản lưu, địa hình không phụ thuộc tải lại nguồn. Save 1–5 còn mở được. Migration additive 202610080005_geography_saves.sql đã chạy trên Supabase thật, accepts_schema_6=true; ảnh supabase-geography-schema-verified.png. Xây trên biển bị chặn đúng loại; cầu tính giá khác, dốc/ngoài tỉnh được kiểm tra qua command trước khi trừ tiền. Đã xây điện/nước/phân khu/đường tại Hạ Long, lưu/mở lại giữ tiền và địa hình; ảnh vietnam-ha-long-save-load.png.
+
+Theo yêu cầu bổ sung, Hoàng Sa và Trường Sa xuất hiện trên bản đồ toàn quốc, có tìm kiếm, nút phóng tới, danh sách đảo và tọa độ. Hoàng Sa liên kết Đà Nẵng; Trường Sa liên kết Khánh Hòa theo danh mục đặc khu 2025. Không thêm thành tỉnh thứ 35/36. Gói riêng 45.410 byte: 12 điểm tham chiếu Hoàng Sa từ cổng Đà Nẵng; 46 đường bờ OSM Trường Sa và 9 địa danh có tên Việt. Đây là phạm vi dữ liệu hiện có, không phải toàn bộ đảo. Loại 7 vùng ranh hành chính ngoài biển của Khánh Hòa khỏi lớp tô đất; giữ nguyên dữ liệu ranh nguồn, dùng đường bờ thật ở lớp riêng. Chấm tròn là ký hiệu vị trí; khung nét đứt là cửa sổ xem, không phải đường ranh biển. Chưa có DEM đảo đáng tin cậy nên chưa mở khu xây tại hai quần đảo.
+
+Giới hạn còn lại Lệnh 20 / H: mua đất/chunk 200 m, thế giới xây đầy đủ 12,8 km, hành trình xuyên nhiều chunk, land cover thật, thủy văn/triều/độ mặn/khai thác nước thật, chia sẻ topology ranh và đỉnh ranh pháp lý hiện hành. Renderer gom vùng 320 m hiện hữu, chưa phải streaming 200 m toàn thế giới; chưa có Worker. Không đánh dấu toàn Lệnh 20/G5–G6 đã hoàn thành. 100 bậc/300 nhiệm vụ, nâng cấp F, Auth username 3 ô và BXH server vẫn chưa xong.
+
+
+Bằng chứng cuối chặng: 95/95 tests PASS (112,50 s), build PASS (6,02 s), kiểm tra riêng 6/6 sau bổ sung cache metadata đảo. Browser bấm từng quần đảo/chọn tọa độ/tìm không dấu/quay về terrain Khánh Hòa PASS; reload giữ save Hạ Long. Screenshot vietnam-archipelagos-national.png và hai ảnh chi tiết. Viewport kiểm tra quần đảo thực 1063 px; override mobile mới không có hiệu lực, cần kiểm lại riêng. Đo production 1.000 cư dân trong 30,02 s: FPS trung vị 19,9, frame p95 83,4 ms, CPU tick p95 0,6 ms, 38 draw calls, 16 vùng/14 geometry/0 texture; chưa đạt mục tiêu độ mượt. Dữ liệu/giới hạn đầy đủ tại performance-budget.md và performance-1000-20261008.json. Không dùng số tức thời để cam kết 60 FPS.

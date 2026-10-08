@@ -17,3 +17,20 @@ npm ci PASS (25 packages, cache offline); npm test 75/75 PASS, không skipped; p
 5 test terrain/render: save cao độ mét; migration 3 giữ tiền/IDs/vị trí; checkpoint terrain sớm thiếu nhiệm vụ vẫn nâng; procedural descriptor không mutate core/nền hợp lý; Three InstancedMesh bounds/raycast sau biến đổi. 3 test progression: ngưỡng XP và đúng 100 triệu; mất tiện ích reset 24h; đường/công viên hoàn tất và active lên cấp, cash ledger/receipt không trùng sau load. Database QA thêm RPC schema 4 retry. Các test SQL ở máy dùng PGlite; migration schema 4 thật đã kiểm tra qua Supabase dashboard.
 
 Browser IAB desktop 1280×720/mobile viewport 390×844: công viên hoàn thành, cấp 2/550 XP và toast +100 triệu; nhóm cấp 2 mở; save/reload và đổi renderer giữ ngân sách 10.847.808 BC. Raycast chọn nhà 14,20 có cao độ 1,9m. Low thực 29 FPS/39 draw calls/22 geometry/0 textures tại 377 dân, không coi đây là benchmark dài hạn. Screenshots preview-3d-missions-desktop.png và preview-3d-missions-mobile.png. Bản trung gian thiếu loader đã sửa; tab mới không lỗi JS. Chưa thử mất context WebGL thực hoặc loop dựng/xóa dài hạn. Production preview cổng 4173 khởi động 3D, 5 vòng dựng/phá cùng ô đều đúng tiền (6.000 BC xây, 1.500 BC thu hồi), road count quay về 76; tài nguyên giữ 24 geometries/2 textures qua cả 5 vòng, 29–30 FPS tức thời. Không lỗi JS. Đã kiểm tra nhìn trên và ánh sáng đêm; sửa mặt đường trùng mặt nền gây sọc nhấp nháy.
+
+## Clock-5 — 08/10/2026
+
+78/78 tests PASS (189,65 s), không skipped; build PASS (19,78 s), main JS 353,90 kB/gzip104,01; Three 547,25/gzip139,74 kB. Injected elapsed/FPS, arrival 65 m, schema 4→5, pause/speed persistence và old uncertain cloud request giữ đúng payload. Live Supabase schema 5 migration PASS, ảnh docs/supabase-clock-schema-verified.png.
+
+
+## Việt Nam / quần đảo — 08/10/2026
+
+npm test: **95/95 PASS**, không skipped (112,50 s); gồm 36 terrain packages/checksum/save 6, legacy saves, các command nước/dốc/cầu, loader abort/checksum/oversize và service-worker bảo vệ cache public. Sau chỉnh UI quay về tỉnh từ quần đảo: npm run build PASS (6,02 s). Kiểm tra riêng archipelagos/offline-worker sau bổ sung metadata cache: 6/6 PASS (0,73 s).
+
+Build: main JS 308,47 kB/gzip89,26; chooser lazy 12,78/gzip5,26; Three 549,05/gzip140,34; CSS30,17/gzip6,98. Three còn cảnh báo >500 kB. Layer quần đảo 45.410 byte raw, fetch lazy cùng chooser; không thêm texture, không thêm vòng mô phỏng hoặc renderer.
+
+Browser thật Codex IAB tại QA 5175: bản đồ toàn quốc có Hoàng Sa/Trường Sa; bấm Xem từng quần đảo phóng đúng khung địa lý. Chọn Đảo Trường Sa ra 8,64464° Bắc / 111,91969° Đông; Hoàng Sa ra 16,53333° Bắc / 111,60194° Đông. Reload giữ tên QA Hạ Long 08-10 và save hiện có. Ảnh docs/vietnam-archipelagos-national.png, docs/vietnam-hoang-sa-detail.png, docs/vietnam-truong-sa-detail.png. Kiểm tra rộng 1063 px; lần yêu cầu override mobile mới không thay viewport thực, nên không coi đó là bằng chứng mobile mới. Mobile chooser trước đó có ảnh/kiểm tra riêng; cần tái kiểm thử quần đảo ở viewport điện thoại thật.
+
+Production preview 4175 đã tắt máy chủ có chủ đích rồi reload tab QA: game và thành phố QA Offline Đà Nẵng vẫn mở từ service-worker, clock giữ 00:00:03, 12 tỷ ₫, không ghi/xóa city khác. Đã khởi động lại preview sau thử nghiệm. Không gọi bài thử này là QA Supabase mất mạng hoặc xác nhận mọi khu địa hình đều sẵn offline. Cache gói chưa tải/metadata đảo được kiểm bằng unit test; chưa kiểm đầy đủ eviction/quota browser thật.
+
+Supabase migration geography schema 6 đã chạy thật; ảnh docs/supabase-geography-schema-verified.png. Auth/JWT hai tài khoản, production GitHub/Vercel vẫn chưa kiểm chứng. Lệnh 20/H đầy đủ vẫn còn world xây 12,8 km/chunk/mua đất/DEM đảo/thủy văn; xem docs/implementation-status.md.

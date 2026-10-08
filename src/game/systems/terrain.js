@@ -1,3 +1,4 @@
+import {validateGeography} from '../geography/data.js';
 import {CELL_METERS} from '../../config/simulation.js';
 // Heightfield vertices are metres; old maps stay flat instead of lifting saved trips.
 export function createTerrain(size,{flat=false}={}){
@@ -11,7 +12,10 @@ export function createTerrain(size,{flat=false}={}){
   return {version:1,cellMeters:CELL_METERS,widthMeters:size*CELL_METERS,heightMeters:size*CELL_METERS,waterHeight:flat?-1:0,legacyFlat:flat,heights};
 }
 export function validateTerrain(world,size){
-  if(!world||world.version!==1||world.cellMeters!==CELL_METERS||world.widthMeters!==size*CELL_METERS||world.heightMeters!==size*CELL_METERS||!Number.isFinite(world.waterHeight)||!Array.isArray(world.heights)||world.heights.length!==(size+1)**2||world.heights.some(h=>!Number.isFinite(h)||h< -100||h>500))throw new Error('Địa hình heightfield không hợp lệ.');
+  if(!world||world.version!==1||world.cellMeters!==CELL_METERS||world.widthMeters!==size*CELL_METERS||world.heightMeters!==size*CELL_METERS||!Number.isFinite(world.waterHeight)||!Array.isArray(world.heights)||world.heights.length!==(size+1)**2||world.heights.some(h=>!Number.isFinite(h)||h< -12000||h>9000))throw new Error('Địa hình heightfield không hợp lệ.');
+  validateGeography(world.geography,size);
+  if(world.geography&&world.legacyFlat)throw new Error('Địa hình Việt Nam không được thay bằng bản đồ phẳng.');
+  if(world.waterLevels!=null&&(!Array.isArray(world.waterLevels)||world.waterLevels.length!==size**2||world.waterLevels.some(h=>!Number.isFinite(h)||h< -12000||h>9000)))throw new Error('Cao trình mặt nước không hợp lệ.');
   return structuredClone(world);
 }
 export function terrainHeight(world,x,y){
@@ -23,8 +27,10 @@ export function terrainHeight(world,x,y){
 export function cellHeights(world,tile,size){const x=tile%size,y=Math.floor(tile/size),at=(a,b)=>world?.heights?.[b*(size+1)+a]??0;return [at(x,y),at(x+1,y),at(x,y+1),at(x+1,y+1)];}
 export function surfaceHeight(s,tile,size){
   const t=s.tiles[tile];if(!s.world||s.world.legacyFlat)return 0;
-  if(['road','avenue'].includes(t.kind)&&t.terrain==='water')return s.world.waterHeight+6;
+  if(['road','avenue'].includes(t.kind)&&t.terrain==='water')return waterHeightAt(s.world,tile)+6;
   const h=cellHeights(s.world,tile,size);
   return t.kind?Math.max(...h)+(t.kind==='road'||t.kind==='avenue'?.14:.1):terrainHeight(s.world,(tile%size+.5)*CELL_METERS,(Math.floor(tile/size)+.5)*CELL_METERS);
 }
 export function slopeAt(world,tile,size){const h=cellHeights(world,tile,size);return Math.max(Math.abs(h[1]-h[0]),Math.abs(h[2]-h[0]),Math.abs(h[3]-h[1]),Math.abs(h[3]-h[2]))/CELL_METERS*100;}
+
+export function waterHeightAt(world,tile){return world?.waterLevels?.[tile]??world?.waterHeight??0;}

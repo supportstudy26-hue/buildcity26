@@ -17,7 +17,7 @@ export async function createRenderer(input,mini,getCity){
       notice='Thiết bị chưa chạy được WebGL 3D; game dùng Canvas nhẹ và vẫn xây/lưu bình thường.';
       backend=new CityRenderer(input,mini,getCity);backend.mode='2d';view.hidden=true;input.style.opacity='1';
     }
-    if(old)old.dispose();Object.assign(backend,settings);if(preference.quality&&backend.setQuality)backend.setQuality(preference.quality);
+    if(old)old.dispose();Object.assign(backend,settings);if(backend.setQuality)backend.setQuality(preference.quality||'auto');
     preference.mode=backend.mode;try{localStorage.setItem(PREF,JSON.stringify(preference));}catch{}loading=false;return backend.mode===mode;
   }
   await switchMode(preference.mode||'3d');

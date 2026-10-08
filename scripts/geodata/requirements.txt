@@ -1,0 +1,7 @@
+# Preprocessing only; never installed by game/Vercel build.
+osmium==4.3.1
+shapely==2.0.6
+pyproj==3.6.1
+Pillow==12.3.0
+numpy==2.5.3
+requests==2.34.2
