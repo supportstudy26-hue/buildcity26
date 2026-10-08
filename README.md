@@ -34,7 +34,7 @@ Local tự lưu 15 giây; cloud 60 giây sau lần lưu đầu, một request m�
 
 docs/SUPABASE_SETUP.md và supabase/schema.sql; project đã có bản cũ dùng migrations theo thứ tự. Đã chạy SQL schema 6 và QA RLS transaction rollback trên project thật; chưa có QA Auth/JWT hai tài khoản qua Data API. PGlite tests không thay production Auth QA.
 
-Luồng email cũ được giữ (xác nhận, đăng nhập, quên/đặt lại mật khẩu, logout). **Đăng ký mới đúng 3 ô Tên thành phố/Tài khoản/Mật khẩu, login username 2 ô, mã khôi phục server và legacy claim chưa triển khai**; thuộc Lệnh 17. Không coi email form hiện tại là đã đáp ứng yêu cầu mới. Server admin key chỉ đặt môi trường server; không gửi qua chat.
+Luồng email cũ được giữ (xác nhận, đăng nhập, quên/đặt lại mật khẩu, logout). Đã viết đăng ký mới đúng 3 ô Tên thành phố/Tài khoản/Mật khẩu, đăng nhập 2 ô, API server cấp JWT Supabase thật, khôi phục bằng mã dự phòng một lần, tạo lại mã khi biết mật khẩu và nhận tên tài khoản cho tài khoản email cũ. Migration tạo profile/thành phố đầu tiên một lần và bổ sung RLS chặn phiên cũ sau khôi phục. Chưa xác nhận production Auth cho đến khi cấu hình server và chạy QA thật. Server admin key chỉ đặt môi trường server; không gửi qua chat.
 
 ## GitHub → Vercel
 

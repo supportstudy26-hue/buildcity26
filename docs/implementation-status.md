@@ -85,3 +85,16 @@ Giới hạn còn lại Lệnh 20 / H: mua đất/chunk 200 m, thế giới xây
 
 
 Bằng chứng cuối chặng: 95/95 tests PASS (112,50 s), build PASS (6,02 s), kiểm tra riêng 6/6 sau bổ sung cache metadata đảo. Browser bấm từng quần đảo/chọn tọa độ/tìm không dấu/quay về terrain Khánh Hòa PASS; reload giữ save Hạ Long. Screenshot vietnam-archipelagos-national.png và hai ảnh chi tiết. Viewport kiểm tra quần đảo thực 1063 px; override mobile mới không có hiệu lực, cần kiểm lại riêng. Đo production 1.000 cư dân trong 30,02 s: FPS trung vị 19,9, frame p95 83,4 ms, CPU tick p95 0,6 ms, 38 draw calls, 16 vùng/14 geometry/0 texture; chưa đạt mục tiêu độ mượt. Dữ liệu/giới hạn đầy đủ tại performance-budget.md và performance-1000-20261008.json. Không dùng số tức thời để cam kết 60 FPS.
+
+
+## Tài khoản username và triển khai — 09/10/2026
+
+Đã chỉnh mã: đăng ký đúng ba ô, đăng nhập hai ô, chuẩn hóa username giữ nguyên mật khẩu, server `/api/account` gọi Supabase Admin/password Auth thật; profile và thành phố đầu tiên commit DB một lần. Reservation/nonce xử lý retry/orphan, không cấp lại tiền đầu. Tài khoản email cũ giữ đăng nhập/reset/xác nhận và bản lưu, có claim username. Thư viện giữ create/save/open/delete/CAS/backup, bổ sung tạo mã dự phòng mới có JWT + xác thực lại mật khẩu.
+
+Mã dự phòng 192 bit chỉ trả một lần, lưu hash, claim atomic, thay mã sau sử dụng. RLS chặn access JWT cũ trong/sau recovery, Auth global signout thu hồi refresh. Private mapping/rate tables có RLS, revoke schema/table, RPC quản trị service_role-only; shared rate limiter qua DB, origin/payload limits, không log/return secret. Nếu mất phản hồi sau đổi mật khẩu, đăng nhập mật khẩu mới rồi tạo lại mã. Secrets chỉ Vercel server hoặc local ignored.
+
+Kiểm chứng: npm ci PASS tải lockfile; 100/100 tests PASS, build PASS 8,24 s (Three chunk 549,05 kB/gzip 140,34 kB vẫn có warning). Sau thêm kiểm thử tạo lại mã: 6/6 account tests PASS 10,06 s; tổng hiện 101 tests. Account DB tests kiểm reservation/idempotency, private access/RLS A/B, recovery claim race, JWT iat epoch và mã cũ vô hiệu; API injected failure/origin/rate/owner/password được kiểm riêng. Đây là PostgreSQL fixture/mock, chưa phải Supabase Auth QA thật.
+
+Supabase: migration 006 và 007 đã chạy Success trên project adnmfknbskbagiahstim, không xóa cities cũ. Vercel đăng nhập đúng supportstudy26-hue, import thấy repo buildcity26 nhưng repository GitHub vẫn trống; CLI credential hiện invalid tài khoản khác. Đã chuẩn bị env/public URL/key và ô secret server để người dùng nhập trực tiếp. Chưa triển khai Ready, chưa được gửi link game như đã deploy.
+
+Còn lại: quyền push GitHub, nhập secret server, deploy/Ready, QA thật bằng scripts/verify-accounts.mjs, browser form/mobile/cloud save trên production, redirect email legacy theo domain thật. Snapshot JSONB 2 MB và BXH authoritative/account XP vẫn chưa hoàn tất; không nhận tiền/XP client làm điểm verified. Luồng email/SMTP thật chưa kiểm chứng.

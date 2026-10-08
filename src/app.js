@@ -13,6 +13,8 @@ import { supabase, configured, authMessage, listCities, loadCity, saveCity, dele
 import { icon, applyIcons } from './icons.js';
 import { CloudSync } from './services/cloud-sync.js';
 import { authenticate, observeSession } from './services/auth.js';
+import {accountRequest,registrationRequest,acceptAccountSession} from './services/accounts.js';
+import {accountForm} from './ui/account-form.js';
 
 async function startGame(){
 if(import.meta.env.PROD&&'serviceWorker' in navigator)navigator.serviceWorker.register('/service-worker.js').catch(()=>{});
@@ -204,21 +206,65 @@ $('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{if
 function guide(){showModal(`<span class="news-kicker">CẨM NANG THỊ TRƯỞNG</span><h2>Bắt đầu xây thành phố</h2><ol class="guide-list"><li><b>Nối đường:</b> mở rộng từ mạng đường nối cổng phía tây. Kéo để xây từng đoạn. Đi qua sông sẽ tạo cầu với chi phí gấp 4.</li><li><b>Phân khu:</b> chọn nhà ở, thương mại hoặc công nghiệp rồi tô ô cạnh đường. Công trình tự mọc khi đủ điện, nước và nhu cầu.</li><li><b>Cấp điện và nước:</b> trạm phải cạnh đường kết nối. Trạm có giới hạn công suất và bán kính; xem bằng lớp bản đồ hoặc chọn công trình.</li><li><b>Chăm sóc dân cư:</b> xây công viên, trường học, y tế, rác thải và dịch vụ. Giữ nhà xưởng xa khu dân cư.</li><li><b>Cân đối ngân sách:</b> thuế tạo thu nhập, mỗi công trình có phí vận hành. Hạnh phúc và việc làm ảnh hưởng tăng dân số.</li><li><b>Lưu:</b> bản local tự lưu mỗi 15 giây. Với tài khoản đã mở một thành phố đám mây, game đồng bộ mỗi 60 giây. Nếu có xung đột, bản mới hơn được giữ.</li></ol><p>Chuột: kéo để di chuyển ở chế độ Khám phá, chuột phải để di chuyển khi xây, cuộn để phóng to. Điện thoại: một ngón kéo, hai ngón thu phóng. Phím 1–8 chọn công cụ, Space tạm dừng, Esc thoát xây dựng.</p><button id="guideDone" class="action primary full">Bắt đầu chơi</button>`);$('guideDone').onclick=closeModal;}
 
 function authDialog(mode='login',notice=''){
+  if(['reset','resend','recovery'].includes(mode))return legacyAuthDialog(mode,notice);
+  if(!configured)return legacyAuthDialog(mode,notice);
+  const titles={login:'Đăng nhập',register:'Tạo tài khoản',recover:'Khôi phục tài khoản',claim:'Đặt tên tài khoản',codes:'Tạo mã dự phòng mới'};
+  const title=titles[mode];
+  showModal(`<span class="news-kicker">TÀI KHOẢN BUILD CITY 26</span><h2>${title}</h2><p>${mode==='recover'?'Dùng mã dự phòng đã lưu khi đăng ký. Nếu mất cả mật khẩu và mã, bạn không thể tự khôi phục.':'Lưu thành phố và tiếp tục xây dựng trên thiết bị khác.'}</p>${notice?`<p class="form-notice" role="status">${escape(notice)}</p>`:''}${accountForm(mode)}${mode==='login'?'<button class="link-button" id="accountRegister">Chưa có tài khoản? Đăng ký</button><button class="link-button" id="accountRecover">Quên mật khẩu</button><button class="link-button" id="accountLegacy">Tôi có tài khoản email từ bản cũ</button>':'<button class="link-button" id="accountLogin">Quay lại đăng nhập</button>'}<p class="credit">Tài khoản gồm 3–24 ký tự a–z, số hoặc dấu gạch dưới. Mật khẩu giữ nguyên chữ hoa và khoảng trắng. Không cần email để đăng ký mới.</p>`);
+  if($('accountRegister'))$('accountRegister').onclick=()=>authDialog('register');
+  if($('accountRecover'))$('accountRecover').onclick=()=>authDialog('recover');
+  if($('accountLegacy'))$('accountLegacy').onclick=()=>legacyAuthDialog();
+  if($('accountLogin'))$('accountLogin').onclick=()=>user?library():authDialog();
+  if($('accountShowPassword'))$('accountShowPassword').onclick=e=>{const input=$('accountForm').elements.password,on=input.type==='password';input.type=on?'text':'password';e.currentTarget.textContent=on?'Ẩn mật khẩu':'Hiện mật khẩu';e.currentTarget.setAttribute('aria-pressed',String(on));};
+  $('accountForm').onsubmit=async e=>{
+    e.preventDefault();const form=e.currentTarget,fields=new FormData(form),button=$('accountSubmit'),errorEl=$('accountError');button.disabled=true;button.textContent='Đang xử lý…';errorEl.hidden=true;
+    try{
+      if(sync.busy||libraryBusy)throw new Error('Hãy chờ thao tác lưu đang chạy.');
+      if(['register','login'].includes(mode)&&!checkpoint())throw new Error('Hãy xuất bản lưu JSON để giữ tiến trình trước khi đổi tài khoản.');
+      const username=String(fields.get('username')||''),payload={username};
+      if(mode!=='claim')payload.password=String(fields.get('password')||'');
+      if(mode==='register'){payload.cityName=String(fields.get('cityName')||'');payload.requestId=registrationRequest(username);}
+      if(mode==='recover')payload.code=String(fields.get('code')||'');
+      let token=null;if(['claim','codes'].includes(mode)){const {data}=await supabase.auth.getSession();token=data.session?.access_token;}
+      const data=await accountRequest(mode,payload,token);
+      form.elements.password&&(form.elements.password.value='');
+      if(mode==='recover'){await supabase.auth.signOut({scope:'local'});handleSession(null,'SIGNED_OUT');showRecoveryCode(data.recoveryCode,()=>authDialog('login','Đã đổi mật khẩu. Hãy đăng nhập lại bằng mật khẩu mới.'));return;}
+      if(['claim','codes'].includes(mode)){showRecoveryCode(data.recoveryCode,()=>library(),token);return;}
+      const session=await acceptAccountSession(supabase,data);handleSession(session,'SIGNED_IN');
+      if(mode==='register'){
+        try{const row=await loadCity(data.firstCity);replaceCity(validateSave(row.state),{id:row.id,revision:Number(row.revision)});}catch{toast('Tài khoản đã tạo. Thành phố đầu tiên đã lưu; hãy mở trong thư viện.');}
+        if(!data.recoveryCode){try{sessionStorage.removeItem('bc26-register-request');}catch{}}
+        if(data.recoveryCode){showRecoveryCode(data.recoveryCode,()=>{closeModal();toast('Đã tạo tài khoản và thành phố đầu tiên.');},session.access_token);return;}
+      }
+      closeModal();toast('Đăng nhập thành công.');void library();
+    }catch(error){if(errorEl.isConnected){errorEl.textContent=authMessage(error);errorEl.hidden=false;}}
+    finally{if(button.isConnected){button.disabled=false;button.textContent=title;}}
+  };
+}
+function showRecoveryCode(code,done,token=null){
+  showModal(`<span class="news-kicker">GIỮ MÃ NÀY Ở NƠI AN TOÀN</span><h2>Mã dự phòng của bạn</h2><p>Mã dùng để đặt lại mật khẩu, mỗi mã chỉ dùng một lần. Không gửi cho người khác. Game không lưu mã này trong bản lưu hoặc bộ nhớ trình duyệt.</p><label class="field">Mã dự phòng<textarea id="recoveryCode" readonly rows="3">${escape(code)}</textarea></label><button class="action" id="recoveryCopy">Sao chép mã</button><label class="toggle-row"><input id="recoveryKept" type="checkbox"> Tôi đã lưu mã ở nơi an toàn</label><p id="recoveryNotice" role="status"></p><button class="action primary full" id="recoveryContinue" disabled>Tiếp tục</button>`);
+  $('recoveryCopy').onclick=async()=>{try{await navigator.clipboard.writeText(code);$('recoveryNotice').textContent='Đã sao chép. Hãy lưu mã trước khi tiếp tục.';}catch{$('recoveryNotice').textContent='Hãy chọn và sao chép mã trong ô phía trên.';}};
+  $('recoveryKept').onchange=e=>$('recoveryContinue').disabled=!e.target.checked;
+  $('recoveryContinue').onclick=async()=>{const b=$('recoveryContinue');b.disabled=true;if(token){try{await accountRequest('ack',{},token);}catch{$('recoveryNotice').textContent='Chưa xác nhận được với máy chủ. Mã vẫn dùng được; hãy giữ mã và thử lại.';b.disabled=false;return;}}try{sessionStorage.removeItem('bc26-register-request');}catch{}$('recoveryCode').value='';done();};
+}
+function legacyAuthDialog(mode='login',notice=''){
+  if(mode==='signup')return authDialog('register',notice);
   if(!configured){showModal(`<span class="news-kicker">TÀI KHOẢN BUILD CITY 26</span><h2>Chưa kết nối Supabase</h2><p>Bạn vẫn có thể chơi và lưu trên thiết bị. Cấu hình Supabase theo README để bật tài khoản.</p><button class="action primary full" id="authLocal">Tiếp tục chơi</button>`);$('authLocal').onclick=closeModal;return;}
   const titles={login:'Đăng nhập',signup:'Tạo tài khoản',reset:'Quên mật khẩu',resend:'Gửi lại email xác nhận',recovery:'Đặt mật khẩu mới'};
   const title=titles[mode],emailOnly=['reset','resend'].includes(mode);
-  showModal(`<span class="news-kicker">TÀI KHOẢN BUILD CITY 26</span><h2>${title}</h2><p>${mode==='recovery'?'Nhập mật khẩu mới để tiếp tục chơi.':'Lưu thành phố và tiếp tục xây dựng trên thiết bị khác.'}</p>${notice?`<p class="form-notice" role="status">${escape(notice)}</p>`:''}<form id="authForm">${mode==='signup'?'<label class="field">Tên hiển thị<input name="displayName" maxlength="40" autocomplete="nickname" required placeholder="Tên của bạn"></label>':''}${mode!=='recovery'?'<label class="field">Email<input name="email" type="email" autocomplete="email" required placeholder="ban@email.com"></label>':''}${!emailOnly?`<label class="field">Mật khẩu<input name="password" type="password" autocomplete="${mode==='login'?'current-password':'new-password'}" minlength="${mode==='login'?1:8}" required placeholder="${mode==='login'?'Mật khẩu của bạn':'Ít nhất 8 ký tự'}"></label>`:''}${['signup','recovery'].includes(mode)?'<label class="field">Nhập lại mật khẩu<input name="confirmPassword" type="password" autocomplete="new-password" minlength="8" required></label>':''}<p id="authError" class="form-error" role="alert" hidden></p><button class="action primary full" id="authSubmit" type="submit">${title}</button></form>${mode==='login'?'<button id="authSwitch" class="link-button">Chưa có tài khoản? Đăng ký</button><button id="authReset" class="link-button">Quên mật khẩu</button><button id="authResend" class="link-button">Gửi lại email xác nhận</button>':mode!=='recovery'?'<button id="authSwitch" class="link-button">Quay lại đăng nhập</button>':''}<p class="credit">Email xác nhận / đặt lại mật khẩu: mở liên kết trong cùng trình duyệt đã gửi yêu cầu.</p>`);
-  if($('authSwitch'))$('authSwitch').onclick=()=>authDialog(mode==='login'?'signup':'login');
-  if($('authReset'))$('authReset').onclick=()=>authDialog('reset');
-  if($('authResend'))$('authResend').onclick=()=>authDialog('resend');
+  showModal(`<span class="news-kicker">TÀI KHOẢN BUILD CITY 26</span><h2>${title}</h2><p>${mode==='recovery'?'Nhập mật khẩu mới để tiếp tục chơi.':'Lưu thành phố và tiếp tục xây dựng trên thiết bị khác.'}</p>${notice?`<p class="form-notice" role="status">${escape(notice)}</p>`:''}<form id="authForm">${mode==='signup'?'<label class="field">Tên hiển thị<input name="displayName" maxlength="40" autocomplete="nickname" required placeholder="Tên của bạn"></label>':''}${mode!=='recovery'?'<label class="field">Email<input name="email" type="email" autocomplete="email" required placeholder="ban@email.com"></label>':''}${!emailOnly?`<label class="field">Mật khẩu<input name="password" type="password" autocomplete="${mode==='login'?'current-password':'new-password'}" minlength="${mode==='login'?1:8}" required placeholder="${mode==='login'?'Mật khẩu của bạn':'Ít nhất 8 ký tự'}"></label>`:''}${['signup','recovery'].includes(mode)?'<label class="field">Nhập lại mật khẩu<input name="confirmPassword" type="password" autocomplete="new-password" minlength="8" required></label>':''}<p id="authError" class="form-error" role="alert" hidden></p><button class="action primary full" id="authSubmit" type="submit">${title}</button></form>${mode==='login'?'<button id="authNew" class="link-button">Tạo tài khoản mới bằng tên đăng nhập</button><button id="authReset" class="link-button">Quên mật khẩu</button><button id="authResend" class="link-button">Gửi lại email xác nhận</button>':mode!=='recovery'?'<button id="authSwitch" class="link-button">Quay lại đăng nhập</button>':''}<p class="credit">Email xác nhận / đặt lại mật khẩu: mở liên kết trong cùng trình duyệt đã gửi yêu cầu.</p>`);
+  if($('authSwitch'))$('authSwitch').onclick=()=>legacyAuthDialog('login');
+  if($('authNew'))$('authNew').onclick=()=>authDialog('register');
+  if($('authReset'))$('authReset').onclick=()=>legacyAuthDialog('reset');
+  if($('authResend'))$('authResend').onclick=()=>legacyAuthDialog('resend');
   $('authForm').onsubmit=async e=>{
     e.preventDefault();const form=e.currentTarget,fields=new FormData(form),submit=$('authSubmit'),errorEl=$('authError');
     submit.disabled=true;submit.textContent='Đang xử lý…';errorEl.hidden=true;
     try{
       const data=await authenticate(supabase,mode,{email:String(fields.get('email')||'').trim(),password:String(fields.get('password')||''),confirmPassword:fields.get('confirmPassword'),displayName:String(fields.get('displayName')||'').trim()},location.origin+'/');
       if(!form.isConnected)return;
-      if(mode==='signup'&&!data.session){authDialog('login','Đã gửi email xác nhận. Mở email và bấm liên kết để hoàn tất đăng ký.');return;}
-      if(emailOnly){authDialog('login',mode==='reset'?'Nếu email có tài khoản, bạn sẽ nhận liên kết đặt lại mật khẩu.':'Nếu tài khoản cần xác nhận, bạn sẽ nhận được email mới.');return;}
+      if(mode==='signup'&&!data.session){legacyAuthDialog('login','Đã gửi email xác nhận. Mở email và bấm liên kết để hoàn tất đăng ký.');return;}
+      if(emailOnly){legacyAuthDialog('login',mode==='reset'?'Nếu email có tài khoản, bạn sẽ nhận liên kết đặt lại mật khẩu.':'Nếu tài khoản cần xác nhận, bạn sẽ nhận được email mới.');return;}
       if(mode==='recovery'){recoveryMode=false;$('accountBtn').textContent='Tài khoản';closeModal();toast('Đã đổi mật khẩu.');return;}
       handleSession(data.session,'SIGNED_IN');closeModal();toast(mode==='signup'?'Đã tạo tài khoản.':'Đăng nhập thành công.');void library();
     }catch(error){if(errorEl.isConnected){errorEl.textContent=authMessage(error);errorEl.hidden=false;}}
@@ -240,7 +286,7 @@ $('accountBtn').onclick=()=>recoveryMode?authDialog('recovery'):user?library():a
 async function library(){
   if(!user){authDialog();return;}
   const owner=user.id,epoch=cityEpoch;
-  showModal(`<span class="news-kicker">${escape(user.email||'TÀI KHOẢN')}</span><h2>Thành phố đã lưu</h2>${sync.conflict?'<div class="conflict-panel"><strong>Bản đám mây đã thay đổi</strong><p>Giữ tiến trình này bằng JSON hoặc lưu thành bản mới. Chọn Mở để tải bản mới từ máy chủ.</p><button id="conflictExport" class="action">Xuất JSON</button></div>':''}<p id="libraryStatus" role="status">Đang tải danh sách…</p><div id="cityList"></div><div class="modal-actions"><button id="librarySave" class="action primary">Lưu thành phố hiện tại</button><button id="libraryCopy" class="action">Lưu thành bản mới</button><button id="libraryNew" class="action">Thành phố mới</button><button id="libraryBackups" class="action">Bản dự phòng trên máy</button><button id="libraryRefresh" class="action">Tải lại danh sách</button></div><button id="signoutBtn" class="link-button">Đăng xuất trên thiết bị này</button>`);
+  showModal(`<span class="news-kicker">TÀI KHOẢN BUILD CITY 26</span><h2>Thành phố đã lưu</h2>${sync.conflict?'<div class="conflict-panel"><strong>Bản đám mây đã thay đổi</strong><p>Giữ tiến trình này bằng JSON hoặc lưu thành bản mới. Chọn Mở để tải bản mới từ máy chủ.</p><button id="conflictExport" class="action">Xuất JSON</button></div>':''}<p id="libraryStatus" role="status">Đang tải danh sách…</p><div id="cityList"></div><div class="modal-actions"><button id="librarySave" class="action primary">Lưu thành phố hiện tại</button><button id="libraryCopy" class="action">Lưu thành bản mới</button><button id="libraryNew" class="action">Thành phố mới</button><button id="libraryBackups" class="action">Bản dự phòng trên máy</button><button id="libraryRefresh" class="action">Tải lại danh sách</button></div><button id="accountCodes" class="action" hidden>Tạo mã dự phòng mới</button><button id="claimUsername" class="link-button" hidden>Đặt tên tài khoản cho tài khoản email cũ</button><button id="signoutBtn" class="link-button">Đăng xuất trên thiết bị này</button>`);
   const status=$('libraryStatus'),list=$('cityList');
   const active=()=>user?.id===owner&&cityEpoch===epoch&&status.isConnected&&modal.open;
   if($('conflictExport'))$('conflictExport').onclick=exportSave;
@@ -258,6 +304,8 @@ async function library(){
   };
   try{
     const rows=await listCities();if(!active())return;
+    const profile=await supabase.from('profiles').select('username').eq('user_id',owner).maybeSingle();if(!active())return;
+    if(profile.data?.username){document.querySelector('#modal .news-kicker').textContent=profile.data.username;$('accountCodes').hidden=false;$('accountCodes').onclick=()=>authDialog('codes','Mã cũ sẽ hết hiệu lực. Nhập tài khoản và mật khẩu để tạo mã mới, kể cả khi đã mất mã cũ.');}else if(user.email&&!user.email.endsWith('@accounts.buildcity26.invalid')){$('claimUsername').hidden=false;$('claimUsername').onclick=()=>authDialog('claim');}
     status.textContent=rows.length?`${rows.length} thành phố · chọn Mở để tiếp tục`:'Bạn chưa có thành phố trên đám mây. Lưu thành phố hiện tại để tạo bản đầu tiên.';
     list.innerHTML=rows.map(r=>`<div class="saved-city"><div><strong>${escape(r.name)}</strong><small>${new Date(r.updated_at).toLocaleString('vi-VN')} · Bản ${r.revision}</small></div><button class="action" data-load="${escape(r.id)}">Mở</button><button class="delete-save" data-delete="${escape(r.id)}" title="Xóa bản lưu" aria-label="Xóa bản lưu ${escape(r.name)}">×</button></div>`).join('');
     list.querySelectorAll('[data-load]').forEach(button=>button.onclick=async()=>{
@@ -293,7 +341,7 @@ function handleSession(session,event){
     // Close an old account's library immediately on a cross-tab auth change.
     if(modal.open&&$('libraryStatus')&&!recoveryMode)closeModal();
   }else user=next;
-  $('accountBtn').textContent=recoveryMode?'Đặt mật khẩu':user?'Tài khoản':'Đăng nhập';$('accountBtn').title=user?.email||'Đăng nhập để lưu đám mây';renderSaveStatus();
+  $('accountBtn').textContent=recoveryMode?'Đặt mật khẩu':user?'Tài khoản':'Đăng nhập';$('accountBtn').title=user?'Mở thành phố của tài khoản':'Đăng nhập để lưu đám mây';renderSaveStatus();
   if(event==='PASSWORD_RECOVERY')authDialog('recovery');
 }
 if(supabase){observeSession(supabase,handleSession,error=>toast(authMessage(error)));}

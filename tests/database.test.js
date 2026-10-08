@@ -6,10 +6,11 @@ import {PGlite} from '@electric-sql/pglite';
 test('SQL schema/migration execute in PostgreSQL and RLS isolates two authenticated identities',async()=>{
   const db=new PGlite();
   try{
-    await db.exec(`create role anon; create role authenticated;
+    await db.exec(`create role anon; create role authenticated; create role service_role;
       create schema auth;
       create table auth.users(id uuid primary key,aud text,role text,email text);
       create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;
+      create function auth.jwt() returns jsonb language sql stable as $$ select coalesce(nullif(current_setting('request.jwt.claims',true),'')::jsonb,'{}'::jsonb) $$;
       grant usage on schema auth,public to anon,authenticated;
       grant execute on function auth.uid() to anon,authenticated;`);
     const schema=await readFile(new URL('../supabase/schema.sql',import.meta.url),'utf8');

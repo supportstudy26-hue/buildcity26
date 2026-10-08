@@ -34,3 +34,6 @@ Browser thật Codex IAB tại QA 5175: bản đồ toàn quốc có Hoàng Sa/T
 Production preview 4175 đã tắt máy chủ có chủ đích rồi reload tab QA: game và thành phố QA Offline Đà Nẵng vẫn mở từ service-worker, clock giữ 00:00:03, 12 tỷ ₫, không ghi/xóa city khác. Đã khởi động lại preview sau thử nghiệm. Không gọi bài thử này là QA Supabase mất mạng hoặc xác nhận mọi khu địa hình đều sẵn offline. Cache gói chưa tải/metadata đảo được kiểm bằng unit test; chưa kiểm đầy đủ eviction/quota browser thật.
 
 Supabase migration geography schema 6 đã chạy thật; ảnh docs/supabase-geography-schema-verified.png. Auth/JWT hai tài khoản, production GitHub/Vercel vẫn chưa kiểm chứng. Lệnh 20/H đầy đủ vẫn còn world xây 12,8 km/chunk/mua đất/DEM đảo/thủy văn; xem docs/implementation-status.md.
+
+
+09/10/2026 account checkpoint: npm ci PASS; all 100/100 tests PASS; build PASS 8.24s. Focused account rotation/owner/password tests 6/6 PASS after the extra test (101 total cases). PGlite and SDK injection only, not real Auth. Supabase migrations 006/007 applied Success. Live username/JWT QA script ready, deployment/config pending. See docs/implementation-status.md for exact scope.

@@ -12,7 +12,19 @@ Trong dashboard Supabase của project → **SQL Editor → New query**:
 
 Frontend không có quyền quản trị để chạy SQL bằng publishable key. Không cần cung cấp service_role hay mật khẩu database.
 
-## 2. Email và redirect
+## 2. Tài khoản mới trên Vercel
+
+Đăng ký đúng ba ô: Tên thành phố, Tài khoản, Mật khẩu. API `/api/account` tạo Supabase Auth identity riêng không nhận email người chơi, trả JWT của chính người chơi và tạo profile/thành phố đầu tiên atomically. Không lưu mật khẩu hoặc mã dự phòng plaintext trong DB/save.
+
+Frontend: `VITE_SUPABASE_URL` và `VITE_SUPABASE_PUBLISHABLE_KEY` (hoặc anon key). Server: đặt `SUPABASE_SECRET_KEY` hoặc `SUPABASE_SERVICE_ROLE_KEY` trong Vercel, bật Sensitive, Production/Preview; tuyệt đối không đặt tiền tố VITE. Server dùng lại URL/key công khai hoặc biến `SUPABASE_URL`/`SUPABASE_PUBLISHABLE_KEY`. Muốn kiểm thử local API, nhập secret trong `.env.local` bị ignore; không cần gửi qua chat.
+
+Project đang có schema 6: chạy migration 202610080006_username_accounts.sql và 202610080007_recovery_code_rotation.sql. Mapping/rate-limit ở schema private, RLS bật và anon/authenticated không có quyền; API quản trị chỉ service_role gọi được. Public profiles chỉ đọc profile chính mình. Cấu hình Email provider vẫn bật để đăng nhập password; tắt public sign-up nếu project chỉ phục vụ game này, Admin API vẫn tạo tài khoản. Giữ luồng email/reset cho tài khoản cũ. Nếu project dùng chung ứng dụng khác, kiểm tra trước khi đổi global signup.
+
+Giữ mã dự phòng ở nơi riêng. Khôi phục đổi mật khẩu, tiêu thụ mã cũ, phát mã mới; RLS khóa phiên cũ ngay và global sign-out khóa refresh token. Nếu mất phản hồi sau đổi mật khẩu, thử đăng nhập bằng mật khẩu mới; thư viện có Tạo mã dự phòng mới, yêu cầu JWT và nhập lại mật khẩu. Không thể tự khôi phục nếu mất cả mật khẩu và mã.
+
+Kiểm thử deployment thật: đặt `QA_BASE_URL` bằng domain đã Ready, `QA_ALLOW_CREATE=1`, chạy `npm run test:accounts:live`. Script tạo hai tài khoản QA riêng, thông tin xác thực chỉ giữ RAM; không in token/mật khẩu/mã. Kiểm tra register/retry, login, recovery, code rotation, JWT RLS A/B, private RPC, giả owner, hai thiết bị, conflict và xóa bản QA riêng. Hai tài khoản/first cities QA còn lại được báo tên để chủ project quản lý. Không chạy lại vô hạn.
+
+## 3. Email và redirect cho tài khoản cũ
 
 Authentication → Providers → Email: bật đăng ký email, xác nhận email và chính sách mật khẩu phù hợp. Authentication → URL Configuration:
 
@@ -31,7 +43,7 @@ Email production: cấu hình Custom SMTP theo nhà cung cấp email của bạn
 
 Tài liệu chính thức: [Redirect URLs](https://supabase.com/docs/guides/auth/redirect-urls), [Email Templates](https://supabase.com/docs/guides/auth/auth-email-templates), [Custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp), [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security).
 
-## 3. Kiểm tra với hai tài khoản thật
+## 4. Kiểm tra tương thích email cũ bằng hai tài khoản thật
 
 Tạo hai tài khoản QA A/B bằng email bạn kiểm soát trong game, mở email xác nhận. Không cần gửi mật khẩu qua chat. Tạo `.env.test.local` chỉ trên máy của bạn:
 
@@ -56,3 +68,5 @@ Sau đó kiểm tra bằng giao diện:
 ## Trạng thái kiểm chứng hiện tại
 
 08/10/2026: đã chạy schema và migration schema 3 trên project thật. SQL kiểm tra RLS A/B trong transaction rollback PASS, cities RLS bật với 4 owner policies, RPC nhận schema 3. Ảnh bằng chứng trong docs. Chưa kiểm chứng Auth/JWT Data API hai tài khoản hoặc email/recovery thật. Hướng dẫn email ở trên chỉ là luồng tương thích cũ; đăng ký username mới không dùng email và sẽ được triển khai bằng API server ở Lệnh 17.
+
+09/10/2026: API username và UI đã viết, 100/100 toàn bộ tests PASS; sau bổ sung mã mới kiểm thử riêng 6/6 PASS. Migration tài khoản 006 và mã dự phòng 007 đã chạy thành công trên project thật. Chưa có secret server/GitHub push/deployment Ready hoặc QA Auth/JWT thật; các PASS account tests hiện là PGlite/injected SDK.
