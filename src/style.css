@@ -39,3 +39,13 @@
   #residentsBtn{position:fixed;top:87px;right:12px;min-height:36px;z-index:8;background:var(--panel);display:block}
   .topbar{gap:6px}.treasury{min-width:100px}.topbar #accountBtn{font-size:10px;padding:8px}
 }
+
+#world3d{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}#world3d[hidden]{display:none}.map-btn.active{color:var(--orange);border-color:var(--orange)}.field select{min-height:42px}#cameraRotate{font-size:20px}
+
+.mission-card{border:1px solid var(--line);padding:10px;border-radius:8px;margin:9px 0;background:#ffffff03}.mission-card strong{font-size:11px;display:block;line-height:1.6}.mission-card strong small{color:var(--orange);float:right}.mission-card p{font-size:10px;color:var(--muted);line-height:1.65;margin:7px 0}.mission-card>small{font-size:9px;color:var(--mint)}.mission-card.locked{opacity:.55}.mission details{font-size:11px;line-height:1.7}.mission summary{cursor:pointer}
+
+#loading{position:absolute;inset:0;display:grid;place-items:center;background:#182e35;color:#f4c29b;z-index:100;font-size:18px}.map-controls{flex-direction:row;right:196px;bottom:105px}.map-controls .map-btn span{display:none}.map-controls .map-btn{min-width:38px;min-height:40px}.right-panel{max-height:calc(100dvh - 300px)}
+@media(max-width:850px){.map-controls{right:188px;bottom:99px}}
+@media(max-width:600px){.map-controls{left:12px;right:auto;bottom:auto;top:135px;gap:6px}.map-controls .map-btn{min-width:36px;min-height:36px}.right-panel.inspect{max-height:34dvh}.left-panel{top:183px;max-height:calc(100dvh - 325px)}}
+
+#missionBtn{display:none}@media(max-width:600px){#missionBtn{display:block;position:fixed;top:87px;left:112px;right:78px;min-height:36px;padding:7px 6px;font-size:10px;white-space:nowrap;z-index:8;background:var(--panel);color:var(--orange)}}

@@ -1,3 +1,5 @@
+import {updateProgression} from './systems/progression.js';
+import { createTerrain } from './systems/terrain.js';
 import { submitCommand } from './systems/commands.js';
 import { analyzeUtilities } from './systems/utilities.js';
 import { updateLegacyServices } from './systems/services.js';
@@ -14,13 +16,13 @@ import { startConstruction, updateConstruction, cancelConstruction } from './sys
 import { entityId, emit } from './systems/events.js';
 // Pure game logic. No browser, auth or rendering dependencies.
 export const SIZE = 64;
-export const SAVE_VERSION = 3;
+export const SAVE_VERSION = 4;
 import { CATALOG, BUILDINGS, ZONES, ROADS } from '../config/catalog.js';
 export { CATALOG };
 import { initializeWorld, index, inside, clamp, neighbors, distance, isRoad, terrainAt } from './systems/world.js';
 export { index, inside, clamp, neighbors, isRoad, terrainAt };
 export function createCity(){
-  const s={schemaVersion:SAVE_VERSION,mapSize:SIZE,name:'Thành phố Bình Minh',money:START_CASH_BC,currency:'BC',currencyMigration:{from:3,factor:1},day:0,taxes:{residential:10,commercial:10,industrial:10},seed:26012026,milestones:[],busLines:[],loanBalance:0,budgets:{},tiles:Array.from({length:SIZE*SIZE},(_,i)=>({terrain:terrainAt(i%SIZE,Math.floor(i/SIZE)),kind:null,zone:null,level:0,residents:0,age:0,garbage:0,hazard:0,fire:0,crime:0,health:100,education:0}))};
+  const s={schemaVersion:SAVE_VERSION,mapSize:SIZE,name:'Thành phố Bình Minh',money:START_CASH_BC,currency:'BC',currencyMigration:{from:4,factor:1},day:0,taxes:{residential:10,commercial:10,industrial:10},seed:26012026,milestones:[],busLines:[],loanBalance:0,budgets:{},tiles:Array.from({length:SIZE*SIZE},(_,i)=>({terrain:terrainAt(i%SIZE,Math.floor(i/SIZE)),kind:null,zone:null,level:0,residents:0,age:0,garbage:0,hazard:0,fire:0,crime:0,health:100,education:0}))};
   const set=(x,y,kind,residents=0)=>Object.assign(s.tiles[index(x,y)],{kind,zone:ZONES.includes(kind)?kind:null,level:1,residents,age:20});
   for(let x=0;x<=23;x++)set(x,18,'road');
   for(let y=10;y<=25;y++){set(11,y,'road');set(18,y,'road');}
@@ -31,7 +33,7 @@ export function createCity(){
   for(let x=19;x<=22;x++)set(x,23,'industrial');
   set(8,17,'power');set(9,17,'water');set(10,20,'clinic');set(10,14,'school');set(15,11,'park');set(14,23,'park');set(19,25,'waste');
   set(7,19,'sewage');
-  analyze(s);initializeFoundation(s,SIZE,random);return s;
+  s.world=createTerrain(SIZE);analyze(s);initializeFoundation(s,SIZE,random);return s;
 }
 import { random } from './systems/rng.js';
 export { random };
@@ -100,12 +102,12 @@ function dailyUpdate(s){
   updateLegacyServices(s);
   analyze(s);
   reconcileSociety(s,SIZE,random);
-  for(const [target,reward] of [[300,15000],[800,25000],[2000,40000]])if(s.metrics.population>=target&&!s.milestones.includes(target)){s.milestones.push(target);recordCash(s,`legacy-milestone-${target}`,'legacy-milestone',reward*LEGACY_BC_FACTOR);}
+  updateProgression(s,true);
   return s.metrics;
 }
 export function serialize(s){return {...foundationSnapshot(s),schemaVersion:SAVE_VERSION,mapSize:SIZE,name:s.name,money:s.money,day:s.day,taxes:{...s.taxes},seed:s.seed,milestones:[...s.milestones],loanBalance:s.loanBalance||0,budgets:{...s.budgets},busLines:(s.busLines||[]).map(l=>({id:l.id,name:l.name,stops:[...l.stops],vehicles:l.vehicles})),tiles:s.tiles.map(t=>({terrain:t.terrain,kind:t.kind,zone:t.zone,level:t.level,residents:t.residents,age:t.age,garbage:t.garbage||0,hazard:t.hazard||0,fire:t.fire||0,crime:t.crime||0,health:t.health??100,education:t.education||0,id:t.id,assetId:t.assetId??null,historicalCost:t.historicalCost||0,footprint:{...t.footprint}}))};}
 export function validateSave(raw){
-  if(!raw||typeof raw!=='object'||![1,2,SAVE_VERSION].includes(raw.schemaVersion))throw new Error('Bản lưu không tương thích với Build City 26.');
+  if(!raw||typeof raw!=='object'||![1,2,3,SAVE_VERSION].includes(raw.schemaVersion))throw new Error('Bản lưu không tương thích với Build City 26.');
   const sourceSize=raw.schemaVersion===1?38:raw.mapSize;
   if(![38,48,SIZE].includes(sourceSize)||!Array.isArray(raw.tiles)||raw.tiles.length!==sourceSize*sourceSize)throw new Error('Bản đồ trong bản lưu không hợp lệ.');
   if(typeof raw.name!=='string'||!raw.name.trim()||raw.name.length>36)throw new Error('Tên thành phố không hợp lệ.');
@@ -134,7 +136,7 @@ export function validateSave(raw){
   const migratedLines=busLines.map(l=>({...l,stops:l.stops.map(i=>index(i%sourceSize,Math.floor(i/sourceSize)))}));
   const tiles=Array.from({length:SIZE*SIZE},(_,i)=>{const x=i%SIZE,y=Math.floor(i/SIZE);return x<sourceSize&&y<sourceSize?sourceTiles[y*sourceSize+x]:{terrain:terrainAt(x,y),kind:null,zone:null,level:0,residents:0,age:0,garbage:0,hazard:0,fire:0,crime:0,health:100,education:0};});
   const s={schemaVersion:SAVE_VERSION,mapSize:SIZE,name:raw.name.trim(),money:raw.money,day:raw.day,seed:raw.seed>>>0,taxes:{...raw.taxes},milestones:[...new Set(raw.milestones)],busLines:migratedLines,loanBalance,budgets:{...budgets},tiles};
-  if(raw.schemaVersion<3){s.money*=LEGACY_BC_FACTOR;s.loanBalance*=LEGACY_BC_FACTOR;s.currency='BC';s.currencyMigration={from:raw.schemaVersion,factor:LEGACY_BC_FACTOR};analyze(s);initializeFoundation(s,SIZE,random);}
+  if(raw.schemaVersion<3){s.money*=LEGACY_BC_FACTOR;s.loanBalance*=LEGACY_BC_FACTOR;s.world=createTerrain(SIZE,{flat:true});s.currency='BC';s.currencyMigration={from:raw.schemaVersion,factor:LEGACY_BC_FACTOR};analyze(s);initializeFoundation(s,SIZE,random);}
   else {loadFoundation(s,raw,SIZE);initializeWorldCompatibility(s);analyze(s);}
   return s;
 }
@@ -143,8 +145,8 @@ export function validateSave(raw){
 export function stepSimulation(s){
   const previous=s.day,c=clockStep(s);
   if(c.day!==previous)dailyUpdate(s);
-  if(updateConstruction(s)){s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);}
-  updateCitizens(s,c,route,SIZE);updateVehicles(s);
+  if(updateConstruction(s)){s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);updateProgression(s,true);}
+  updateCitizens(s,c,route,SIZE);updateVehicles(s);updateProgression(s);
   return s.clock.seconds;
 }
 function initializeWorldCompatibility(s){initializeWorld(s,SIZE);}
@@ -165,6 +167,7 @@ export function executeCommand(s,command){
     case 'remove-bus-line':result=s.busLines.some(l=>l.id===p.id)?(s.busLines=s.busLines.filter(l=>l.id!==p.id),analyze(s),reconcileSociety(s,SIZE,random),{ok:true}):{ok:false,message:'Tuyến không tồn tại.'};break;
     default:return {ok:false,message:'Loại command chưa được hỗ trợ.'};
   }
+  if(result.ok){initializeWorldCompatibility(s);updateProgression(s,true);}
   return result;
   });
 }

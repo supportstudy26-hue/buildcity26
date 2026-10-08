@@ -18,7 +18,7 @@ export function loadLocal(owner = 'guest', storage = localStorage) {
     validateSave(p.state);
     pending = { id: p.id, revision: p.revision, requestId: p.requestId, name: p.name, state: p.state };
   }
-  return { city, cloud, pending, conflict: !!data.conflict, dirty: data.dirty ?? true, modifiedAt: data.modifiedAt, migrated: data.city.schemaVersion < SAVE_VERSION || data.city.mapSize < SIZE };
+  return { city, cloud, pending, conflict: !!data.conflict, dirty: data.dirty ?? true, modifiedAt: data.modifiedAt, migrated: data.city.schemaVersion < SAVE_VERSION || data.city.mapSize < SIZE || !data.city.progression };
 }
 // Preserve drafts before opening/importing another city. Keep damaged saves too.
 export function archiveLocal(owner = 'guest', storage = localStorage, uuid = () => crypto.randomUUID()) {

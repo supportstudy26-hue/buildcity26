@@ -1,14 +1,15 @@
 import { ROADS } from '../../config/catalog.js';
 export const SIZE=64;
 import { CELL_METERS } from '../../config/simulation.js';
-export function position(tile, size) { return { x: (tile % size + .5)*CELL_METERS, y: (Math.floor(tile/size)+.5)*CELL_METERS, z: 0 }; }
+import {createTerrain,surfaceHeight} from './terrain.js';
+export function position(tile, size, s) { return { x: (tile % size + .5)*CELL_METERS, y: (Math.floor(tile/size)+.5)*CELL_METERS, z: s?surfaceHeight(s,tile,size):0 }; }
 export function distanceMeters(a,b) { return Math.hypot(a.x-b.x,a.y-b.y,a.z-b.z); }
 export function initializeWorld(s, size) {
-  s.world = { cellMeters: CELL_METERS, widthMeters: size*CELL_METERS, heightMeters: size*CELL_METERS };
+  s.world ??= createTerrain(size,{flat:true});
   for (let i=0;i<s.tiles.length;i++) {
     const t=s.tiles[i]; t.id ??= `plot-${i}`;
     if(t.kind) t.assetId ??= `initial-asset-${i}`;
-    t.footprint ??= {width:t.kind==='road'?12:t.kind==='avenue'?18:t.kind?14:20,depth:20};
+    t.footprint = {width:t.kind==='road'?12:t.kind==='avenue'?18:t.kind?14:20,depth:20};
   }
 }
 export const index = (x,y) => y*SIZE+x;

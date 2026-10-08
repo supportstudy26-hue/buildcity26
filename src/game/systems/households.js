@@ -16,7 +16,7 @@ export function reconcileHouseholds(s, size, rng) {
       let h=s.households.find(h=>h.home===i&&h.members.filter(id=>alive.has(id)).length<4);
       if(!h) { h={id:entityId(s,'household'),home:i,members:[],savings:6400}; s.households.push(h); }
       const member=h.members.filter(id=>alive.has(id)).length;
-      const c={id:entityId(s,'citizen'),household:h.id,home:i,name:`${family[Math.floor(rng(s)*family.length)]} ${first[Math.floor(rng(s)*first.length)]}`,age:member<2?25+Math.floor(rng(s)*35):member===2?8+Math.floor(rng(s)*9):65+Math.floor(rng(s)*15),health:t.health??100,education:t.education||0,work:null,state:'home',goal:i,position:position(i,size),journey:null,schedule:{depart:7*3600+30*60+Math.floor(rng(s)*3600),return:17*3600+Math.floor(rng(s)*3600)},walkSpeed:.8+rng(s),vehicle:null,attendance:0};
+      const c={id:entityId(s,'citizen'),household:h.id,home:i,name:`${family[Math.floor(rng(s)*family.length)]} ${first[Math.floor(rng(s)*first.length)]}`,age:member<2?25+Math.floor(rng(s)*35):member===2?8+Math.floor(rng(s)*9):65+Math.floor(rng(s)*15),health:t.health??100,education:t.education||0,work:null,state:'home',goal:i,position:position(i,size,s),journey:null,schedule:{depart:7*3600+30*60+Math.floor(rng(s)*3600),return:17*3600+Math.floor(rng(s)*3600)},walkSpeed:.8+rng(s),vehicle:null,attendance:0};
       s.citizens.push(c); residents.push(c); h.members.push(c.id); alive.add(c.id); emit(s,'resident-added',c.id,{home:i});
     }
   }

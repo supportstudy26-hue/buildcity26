@@ -1,5 +1,5 @@
 // Design parameters, not real-world statistics or legal standards.
-export const RULE_VERSION = 'foundation-3';
+export const RULE_VERSION = 'terrain-4';
 export const CELL_METERS = 20;
 export const STEP_SECONDS = 10;
 export const DAY_SECONDS = 86400;

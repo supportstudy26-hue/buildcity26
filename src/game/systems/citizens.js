@@ -5,7 +5,7 @@ function begin(s,c,goal,route,size) {
   const roads=route(s,c.goal,goal);
   if(!roads.length) {c.state='blocked';c.waitReason='Chưa có đường nối nguồn và đích';c.retryGoal=goal;return;}
   const mode=c.vehicle?'car':'walk';
-  c.journey={id:`trip-${c.id}-${s.clock.step}`,origin:c.goal,destination:goal,mode,speed:mode==='car'?30/3.6:c.walkSpeed,path:[{...c.position},...roads.map(i=>({...position(i,size),road:i})),{...position(goal,size)}],segment:0,distance:0,departedAt:s.clock.seconds,graphVersion:s.graphVersion};
+  c.journey={id:`trip-${c.id}-${s.clock.step}`,origin:c.goal,destination:goal,mode,speed:mode==='car'?30/3.6:c.walkSpeed,path:[{...c.position},...roads.map(i=>({...position(i,size,s),road:i})),{...position(goal,size,s)}],segment:0,distance:0,departedAt:s.clock.seconds,graphVersion:s.graphVersion};
   c.goal=goal;c.retryGoal=null;c.state=mode==='car'?'in-vehicle':'walking';c.waitReason='';emit(s,'trip-started',c.id,{destination:goal,mode});
 }
 export function updateCitizens(s, calendar, route, size) {

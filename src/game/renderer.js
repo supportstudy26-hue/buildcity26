@@ -7,6 +7,10 @@ export class CityRenderer {
   constructor(canvas,mini,getCity){
     this.canvas=canvas;this.ctx=canvas.getContext('2d');this.mini=mini;this.mc=mini.getContext('2d');this.getCity=getCity;this.zoom=1;this.pan={x:0,y:0};this.hover=null;this.selected=null;this.tool='inspect';this.layer='normal';this.night=false;this.cars=[];this.lastPaths=-1;this.time=0;this.width=0;this.height=0;this.sorted=Array.from({length:SIZE*SIZE},(_,i)=>i).sort((a,b)=>(a%SIZE+Math.floor(a/SIZE))-(b%SIZE+Math.floor(b/SIZE)));this.resize();this.center();this.frame=this.frame.bind(this);this.raf=requestAnimationFrame(this.frame);
   }
+  panBy(dx,dy){this.follow=null;this.pan.x+=dx;this.pan.y+=dy;}
+  focusTile(x,y){this.follow=null;this.pan.x=-(x-y)*22*this.zoom;this.pan.y=-(x+y)*11*this.zoom;}
+  topView(){}
+  dispose(){cancelAnimationFrame(this.raf);this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);}
   resize(){const dpr=Math.min(window.devicePixelRatio||1,2);this.width=this.canvas.clientWidth;this.height=this.canvas.clientHeight;this.canvas.width=this.width*dpr;this.canvas.height=this.height*dpr;this.ctx.setTransform(dpr,0,0,dpr,0,0);}
   center(){this.zoom=this.width<600?.85:1.06;const tx=15,ty=18;this.pan.x=(ty-tx)*22*this.zoom;this.pan.y=-(tx+ty)*11*this.zoom+25;}
   project(x,y,z=0){return {x:this.width/2+(x-y)*22*this.zoom+this.pan.x,y:this.height/2+(x+y)*11*this.zoom+this.pan.y-z*this.zoom};}

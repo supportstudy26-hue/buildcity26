@@ -1,3 +1,4 @@
+import {position} from './world.js';
 import { entityId } from './events.js';
 export function reconcileVehicles(s) {
   const ids=new Set(s.citizens.map(c=>c.id));
@@ -12,7 +13,7 @@ export function reconcileVehicles(s) {
   }
   for(const line of s.busLines||[]) for(let i=0;i<line.vehicles;i++) if(!s.vehicles.some(v=>v.operator===line.id&&v.fleetIndex===i)) {
     const stop=line.stops[0],x=(stop%s.mapSize+.5)*20,y=(Math.floor(stop/s.mapSize)+.5)*20;
-    s.vehicles.push({id:entityId(s,'vehicle'),kind:'bus',owner:null,operator:line.id,fleetIndex:i,state:'parked',position:{x,y,z:0},passengers:[],goal:stop,speed:0,route:null});
+    s.vehicles.push({id:entityId(s,'vehicle'),kind:'bus',owner:null,operator:line.id,fleetIndex:i,state:'parked',position:position(stop,s.mapSize,s),passengers:[],goal:stop,speed:0,route:null});
   }
 }
 export function updateVehicles(s) {

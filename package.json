@@ -1,6 +1,6 @@
 {
   "name": "build-city-26",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "description": "Original city building web game foundation",
@@ -12,7 +12,8 @@
     "test:live": "node --env-file-if-exists=.env.local --env-file-if-exists=.env.test.local scripts/verify-supabase.mjs"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.57.4"
+    "@supabase/supabase-js": "^2.57.4",
+    "three": "0.186.1"
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.8",
