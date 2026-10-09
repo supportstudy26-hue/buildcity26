@@ -3,7 +3,7 @@
 - Đã sửa vòng lặp chọn công cụ mở lại menu: nút nhóm mở danh mục, chọn một thẻ đóng danh mục ngay và giữ công cụ để bấm/kéo xây. Bấm lại nhóm để đổi; nút × đóng menu và giữ lựa chọn; Esc trở về Khám phá. Quản lý tuyến vẫn mở chức năng thật.
 - Hướng dẫn xây rút thành nhãn nhỏ phía trên thanh công cụ, `pointer-events: none`; giữ thông báo giá thực tế/lỗi địa hình. Bỏ vị trí inline cũ khiến nhãn treo giữa bản đồ. Đóng bảng tin khi vào xây; mô tả đầy đủ giữ trong tooltip thẻ và thông tin công trình. Không đổi mô phỏng, tài khoản, schema hoặc save.
 - Kiểm tra localhost trong trình duyệt thật 1280×720: chọn Đại lộ → menu ẩn, con trỏ crosshair, focus về canvas; bấm canvas nâng một đường lên đại lộ, tiền 26 → 18 triệu và vận hành -545.000 → -570.000 đ/tháng. Mở nhóm lại giữ Đại lộ; × giữ công cụ. Chọn Trạm nước khu phố cũng tự đóng; hit-test giữa nhãn trả canvas `world`, bảng tin ẩn. Esc khôi phục Khám phá và ẩn nhãn xây.
-- Build bản cuối PASS (11,45 giây). Chưa kiểm trực tiếp thiết bị cảm ứng; không công bố số FPS mới vì không đổi renderer. Cảnh báo chunk Three 555 KB còn. Triển khai production đang kiểm tra, chưa coi việc push là bằng chứng Ready.
+- Build bản cuối PASS (11,45 giây). Chưa kiểm trực tiếp thiết bị cảm ứng; không công bố số FPS mới vì không đổi renderer. Cảnh báo chunk Three 555 KB còn. Production commit `ff21ac9` đã được xác nhận **Ready** trên Vercel (deployment `6iyV53MbtayWb57joJFntDT65cmN`, build 14 giây), domain chính `https://buildcity26.vercel.app/`. Kiểm UI production 1063×710: chọn Đường phố tự đóng menu, giữ nhãn và công cụ; hit-test nhãn trả `world`; bản cũ vẫn 176 dân / 12 tỷ; console không có lỗi. Bằng chứng: `build-selection-closed-production.png`.
 
 # Build City 26 — trạng thái triển khai
 
