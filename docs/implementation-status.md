@@ -10,7 +10,7 @@ Sửa cap renderer nhận sai nhịp rAF phân số bằng tolerance 0,5 ms, tr�
 
 **Đo 30 giây, IAB Chrome 155, 1280×720, medium/DPR1, cùng fixture/seed/góc rộng:** 1.848 cư dân, 924 có việc, 596 đang đi, 308 xe, 328 lượt đến. Trước sửa nhịp vẽ: median 30,7 FPS, 1.088 frames (~36,3 frames/s), p95 33,8 ms, 7 long tasks, dài nhất 802 ms. Sau: median 58,5 FPS, 1.211 frames (~40,4 frames/s), p95 49,4 ms, 17 long tasks, dài nhất 472 ms. Cả hai 40 draw calls, 57.576 triangles, 17 geometries, 0 textures. CPU tick p95 sau 3,9 ms. Median tốt hơn nhưng p95/long task chưa ổn định; không tuyên bố 60 FPS duy trì. JSON nguyên số đo tại architecture-performance-before/after.json. Chưa thiết bị điện thoại thật hoặc đo 10.000 người ở chặng này. Snapshot fixture 2.477.668 byte vượt trần cloud 2 MB hiện tại; fixture không ghi cloud, cần xử lý snapshot lớn riêng trước gọi save đông dân hoàn tất.
 
-**Phát hành:** giao diện/vốn 697e2ee đã Vercel Ready và kiểm domain chính. Chặng kiến trúc chuẩn bị push, chưa xác nhận production cho đến khi có deployment tương ứng Ready.
+**Phát hành:** giao diện/vốn 697e2ee đã Vercel Ready và kiểm domain chính. Chặng kiến trúc b59929d đã push GitHub; Vercel deployment 4ZxdJRdBAZv4vMB5sF2EomNUSsc6 Ready (16s). Reload https://buildcity26.vercel.app/ thấy model mới trong thành phố legacy: vẫn 176 dân/12 tỷ, đổi 3D→Canvas→3D không thay số dư/dân và không lỗi JS. Ảnh architecture-production-3d/canvas.png. Con số 12 tỷ này thuộc bản lưu cũ được giữ theo yêu cầu, không là vốn tài khoản mới; account mới vẫn 100 triệu/đất trống.
 
 ## 09/10 — giao diện từ gói người dùng, chặng phát hành mới
 

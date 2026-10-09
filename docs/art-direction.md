@@ -19,3 +19,5 @@ reference-home.png, reference-register.png, reference-login.png chụp UI thật
 Cả Three.js và Canvas dùng cùng descriptors; hình mái là prism 8 tam giác chung/instanced, không texture/ảnh nhà hay gọi AI. Mỗi nhà thấp tầng 8–13 components, chung cư cấp3 12–18, thương mại 9–16, công nghiệp9. Cửa sổ là hai strip/tầng; LOD ẩn các chi tiết xa, giữ silhouette. Inspector hiển thị tên kiến trúc thật của ô được chọn. Thiết kế không làm thay đổi giá, số dân, nhu cầu hoặc công suất. Dùng bản lưu cũ sẽ thấy model mới với đúng vị trí/cấp đã có.
 
 Trang benchmark có khu QA kiến trúc riêng nối cổng đường và cấp tiện ích, 1.848 cư dân/924 người có việc/13 mẫu. Đây là fixture kiểm thử, không phải thành phố khởi đầu của người chơi, không ghi tài khoản/bản lưu/BXH. Nhà trong game thường cũng được renderer này dựng từ state thật. Không coi fixture là chức năng game mới.
+
+Bản kiến trúc b59929d đã Vercel Ready; ảnh architecture-production-3d.png và architecture-production-canvas.png chụp domain chính, thành phố legacy 176 dân giữ tiền cũ.

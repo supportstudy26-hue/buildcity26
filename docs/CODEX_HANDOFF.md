@@ -8,7 +8,7 @@ Triển khai toàn đặc tả root Lệnh 0–28 và A–I. Mục tiêu lớn c
 
 npm ci; npm test 110/110; npm run build. UI desktop thực khởi đầu 100 triệu, xây kit còn 26 triệu, save/reload giữ tiền. Tất cả công trình mới dùng service family của nền mô phỏng có sẵn, chưa staff/dispatch. Không đổi schema/DB, không reset account hoặc save đang có.
 
-GitHub supportstudy26-hue/buildcity26 đã có quyền push qua deploy key chỉ repo. Không đưa private key hay env secret lên Git. Vercel đã có project buildcity26, domain https://buildcity26.vercel.app/, Supabase redirect đúng domain. Bản vốn/giao diện697e2ee đã Vercel Ready, domain chính hiện trang chủ/register mới; chặng 13 kiến trúc đang kiểm/đo/push.
+GitHub supportstudy26-hue/buildcity26 đã có quyền push qua deploy key chỉ repo. Không đưa private key hay env secret lên Git. Vercel đã có project buildcity26, domain https://buildcity26.vercel.app/, Supabase redirect đúng domain. Bản vốn/giao diện697e2ee đã Vercel Ready, domain chính hiện trang chủ/register mới; chặng 13 kiến trúc b59929d đã Vercel Ready và QA domain chính, 3D/Canvas giữ city legacy.
 
 ## Điểm cần xử lý tiếp theo
 
