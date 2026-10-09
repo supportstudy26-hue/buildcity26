@@ -31,6 +31,7 @@ const drawings={
   plus:'<path d="M12 5v14M5 12h14"/>',
   minus:'<path d="M5 12h14"/>',
   account:'<circle cx="12" cy="8" r="4"/><path d="M4 22v-3a8 8 0 0 1 16 0v3"/>',
+  bell:'<path fill="currentColor" fill-opacity=".12" d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5Z"/><path d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5ZM10 21h4M12 2v2"/>',
   chart:'<path d="M3 3v18h19M7 16v-5m5 5V7m5 9V4"/>',
 };
 export function icon(name,size=24){return `<svg class="ui-icon" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${drawings[name]||drawings.city}</svg>`;}

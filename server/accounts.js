@@ -1,7 +1,8 @@
 import {createHash,createHmac,randomUUID} from 'node:crypto';
 import {createClient} from '@supabase/supabase-js';
 import {accountFields} from '../src/services/account-validation.js';
-import {createCity,serialize} from '../src/game/core.js';
+import {serialize} from '../src/game/core.js';
+import {createRegistrationCity} from './start-city.js';
 const digest=value=>createHash('sha256').update(value).digest('hex');
 const fail=(status,message)=>Object.assign(new Error(message),{status});
 const GENERIC='Tài khoản, mật khẩu hoặc mã dự phòng chưa đúng.';
@@ -72,7 +73,8 @@ export function accountHandler({env=process.env,makeClients=clients,now=()=>Date
       }
       if(mode==='register'){
         const requestHash=digest(input.requestId),id=randomUUID(),cityId=randomUUID();
-        let account=await rpc(admin,'bc26_account_reserve',{p_username:input.username,p_request_hash:requestHash,p_city_name:input.cityName,p_identity_email:id+'@accounts.buildcity26.invalid',p_city_id:cityId});
+        const requestedCity=await createRegistrationCity(input.regionId);
+        let account=await rpc(admin,'bc26_account_reserve_region',{p_username:input.username,p_request_hash:requestHash,p_city_name:input.cityName,p_identity_email:id+'@accounts.buildcity26.invalid',p_city_id:cityId,p_region_id:input.regionId});
         let userId=account.user_id;
         if(!userId){
           const {data,error}=await admin.auth.admin.createUser({email:account.identity_email,password:input.password,email_confirm:true});
@@ -84,7 +86,7 @@ export function accountHandler({env=process.env,makeClients=clients,now=()=>Date
         if(session.user.id!==userId)throw fail(401,GENERIC);
         if(account.status==='ready'&&(account.code_acknowledged||account.recovery_generation>0))return reply(200,{session:tokens(session),username:input.username,firstCity:account.first_city_id});
         const code=createHmac('sha256',key).update('register:'+input.requestId+':'+userId).digest('hex').slice(0,48).toUpperCase();
-        const city=createCity();city.name=account.city_name;
+        const city=(account.start_region_id??null)===input.regionId?requestedCity:await createRegistrationCity(account.start_region_id);city.name=account.city_name;
         await rpc(admin,'bc26_account_finish',{p_username:input.username,p_request_hash:requestHash,p_user_id:userId,p_state:serialize(city),p_code_hash:digest(userId+':'+code)});
         return reply(201,{session:tokens(session),username:input.username,firstCity:account.first_city_id,recoveryCode:code});
       }
@@ -103,7 +105,7 @@ export function accountHandler({env=process.env,makeClients=clients,now=()=>Date
       return reply(200,{ok:true,recoveryCode:next,username:input.username});
     }catch(error){
       // No raw SDK errors, passwords, identities or tokens are returned/logged.
-      const status=error.status||(/Tài khoản cần|Mật khẩu cần|Tên thành phố cần|Mã dự phòng|Yêu cầu đăng ký/.test(error.message)?400:503);
+      const status=error.status||(/Tài khoản cần|Mật khẩu cần|Tên thành phố cần|Địa phương|Mã dự phòng|Yêu cầu đăng ký/.test(error.message)?400:503);
       return reply(status,{error:status===503&&!error.status?'Máy chủ tạm thời không đáp ứng. Hãy thử lại.':error.message});
     }
   };

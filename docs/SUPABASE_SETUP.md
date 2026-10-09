@@ -70,3 +70,9 @@ Sau đó kiểm tra bằng giao diện:
 08/10/2026: đã chạy schema và migration schema 3 trên project thật. SQL kiểm tra RLS A/B trong transaction rollback PASS, cities RLS bật với 4 owner policies, RPC nhận schema 3. Ảnh bằng chứng trong docs. Chưa kiểm chứng Auth/JWT Data API hai tài khoản hoặc email/recovery thật. Hướng dẫn email ở trên chỉ là luồng tương thích cũ; đăng ký username mới không dùng email và sẽ được triển khai bằng API server ở Lệnh 17.
 
 09/10/2026: API username và UI đã viết, 100/100 toàn bộ tests PASS; sau bổ sung mã mới kiểm thử riêng 6/6 PASS. Migration tài khoản 006 và mã dự phòng 007 đã chạy thành công trên project thật. Chưa có secret server/GitHub push/deployment Ready hoặc QA Auth/JWT thật; các PASS account tests hiện là PGlite/injected SDK.
+
+Database thật đã kiểm tra quyền bằng metadata query: private/profile RLS bật; authenticated không có private schema usage hoặc admin lookup RPC execute; service_role có code rotation RPC; restrictive policy khóa phiên cũ tồn tại. Ảnh docs/supabase-accounts-verified.png. Đây chưa phải kiểm chứng Auth JWT A/B thật.
+
+### Địa phương khi đăng ký
+
+Migration `202610090008_registration_geography.sql` đã chạy trên project thật ngày 09/10/2026. Bổ sung lựa chọn địa phương đầu tiên bất biến khi đăng ký lại cùng request; không chuyển địa hình các thành phố cũ. Function `/api/account` cần đóng kèm `public/geodata/vn-20261008/*.json` (đã có `includeFiles` trong vercel.json). Đăng ký không chọn địa phương dùng bản đồ Bình Minh. Client chỉ gửi mã region đã chọn; server kiểm catalog, kích thước/checksum và dựng save schema 6. Cần kiểm lại function trên deployment thật trước khi xác nhận đăng ký production đạt.

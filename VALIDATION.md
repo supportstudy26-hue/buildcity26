@@ -37,3 +37,7 @@ Supabase migration geography schema 6 đã chạy thật; ảnh docs/supabase-ge
 
 
 09/10/2026 account checkpoint: npm ci PASS; all 100/100 tests PASS; build PASS 8.24s. Focused account rotation/owner/password tests 6/6 PASS after the extra test (101 total cases). PGlite and SDK injection only, not real Auth. Supabase migrations 006/007 applied Success. Live username/JWT QA script ready, deployment/config pending. See docs/implementation-status.md for exact scope.
+
+### UI và địa phương đăng ký — 09/10/2026
+
+`npm test`: 102/102 đạt, không skip. `npm run build`: đạt; cảnh báo chunk Three 549 KB. Migration 008 chạy Supabase: Success. Browser localhost: đăng ký ba input, chọn Hải Phòng và quay lại giữ tên/tài khoản; xem riêng Hoàng Sa/Trường Sa, tọa độ khi phóng Đảo Trường Sa 8,64464°B / 111,91969°Đ. Không tăng tài nguyên WebGL. Production và Auth JWT hai tài khoản thật vẫn chưa xác nhận; deploy key hiện Read-only.

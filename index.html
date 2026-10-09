@@ -19,6 +19,7 @@
     <div class="stat"><span>DÂN SỐ</span><strong id="population">0</strong><small id="popChange">Chào cư dân mới</small></div>
     <div class="stat happy-stat"><span>HẠNH PHÚC</span><strong id="happiness">—</strong><small id="happyLabel">Đang tính toán</small></div>
     <button id="accountBtn" class="account-btn">Đăng nhập</button>
+    <button id="newsBtn" class="icon-btn" title="Bản tin thành phố" aria-label="Bản tin thành phố" data-icon="bell"></button>
     <button id="residentsBtn" class="action" title="Chọn cư dân để theo dõi">Cư dân</button><button id="missionBtn" class="action" title="Nhiệm vụ và cấp thành phố">Cấp 1 · 0 XP</button><button class="icon-btn" id="menuBtn" title="Lưu và cài đặt" aria-label="Lưu và cài đặt" data-icon="menu"></button>
   </header>
 
@@ -37,7 +38,7 @@
     </div>
   </aside>
 
-  <aside class="right-panel panel" id="detailPanel">
+  <aside class="right-panel panel" id="detailPanel" hidden>
     <div class="panel-title"><span id="detailTitle">BẢN TIN THÀNH PHỐ</span><button id="detailClose" class="text-btn" aria-label="Đóng thông tin">×</button></div>
     <div id="detailBody"></div>
   </aside>

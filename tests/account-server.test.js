@@ -17,7 +17,7 @@ function harness({orphan=false,rate=true,updateError=false,finishError=false,wro
   const admin={rpc:async(name,args)=>{
     calls.push({name,args});
     if(name==='bc26_account_rate')return {data:rate};
-    if(name==='bc26_account_reserve')return {data:{...stored}};
+    if(name==='bc26_account_reserve_region'){if(!stored.start_choice_recorded){stored.start_region_id=args.p_region_id;stored.city_name=args.p_city_name;stored.start_choice_recorded=true;}return {data:{...stored}};}
     if(name==='bc26_account_orphan')return {data:orphan?'qa-user':null};
     if(name==='bc26_account_finish'){if(finishError)return {error:{message:'outage'}};stored.status='ready';stored.user_id='qa-user';return {data:null};}
     if(name==='bc26_account_lookup')return {data:{...stored,user_id:'qa-user',status:'ready'}};
@@ -58,4 +58,15 @@ test('replacing a lost recovery code requires both a valid owner JWT and passwor
   h.stored.status='ready';h.stored.user_id='qa-user';h.stored.recovery_generation=1;
   const retry=await h.invoke({action:'register',username:'mayor',password:'12345678',cityName:'Đà Nẵng',requestId});assert.equal(retry.code,200);assert.equal(retry.data.recoveryCode,undefined);
   assert.equal((await h.invoke('{',{headers})).code,400);
+});
+
+test('registration bundles chosen terrain, preserves the first choice on retry and rejects unsupported places before creating a user',async()=>{
+  const input={action:'register',username:'mayor',password:'12345678',cityName:'Thành phố của tôi',requestId,regionId:'48-start'};
+  const h=harness(),r=await h.invoke(input);assert.equal(r.code,201);
+  const first=h.calls.find(c=>c.name==='bc26_account_finish').args.p_state;
+  assert.equal(first.world.geography.regionId,'48-start');assert.equal(first.name,input.cityName);
+  const retry=await h.invoke({...input,regionId:'56-start'});assert.equal(retry.code,201);
+  assert.equal(h.calls.filter(c=>c.name==='bc26_account_finish').at(-1).args.p_state.world.geography.regionId,'48-start');
+  for(const regionId of ['../../secret','99-start','48-wrong']){const invalid=harness(),result=await invalid.invoke({...input,regionId});assert.equal(result.code,400);assert.ok(!invalid.calls.some(c=>c.name==='createUser'));}
+  assert.equal((accountForm('register',{startingPlaceName:'<script>alert(1)</script>'}).match(/<input /g)||[]).length,3);assert.ok(!accountForm('register',{startingPlaceName:'<script>'}).includes('<script>'));
 });

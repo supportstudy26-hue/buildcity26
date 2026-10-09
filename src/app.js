@@ -128,6 +128,7 @@ function inspect(tile){if(!tile)return;hideOverviewOnPhone();tracked=null;render
   const contract=city.contracts.find(c=>c.tile===tile.i&&c.status==='building');if(contract){$('detailBody').insertAdjacentHTML('beforeend',`<p>Thi công công viên · ${Math.round(contract.progress*100)}% · giữ ${money(contract.escrow)} trong escrow</p><button class="action" id="cancelContract">Hủy · hoàn khoản chưa chi</button>`);$('cancelContract').onclick=()=>{command('cancel-construction',{id:contract.id});changed();persist();};}
   if($('upgradeRoad'))$('upgradeRoad').onclick=()=>{const result=command('place',{x:tile.x,y:tile.y,kind:'avenue'});if(!result.ok){toast(result.message);return;}changed();persist();renderer.lastPaths=-1;};
 }
+$('newsBtn').onclick=()=>{const opening=$('detailPanel').hidden||selected||tracked;tracked=null;selected=null;renderer.selected=null;renderer.follow=null;$('detailPanel').hidden=!opening;if(opening){hideOverviewOnPhone();news();}};
 $('detailClose').onclick=()=>{tracked=null;renderer.follow=null;$('detailPanel').hidden=true;selected=null;renderer.selected=null;};
 // Collapse overview without obstructing the map on smaller devices.
 document.querySelectorAll('[data-overview]').forEach(button=>button.onclick=()=>{document.querySelectorAll('[data-overview]').forEach(b=>b.classList.toggle('active',b===button));for(const view of ['general','services','goals'])$('overview-'+view).hidden=button.dataset.overview!==view;});
@@ -190,7 +191,7 @@ function transit(){
 }
 
 function exportSave(){const blob=new Blob([JSON.stringify(serialize(city),null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='build-city-26-save.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('Đã xuất bản lưu thành phố.');}
-function replaceCity(s,cloudRef=null){accumulator=0;tracked=null;watchDeparture=null;renderer.follow=null;city=s;restorePlayback();cityEpoch++;sync.use(user?.id||null,{cloud:cloudRef,dirty:!cloudRef});changeId++;localCollision=false;selected=null;renderer.reset();$('detailPanel').hidden=false;persist();update();}
+function replaceCity(s,cloudRef=null){accumulator=0;tracked=null;watchDeparture=null;renderer.follow=null;city=s;restorePlayback();cityEpoch++;sync.use(user?.id||null,{cloud:cloudRef,dirty:!cloudRef});changeId++;localCollision=false;selected=null;renderer.reset();$('detailPanel').hidden=true;persist();update();}
 function backups(){
   let rows;try{rows=listLocalBackups(user?.id||'guest');}catch(error){toast(error.message);return;}
   showModal(`<span class="news-kicker">BẢN DỰ PHÒNG TRÊN THIẾT BỊ</span><h2>Tiến trình trước đây</h2><p>Bản dự phòng được giữ trước khi mở hoặc tạo thành phố khác. Khôi phục tạo một thành phố mới, không ghi đè bản đám mây.</p><div id="backupList">${rows.length?rows.map((r,i)=>`<div class="saved-city"><div><strong>${escape(r.name)}</strong><small>${new Date(r.modifiedAt).toLocaleString('vi-VN')}</small></div><button class="action" data-backup="${i}">Khôi phục</button><button class="action" data-export-backup="${i}">JSON</button><button class="delete-save" data-remove-backup="${i}" aria-label="Xóa bản dự phòng ${escape(r.name)}">×</button></div>`).join(''):'<p>Chưa có bản dự phòng.</p>'}</div>`);
@@ -205,12 +206,25 @@ $('menuBtn').onclick=menu;
 $('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{if(f.size>2_000_000)throw new Error('Bản lưu quá lớn. Giới hạn 2 MB.');const raw=JSON.parse(await f.text());const s=validateSave(raw.city||raw);if(sync.busy||libraryBusy)throw new Error('Hãy chờ thao tác đang chạy.');if(confirm('Mở bản lưu này? Thành phố hiện tại sẽ được thay bằng bản nhập.')){if(!checkpoint())return;replaceCity(s);closeModal();toast('Đã nhập thành phố. Bản nhập được lưu như một thành phố mới.');}}catch(error){toast(error.message);}finally{e.target.value='';}};
 function guide(){showModal(`<span class="news-kicker">CẨM NANG THỊ TRƯỞNG</span><h2>Bắt đầu xây thành phố</h2><ol class="guide-list"><li><b>Nối đường:</b> mở rộng từ mạng đường nối cổng phía tây. Kéo để xây từng đoạn. Đi qua sông sẽ tạo cầu với chi phí gấp 4.</li><li><b>Phân khu:</b> chọn nhà ở, thương mại hoặc công nghiệp rồi tô ô cạnh đường. Công trình tự mọc khi đủ điện, nước và nhu cầu.</li><li><b>Cấp điện và nước:</b> trạm phải cạnh đường kết nối. Trạm có giới hạn công suất và bán kính; xem bằng lớp bản đồ hoặc chọn công trình.</li><li><b>Chăm sóc dân cư:</b> xây công viên, trường học, y tế, rác thải và dịch vụ. Giữ nhà xưởng xa khu dân cư.</li><li><b>Cân đối ngân sách:</b> thuế tạo thu nhập, mỗi công trình có phí vận hành. Hạnh phúc và việc làm ảnh hưởng tăng dân số.</li><li><b>Lưu:</b> bản local tự lưu mỗi 15 giây. Với tài khoản đã mở một thành phố đám mây, game đồng bộ mỗi 60 giây. Nếu có xung đột, bản mới hơn được giữ.</li></ol><p>Chuột: kéo để di chuyển ở chế độ Khám phá, chuột phải để di chuyển khi xây, cuộn để phóng to. Điện thoại: một ngón kéo, hai ngón thu phóng. Phím 1–8 chọn công cụ, Space tạm dừng, Esc thoát xây dựng.</p><button id="guideDone" class="action primary full">Bắt đầu chơi</button>`);$('guideDone').onclick=closeModal;}
 
-function authDialog(mode='login',notice=''){
+function authDialog(mode='login',notice='',draft=null){
   if(['reset','resend','recovery'].includes(mode))return legacyAuthDialog(mode,notice);
   if(!configured)return legacyAuthDialog(mode,notice);
   const titles={login:'Đăng nhập',register:'Tạo tài khoản',recover:'Khôi phục tài khoản',claim:'Đặt tên tài khoản',codes:'Tạo mã dự phòng mới'};
   const title=titles[mode];
-  showModal(`<span class="news-kicker">TÀI KHOẢN BUILD CITY 26</span><h2>${title}</h2><p>${mode==='recover'?'Dùng mã dự phòng đã lưu khi đăng ký. Nếu mất cả mật khẩu và mã, bạn không thể tự khôi phục.':'Lưu thành phố và tiếp tục xây dựng trên thiết bị khác.'}</p>${notice?`<p class="form-notice" role="status">${escape(notice)}</p>`:''}${accountForm(mode)}${mode==='login'?'<button class="link-button" id="accountRegister">Chưa có tài khoản? Đăng ký</button><button class="link-button" id="accountRecover">Quên mật khẩu</button><button class="link-button" id="accountLegacy">Tôi có tài khoản email từ bản cũ</button>':'<button class="link-button" id="accountLogin">Quay lại đăng nhập</button>'}<p class="credit">Tài khoản gồm 3–24 ký tự a–z, số hoặc dấu gạch dưới. Mật khẩu giữ nguyên chữ hoa và khoảng trắng. Không cần email để đăng ký mới.</p>`);
+  showModal(`<span class="news-kicker">TÀI KHOẢN BUILD CITY 26</span><h2>${title}</h2><p>${mode==='recover'?'Dùng mã dự phòng đã lưu khi đăng ký. Nếu mất cả mật khẩu và mã, bạn không thể tự khôi phục.':'Lưu thành phố và tiếp tục xây dựng trên thiết bị khác.'}</p>${notice?`<p class="form-notice" role="status">${escape(notice)}</p>`:''}${accountForm(mode,{startingPlaceName:draft?.placeName})}${mode==='login'?'<button class="link-button" id="accountRegister">Chưa có tài khoản? Đăng ký</button><button class="link-button" id="accountRecover">Quên mật khẩu</button><button class="link-button" id="accountLegacy">Tôi có tài khoản email từ bản cũ</button>':'<button class="link-button" id="accountLogin">Quay lại đăng nhập</button>'}<p class="credit">Tài khoản gồm 3–24 ký tự a–z, số hoặc dấu gạch dưới. Mật khẩu giữ nguyên chữ hoa và khoảng trắng. Không cần email để đăng ký mới.</p>`);
+  modal.classList.toggle('account-dialog',['register','login'].includes(mode));
+  modal.addEventListener('close',()=>modal.classList.remove('account-dialog'),{once:true});
+  if(mode==='register'){
+    if(draft)for(const key of ['cityName','username'])$('accountForm').elements[key].value=draft[key]||'';
+    $('accountPlace').onclick=async()=>{
+      const fields=new FormData($('accountForm'));
+      // Keep names and locality in memory; a password is cleared when switching screens.
+      const next={...draft,cityName:String(fields.get('cityName')||''),username:String(fields.get('username')||'')};
+      const {showVietnamChooser}=await import('./game/geography/chooser.js');
+      const restore=choice=>setTimeout(()=>authDialog('register','Đã trở lại đăng ký. Nhập mật khẩu để tiếp tục.',choice),0);
+      showVietnamChooser({showModal,closeModal,onError:toast,selectionOnly:true,onCancel:()=>restore(next),onStart:pkg=>{restore({...next,regionId:pkg.region.id,placeName:pkg.region.name+' · '+pkg.region.provinceName});return true;}});
+    };
+  }
   if($('accountRegister'))$('accountRegister').onclick=()=>authDialog('register');
   if($('accountRecover'))$('accountRecover').onclick=()=>authDialog('recover');
   if($('accountLegacy'))$('accountLegacy').onclick=()=>legacyAuthDialog();
@@ -223,7 +237,7 @@ function authDialog(mode='login',notice=''){
       if(['register','login'].includes(mode)&&!checkpoint())throw new Error('Hãy xuất bản lưu JSON để giữ tiến trình trước khi đổi tài khoản.');
       const username=String(fields.get('username')||''),payload={username};
       if(mode!=='claim')payload.password=String(fields.get('password')||'');
-      if(mode==='register'){payload.cityName=String(fields.get('cityName')||'');payload.requestId=registrationRequest(username);}
+      if(mode==='register'){payload.cityName=String(fields.get('cityName')||'');payload.requestId=registrationRequest(username);payload.regionId=draft?.regionId||null;}
       if(mode==='recover')payload.code=String(fields.get('code')||'');
       let token=null;if(['claim','codes'].includes(mode)){const {data}=await supabase.auth.getSession();token=data.session?.access_token;}
       const data=await accountRequest(mode,payload,token);

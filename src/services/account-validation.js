@@ -10,7 +10,9 @@ export function accountFields(mode,input){
     const cityName=typeof input.cityName==='string'?input.cityName.trim():'';
     if(!cityName||[...cityName].length>36||/[\u0000-\u001f\u007f]/.test(cityName))throw new Error('Tên thành phố cần 1–36 ký tự.');
     if(typeof input.requestId!=='string'||!/^[a-f0-9-]{36}$/.test(input.requestId))throw new Error('Yêu cầu đăng ký không hợp lệ. Hãy tải lại trang.');
-    Object.assign(out,{cityName,requestId:input.requestId});
+    const regionId=input.regionId==null?null:input.regionId;
+    if(regionId!==null&&(typeof regionId!=='string'||!/^\d{2}-(start|island|coast)$/.test(regionId)))throw new Error('Địa phương khởi đầu không hợp lệ.');
+    Object.assign(out,{cityName,requestId:input.requestId,regionId});
   }
   if(mode==='recover'){
     const code=typeof input.code==='string'?input.code.toUpperCase().replace(/[\s-]/g,''):'';
