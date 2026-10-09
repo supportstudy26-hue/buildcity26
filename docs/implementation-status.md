@@ -1,3 +1,10 @@
+## 2026-10-09 — Chọn công cụ xong tự đóng menu xây dựng
+
+- Đã sửa vòng lặp chọn công cụ mở lại menu: nút nhóm mở danh mục, chọn một thẻ đóng danh mục ngay và giữ công cụ để bấm/kéo xây. Bấm lại nhóm để đổi; nút × đóng menu và giữ lựa chọn; Esc trở về Khám phá. Quản lý tuyến vẫn mở chức năng thật.
+- Hướng dẫn xây rút thành nhãn nhỏ phía trên thanh công cụ, `pointer-events: none`; giữ thông báo giá thực tế/lỗi địa hình. Bỏ vị trí inline cũ khiến nhãn treo giữa bản đồ. Đóng bảng tin khi vào xây; mô tả đầy đủ giữ trong tooltip thẻ và thông tin công trình. Không đổi mô phỏng, tài khoản, schema hoặc save.
+- Kiểm tra localhost trong trình duyệt thật 1280×720: chọn Đại lộ → menu ẩn, con trỏ crosshair, focus về canvas; bấm canvas nâng một đường lên đại lộ, tiền 26 → 18 triệu và vận hành -545.000 → -570.000 đ/tháng. Mở nhóm lại giữ Đại lộ; × giữ công cụ. Chọn Trạm nước khu phố cũng tự đóng; hit-test giữa nhãn trả canvas `world`, bảng tin ẩn. Esc khôi phục Khám phá và ẩn nhãn xây.
+- Build bản cuối PASS (11,45 giây). Chưa kiểm trực tiếp thiết bị cảm ứng; không công bố số FPS mới vì không đổi renderer. Cảnh báo chunk Three 555 KB còn. Triển khai production đang kiểm tra, chưa coi việc push là bằng chứng Ready.
+
 # Build City 26 — trạng thái triển khai
 
 ## 09/10 — 13 mẫu kiến trúc riêng, giữ bản lưu và kiểm hiệu năng

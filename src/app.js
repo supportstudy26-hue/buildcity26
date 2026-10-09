@@ -62,19 +62,28 @@ function setSpeed(n){const result=command('playback',{paused:n===0,multiplier:n|
 document.querySelectorAll('[data-speed]').forEach(b=>b.onclick=()=>{const n=Number(b.dataset.speed);setSpeed(n===0&&speed===0?city.playback.multiplier:n);});
 restorePlayback();
 
-function selectTool(k){if(!CATALOG[k])return;tracked=null;renderer.follow=null;tool=k;group=CATALOG[k].group;renderer.tool=k;renderer.selected=null;selected=null;
+function selectTool(k,{openPicker=false}={}){if(!CATALOG[k])return;tracked=null;renderer.follow=null;tool=k;group=CATALOG[k].group;renderer.tool=k;renderer.selected=null;selected=null;
   $('toolbar').innerHTML=groups.map(([g,glyph,label])=>`<button class="tool-btn ${g===group?'active':''}" data-group="${g}" title="${label}" aria-pressed="${g===group}"><span class="glyph">${icon(g,22)}</span><span>${label}</span></button>`).join('');
-  $('toolbar').querySelectorAll('[data-group]').forEach(b=>b.onclick=()=>selectTool(Object.keys(CATALOG).find(k=>CATALOG[k].group===b.dataset.group)));
+  $('toolbar').querySelectorAll('[data-group]').forEach(b=>b.onclick=()=>{
+    const sameGroup=b.dataset.group===group;
+    const next=sameGroup?tool:Object.keys(CATALOG).find(k=>CATALOG[k].group===b.dataset.group);
+    selectTool(next,{openPicker:!sameGroup||$('toolTray').hidden});
+  });
   const options=Object.entries(CATALOG).filter(([,v])=>v.group===group);
-  $('toolTray').hidden=['inspect','bulldoze'].includes(group);
-  $('toolTray').innerHTML=`<div class="build-heading"><div><span>QUY HOẠCH & XÂY DỰNG</span><strong>${groups.find(([g])=>g===group)[2]} <small>${options.length} lựa chọn</small></strong></div><button class="icon-btn" id="closeBuild" aria-label="Đóng menu xây dựng">×</button></div><div class="build-grid">`+options.map(([id,v])=>`<button class="build-option ${id===k?'active':''}" data-tool="${id}" aria-pressed="${id===k}" style="--facility:${v.color}">${buildingPreview(id)}<strong>${v.name}</strong><span class="facility-summary">${buildingSummary(id)}</span><b>${money(v.cost)}</b><small>${v.upkeep?money(v.upkeep)+' / tháng':'Không có phí vận hành'}</small></button>`).join('')+(group==='transport'?'<button class="build-option manage-transit" id="manageTransit">'+icon('chart',26)+'<strong>Quản lý tuyến</strong><small>Tạo tuyến · bố trí xe</small></button>':'')+'</div>';
-  $('closeBuild').onclick=()=>selectTool('inspect');
-  if($('manageTransit'))$('manageTransit').onclick=transit;
+  $('toolTray').hidden=!openPicker||['inspect','bulldoze'].includes(group);
+  $('toolTray').innerHTML=`<div class="build-heading"><div><span>QUY HOẠCH & XÂY DỰNG</span><strong>${groups.find(([g])=>g===group)[2]} <small>${options.length} lựa chọn</small></strong></div><button class="icon-btn" id="closeBuild" aria-label="Đóng menu xây dựng">×</button></div><div class="build-grid">`+options.map(([id,v])=>`<button class="build-option ${id===k?'active':''}" data-tool="${id}" title="${escape(v.description)}" aria-pressed="${id===k}" style="--facility:${v.color}">${buildingPreview(id)}<strong>${v.name}</strong><span class="facility-summary">${buildingSummary(id)}</span><b>${money(v.cost)}</b><small>${v.upkeep?money(v.upkeep)+' / tháng':'Không có phí vận hành'}</small></button>`).join('')+(group==='transport'?'<button class="build-option manage-transit" id="manageTransit">'+icon('chart',26)+'<strong>Quản lý tuyến</strong><small>Tạo tuyến · bố trí xe</small></button>':'')+'</div>';
+  $('closeBuild').onclick=()=>selectTool(k);
+  if($('manageTransit'))$('manageTransit').onclick=()=>{selectTool('inspect');transit();};
   $('toolTray').querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>selectTool(b.dataset.tool));
-  $('toolInfo').hidden=k==='inspect';$('toolInfo').innerHTML=`<strong>${CATALOG[k].name}</strong> · ${CATALOG[k].description}<small>${k==='bulldoze'?'Thu hồi 25% nguyên giá đã trả; tài sản có sẵn không hoàn tiền':k==='park'?'Thi công 10 ngày; không phục vụ khi chưa hoàn tất':'Bấm hoặc kéo trên bản đồ để xây'} · Esc để thoát</small>`;
+  $('toolInfo').hidden=k==='inspect'||!$('toolTray').hidden;
+  $('toolInfo').innerHTML=`<strong>${CATALOG[k].name}</strong>${k==='bulldoze'?' · Thu hồi 25% nguyên giá':` · ${money(CATALOG[k].cost)}`}<small>Bấm hoặc kéo để ${k==='bulldoze'?'phá dỡ':'xây'} · Chọn nhóm để đổi · Esc để thoát</small>`;
+  $('toolInfo').title=CATALOG[k].description;
+  $('mapHint').hidden=k!=='inspect';
   $('mapHint').textContent=k==='inspect'?'Kéo để di chuyển · Cuộn để thu phóng · Bấm công trình để xem':'Kéo để xây · Chuột phải để di chuyển · Esc để thoát';
   $('world').style.cursor=k==='inspect'?'grab':'crosshair';
-  positionToolInfo();updatePlacementPreview();
+  if(!$('toolTray').hidden){$('detailPanel').hidden=true;}
+  else if(k!=='inspect'){$('detailPanel').hidden=true;hideOverviewOnPhone();$('world').focus({preventScroll:true});}
+  updatePlacementPreview();
 }
 function updatePlacementPreview(){
   if(tool==='inspect')return;
@@ -86,7 +95,6 @@ function updatePlacementPreview(){
   if(t.kind||t.zone){el.textContent=tool==='bulldoze'?`Thu hồi ${money(Math.floor((t.historicalCost||0)*.25))}`:upgrading?`Nâng cấp: ${money(Math.ceil(80*LEGACY_BC_FACTOR*(t.terrain==='water'?4:1)*rule.factor))}`:'Ô này đã có công trình.';return;}
   el.textContent=tool==='bulldoze'?'Ô đất trống.':`Giá tại ô này: ${money(Math.ceil(CATALOG[tool].cost*(t.terrain==='water'?4:1)*rule.factor))}${city.world.geography?` · Dốc ${slopeAt(city.world,i,SIZE).toFixed(1)}%`:''}`;
 }
-function positionToolInfo(){if(!$('toolTray').hidden)$('toolInfo').style.bottom=($('game').clientHeight-$('toolTray').offsetTop+10)+'px';}
 selectTool('inspect');
 if(innerWidth<600){document.querySelector('.left-panel').hidden=true;$('restoreOverview').hidden=false;}
 
@@ -169,7 +177,7 @@ $('zoomIn').onclick=()=>renderer.zoomAt(1.2);$('zoomOut').onclick=()=>renderer.z
 $('cameraView').onclick=()=>{renderer.topView();};
 $('cameraRotate').onclick=()=>{renderer.dragMode=renderer.dragMode==='orbit'?'pan':'orbit';$('cameraRotate').classList.toggle('active',renderer.dragMode==='orbit');toast(renderer.dragMode==='orbit'?'Kéo bản đồ để xoay góc nhìn. Bấm Xoay lần nữa để kéo di chuyển.':'Kéo bản đồ để di chuyển camera.');};
 $('mini').onclick=e=>{const rect=$('mini').getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width*SIZE,y=(e.clientY-rect.top)/rect.height*SIZE;renderer.focusTile(x,y);};
-window.addEventListener('resize',()=>{renderer.resize();hideOverviewOnPhone();positionToolInfo();});
+window.addEventListener('resize',()=>{renderer.resize();hideOverviewOnPhone();});
 window.addEventListener('keydown',e=>{if(document.body.dataset.screen==='home'||modal.open||['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;if(e.code==='Space'){e.preventDefault();spaceDown=true;if(!e.repeat)setSpeed(speed?0:1);}if(e.key==='Escape')selectTool('inspect');const shortcuts={1:'road',2:'residential',3:'commercial',4:'industrial',5:'park',6:'power',7:'water',8:'bulldoze'};if(shortcuts[e.key])selectTool(shortcuts[e.key]);if(e.key==='+'||e.key==='=')renderer.zoomAt(1.15);if(e.key==='-')renderer.zoomAt(1/1.15);});
 window.addEventListener('keyup',e=>{if(e.code==='Space')spaceDown=false;});window.addEventListener('blur',()=>{spaceDown=false;pointers.clear();drag=null;pinch=null;});
 const layers=[['normal','Tự nhiên','#a6ba91'],['power','Điện năng','#eacc79'],['water','Nước sạch','#83c8ed'],['traffic','Lưu lượng giao thông','#8ce0ac'],['sewage','Nước thải','#77b8c9'],['garbage','Thu gom rác','#f1bc81'],['pollution','Ô nhiễm','#e7a479'],['services','Dịch vụ dân cư','#bba6ce']];
@@ -419,7 +427,7 @@ if(document.modelContext?.registerTool){
 
 const stateLabel={home:'Ở nhà',sleeping:'Đang ngủ',walking:'Đi bộ', 'in-vehicle':'Trên xe', 'at-work':'Tại nơi làm việc',blocked:'Bị chặn'};
 function trackCitizen(id){hideOverviewOnPhone();tracked=id;selected=null;renderer.selected=null;renderer.follow=id;selectToolForTracking();inspectCitizen(id);}
-function selectToolForTracking(){tool='inspect';renderer.tool='inspect';$('toolTray').hidden=true;$('toolInfo').hidden=true;}
+function selectToolForTracking(){tool='inspect';renderer.tool='inspect';$('toolTray').hidden=true;$('toolInfo').hidden=true;$('mapHint').hidden=false;}
 function inspectCitizen(id){
   const c=city.citizens.find(c=>c.id===id);if(!c){tracked=null;renderer.follow=null;return;}
   const j=c.journey,work=city.firms.find(f=>f.id===c.work),v=city.vehicles.find(v=>v.id===c.vehicle);
