@@ -1,4 +1,5 @@
 import {geographyBuildRule} from './geography/city.js';
+import {serviceKind} from '../config/catalog.js';
 import { formatMoney } from '../config/money.js';
 import { SIZE, CATALOG, index, inside, isRoad, route, neighbors } from './core.js';
 const noise=(x,y)=>{const n=Math.sin(x*127.1+y*311.7)*43758.5453;return n-Math.floor(n);};
@@ -34,10 +35,12 @@ export class CityRenderer {
     else{c.fillStyle='#527b61';c.beginPath();c.ellipse(q.x,q.y,8*z,10*z,0,0,Math.PI*2);c.fill();c.fillStyle='#709b71';c.beginPath();c.ellipse(q.x-2*z,q.y-2*z,6*z,8*z,-.3,0,Math.PI*2);c.fill();c.fillStyle='#99b57b';c.beginPath();c.ellipse(q.x-3*z,q.y-5*z,3.6*z,4*z,-.4,0,Math.PI*2);c.fill();}
   }
   building(t,x,y){
-    const k=t.kind,c=this.ctx,n=noise(x,y);if(!k)return;
+    const k=serviceKind(t.kind),c=this.ctx,n=noise(x,y);if(!k)return;
+    if(k==='park'&&t.kind==='plaza'){this.diamond(x,y,.46,'#d4d7bf');this.diamond(x,y,.24,'#82bdc9');this.box(x,y,.04,.04,15,'#c4e3e5');return;}
+    if(k==='park'&&t.kind==='sportsPark'){this.diamond(x,y,.46,'#8cb68a');this.diamond(x,y,.32,'#699b90');this.line(x-.3,y,x+.3,y,'#e4e6c9',1);this.tree(x-.35,y-.35,.6);return;}
     if(k==='park'){this.diamond(x,y,.46,'#739f77','#a4c493');this.line(x-.3,y,x+.3,y,'#e6d7b4',4);this.line(x,y-.3,x,y+.3,'#e6d7b4',4);this.tree(x-.24,y-.21,.95);this.tree(x+.23,y+.21,.8);this.box(x+.2,y-.22,.15,.2,4,'#dfb787');return;}
     if(k==='busStop'){this.diamond(x,y,.4,'#d4d8c3');this.box(x,y,.54,.22,3,'#d1b58f');this.line(x-.25,y+.15,x-.25,y+.15,'#537b81',2,17);this.box(x-.25,y+.15,.17,.12,20,'#e5bb7d');return;}
-    let h=k==='residential'?t.level===1?15+n*11:33+t.level*13: k==='commercial'?24+n*12:k==='industrial'?14:20;
+    let h=k==='residential'?t.level===1?15+n*11:33+t.level*13: k==='commercial'?24+n*12:k==='industrial'?14:t.kind==='hospital'?38:t.kind==='university'?32:20;
     const color=colors[k]?.[Math.floor(n*(colors[k]?.length||1))]||'#d5d8c4';
     this.polygon([[x-.33,y-.33],[x+.33,y-.33],[x+.33+h*.018,y+.33+h*.012],[x-.33+h*.018,y+.33+h*.012]].map(([a,b])=>this.project(a,b)),'#253e3b26');
     this.diamond(x,y,.44,'#cbd0bb','#e8e2c055');
@@ -95,7 +98,7 @@ export class CityRenderer {
     if(this.night){c.fillStyle='#16364c50';c.fillRect(0,0,this.width,this.height);}
   }
   minimap(){const s=this.getCity(),c=this.mc,w=this.mini.width,h=this.mini.height;c.fillStyle='#9eb18d';c.fillRect(0,0,w,h);const sx=w/SIZE,sy=h/SIZE;s.tiles.forEach((t,i)=>{c.fillStyle=t.terrain==='water'?'#6d9ea1':isRoad(t)?'#496469':CATALOG[t.kind||t.zone]?.color||'#9eb18d';c.fillRect(i%SIZE*sx,Math.floor(i/SIZE)*sy,sx+.3,sy+.3);});const mid=this.tileAt(this.width/2,this.height/2);if(mid){c.strokeStyle='#fff';c.lineWidth=1;c.strokeRect(mid.x*sx-12,mid.y*sy-8,24,16);}}
-  frame(ms){const dt=this.lastFrame===undefined?0:Math.min(1,(ms-this.lastFrame)/1000);this.lastFrame=ms;const s=this.getCity();this.time=(s?.clock?.seconds||0)/20;if(this.follow){const actor=s?.citizens.find(c=>c.id===this.follow);if(actor){const x=actor.position.x/20-.5,y=actor.position.y/20-.5;this.pan.x=-(x-y)*22*this.zoom;this.pan.y=-(x+y)*11*this.zoom;}}if(s&&this.lastPaths!==s.day){this.lastPaths=s.day;this.refreshCars(s);this.minimap();}if(!document.hidden&&(this.width>=600||ms-(this.lastDraw||0)>=33)){this.draw();this.lastDraw=ms;}this.raf=requestAnimationFrame(this.frame);}
+  frame(ms){const dt=this.lastFrame===undefined?0:Math.min(1,(ms-this.lastFrame)/1000);this.lastFrame=ms;const s=this.getCity();this.time=(s?.clock?.seconds||0)/20;if(this.follow){const actor=s?.citizens.find(c=>c.id===this.follow);if(actor){const x=actor.position.x/20-.5,y=actor.position.y/20-.5;this.pan.x=-(x-y)*22*this.zoom;this.pan.y=-(x+y)*11*this.zoom;}}if(s&&this.lastPaths!==s.day){this.lastPaths=s.day;this.refreshCars(s);this.minimap();}if(!document.hidden&&document.body?.dataset.screen!=='home'&&(this.width>=600||ms-(this.lastDraw||0)>=33)){this.draw();this.lastDraw=ms;}this.raf=requestAnimationFrame(this.frame);}
   reset(){this.lastPaths=-1;this.selected=null;this.center();}
   destroy(){cancelAnimationFrame(this.raf);}
 }

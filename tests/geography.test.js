@@ -5,6 +5,7 @@ import {createHash} from 'node:crypto';
 import {createCity,serialize,validateSave,executeCommand,SIZE,CATALOG,stepSimulation} from '../src/game/core.js';
 import {createVietnamCity,geographyBuildRule} from '../src/game/geography/city.js';
 import {searchProvinces,PROVINCE_NAMES} from '../src/game/geography/data.js';
+import {NEW_CITY_CASH_BC} from '../src/config/simulation.js';
 import {slopeAt,cellHeights} from '../src/game/systems/terrain.js';
 const dir=new URL('../public/geodata/vn-20261008/',import.meta.url);
 const json=async file=>JSON.parse(await readFile(new URL(file,dir),'utf8'));
@@ -14,7 +15,7 @@ function contains(p,g){return(g.type==='Polygon'?[g.coordinates]:g.coordinates).
 const cmd=(s,kind,i)=>executeCommand(s,{id:'geo-'+(s.commandSequence+1),sequence:s.commandSequence+1,type:'place',payload:{kind,x:i%SIZE,y:Math.floor(i/SIZE)}});
 test('34 official administrative codes, 9 cities, aliases, interior labels and actual polygon packages are linked',async()=>{
   assert.equal(catalog.provinces.length,34);assert.equal(catalog.provinces.filter(p=>p.kind==='city').length,9);assert.deepEqual(Object.fromEntries(catalog.provinces.map(p=>[p.id,p.name])),PROVINCE_NAMES);
-  for(const province of catalog.provinces){const f=bounds.features.find(f=>f.id===province.id);assert.ok(f);assert.ok(contains(f.properties.label,f.geometry));assert.ok(province.regions.length);for(const r of province.regions){const raw=await readFile(new URL(r.id+'.json',dir));assert.equal(createHash('sha256').update(raw).digest('hex'),r.sha256);const pkg=JSON.parse(raw);assert.equal(pkg.region.provinceId,province.id);assert.ok(pkg.region.startable);assert.ok(contains(pkg.region.anchor,f.geometry));const s=createVietnamCity(pkg,manifest);assert.equal(s.citizens.length,0);assert.equal(s.money,createCity().money);assert.equal(s.network.connected.size,4);assert.deepEqual(s.world.heights,pkg.playable.heights);assert.deepEqual(serialize(validateSave(serialize(s))),serialize(s));}}
+  for(const province of catalog.provinces){const f=bounds.features.find(f=>f.id===province.id);assert.ok(f);assert.ok(contains(f.properties.label,f.geometry));assert.ok(province.regions.length);for(const r of province.regions){const raw=await readFile(new URL(r.id+'.json',dir));assert.equal(createHash('sha256').update(raw).digest('hex'),r.sha256);const pkg=JSON.parse(raw);assert.equal(pkg.region.provinceId,province.id);assert.ok(pkg.region.startable);assert.ok(contains(pkg.region.anchor,f.geometry));const s=createVietnamCity(pkg,manifest);assert.equal(s.citizens.length,0);assert.equal(s.money,NEW_CITY_CASH_BC);assert.equal(s.network.connected.size,4);assert.deepEqual(s.world.heights,pkg.playable.heights);assert.deepEqual(serialize(validateSave(serialize(s))),serialize(s));}}
   assert.equal(searchProvinces(catalog.provinces,'bac giang')[0].id,'24');assert.equal(searchProvinces(catalog.provinces,'Đắk Nông')[0].id,'68');
   assert.equal(searchProvinces(catalog.provinces,'Phú Quốc')[0].id,'91');assert.equal(searchProvinces(catalog.provinces,'Cần Thạnh')[0].id,'79');
 });

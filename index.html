@@ -6,14 +6,16 @@
   <title>Build City 26 · Thành phố của bạn</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2311242c'/%3E%3Cpath d='M7 25V13h7v12m4 0V7h7v18' fill='%23e9a56b'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="/src/ui/visual-shell.css">
 </head>
-<body>
-<main id="game">
+<body data-screen="home">
+<section id="landing" class="landing" aria-label="Trang chủ Build City 26"></section>
+<main id="game" inert>
   <div id="loading" role="status">Đang tải thành phố…</div>
-  <canvas id="world" aria-label="Bản đồ thành phố. Chọn công cụ rồi bấm hoặc kéo trên bản đồ để xây dựng."></canvas>
+  <canvas id="world" tabindex="-1" aria-label="Bản đồ thành phố. Chọn công cụ rồi bấm hoặc kéo trên bản đồ để xây dựng."></canvas>
   <div class="vignette"></div>
   <header class="topbar">
-    <div class="brand"><span class="brand-mark" data-icon="city"></span><div>BUILD CITY <b>26</b><small>THÀNH PHỐ CỦA BẠN</small></div></div>
+    <button id="homeBtn" class="brand" aria-label="Về trang chủ"><span class="brand-mark" data-icon="city"></span><div>BUILD CITY <b>26</b><small>THÀNH PHỐ CỦA BẠN</small></div></button>
     <div class="city-identity"><input id="cityName" value="Thành phố Bình Minh" maxlength="36" aria-label="Tên thành phố"><span id="level">Đang tải thành phố</span></div>
     <div class="stat treasury"><span>NGÂN SÁCH</span><strong id="money">—</strong><small id="net">+0 ₫ / tháng</small></div>
     <div class="stat"><span>DÂN SỐ</span><strong id="population">0</strong><small id="popChange">Chào cư dân mới</small></div>
@@ -22,6 +24,7 @@
     <button id="newsBtn" class="icon-btn" title="Bản tin thành phố" aria-label="Bản tin thành phố" data-icon="bell"></button>
     <button id="residentsBtn" class="action" title="Chọn cư dân để theo dõi">Cư dân</button><button id="missionBtn" class="action" title="Nhiệm vụ và cấp thành phố">Cấp 1 · 0 XP</button><button class="icon-btn" id="menuBtn" title="Lưu và cài đặt" aria-label="Lưu và cài đặt" data-icon="menu"></button>
   </header>
+  <aside class="city-clock" aria-label="Thời gian mô phỏng">    <div class="time-block"><span id="date">01 / 01 / 2026</span><small id="timeScale">1 giây thực = 5 giây game</small><div class="time-controls"><button id="observeBtn" title="Thời gian tự nhiên">Quan sát</button><button data-speed="0" title="Tạm dừng / Tiếp tục" aria-label="Tạm dừng / Tiếp tục">Ⅱ</button><button data-speed="1" class="active" title="Tốc độ bình thường">1×</button><button data-speed="3" title="Casual nhanh: 1 giây thực = 15 giây game">3×</button><button data-speed="8" title="Casual nhanh: 1 giây thực = 40 giây game">8×</button></div></div></aside>
 
   <aside class="left-panel panel">
     <div class="panel-title"><span>THÀNH PHỐ</span><button id="overviewCollapse" class="text-btn" aria-label="Ẩn tổng quan">−</button></div>
@@ -50,10 +53,11 @@
   <div class="map-hint" id="mapHint">Kéo bằng chuột phải để di chuyển · Cuộn để thu phóng</div>
   <div id="toast" role="status" hidden></div>
 
-  <footer class="bottom-bar">
-    <div class="time-block"><span id="date">01 / 01 / 2026</span><small id="timeScale">1 giây thực = 5 giây game</small><div class="time-controls"><button id="observeBtn" title="Thời gian tự nhiên">Quan sát</button><button data-speed="0" title="Tạm dừng / Tiếp tục" aria-label="Tạm dừng / Tiếp tục">Ⅱ</button><button data-speed="1" class="active" title="Tốc độ bình thường">1×</button><button data-speed="3" title="Casual nhanh: 1 giây thực = 15 giây game">3×</button><button data-speed="8" title="Casual nhanh: 1 giây thực = 40 giây game">8×</button></div></div>
-    <nav class="toolbar" aria-label="Công cụ xây dựng" id="toolbar"></nav>
     <div class="save-status"><span id="saveText">Lưu trên thiết bị</span><button id="saveBtn" class="icon-btn" aria-label="Lưu thành phố" title="Lưu thành phố" data-icon="save"></button></div>
+  <footer class="bottom-bar">
+
+    <nav class="toolbar" aria-label="Công cụ xây dựng" id="toolbar"></nav>
+
   </footer>
   <div class="tool-tray panel" id="toolTray" hidden></div>
   <div class="tool-info panel" id="toolInfo" hidden></div>
@@ -62,6 +66,6 @@
 
 <dialog id="modal"><form method="dialog"><button class="modal-close" aria-label="Đóng">×</button></form><div id="modalBody"></div></dialog>
 <input type="file" id="importFile" accept=".json,application/json" hidden>
-<script type="module" src="/src/app.js"></script>
-<script>if(location.protocol==='file:'){const el=document.getElementById('loading');el.textContent='Cần mở game qua máy chủ: chạy npm run dev trong thư mục dự án, rồi mở địa chỉ localhost hiện trong terminal.';const link=document.createElement('a');link.href='http://127.0.0.1:5173/';link.textContent=' Mở localhost:5173';el.append(link);}</script>
+<script type="module" src="/src/entry.js"></script>
+<script>if(location.protocol==='file:'){document.getElementById('landing').hidden=true;document.body.dataset.screen='game';const el=document.getElementById('loading');el.textContent='Cần mở game qua máy chủ: chạy npm run dev trong thư mục dự án, rồi mở địa chỉ localhost hiện trong terminal.';const link=document.createElement('a');link.href='http://127.0.0.1:5173/';link.textContent=' Mở localhost:5173';el.append(link);}</script>
 </body></html>

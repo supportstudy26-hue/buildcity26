@@ -41,3 +41,11 @@ Supabase migration geography schema 6 đã chạy thật; ảnh docs/supabase-ge
 ### UI và địa phương đăng ký — 09/10/2026
 
 `npm test`: 102/102 đạt, không skip. `npm run build`: đạt; cảnh báo chunk Three 549 KB. Migration 008 chạy Supabase: Success. Browser localhost: đăng ký ba input, chọn Hải Phòng và quay lại giữ tên/tài khoản; xem riêng Hoàng Sa/Trường Sa, tọa độ khi phóng Đảo Trường Sa 8,64464°B / 111,91969°Đ. Không tăng tài nguyên WebGL. Production và Auth JWT hai tài khoản thật vẫn chưa xác nhận; deploy key hiện Read-only.
+
+## 09/10 — vốn 100 triệu, đất trống và 24 công trình
+
+npm ci đạt; toàn 110/110 tests đạt, không skip (165,11s); build đạt (32,90s), Three chunk550,03KB warning. tests/expanded-city kiểm server tạo100.000BC/openingCash ở bản thường/địa phương; build kit74.000BC có dân/việc làm, oldsave giữ tiền; mọi24 loại roundtrip; công suất/đứt đường/range/budget/rác.
+
+Browser localhost5180: màn reviewreset/backup, 0 dân100triệu; xây5đường+ba trạm+hai zone còn26triệu, save/reload giữ26triệu, JSerror không có. Ảnh empty-start-100-million/starter-utilities-budget. Chưa benchmark/mobile mới.
+
+Production9108038 Ready/domain chính/redirect đã kiểm. Authlive A/B qua đăng ký/RLS/savehai phiên, staleCAS/recovery chuỗi chưa đạt, server503 có gặp. Xem implementation-status để không nhầm QA fixture với live.

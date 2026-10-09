@@ -6,7 +6,7 @@ import { analyzeUtilities } from './systems/utilities.js';
 import { updateLegacyServices } from './systems/services.js';
 import { analyzeTraffic, busRoute, route } from './systems/roads.js';
 export { route, busRoute };
-import { START_CASH_BC, LEGACY_BC_FACTOR, ANNUAL_INTEREST, WATER_PER_PERSON, DAY_SECONDS } from '../config/simulation.js';
+import { START_CASH_BC, NEW_CITY_CASH_BC, LEGACY_BC_FACTOR, ANNUAL_INTEREST, WATER_PER_PERSON, DAY_SECONDS } from '../config/simulation.js';
 import { initializeFoundation, reconcileSociety } from './systems/foundation.js';
 import { foundationSnapshot, loadFoundation } from './systems/save.js';
 import { dailyFinance, recordCash } from './systems/economy.js';
@@ -22,9 +22,10 @@ import { CATALOG, BUILDINGS, ZONES, ROADS } from '../config/catalog.js';
 export { CATALOG };
 import { initializeWorld, index, inside, clamp, neighbors, distance, isRoad, terrainAt } from './systems/world.js';
 export { index, inside, clamp, neighbors, isRoad, terrainAt };
-export function createCity(){
-  const s={schemaVersion:SAVE_VERSION,mapSize:SIZE,name:'Thành phố Bình Minh',money:START_CASH_BC,currency:'BC',currencyMigration:{from:5,factor:1},day:0,taxes:{residential:10,commercial:10,industrial:10},seed:26012026,milestones:[],busLines:[],loanBalance:0,budgets:{},tiles:Array.from({length:SIZE*SIZE},(_,i)=>({terrain:terrainAt(i%SIZE,Math.floor(i/SIZE)),kind:null,zone:null,level:0,residents:0,age:0,garbage:0,hazard:0,fire:0,crime:0,health:100,education:0}))};
+export function createCity({starter=true,world=null,name=null,startingCash=START_CASH_BC}={}){
+  const s={schemaVersion:SAVE_VERSION,mapSize:SIZE,name:'Thành phố Bình Minh',money:startingCash,currency:'BC',currencyMigration:{from:5,factor:1},day:0,taxes:{residential:10,commercial:10,industrial:10},seed:26012026,milestones:[],busLines:[],loanBalance:0,budgets:{},tiles:Array.from({length:SIZE*SIZE},(_,i)=>({terrain:terrainAt(i%SIZE,Math.floor(i/SIZE)),kind:null,zone:null,level:0,residents:0,age:0,garbage:0,hazard:0,fire:0,crime:0,health:100,education:0}))};
   const set=(x,y,kind,residents=0)=>Object.assign(s.tiles[index(x,y)],{kind,zone:ZONES.includes(kind)?kind:null,level:1,residents,age:20});
+  if(starter){
   for(let x=0;x<=23;x++)set(x,18,'road');
   for(let y=10;y<=25;y++){set(11,y,'road');set(18,y,'road');}
   for(let x=11;x<=23;x++){set(x,12,'road');set(x,24,'road');}
@@ -34,8 +35,13 @@ export function createCity(){
   for(let x=19;x<=22;x++)set(x,23,'industrial');
   set(8,17,'power');set(9,17,'water');set(10,20,'clinic');set(10,14,'school');set(15,11,'park');set(14,23,'park');set(19,25,'waste');
   set(7,19,'sewage');
-  s.world=createTerrain(SIZE);analyze(s);initializeFoundation(s,SIZE,random);return s;
+  }
+  s.world=world?structuredClone(world):createTerrain(SIZE);
+  if(name)s.name=name;
+  if(world?.geography)world.geography.waterMask.forEach((v,i)=>s.tiles[i].terrain=v?'water':'grass');
+  analyze(s);initializeFoundation(s,SIZE,random);return s;
 }
+export function createEmptyCity(options={}){return createCity({startingCash:NEW_CITY_CASH_BC,...options,starter:false});}
 import { random } from './systems/rng.js';
 export { random };
 export function analyze(s){

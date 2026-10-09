@@ -2,13 +2,29 @@
 
 ## Cách dùng
 
-Mở thư mục mã nguồn Build City 26 trong Codex và đưa file này vào cùng workspace. Gửi Lệnh 0 trước, rồi lần lượt Lệnh 1 → 28. Mỗi lệnh phải tạo ra chức năng chạy được và có bằng chứng kiểm tra. Có thể dùng lệnh tiếp tục ở cuối file để chuyển sang chặng kế tiếp. Với dự án đã triển khai một phần, kiểm tra chức năng thật và tiếp tục từ phần còn thiếu, không tạo lại dự án.
+Mở thư mục mã nguồn Build City 26 trong Codex và đưa file này vào cùng workspace. Có thể gửi ngay **Lệnh giao việc toàn bộ** dưới đây; Lệnh 0–28 và Phụ lục A–I là các phần của cùng một yêu cầu. Mỗi chặng phải tạo ra chức năng chạy được và có bằng chứng kiểm tra. Với dự án đã triển khai một phần, kiểm tra chức năng thật và tiếp tục từ phần còn thiếu, không tạo lại dự án.
+
+### Lệnh giao việc toàn bộ — dán một lần vào Codex
+
+```text
+Đọc toàn bộ Build_City_26_Full_Codex_Prompts.md trong workspace, gồm Lệnh 0–28 và Phụ lục A–I. Đây là yêu cầu triển khai toàn bộ game Build City 26 vào mã nguồn hiện tại, không chỉ viết kế hoạch hoặc tạo demo.
+
+Thực hiện đầy đủ danh mục hệ thống I-01 đến I-20 và tất cả các dịch vụ trong I2; tích hợp với mô phỏng, kinh tế, giao diện, nhiệm vụ, bản lưu và BXH. Không tự giảm phạm vi xuống vài dịch vụ tiêu biểu. Hành vi phải có chiều sâu tương đương các nhóm cơ chế xây dựng/quản lý thành phố đã mô tả, bằng code, đồ họa, tên và tài nguyên riêng của Build City 26. Không sao chép tài nguyên, giao diện hoặc mã của trò chơi khác.
+
+Giữ các yêu cầu đã chốt: bản đồ Việt Nam và địa hình có dữ liệu nguồn; cửa sổ chơi chuẩn 12,8 × 12,8 km; 1 giây thực = 5 giây game; 100 cấp và 300 nhiệm vụ có EXP; thưởng 100 triệu tiền game khi tăng cấp đúng một lần; nâng nhà/công trình bằng tiền và tiện ích; đăng ký đúng Tên thành phố/Tài khoản/Mật khẩu; đăng nhập Tài khoản/Mật khẩu; Supabase Auth/cloud save và BXH cấp/tiền; GitHub và Vercel; giao diện tiếng Việt đẹp, nhẹ.
+
+Trước khi sửa, kiểm tra repo, bản lưu, cấu hình và chức năng đang chạy. Tạo bảng đối chiếu docs/feature-coverage.md theo I5, ghi phần còn thiếu và triển khai theo phụ thuộc. Làm từng chặng có thể chơi được; sau khi kiểm tra đạt, tiếp tục chặng tiếp theo trong phạm vi này. Không dừng sau một bản khung hoặc đánh dấu xong vì có icon/model. Nếu giới hạn phiên làm việc buộc phải dừng, cập nhật docs/CODEX_HANDOFF.md với việc đã kiểm chứng, việc đang làm, lệnh kiểm tra và bước tiếp theo để phiên sau tiếp tục đúng repo.
+
+Chỉ hỏi đúng cấu hình/quyền thực sự chặn việc, không yêu cầu key AI. Không in hoặc commit secret. Khi đã có quyền deploy, đưa lên GitHub/Vercel và kiểm tra production; khi chưa có quyền, hoàn thành phần có thể làm và chuẩn bị cấu hình triển khai cụ thể. Báo chính xác các giới hạn còn lại; chưa đủ toàn bộ tiêu chí thì chưa được gọi là hoàn thành toàn bộ game.
+```
+
+**Bổ sung ngày 09/10/2026:** Phụ lục I đóng phạm vi toàn bộ các nhóm chức năng/dịch vụ đã liệt kê thành yêu cầu bắt buộc, bổ sung kiểm tra hoạt động và bảng đối chiếu. Các cơ chế mở rộng về cảng, xe đạp, công viên, du lịch và cứu hộ cũng nằm trong phạm vi Build City 26. Đây là thiết kế game riêng; không phải cam kết tái tạo từng thuật toán nội bộ hoặc mọi tài nguyên của Cities: Skylines II.
 
 **Yêu cầu mới đã chốt:** đăng ký đúng 3 ô **Tên thành phố · Tài khoản · Mật khẩu**, đăng nhập bằng tài khoản/mật khẩu; có **BXH cấp độ** và **BXH tiền**. Các yêu cầu này thay thế hướng đăng ký email và phạm vi không có leaderboard trong bản bàn giao trước.
 
 **Bổ sung ngày 08/10/2026:** tốc độ mặc định **1 giây ngoài đời = 5 giây trong game**; bản đồ chuẩn **12,8 × 12,8 km**, mở đất theo khu; thêm các Lệnh 20–27 về bản đồ lớn, giao thông vùng, ngành sản xuất, công trình xã hội, hạ tầng nâng cao, thiên tai, nhiệm vụ và công cụ sáng tạo. Có **100 bậc nhiệm vụ, mỗi nhiệm vụ nhận EXP**, và **nhà/công trình nâng cấp bằng tiền cùng điều kiện tiện ích**. Giữ yêu cầu trong ảnh: nhiệm vụ theo cấp và thưởng **100 triệu tiền game mỗi cấp tăng thêm**, nhận đúng một lần. Mọi mục dưới đây là yêu cầu triển khai, không phải xác nhận đã xây xong.
 
-Đây là đặc tả mục tiêu phát triển, không phải danh sách chức năng đã hoàn thành. Bản nền hiện tại là Canvas isometric; tài khoản và cloud save đã có mã nhưng cần cấu hình/kiểm chứng Supabase thật. Đồ họa 3D, từng cư dân và mô phỏng giao thông chi tiết là các phần sẽ xây tiếp.
+Đây là đặc tả mục tiêu phát triển, không phải danh sách chức năng đã hoàn thành hoặc gói mã nguồn game. Codex phải kiểm tra trạng thái repo thực tế của người dùng trước khi sửa; không suy ra repo đang ở bản nền Canvas cũ. Giữ và mở rộng những gì đã chạy, kiểm chứng Supabase thật và hoàn thiện từng phần còn thiếu theo bảng đối chiếu.
 
 ### Quy ước về giá và tính chân thực
 
@@ -36,6 +52,8 @@ Form đăng ký đúng 3 ô: Tên thành phố, Tài khoản, Mật khẩu. Khô
 Chỉ hỏi tôi khi thiếu quyền GitHub/Vercel, cấu hình Supabase hoặc quyết định thực sự chặn công việc. Trong lúc chờ, tiếp tục phần không phụ thuộc. Không ghi secret vào mã, log, bản lưu, prompt hay GitHub. Chỉ dùng publishable/anon key ở frontend.
 
 Mỗi chặng phải có: thay đổi mã nguồn, chức năng tương tác được, kiểm tra phù hợp, một tình huống minh họa và báo cáo ngắn. Nếu còn thiếu thì ghi rõ; không đánh dấu hoàn thành chỉ vì có nút hoặc có model trang trí.
+
+Phụ lục I là hợp đồng phạm vi bổ sung bắt buộc. Đối chiếu I-01 đến I-20 và từng dòng dịch vụ I2; các mục chưa có trong Lệnh 1–28 phải được bổ sung vào chặng phù hợp. Phân chặng chỉ quyết định thứ tự, không biến phần sau thành tùy chọn. Dùng cơ chế, thuật ngữ, tài nguyên riêng; không dùng yêu cầu “giống chức năng” để lấy assets hoặc dựng lại UI của một game khác.
 ```
 
 ## Lệnh 1 — Nền mô phỏng, đồng hồ và bản lưu
@@ -564,6 +582,8 @@ Chuẩn bị GitHub repository theo tôi chỉ định, commit mã cùng lockfil
 Deploy khi có quyền, kiểm tra trạng thái deployment thành công và smoke test production Auth/save trước khi báo hoàn thành. Nếu deploy thất bại, sửa nguyên nhân cụ thể và deploy lại; không đưa URL chưa hoạt động như kết quả hoàn tất.
 
 Bàn giao README, ASSET_LICENSES, schema/migrations, hướng dẫn backup/restore, docs/implementation-status, báo cáo hiệu năng và danh sách giới hạn. Game vẫn phải chơi được khi chưa có API AI và chưa bật tài khoản, với local save rõ ràng.
+
+Nghiệm thu bổ sung toàn bộ Phụ lục I: docs/feature-coverage.md phải có đủ I-01 đến I-20 và từng dịch vụ I2, kèm đường dẫn mã và bằng chứng kiểm tra. Chạy các kịch bản I6 và kiểm tra catalogue/đơn giá I3–I4. Dịch vụ chưa có handler mô phỏng hoặc chưa lưu/khôi phục được phải ghi chưa hoàn tất; không bỏ dòng khỏi bảng để báo đủ phạm vi. Khi bàn giao, thống kê tổng mục, mục đạt, mục chưa đạt và lý do, không dùng tỷ lệ hoàn thành ước đoán.
 ```
 
 ## Phụ lục A — Bảng chi phí BC để Codex triển khai
@@ -1092,6 +1112,231 @@ DEM/resolution và draw LOD tách nhau: terrain nhiều độ phân giải, seam
 - OSM Copyright and License: https://www.openstreetmap.org/copyright
 
 Các nguồn này xác minh danh mục/hiệu lực và định hướng dữ liệu. File đặc tả chưa kèm một bộ ranh/DEM Việt Nam đã tải hoặc đã kiểm chứng; khi triển khai phải hoàn thành pipeline và ghi dataset/version/giấy phép cụ thể. Không lấy một link nguồn làm bằng chứng rằng game đã mô phỏng chính xác địa hình.
+
+## Phụ lục I — Toàn bộ hệ thống và dịch vụ phải triển khai
+
+### I1. Phạm vi bắt buộc và quan hệ với các phần trước
+
+Toàn bộ mục I-01 đến I-20 dưới đây là phạm vi giao việc, gồm nền tảng và các cơ chế mở rộng đã yêu cầu. Đây là đặc tả chức năng cho Build City 26, không phải danh sách khẳng định tất cả đều đang có trong bản phát hành của một game tham chiếu. Các ý tưởng mở rộng về công viên/du lịch cũng phải làm theo thiết kế riêng. Không cần có bản sao game tham chiếu để chạy Build City 26.
+
+Giữ nguyên tiền BC, chuyển đổi đơn vị hiển thị, đồng hồ, giá đã có, EXP, quyền sở hữu công/tư và các giới hạn hiệu năng trong A–H. Không tạo một đồng tiền, một đồng hồ hoặc một bảng giá khác cho phụ lục này. Các hệ thống phải dùng chung IDs, command bus, event log và schema bản lưu. Với phần đã làm, kiểm tra và mở rộng thay vì viết một hệ thống cạnh tranh.
+
+| Mã | Nhóm bắt buộc | Phần triển khai chính | Điều kiện đạt cơ bản |
+|---|---|---|---|
+| I-01 | Xây đường, giao lộ, cầu, hầm, bãi đỗ | Lệnh 3, 4, 7, 13, 20 | Xe/người dùng mạng đã xây; báo giá và địa hình đúng |
+| I-02 | AI giao thông và tìm đường đa phương thức | Lệnh 6, 7, 11, 21 | Đi tới đích theo tuyến hợp lệ, tắc đường có nguyên nhân |
+| I-03 | Phân khu, nhà ở, thương mại, công nghiệp, văn phòng | Lệnh 5, 8, 12, Phụ lục F | Có dân/doanh nghiệp thật, nhu cầu và khả năng chi trả |
+| I-04 | Nâng cấp, mô-đun dịch vụ, công trình đặc biệt | Lệnh 13, 18, 24, Phụ lục F | Tăng năng lực thực, thanh toán đúng chủ sở hữu |
+| I-05 | Toàn bộ dịch vụ đô thị trong I2 | Lệnh 9, 10, 23, 24 | Có nhân sự, hàng đợi, nguồn lực và kết quả phục vụ |
+| I-06 | Sản xuất, truyền tải và mua bán điện | Lệnh 9, 12, 24 | Cân bằng điện, giới hạn mạng và chi phí đầu vào |
+| I-07 | Nước sạch, nước ngầm, nước thải | Lệnh 9, 24 | Có mạng, trữ lượng, chất lượng và xử lý thực |
+| I-08 | Vận tải hành khách và hàng hóa | Lệnh 11, 21 | Lên/xuống xe, trung chuyển, giao nhận đúng tải |
+| I-09 | Xe đạp và hạ tầng đi bộ | Lệnh 3, 6, 7, 21 | Đường hợp lệ, đỗ xe đạp và hành trình thực |
+| I-10 | Cư dân, hộ gia đình và vòng đời | Lệnh 5, 6, 10, 23 | Hoạt động và thay đổi nhân khẩu có nguyên nhân |
+| I-11 | Kinh tế đô thị, hộ và doanh nghiệp | Lệnh 4, 8, 12, 19 | Sổ tiền đối chiếu, thuế/giá tác động tới hành vi |
+| I-12 | Tài nguyên và chuỗi sản xuất | Lệnh 8, 22 | Vật tư, công nhân, tồn kho, đơn hàng, vận chuyển |
+| I-13 | Bản đồ, mở đất và chỉnh địa hình | Lệnh 2, 20, Phụ lục H | Toàn Việt Nam ở overview, khu chơi có dữ liệu địa hình |
+| I-14 | Khí hậu, môi trường và thiên tai | Lệnh 9, 14, 25 | Tác động tới dân, mạng và công trình, phục hồi được |
+| I-15 | Quận/khu vực và chính sách | Lệnh 14, 24 | Ranh giới lưu được, chính sách đổi hành vi/chi phí |
+| I-16 | 100 cấp, EXP, nhiệm vụ và cây phát triển | Lệnh 18, 26, Phụ lục E | 300 nhiệm vụ hoạt động, mở khóa có điều kiện thật |
+| I-17 | UI, lớp thông tin, thống kê và cảnh báo | Lệnh 15, 16, Phụ lục G | Số liệu từ core, dễ giải thích nguyên nhân, nhẹ |
+| I-18 | Bến cảng, cầu mở, hàng hải và ngư nghiệp | Lệnh 21, 22, 24 | Tàu/cầu/phà/hàng biển tương tác đúng tài nguyên |
+| I-19 | Công viên lớn, giải trí, du lịch, chợ và cứu hộ kết hợp | Lệnh 14, 23, 25 | Khách, vé, công suất, nhân sự và chi tiêu thực |
+| I-20 | Editor, âm thanh, ảnh, tài khoản, lưu, BXH và phát hành | Lệnh 17, 19, 27, 28 | Công cụ dùng được; cloud/deploy được kiểm chứng |
+
+**I-01 — Công cụ đường đầy đủ.** Vẽ thẳng, cong, nối liên tục, lưới quy hoạch; snap theo endpoint, hướng, cao độ và lề. Chỉnh số làn, một/hai chiều, đảo hướng, median, vỉa hè, cây, dải cỏ, làn bus, đường ray tram và làn xe đạp theo các template tương thích. Có cầu, hầm, đường nâng, đường dốc, vòng xoay, ngã ba/ngã tư, đoạn nhập/tách cao tốc, lối sang đường, đèn giao thông và biển dừng. Nút giao tự tạo lane connectors hợp lệ, tránh connector xuyên dải phân cách. Công cụ nâng cấp/đổi template/di chuyển/phá phải xem trước chi phí, mạng bị ảnh hưởng và thời gian thi công. Có đào/đắp, giới hạn dốc, bán kính cua, độ cao thông thuyền, bãi đỗ mặt đất/nhà đỗ xe/bãi ngầm và bảo trì. Chuyển template không xóa âm thầm cư dân/xe đang ở đoạn đường; giữ trạng thái chờ hoặc reroute có giải thích.
+
+**I-02 — Giao thông có hành vi.** Graph riêng cho làn xe, vỉa hè, xe đạp, ray, luồng tàu và hàng không; liên kết tại điểm chuyển phương tiện thật. Chọn tuyến theo thời gian dự kiến, giá vé, tiền nhiên liệu/đỗ xe, khoảng đi bộ, độ tin cậy và sở thích của cá nhân. Lái xe có headway, đổi làn, nhường đường, tín hiệu và chỗ đỗ; không chạy xuyên xe hoặc xuyên người đang qua đường. Chờ xe công cộng, chuyển tuyến, taxi đặt chuyến và giao hàng có trạng thái cụ thể. Ùn tắc từ dòng xe/queue/capacity thật; tai nạn có vật cản, cứu hộ, thời gian dọn và đường vòng. Xe ưu tiên chỉ được ưu tiên khi graph/giao lộ hỗ trợ, không teleport. Đo số lượt, thời gian hành trình, độ trễ, tải đoạn đường và các nguyên nhân thất bại từ event đã xảy ra. Reroute có giới hạn tần suất, tránh tất cả xe đổi cùng lúc gây dao động.
+
+**I-03 — Toàn bộ phân khu.** Nhà ở gồm biệt lập thấp tầng, nhà liền kề, chung cư trung tầng, hỗn hợp nhà ở–cửa hàng, căn hộ giá thuê thấp và cao tầng. Thương mại thấp/cao mật độ, công nghiệp sản xuất/kho và văn phòng thấp/cao mật độ đều có plot, footprint, lối vào, số căn/chỗ làm, yêu cầu hàng/điện/nước và mức thuê khác nhau. Công cụ tô, fill, hình chữ nhật, xóa và đổi phân khu; chỉ xây khi có đất phù hợp, kết nối, chủ đầu tư và nhu cầu. Hỗn hợp phải có hai occupancy/ledger, không tính người ở hai lần. Văn phòng tạo dịch vụ/đầu ra có đơn hàng và lao động, không sinh tiền miễn phí. Giá thuê, thu nhập, việc làm, giáo dục, đất, tiếng ồn và tiện ích tác động nhu cầu; biểu đồ phải nêu lý do. Công trình đặc biệt được mở bằng thành tích lần đầu, có chức năng và chi phí riêng, tên/kiến trúc gốc; không dựng bản sao landmark độc quyền.
+
+**I-04 — Hai loại nâng cấp rõ ràng.** Công trình tư nhân tự đầu tư từ vốn/thu nhập khi đủ điều kiện, và người chơi có thể hỗ trợ/nâng bằng chính sách đã định nghĩa trong F. Không trừ ngân quỹ cho mọi nhà tư nhân một cách ngầm định. Công trình công có nút nâng cấp cấp 1–5 và module: cánh nhà, phòng, gara, bể, bộ lọc, turbine, platform, kho hoặc dịch vụ phụ. Module có footprint/điểm gắn, giới hạn số lượng, nhân sự, điện, nước, hàng và chi phí riêng; thêm module phải tăng giới hạn hoạt động thật. Cho tháo, đổi vị trí hoặc nâng lại nếu template cho phép, có hoàn trả/hợp đồng và kiểm tra mạng. Một module không được vừa tính trong giá tier vừa thu thêm lần nữa. Nâng cấp làm tăng demand đầu vào, không chỉ tăng số capacity trên inspector. Nhà ở cải thiện theo tiện ích, chất lượng, ngân sách chủ sở hữu và cơ chế F; mọi thay đổi phải lưu được.
+
+**I-05 — Dịch vụ đầy đủ.** Triển khai từng dòng I2 với contract chung I3. Nhóm điểm cộng hạnh phúc chỉ là một phần; y tế phải điều trị, trường phải tiếp nhận/giảng dạy, cứu hỏa phải dập lửa, bưu chính phải nhận/giao thư, nhà tù phải nhận/giữ/thả người. Một vùng dịch vụ không được coi là hoàn thành nếu chỉ tô màu bán kính.
+
+**I-06 — Điện đầy đủ.** Gió, than nhỏ/lớn, khí, mặt trời, địa nhiệt, thủy điện, hạt nhân, nguồn dự phòng và lưu trữ pin. Chọn nguồn theo địa hình/tài nguyên và cấp mở khóa; định nghĩa bằng config của Build City 26. Điện gió/nắng biến thiên theo thời tiết, nhiệt điện cần nhiên liệu, pin có năng lượng/công suất/hiệu suất. Nhà máy có giới hạn ramp, maintenance và trạng thái thiếu đầu vào. Mạng cao/hạ áp, trạm biến áp, cáp trên/ngoài đường và nhánh riêng có connectivity/capacity; giới hạn mạng có thể gây thiếu điện cục bộ dù tổng phát đủ. Nhập/xuất qua kết nối ngoài với công suất, giá và ledger; không cho bán và mua cùng lượng để tạo lợi nhuận vô hạn. Module tăng tổ máy, nhiên liệu, lọc hoặc lưu trữ có tác dụng riêng. Thủy điện cần mô hình mực nước/dòng chảy phù hợp độ chính xác đã chọn, không tuyên bố mô phỏng thủy văn chuyên dụng.
+
+**I-07 — Nước và nước thải đầy đủ.** Bơm mặt nước, tháp/bể chứa, bơm nước ngầm và bơm nâng cao; đường cấp/nước thải dưới đường hoặc đặt thủ công. Nước ngầm có trữ lượng, tốc độ hồi và nguy cơ ô nhiễm. Bơm mặt nước cần mặt nước thật và chất lượng đầu nguồn; cửa xả ảnh hưởng vùng hạ lưu. Công trình tiêu thụ m³ theo người/sản xuất, bể cấp khi thiếu tạm thời, trạm xử lý cần điện/staff/vật tư và tạo lượng bùn hoặc chất thải tương ứng. Có cửa xả và trạm xử lý nhiều tier; nhập/xuất qua liên kết hợp lệ. Pressure/head có thể dùng mô hình mạng giản lược có mô tả, nhưng phải có giới hạn cấp nước thực và cảnh báo nguyên nhân.
+
+**I-08 — Giao thông công cộng/hàng hóa đầy đủ.** Bus thường/điện, bus liên tỉnh, taxi, tram, metro, tàu hỏa, phà/tàu khách và máy bay khách; truck/van, tàu hàng, tàu biển và máy bay hàng. Depot, garage, ga, platform, bến, cảng, sân bay, runway, taxiway, apron và kho phải có vị trí kết nối thật. Vẽ tuyến, điểm dừng, hướng, lịch ngày/đêm, tần suất, số xe, giá vé và transfer rules; tính nhu cầu phương tiện từ vòng tuyến/chuyến. Cư dân lên đúng chuyến đủ chỗ, xuống đúng điểm và đi tiếp; hàng có manifest, chờ kho/bốc dỡ và chuyển tải. Depot thiếu tài xế hoặc xe hỏng làm giảm chuyến. Sân bay dùng slot/runway occupancy và trạng thái tiếp cận–hạ cánh–taxi–gate–cất cánh giản lược, không spawn máy bay trên nhà dân. Tàu chỉ đi trên ray/luồng; vận tải ngoài vùng có thời gian qua ranh giới và event xuất/nhập, không giao tức thì. Tất cả tải hành khách/hàng và lịch đều lưu được.
+
+**I-09 — Xe đạp là một phương thức thật.** Đường dành xe đạp một/hai chiều, làn đi chung khi được phép, lối đi bộ kết hợp, cầu/hầm tương thích, chỗ đỗ và điểm gửi xe. Khả năng sở hữu/mượn xe theo hộ/độ tuổi và cấu hình; bike ID hoặc pooled inventory có conservation, không nhân xe mỗi lần chuyển phương thức. Có hành trình từ nhà tới điểm gửi, đạp tới đích, khóa/gửi xe rồi đi bộ; xe đạp cũng phải tuân thủ tín hiệu/va chạm theo loại đường. Cấm xe đạp trên đoạn không cho phép hoặc theo policy của district; route khác phải được tìm hoặc báo không thể tới. UI hiển thị tỷ trọng đi bộ/xe đạp/ô tô/công cộng và lợi ích từ dữ liệu thực. Đường xe đạp đẹp, nhẹ, không chỉ là stripe không có graph.
+
+**I-10 — Cuộc sống cư dân đầy đủ.** Trẻ em, thiếu niên, trưởng thành, cao tuổi; hộ độc thân/gia đình, sinh con, quan hệ hộ, chuyển nhà, học, tốt nghiệp, đi làm, thất nghiệp và nghỉ hưu. Mỗi chuyển đổi có tuổi/thời gian/điều kiện, không biến một ngày game thành một đời người. Định nghĩa rõ quy tắc năm nhân khẩu để người chơi hiểu và lưu cùng preset; thời gian di chuyển/vé/điện vẫn dùng đồng hồ chung, không đổi timeScale. Có thu nhập, thuê nhà, tài sản, mức sống, nhu cầu mua hàng, giải trí, sức khỏe, bệnh, tai nạn, tử vong và dịch vụ hậu sự. Không tạo cư dân mới chỉ để hoàn thành mission. Pet/trang trí nếu có dùng ngân sách render riêng, không tăng population. Inspector theo dõi hộ, việc, chuyến, phí, nhu cầu và sự kiện; bảng tin gốc “Nhịp thành phố” phản ánh nguyên nhân thật, không bịa người gửi. Crime/lifepath phải dựa trên seed và trạng thái, không ngẫu nhiên trừng phạt theo một nhãn người dùng.
+
+**I-11 — Kinh tế đầy đủ.** Thành phố, hộ, doanh nghiệp và đơn vị vận hành có ledger riêng. Vốn đầu tư, lương theo ca, vận hành, nhiên liệu, nguyên liệu, utilities, thuế, phí, vé, rent, vay, lãi, principal và hoàn trả đều đối chiếu được. Thuế theo loại khu/ngành và các tham số có trong game; hộ/doanh nghiệp phản ứng khả năng chi trả và lợi nhuận. Budget đổi ca, maintenance hoặc procurement, không tự đổi capacity vật lý vượt template. Hỗ trợ công và mua dịch vụ vùng ngoài có quy tắc/giá; thực thể hoặc mô hình vùng ngoài phải đến/đáp ứng sau lead time. Thiếu tiền gây nợ/giảm dịch vụ/phá sản/di dời có giải thích. Thưởng cấp +100 triệu hiển thị theo Lệnh 18 vẫn giữ, phân loại riêng với doanh thu thường; không bị loại bỏ vì mô hình cân đối tài chính. Không mặc định bù mọi thâm hụt bằng tiền hệ thống. Có báo cáo dòng tiền, tài sản/nợ, chi theo dịch vụ, sản lượng và độ nhạy thuế. BXH tiền vẫn áp dụng cash trừ principal và verified rules đã chốt.
+
+**I-12 — Sản xuất đầy đủ.** Chín nhóm đầu vào: chăn nuôi, ngũ cốc, rau, bông, gỗ, đá, than, quặng và dầu. Kèm thủy sản từ I-18; các ngành chế biến thực phẩm, dệt, gỗ/giấy, vật liệu, kim loại, hóa chất, máy móc/điện tử và các recipe trong Lệnh 22. Có đất canh tác, fertility, diện tích, worker, thiết bị, tốc độ thu hoạch, mùa, hàng dễ hỏng và tồn kho. Khoáng sản/dầu có trữ lượng hữu hạn; rừng/tái trồng hồi theo quy tắc. Recipe ghi input/output/yield, batch time, điện/nước/staff/cost và byproduct. Đơn hàng nội/ngoại, báo giá, kho, loading queue và shipment được liên kết; kho đầy dừng sản xuất. Văn phòng cung cấp dịch vụ có contract/capacity, tách khỏi tấn vật liệu. Không tạo đầu ra khi thiếu đầu vào hoặc tự hoàn thành chuyến hàng. UI truy được một lô nguyên liệu qua nhà máy, kho, cửa hàng và tiêu dùng.
+
+**I-13 — Bản đồ rộng, địa hình và chỉnh sửa.** Toàn bộ yêu cầu H về Việt Nam tiếp tục áp dụng; country overview không thay thế khu chơi chi tiết. Địa hình cao/thấp, biển, đảo, bờ, sông, hồ, rừng, nước ngầm và tài nguyên có seed/dataset/version, không tô biome theo tên tỉnh. Mua đất xem trước m², giá, mức sở hữu, đường kết nối; hỗ trợ parcel ngoài cụm chính với điều kiện mở khóa và kết nối hợp lệ, không tự biến toàn bộ quốc gia thành đất thuộc thành phố. San bằng, nâng/hạ, làm mềm, tạo dốc và cảnh quan có preview đào/đắp, lượng vật tư, giá, footprint bị tác động và giới hạn an toàn. Không đổi cao độ dưới công trình đang dùng mà bỏ qua foundation/đường ống. Bảo toàn ID và migration cho bản đồ cũ; editor có chế độ địa hình hư cấu và preset dữ liệu thật riêng, label rõ nếu người chơi đã chỉnh địa hình gốc.
+
+**I-14 — Khí hậu/môi trường/thiên tai đầy đủ.** Ngày đêm, bốn mùa theo preset địa phương, nhiệt độ, mưa, tuyết chỉ nơi/preset phù hợp, gió, sương và nắng. Nhu cầu điện, tốc độ đường, sinh hoạt, du lịch, cây, nước và năng lượng thay đổi theo cùng sự kiện thời tiết. Không áp tuyết toàn Việt Nam như mặc định. Air/soil/water/noise pollution từ emitter, gió, vận chuyển hoặc diffusion giản lược; overlay, health, đất và giá trị khu có nguyên nhân. Bão, ngập/lũ, cháy rừng, mưa đá và lốc khi preset cho phép; các loại bổ sung trong Lệnh 25 cũng cần cấu hình riêng. Warning, đường sơ tán, shelter, nguồn nước/thức ăn, cứu nạn, hư hỏng, sửa chữa và phục hồi thật. Cho tắt/giảm thiên tai ở sandbox; ranked dùng cùng rule version. Không gọi hazard trong game là dự báo hay bản đồ rủi ro thực tế.
+
+**I-15 — Quận và chính sách đầy đủ.** Vẽ/chỉnh ranh giới, đổi tên, thống kê dân–việc–thu–chi–sức khỏe–giáo dục–hạnh phúc; khu chồng nhau phải có quy tắc ưu tiên. Chính sách district/city gồm tốc độ, hạn chế phương tiện, xe tải xuyên khu, phát thải, ưu tiên bus/xe đạp, giá đỗ xe, tiết kiệm điện/nước, phân loại/tái chế, hỗ trợ nhà ở/phúc lợi, trường và sự kiện. Mỗi policy có ID, scope, điều kiện, chi phí, modifier/handler, lộ trình áp dụng và phản ứng UI. Không có policy chỉ đổi icon hoặc cộng điểm hạnh phúc vô điều kiện. Thay policy khi xe đang chạy phải kiểm tra cách tới đích hợp lệ, giải thích ảnh hưởng. Không cộng cùng ưu đãi hai lần từ city và district. Service district dùng network/time/eligible targets, hỗ trợ ưu tiên phục vụ nhưng không biến biên giới thành tường vô hình.
+
+**I-16 — Phát triển dài hạn đầy đủ.** Giữ 100 cấp, 300 nhiệm vụ và công thức EXP trong E; receipt chống nhận lại và thưởng cấp trong Lệnh 18. Thêm cây phát triển có điểm riêng theo các nhánh đường, điện, nước, y tế, giáo dục, an ninh/cứu hộ, vận tải, sản xuất, môi trường, văn hóa/du lịch. Điểm phát triển không tự đổi thành tiền/EXP; định nghĩa lịch cấp điểm trong config, hiển thị đủ tổng, không tiêu hai lần. Nodes có prerequisite không vòng lặp và mở công trình/module/policy đang được triển khai thực. Có mốc quy hoạch/giai đoạn để nhóm nội dung mà không giới hạn game còn 20 cấp. Nhiệm vụ gắn các dịch vụ mới; điều kiện đo trong cửa sổ đủ dài, không cộng EXP vô hạn từ tháo/xây/nâng lặp. Cấp 100 vẫn chơi, hoàn thành mục tiêu cuối và giữ thống kê; không có cấp 101.
+
+**I-17 — Quản lý và thông tin đầy đủ.** HUD/công cụ theo G; tất cả chức năng có icon SVG, tooltip, state hợp lệ và hỗ trợ touch/keyboard. Layers về dân cư, jobs, suitability, giá đất/rent, happiness/health/education, traffic, parking, transit, utilities, service coverage/response, pollution, resources, district, tourism và hazard. Inspector cho dân/hộ/firm/xe/công trình/đường/lô hàng/tuyến, nêu số đo, giới hạn, chi phí, nguyên nhân thiếu dịch vụ và hành động khắc phục. Biểu đồ lịch sử có sampling giới hạn và tổng/chi tiết đối chiếu, không chạy hàng nghìn DOM marker. Notifications có mức nghiêm trọng, thời điểm, entity link và tự đóng sau khi vấn đề được giải quyết; không báo mỗi tick. Tutorial theo bước thật, search công trình, filter và accessibility. Chưa đủ mở khóa hoặc chưa triển khai thì label rõ; giao diện hoàn thiện cuối cùng không còn nút giả/placeholder.
+
+**I-18 — Cảng, cầu mở và hàng hải đầy đủ.** Cầu quay/nâng hoặc mở có cycle đóng đường–dọn xe–mở nhịp–tàu qua–đóng nhịp–khôi phục; chỉ mở khi road occupancy và boat clearance cho phép. Tàu chờ theo queue, không xuyên cầu đóng; xe được reroute hoặc chờ đúng lane. Có cảng hành khách/hàng hóa mô-đun, nhiều cỡ bến, cổng, kho, bãi hàng rời, loading equipment, kiểm soát/an ninh và đơn vị khẩn cấp theo I3. Kết nối đường/ray/đi bộ, lịch tàu, depth/clearance, hàng cập bến và kho. Phà có hai hoặc nhiều bến, vé, capacity, tuyến, crew và lượt lên/xuống thật. Đánh bắt có boat ID, nơi hoạt động, stock/catch, nhiên liệu, crew, quota và unloading; nuôi trồng có feed, chất lượng nước, công nhân và harvest. Chuỗi bảo quản/chế biến/giao thủy sản, hàng dễ hỏng, tái tạo tài nguyên. Giàn dầu ngoài khơi có trữ lượng, đội phục vụ, pipeline hoặc tanker, rủi ro/rác/maintenance; không xuất dầu nếu chưa vận chuyển. Bảo tàng hàng hải/trung tâm hội nghị là công trình có khách, tiền và công suất trong I-19.
+
+**I-19 — Công viên, nghỉ dưỡng, chợ và trung tâm kết hợp đầy đủ.** Vẽ park boundary/gates, đường nội bộ, module cây/tiện ích/điểm tham quan; công viên đô thị lớn, sở thú, khu vui chơi và khu bảo tồn có capacity, vé hoặc miễn phí, staff, vệ sinh, bảo trì, an toàn và mức phát triển. Sở thú dùng species/pen template tự thiết kế, nguồn thức ăn, chăm sóc và sức khỏe đàn ở mức giản lược, không từng tick cho mọi con ngoài màn hình. Khu vui chơi có ride queue, suất chơi, điện, staff, downtime và yêu cầu thoát hiểm. Khách du lịch có nguồn đến, mục đích, ngân sách, lịch, lựa chọn phương tiện, đặt/ở khách sạn, chi tiêu tại cửa hàng và chuyến về; đầy khách sạn hoặc tắc đường làm đổi lựa chọn. Có mùa cao/thấp điểm, sự kiện, bãi biển nơi thực sự có biển, resort, bảo tàng, nhà hát, sân vận động, hội nghị và địa điểm đặc biệt tự thiết kế. Chợ phố/chợ đêm/container market/quầy thức ăn/food truck có hợp đồng chỗ, tồn kho, staff, giờ mở, queue, điện, vệ sinh và doanh thu; xe bán hàng cần đỗ đúng chỗ. Trung tâm cứu hộ kết hợp chia các pool ambulance/fire/police/rescue, nhận nhiều queue nhưng không dùng một người/xe cho hai nhiệm vụ cùng lúc. Kiến trúc mới cho ga, văn phòng, kho, skyscraper là template gốc có tác dụng capacity/footprint, không chỉ đổi skin rồi nhân công suất.
+
+**I-20 — Công cụ, tài khoản và phát hành đầy đủ.** Blueprint đường/khu/công trình có preview, báo giá và validate footprint; map/editor chỉnh nguồn dữ liệu và presets, undo/redo command có giới hạn không đảo các giao dịch đã thực hiện tùy tiện. Registry asset/recipe/policy cho nội dung riêng dùng định dạng JSON/schema an toàn; không thực thi JavaScript do người chơi tải lên hoặc cho mod truy cập secret. Photo mode camera, giờ/thời tiết hiển thị, exposure/DOF/bloom theo preset nhẹ, chụp ảnh; cinematic keyframe để chạy đường camera và export ảnh/video ngắn khi trình duyệt hỗ trợ, giới hạn tài nguyên rõ. Chế độ ảnh không tự thay thời tiết core/ranked. Âm thanh riêng/đúng license: môi trường, xe, bước chân, công trường, dịch vụ, cảnh báo và nhạc/radio nội bộ; volume/mute và distance culling, không tải stream không có quyền. Local/cloud saves, backup/export/import, auto save, migrations, recovery, Supabase Auth/RLS và verified BXH đúng Lệnh 17–19. Sandbox/import/editor có phân loại riêng và không lọt BXH ranked. Website responsive, quality presets, GitHub/Vercel và production checks theo 28. Multiplayer, thanh toán và AI API không thuộc phạm vi, không thêm để làm chậm phần đã giao.
+
+### I2. Danh mục dịch vụ đô thị — không bỏ sót từng dòng
+
+Mỗi dòng dưới đây là một `serviceId` hoặc nhóm catalogue có các template con; toàn bộ template nêu trong cột công trình đều phải tồn tại và có handler đúng chức năng. Xe và module được mua/cấp theo catalogue, không miễn phí vì đặt công trình. Kết quả đo từ service jobs/occupancy/events, không dùng công thức bán kính để coi đã phục vụ mọi người.
+
+| ID | Dịch vụ và các công trình phải có | Hoạt động bắt buộc | Chứng cứ đạt trong game |
+|---|---|---|---|
+| S01 | Bảo trì đường: depot, tổ sửa, xe bảo trì; dọn tuyết ở preset phù hợp | Phát hiện xuống cấp, lên lịch, đi tới đoạn, sửa bằng vật tư/crew | Condition phục hồi; chi phí và thời gian được ghi |
+| S02 | Y tế: phòng khám, bệnh viện nhỏ/lớn, cánh điều trị, viện nghiên cứu | Tiếp nhận, triage, bed/doctor/medicine, điều trị và ra viện; nghiên cứu có input/progress | Người bệnh tới/được chở, thiếu giường/staff làm tăng wait |
+| S03 | Cấp cứu: depot/garage ambulance, đội y tế và trực thăng cấp cứu | Nhận yêu cầu, dispatch, tiếp cận, đón/chuyển bệnh nhân, trả xe | Không chữa khỏi từ xa trước khi đội tới; đủ sức chứa |
+| S04 | Hậu sự: nghĩa trang, nhà hỏa táng, gara xe tang | Thu nhận, vận chuyển, nhập plot/queue, xử lý theo tốc độ | Plot có tổng giới hạn; tồn đọng ảnh hưởng hộ/khu |
+| S05 | Rác: điểm trung chuyển, landfill, lò đốt có phát điện, trung tâm tái chế | Thu gom theo tuyến, cân tải, phân loại/xử lý, nguyên liệu hồi/điện đúng yield | Garbage backlog giảm sau pickup; xe/kho không quá tải |
+| S06 | Trường học: mầm non, tiểu học, trung học, nghề/cao đẳng, đại học | Tuyển, đường tới trường, teacher/class capacity, attendance, học và tốt nghiệp | Cư dân đổi education sau đủ tiến trình, không chỉ có buff |
+| S07 | Học thuật: thư viện và cơ sở nghiên cứu trong campus | Mượn/đọc, chỗ dùng, nghiên cứu có staff/equipment/budget | Visits/project output và costs đo được |
+| S08 | Cứu hỏa: trạm nhỏ/lớn, tower quan sát, depot trực thăng chữa cháy | Phát hiện, dispatch xe/heli, nước, tiếp cận, dập lửa, nạp lại | Lửa giảm sau can thiệp; mạng thiếu nước/crew làm chậm |
+| S09 | Cứu nạn và cảnh báo: đội cứu hộ, trung tâm cảnh báo, shelter nhỏ/lớn | Sự kiện, báo động, evacuation routes/bus, intake shelter, supplies, rescue | Người rời vùng nguy hiểm và vào shelter đúng chỗ |
+| S10 | Cảnh sát: đồn nhỏ/lớn, trụ sở, đội tuần tra | Tuần tra, tới vụ việc, điều tra giản lược, bắt/giữ/transfer đúng trạng thái | Case logs, response time, incident resolution |
+| S11 | Giam giữ: phòng tạm giữ và nhà tù | Tiếp nhận, giường, staff, chi phí, thời hạn theo luật game, thả/tái hòa nhập | Không tự xóa cư dân phạm tội; custody/occupancy lưu được |
+| S12 | Phúc lợi: văn phòng trợ giúp, nhà ở xã hội, trung tâm cộng đồng | Eligibility, hồ sơ, trợ cấp trong ngân sách, tìm chỗ ở/việc và theo dõi | Hộ nhận tiền/chỗ thật, trợ cấp không nhận lặp |
+| S13 | Chăm sóc: cơ sở trẻ em/người cao tuổi, trung tâm hỗ trợ tiếp cận | Care slots, ca/staff, dinh dưỡng, đi lại và phí/hỗ trợ theo hộ | Care demand và phục vụ có hàng đợi, không nhân dân số |
+| S14 | Hành chính: tòa thị chính, trung tâm tài chính đô thị | Hồ sơ/policy/project capacity, khoản vay và điều kiện giao dịch vùng | Chi phí/giới hạn/modifier rõ; không nút in tiền |
+| S15 | Bưu chính: hòm thư, bưu cục, trung tâm phân loại, xe thư | Thư/kiện có sender/destination, pickup, sort, tuyến phát, kết nối ngoài | Delivery event và backlog; thư không tự tới theo radius |
+| S16 | Viễn thông: tower, node mạng, trung tâm dữ liệu, uplink | Coverage và backhaul/throughput, thuê bao, power/staff, tải giờ cao điểm | Quá tải/mất điện gây giảm chất lượng, bills đối chiếu |
+| S17 | Công viên: vườn nhỏ, quảng trường, depot bảo trì công viên | Đi tới nghỉ/chơi, occupancy, litter, staff đi bảo trì | Visits/satisfaction từ hoạt động; condition ảnh hưởng lượt |
+| S18 | Thể thao/giải trí: sân thể thao, hồ bơi, phòng tập, sân vận động | Vé/member, bookings, lịch, crowd, năng lực an toàn | Khách tới, xếp hàng, chơi/xem và rời đi |
+| S19 | Văn hóa: bảo tàng, bảo tàng hàng hải, nhà hát, nhà văn hóa | Lịch mở/show, ghế/chỗ, staff, vé, tham quan | Khán giả thực, doanh thu từ vé đã bán |
+| S20 | Du lịch: khách sạn, resort, trung tâm thông tin và hội nghị | Booking, room-night, staff/linen/food, visitor itinerary, sự kiện | Có khách lưu trú/checkout, không vượt rooms |
+| S21 | Công viên chuyên đề: city park lớn, zoo, amusement park, nature reserve | Gates/path, module, ticket, queue, care/safety/maintenance | Chạy ít nhất một ngày sự kiện và đo luồng khách |
+| S22 | Chợ: chợ dân sinh/đêm, container market, food stalls/trucks | Thuê chỗ, sourcing, storage, bán hàng, hygiene, giờ và delivery | Inventory/cash đổi theo giao dịch, xe đỗ hợp lệ |
+| S23 | Điện: toàn bộ nguồn, storage, transformers và mạng trong I-06 | Phát/truyền/cấp/nhập/xuất, sửa chữa và nhiên liệu | Cân bằng kW/kWh, blackout phục hồi có lý do |
+| S24 | Nước sạch: toàn bộ pump/tank/mains trong I-07 | Lấy/trữ/cấp, giới hạn chất lượng/flow, hóa đơn | Nhu cầu và nguồn m³ đối chiếu được |
+| S25 | Nước thải: outlet, treatment, sludge và mạng trong I-07 | Thu/xả/xử lý, contamination và vận chuyển byproduct | Xử lý giảm tải ô nhiễm đúng throughput |
+| S26 | Vận tải hành khách: depot/stop/ga/bến/airport trong I-08 | Tuyến, lịch, crew, fares, boarding, transfers | Hành trình nhiều phương thức tới đích thật |
+| S27 | Logistics: warehouse, cargo rail, port, cargo airport | Đơn, manifest, storage, loading slot, transport và giao | Không ghi received trước arrival/unload |
+| S28 | Bãi đỗ/gửi xe: mặt đất, nhiều tầng, ngầm và bike parking | Tìm chỗ, reserve có TTL, đỗ, trả phí và lấy xe | Không hai xe dùng cùng slot, có queue khi đầy |
+| S29 | Chống ngập: hồ điều tiết, kè, trạm bơm, gate và drainage | Giới hạn lưu lượng/điện, tích/xả, maintenance và weather input | Khu bảo vệ chịu ảnh hưởng khác khi máy thiếu điện |
+| S30 | Cảng biển/phà: cảng mô-đun, bến khách/hàng, cổng/kho/bãi | Berth reservation, docking, loading và nối mạng ngoài | Tàu chờ bến; passenger/cargo transfers đúng capacity |
+| S31 | Hàng hải tài nguyên: bến cá, trại nuôi, giàn dầu và nhà chế biến | Boat/tanker crew, catch/extract, stock, unloading, cold chain | Stock giảm/hồi, hàng được giao trước khi ghi doanh thu |
+| S32 | Trung tâm cứu hộ kết hợp và điểm trực dịch vụ cảng | Nhiều queue độc lập và pools ambulance/fire/police/rescue hữu hạn | Hai incident đồng thời không double-book crew/xe |
+
+### I3. Contract chung — dịch vụ phải thật sự vận hành
+
+```text
+Cho mỗi service/building template, khai báo:
+- ID, tên Việt, icon, category, footprint/entrances, allowed terrain, unlock/preconditions.
+- Owner/public/private; construction price, bill of quantities, duration, demolition/refund.
+- Capacity và đơn vị: slots/beds/students/tonnes/m3/day/kW/jobs/hour; không trộn tồn kho với throughput.
+- Staff roles, shifts, qualifications, equipment/vehicle pools, dispatch channels.
+- Điện, nước, materials/consumables/fuel, storage, operating schedule và maintenance.
+- Fixed OPEX, payroll, variable inputs, bill/fee/subsidy, ledger accounts và tax rules.
+- Network/connectivity, eligibility và coverage/response model; vùng phủ vẽ từ model thật.
+- Queue priority, assignment/reservation, travel, arrival, service, completion/cancel, cooldown.
+- Các module nâng cấp, điểm gắn, số tối đa, footprint, capacity và input thêm; cấp 1–5 theo F.
+- Các failure states: mất mạng, hết vật tư, thiếu ca, đầy, hỏng, mất điện/nước, đường bị chặn.
+- UI inspector/layer/notifications, save schema/version, mission events và ranked validation.
+```
+
+Mỗi yêu cầu phục vụ có `jobId`, target, createdAt, priority, resources, assignment, route, state và result. Vòng đời chuẩn: requested → queued → assigned → travelling/awaiting-arrival → servicing → completed; nhánh cancelled/failed có lý do và giải phóng reservation. Walk-in như học/khám/thể thao có arrival/occupancy thật thay cho xe dispatch. Điện/telecom có throughput/allocation liên tục thay cho giả tạo hàng ngàn “chuyến phục vụ”. Chọn model phù hợp và ghi rõ, không bắt mọi hệ thống dùng cùng một thuật toán.
+
+Các điều kiện cứng: một crew/vehicle/bed/seat chỉ được reserve cho một nhiệm vụ cùng lúc; service result chỉ xuất hiện khi đủ điều kiện và thời gian; queue không biến mất khi đóng UI; nhân sự cần ca/lương/khả năng tới nơi. Không tìm được đường thì báo chờ/failed và có retry có giới hạn. Dỡ công trình đang phục vụ phải chuyển/hoàn trả/cancel có chính sách, không xóa người hoặc hàng. Disable dịch vụ phải thu ngân sách theo hợp đồng, không miễn mọi chi phí còn tồn tại. Input shortage giảm tốc/capacity theo model, không hoàn thành rồi trừ vật tư âm.
+
+Chất lượng dịch vụ phải tính được theo tỷ lệ phục vụ, wait/response, condition, staff coverage và outcomes. Heatmap không dùng một hệ số “đẹp” khác với simulation. Inspector có nominal/effective capacity, queued/active/completed, người/xe đang dùng, chi phí kỳ này và nguyên nhân thiếu năng lực. Tăng budget hoặc module phải tác động đúng nguồn lực, không tự phát sinh người/xe miễn phí.
+
+### I4. Chi phí đầy đủ cho catalogue mở rộng
+
+Không được bán công trình 0 BC hoặc để giá `TODO`. Mọi template/module/vehicle/policy đều có record trong một catalogue kiểm tra schema. Với template đã có A/D/F, dùng đúng record đó. Nếu còn thiếu, hoàn thành cấu hình theo quy tắc dưới đây, có giải trình balance trong `docs/economy-balance.md`; các mức này là giá thiết kế tiền game, không là giá ngoài đời hoặc bảng giá của trò chơi tham chiếu.
+
+**Bảng khởi tạo cho các mục thường bị thiếu.** Chi xây dưới đây gồm vỏ công trình và thiết bị cơ bản, chưa gồm mua đất, kết nối mạng, xe mua riêng và lương. OPEX là bảo trì cố định/tháng game, chưa gồm payroll/điện/nước/consumables để tránh cộng hai lần. “Staff” là vị trí ở mức đủ tải, còn ca/lương theo A. Nếu A/D đã có mục tương đương thì không tạo bản trùng; giữ mục cũ và ghi mapping alias.
+
+| Template mới | Giá xây BC | Năng lực cơ bản của template | Staff | OPEX BC/tháng |
+|---|---:|---|---:|---:|
+| Trung tâm phân loại bưu chính | 1.400.000 | 12.000 thư/kiện/ngày, kho 30.000 đơn vị, gara 8 van | 24 | 3.500 |
+| Node/uplink viễn thông | 900.000 | 5.000 thuê bao quy đổi, 20 Gbps aggregate | 6 | 2.000 |
+| Trung tâm dữ liệu | 4.000.000 | 20.000 thuê bao quy đổi, 80 Gbps aggregate | 24 | 9.000 |
+| Trung tâm tài chính đô thị | 5.500.000 | 8 bàn xử lý hợp đồng/ngày; điều kiện vay theo config | 35 | 10.000 |
+| Depot bảo trì công viên | 350.000 | 4 đội/ca, gara 4 xe; workload theo m² | 12 | 900 |
+| Trụ sở cảnh sát lớn | 3.000.000 | 12 đội/ca, 24 chỗ tạm giữ, gara 12 xe | 60 | 6.000 |
+| Nhà tù nhỏ | 4.500.000 | 120 chỗ, intake 12 người/ngày | 45 | 8.000 |
+| Viện nghiên cứu y tế | 6.000.000 | 4 project slots, 40 research work-units/giờ | 40 | 10.000 |
+| Tower theo dõi cháy rừng | 180.000 | 2 người/ca; tầm quan sát theo địa hình tối đa 5 km | 6 | 600 |
+| Depot trực thăng chữa cháy | 2.800.000 | 2 hangar và 2 tổ trực; trực thăng mua riêng | 20 | 5.500 |
+| Trung tâm cảnh báo thiên tai | 2.500.000 | 8 incident monitoring slots, 12 cảnh báo vùng/giờ | 18 | 4.500 |
+| Shelter nhỏ | 500.000 | 200 người, kho đồ tiếp tế 3 ngày đủ tải | 8 | 1.200 |
+| Shelter lớn | 2.200.000 | 1.000 người, kho đồ tiếp tế 3 ngày đủ tải | 32 | 4.800 |
+| Trung tâm cứu hộ kết hợp | 5.000.000 | 4 fire, 4 ambulance, 4 police và 2 rescue teams/ca | 90 | 12.000 |
+| Nhà đỗ xe nhiều tầng | 1.200.000 | 250 chỗ, 2 gate lanes | 6 | 2.000 |
+| Bãi đỗ xe ngầm | 2.000.000 | 250 chỗ, 2 gate lanes, cần thông gió | 7 | 3.000 |
+| Bãi gửi xe đạp | 20.000 | 100 chỗ, cần nối walking/cycling graph | 1 | 80 |
+| Cổng/cơ sở quản lý công viên lớn | 450.000 | 300 lượt qua gate/giờ, 500 khách đồng thời trước module | 10 | 1.200 |
+| Cổng và khu chăm sóc sở thú | 2.500.000 | 500 khách, 8 animal pens được cấp module riêng | 25 | 5.000 |
+| Cổng/quản lý khu vui chơi | 1.500.000 | 600 khách đồng thời; rides mua riêng | 18 | 3.500 |
+| Cổng/trạm khu bảo tồn | 400.000 | 200 khách đồng thời, 2 ranger teams/ca | 8 | 1.000 |
+| Chợ/container market cơ sở | 600.000 | 20 chỗ thuê, kho chung 40 tấn | 8 | 1.500 |
+| Bảo tàng hàng hải | 2.000.000 | 300 khách đồng thời, 1 show/exhibit slot | 18 | 4.000 |
+| Trung tâm hội nghị | 3.500.000 | 1.000 khách/sự kiện, 2 event halls | 28 | 6.000 |
+| Trạm an ninh/cứu hộ cảng | 1.200.000 | 2 police và 2 rescue teams/ca, 4 gara | 24 | 2.500 |
+| Bến cá nhỏ | 700.000 | 4 boat berths, kho lạnh 30 tấn, dỡ 5 tấn/giờ | 12 | 1.800 |
+| Trại nuôi thủy sản | 900.000 | 50 tấn stock, harvest phụ thuộc cycle/quality | 12 | 2.000 |
+| Giàn khai thác dầu ngoài khơi | 12.000.000 | 200 tấn/ngày, kho 1.000 tấn, 1 tanker berth | 70 | 24.000 |
+
+Các tham số riêng như telecom throughput, research work-unit và lead time là quy ước mô phỏng, có config và nhãn đơn vị. Không quy đổi trực tiếp số research work-unit thành một phát minh thực tế. Các template lớn/nhỏ cần footprint, utility demand, ca và vật tư từ bill of quantities, không chỉ dùng một record capacity.
+
+**Hoàn thiện những template chưa có giá.** Trước khi lập trình mua/xây, tính `P = foundation + shell + installed-equipment + access-works`, từ khối lượng × đơn giá chung A; điền bốn thành phần trong catalogue. Land/network/vehicles được báo riêng, không đưa vào P lần thứ hai. Dùng P làm giá base cho nâng cấp F. Module mở rộng phòng/kho/platform cơ bản có giá khởi tạo 0,25P, capacity thêm tối đa 25% nominal, staff/input/OPEX tăng theo chức năng; tối đa 2 module loại này nếu footprint cho phép. Module bộ lọc/phụ trợ có giá khởi tạo 0,15P và **không** tự tăng capacity; hiệu suất/tác dụng phải được ghi riêng. Equipment có record cố định thì dùng giá equipment + installation, không cộng thêm phần trăm toàn công trình. Điều chỉnh thiết kế nếu tính ra vô lý; không dùng công thức thay cho ghi catalogue cụ thể cuối cùng.
+
+Vehicle còn thiếu dùng record giá riêng trước khi unlock: van bưu chính 35.000 BC, xe tang 65.000 BC, xe bảo trì 80.000 BC, taxi 30.000 BC, bus điện 250.000 BC, xe đạp hộ 300 BC, food truck 40.000 BC, thuyền đánh cá nhỏ 280.000 BC, phà nhỏ 1.800.000 BC, trực thăng y tế/cứu hỏa 2.500.000 BC. Mỗi record bổ sung capacity, nhiên liệu/điện, crew, speed profile, maintenance và lifespan; không coi chỉ có giá là đủ. Các tàu lớn, máy bay, tổ máy và module chuyên dụng còn lại phải có bảng khối lượng/thiết bị và giá cuối cùng trong catalogue trước khi được bán. Không dùng giá van cho máy bay hoặc price scaling ngẫu nhiên theo level.
+
+Chi phí đường xe đạp/cầu mở/cảng/kè/đường ray vẫn tính theo m, m², thiết bị và giá A/D. Cầu mở cần line item motor/control/safety system + maintenance và điện mỗi cycle; không tính cầu thường rồi cho cơ cấu mở miễn phí. Policy/event có chi cố định và chi theo người/chuyến/giờ; trợ cấp có trần kỳ. Mọi báo giá nêu tổng xây, đất, kết nối, xe, nhân sự, OPEX dự kiến/tháng và lý do chênh trước/sau upgrade. Các khoản phát sinh dùng escrow/ledger theo Lệnh 4, không trừ một cục rồi bỏ qua vật tư.
+
+Kiểm tra catalogue khi build/test: ID không trùng; số hữu hạn/không âm; đúng đơn vị; mọi unlock có template/handler/icon; mọi recipe đủ input/output; mọi service có staff/capacity/price; module không tạo vòng dependencies; có license cho asset. Trước bàn giao không còn `TODO`, giá 0 ngoài mục miễn phí có lý do, công suất vô hạn, placeholder handler hay giá hardcode khác nhau giữa UI/core/server. Sổ chi phí, app UI và score validator đọc chung catalogue/version.
+
+### I5. Bảng đối chiếu, kiến trúc và trình tự thực hiện
+
+Tạo `docs/feature-coverage.md` với **20 dòng nhóm I-01…I-20, 32 dòng dịch vụ S01…S32 và các dòng con cho toàn bộ template liệt kê**. Đây không thay cho file `implementation-status`; hai file phải dẫn tới nhau. Mỗi dòng gồm: ID, mục yêu cầu, dependencies, status, đường dẫn module/handler/config, UI entry, save/migration, cách kiểm tra, bằng chứng, giới hạn. Status chỉ gồm `not_started`, `in_progress`, `implemented_unverified`, `verified`, `blocked`. `verified` chỉ khi các điều kiện hoạt động, UI, chi phí, lưu/khôi phục và kiểm tra có bằng chứng. Một nhóm có bất kỳ dòng con chưa đạt thì chưa đạt toàn bộ.
+
+Tạo hoặc mở rộng các registry và modules tương đương trong kiến trúc hiện tại: `BuildingCatalog`, `VehicleCatalog`, `ServiceCatalog`, `RecipeCatalog`, `PolicyCatalog`, `UnlockGraph`; `ServiceScheduler`, `Dispatch/Reservation`, `Household/FirmEconomy`, `UtilityNetworks`, `MultimodalRouting`, `TransitTimetables`, `CargoTransfers`, `Environment/Hazard`, `Park/Tourism`, `Mission/Progression`, `Save/Migrations`. Tên đường dẫn có thể thích nghi repo; không ép thay framework hay đổi tên lớp đang hoạt động chỉ để giống ví dụ.
+
+Thứ tự phụ thuộc: (1) clock/units/IDs/world/save/currency migration; (2) terrain/network/road/cost/construction; (3) hộ/firm/jobs/ledger/routes; (4) utilities/public services/queues; (5) toàn bộ transit/cargo/cycling; (6) resources/production/maritime; (7) parks/tourism/policies/disasters; (8) EXP/unlocks/missions/leaderboards; (9) hoàn thiện UI/art/audio/editor; (10) toàn bộ QA/deploy. Giao diện tối thiểu và bản lưu phải đi cùng từng chặng, không chờ tới cuối. Auth/BXH đã có phải tiếp tục được kiểm chứng suốt quá trình, không khóa người dùng tới chặng 8.
+
+Mô phỏng chi tiết nằm trong client worker; vùng ngoài dùng aggregate contracts có lead time và giới hạn tài nguyên. Tránh scan mọi entity × mọi service mỗi tick; spatial index, route cache versioned, event-driven jobs, fixed-step budget và LOD render theo G6. Offscreen không được bỏ trạng thái queue/ledger/citizen trips. Save serialize IDs/config versions/reservations và job states, không DOM hoặc renderer objects.
+
+Với ranked, danh mục command mới phải được server kiểm chứng hoặc có deterministic replay/checkpoint theo Lệnh 19. Nếu một hệ thống chưa được authoritative validator hỗ trợ thì đánh dấu phiên có hệ thống đó là chưa đủ điều kiện ranked; không đưa score client khai vào BXH. Điều này là tình trạng chưa hoàn tất phải xử lý trước nghiệm thu ranked, không là lý do bỏ vĩnh viễn tính năng. Thiết kế replay và workload kiểm chứng theo giới hạn runtime; nếu thật sự cần backend thêm, nêu hạ tầng/quyền cụ thể và tiếp tục phần độc lập.
+
+Đầu ra mỗi chặng: code/config/asset gốc, migration nếu cần, kiểm tra phù hợp, scenario có thể chơi, cập nhật coverage/status và báo ngắn. Không gọi toàn bộ game hoàn thành khi chỉ có một vertical slice. Không đưa vào catalogue cuối các mục yêu cầu rồi giấu chúng vĩnh viễn sau nhãn “sắp có”.
+
+### I6. Các kịch bản nghiệm thu xuyên hệ thống
+
+Các scenario dùng seed cố định và fixture riêng; không lấy debug money/population để hợp thức hóa progress hoặc ranked save của người chơi. Đây là kiểm tra hoạt động cần thiết cho yêu cầu mô phỏng, không phải viết test chỉ xác nhận UI có một nút.
+
+| Kịch bản | Các bước và kết quả phải chứng minh |
+|---|---|
+| T01 — Một ngày cư dân | Hộ tới, thuê nhà, mua/gửi xe đạp hoặc đi bộ, đưa con học, chuyển bus–tram/metro, đi làm, mua hàng, giải trí, về nhà. Ledger/attendance/jobs/arrival đối chiếu, không teleport |
+| T02 — Sự cố y tế | Tạo ca bệnh đủ điều kiện, queue, ambulance/heli tới, đưa viện, reserve giường, điều trị rồi ra viện. Thử không còn giường/thuốc/staff và save/load giữa chuyến |
+| T03 — Hậu sự và rác | Xe tang thu nhận đúng người, cemetery/cremation có chỗ; xe rác gom tới landfill/recycling/incinerator. Chứng minh tải, backlog, yield và costs |
+| T04 — Cháy và sơ tán | Cháy/rủi ro được phát hiện, fire teams đi, lấy nước/dập; cảnh báo đưa dân vào shelter. Thử đường chặn, shelter đầy và đội cứu hộ kết hợp cùng lúc có ca cấp cứu |
+| T05 — An ninh/phúc lợi | Patrol giải quyết vụ việc, custody/transfer/prison/release đủ tiến trình; hộ đủ eligibility nhận trợ giúp một lần/kỳ. Không mất cư dân hoặc double payment |
+| T06 — Thư và internet | Một mail item qua hòm/bưu cục/sort/van tới người nhận; tower/data center quá tải và mất điện làm giảm dịch vụ. Bổ sung capacity làm phục hồi có chi phí |
+| T07 — Điện/nước/môi trường | Nhà máy dùng fuel, pin sạc/xả, cắt transformer gây blackout cục bộ; xả thải ảnh hưởng nguồn nước, xử lý giảm pollution. Tổng năng lượng/m³/ledger đối chiếu |
+| T08 — Chuỗi sản xuất | Nông trại/mỏ tạo lô, truck→cargo rail→port hoặc airport→warehouse→factory→shop. Mỗi transfer chờ slot/unload; thiếu vật tư và kho đầy làm dừng |
+| T09 — Cầu và hàng hải | Tàu hàng tới cầu mở, xe dừng/dọn cầu, mở đúng clearance, tàu qua, cầu đóng và xe đi tiếp. Phà đón khách; boat bắt cá/nuôi thu hoạch rồi kho lạnh/chế biến |
+| T10 — Công viên và du lịch | Khách ngoài tới, đặt khách sạn, tới zoo/ride/museum/chợ/hội nghị, trả vé/mua hàng và về. Gate/ride/room capacity thật; maintenance ảnh hưởng chất lượng |
+| T11 — Nâng cấp và chính sách | Nâng tier/module trả đúng P, tăng capacity/staff/inputs; nhà tư nhân không tự dùng ngân quỹ. District cấm truck/ưu tiên bus/tái chế có ảnh hưởng route/cost/outcome |
+| T12 — EXP và BXH | Hoàn thành nhiệm vụ có cửa sổ đo, cộng EXP và cấp/reward receipts đúng một lần; restore/replay/double request không nhận lại. Hai user RLS và sửa client score bị từ chối |
+| T13 — Việt Nam và mở đất | Chọn được mọi đơn vị cấp tỉnh trong H, so hai vùng biển/núi có dữ liệu khác; mua parcel, chỉnh địa hình, xây và save/load giữ vị trí/IDs/phiên bản nguồn |
+| T14 — Hiệu năng và phát hành | Chạy các quy mô/thiết bị trong G6, đo p95/FPS/memory/long tasks với services hoạt động, kể cả ngoài camera; deploy và smoke test Auth/save/leaderboards production |
+
+Chạy các scenario service với ít nhất ba tình trạng: đủ nguồn lực, một bottleneck có chủ đích, và phục hồi sau khi khắc phục. Kiểm tra snapshot giữa queue, travelling, servicing, bridge cycle, transit transfer, hotel stay, upgrade và construction; tải lại không nhân đôi tiền, xe, khách hoặc reservation. Các lỗi/timeouts không được làm mất bản lưu hiện hữu.
+
+Tài liệu bàn giao bổ sung: `docs/feature-coverage.md`, `docs/economy-balance.md`, `docs/simulation-models.md` (giả định/đơn vị/độ chính xác), `docs/scenario-results.md`, `docs/performance-report.md`, `docs/CODEX_HANDOFF.md`, catalogue/schema và dữ liệu nguồn/license. Kết quả kiểm tra phải nói rõ là automated test, browser check, mock/local hay Supabase/production thật. Mục bị chặn có cách gỡ chặn cụ thể; không được báo “đầy đủ tất cả” nếu vẫn còn mục chưa đạt.
+
+### I7. Lệnh tiếp tục khi còn phần thiếu
+
+```text
+Tiếp tục Build City 26 trong repo hiện tại theo Build_City_26_Full_Codex_Prompts.md, toàn bộ Lệnh 0–28 và Phụ lục A–I. Đọc docs/CODEX_HANDOFF.md, docs/feature-coverage.md, implementation-status và kiểm tra mã thật. Chọn mục chưa đạt có dependencies đã đủ, hoàn thành cả mô phỏng, catalogue/chi phí, UI, save/migration và kiểm tra; sửa các lỗi liên quan. Sau khi đạt, cập nhật bằng chứng và tiếp tục mục kế tiếp. Giữ mọi yêu cầu đã chốt về Việt Nam, thời gian, 100 cấp/300 nhiệm vụ, thưởng tiền, Auth/Supabase/BXH, tối ưu và deploy. Không làm lại dự án hoặc rút scope xuống một demo. Báo chính xác phần đã kiểm chứng và phần còn thiếu.
+```
 
 ## Lệnh tiếp tục dùng sau mỗi chặng
 

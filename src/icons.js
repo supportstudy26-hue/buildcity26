@@ -30,9 +30,12 @@ const drawings={
   menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',
   plus:'<path d="M12 5v14M5 12h14"/>',
   minus:'<path d="M5 12h14"/>',
+  eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>',
+  lock:'<rect x="5" y="10" width="14" height="12" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4M12 15v3"/>',
   account:'<circle cx="12" cy="8" r="4"/><path d="M4 22v-3a8 8 0 0 1 16 0v3"/>',
   bell:'<path fill="currentColor" fill-opacity=".12" d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5Z"/><path d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5ZM10 21h4M12 2v2"/>',
   chart:'<path d="M3 3v18h19M7 16v-5m5 5V7m5 9V4"/>',
 };
-export function icon(name,size=24){return `<svg class="ui-icon" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${drawings[name]||drawings.city}</svg>`;}
+const families={smallPower:'power',smallWater:'water',smallSewage:'sewage',waterPump:'water',treatmentPlant:'sewage',wasteCenter:'waste',secondarySchool:'school',university:'school',hospital:'clinic',fireCenter:'fire',policeCenter:'police',plaza:'park',sportsPark:'park'};
+export function icon(name,size=24){return `<svg class="ui-icon" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${drawings[name]||drawings[families[name]]||drawings.city}</svg>`;}
 export function applyIcons(root=document){root.querySelectorAll('[data-icon]').forEach(el=>el.innerHTML=icon(el.dataset.icon));}

@@ -1,11 +1,11 @@
-import {createCity,SIZE,analyze,random} from '../core.js';
+import {createEmptyCity,SIZE,analyze,random} from '../core.js';
 import {initializeFoundation} from '../systems/foundation.js';
 import {cellHeights,slopeAt} from '../systems/terrain.js';
 import {validateRegion} from './data.js';
 // Each local tile remains 20 metres; the 12.8km overview is never compressed to this grid.
 export function createVietnamCity(pkg,manifest){
   validateRegion(pkg);if(manifest?.version!==pkg.version)throw new Error('Manifest địa lý không khớp.');
-  const s=createCity(),r=pkg.region,p=pkg.playable;
+  const s=createEmptyCity(),r=pkg.region,p=pkg.playable;
   for(const t of s.tiles)Object.assign(t,{terrain:'grass',kind:null,zone:null,level:0,residents:0,age:0,garbage:0,hazard:0,fire:0,crime:0,health:100,education:0,assetId:null,historicalCost:0});
   s.name='Thành phố '+r.provinceName;s.households=[];s.citizens=[];s.firms=[];s.vehicles=[];s.contracts=[];s.events=[];s.progression=undefined;
   s.world={version:1,cellMeters:20,widthMeters:SIZE*20,heightMeters:SIZE*20,waterHeight:0,legacyFlat:false,heights:[...p.heights],waterLevels:p.waterMask.map((v,i)=>v===1?0:cellAverage(p.heights,i)+.12),geography:{mode:'vietnam',version:pkg.version,regionId:r.id,provinceId:r.provinceId,provinceName:r.provinceName,anchor:[...r.anchor],crs:pkg.crs,utmOrigin:[pkg.utmCenter[0]-640,pkg.utmCenter[1]+640],entryTile:r.entryTile,waterMask:[...p.waterMask],insideProvince:[...p.insideProvince],osmDate:manifest.osmDate,demEdition:manifest.demEdition,sourceHashes:pkg.demTiles.map(t=>t.sha256)}};

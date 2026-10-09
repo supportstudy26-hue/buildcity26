@@ -5,7 +5,7 @@ export function updateLegacyServices(s){
   const m=s.metrics;
   s.tiles.forEach(t=>{
     const service=kind=>t.connected&&t.services.includes(kind);
-    if(t.kind==='residential')t.garbage=clamp((t.garbage||0)+t.residents*.045-(t.connected&&t.services.includes('waste')?4:0),0,100);
+    if(t.kind==='residential')t.garbage=clamp((t.garbage||0)+t.residents*.045-(t.connected&&t.services.includes('waste')?(t.wasteCollection||4):0),0,100);
     if(['residential','industrial'].includes(t.kind)){
       const risk=(t.kind==='industrial'&&t.pollution>35)||(t.garbage||0)>45;
       t.hazard=clamp((t.hazard||0)+(risk&&!service('fire')?2:-3),0,100);

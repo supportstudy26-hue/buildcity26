@@ -14,7 +14,7 @@ function clients(env){
   return {admin:createClient(url,key,options),auth:createClient(url,publicKey,options),key};
 }
 async function rpc(admin,name,args){const {data,error}=await admin.rpc(name,args);if(error)throw fail(/BC26_TAKEN/.test(error.message)?409:503,/BC26_TAKEN/.test(error.message)?'Tài khoản này đã được sử dụng.':'Máy chủ tài khoản tạm thời chưa hoàn tất thao tác. Hãy thử lại.');return data;}
-async function login(auth,email,password){const {data,error}=await auth.auth.signInWithPassword({email,password});if(error||!data.session)throw fail(401,GENERIC);return data.session;}
+async function login(auth,email,password){const {data,error}=await auth.auth.signInWithPassword({email,password});if(error?.status>=500||error?.name==='AuthRetryableFetchError')throw fail(503,'Máy chủ xác thực tạm thời chưa đáp ứng. Hãy thử lại.');if(error||!data.session)throw fail(401,GENERIC);return data.session;}
 function tokens(session){return {access_token:session.access_token,refresh_token:session.refresh_token};}
 // Dependencies are injected for deterministic failure/race tests; production
 // always calls restricted DB RPCs and Supabase password Auth, never fake sessions.

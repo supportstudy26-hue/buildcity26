@@ -5,6 +5,9 @@ export const CATALOG = {
   residential: {name:'Khu dân cư',cost:25,icon:'⌂',color:'#8ce0ac',group:'zones',description:'Chi phí quy hoạch ô đất; nhà ở do cư dân tự xây. Nhà sẽ mọc lên khi có đường kết nối, điện, nước và nhu cầu dân cư.'},
   commercial: {name:'Thương mại',cost:25,icon:'▤',color:'#83c8ed',group:'zones',description:'Cửa hàng cung cấp 16 việc làm mỗi ô. Cần đường, điện và nước.'},
   industrial: {name:'Công nghiệp',cost:25,icon:'▥',color:'#eacc79',group:'zones',description:'Nhà xưởng cung cấp 28 việc làm mỗi ô nhưng gây ô nhiễm. Nên đặt xa nhà ở.'},
+  smallPower: {name:'Trạm điện khu phố',cost:15000,upkeep:150,capacity:100,range:8,service:'power',color:'#eacc79',group:'utilities',description:'Cấp 100 kW, bán kính 8 ô. Bộ khởi đầu giá 15 triệu đồng game; cần đường nối cổng.'},
+  smallWater: {name:'Trạm nước khu phố',cost:12000,upkeep:120,capacity:100,range:8,service:'water',color:'#83c8ed',group:'utilities',description:'Cấp 15 m³/ngày, bán kính 8 ô. Bộ khởi đầu giá 12 triệu đồng game; cần đường nối cổng.'},
+  smallSewage: {name:'Xử lý nước thải nhỏ',cost:12000,upkeep:150,capacity:100,range:8,service:'sewage',color:'#77b8c9',group:'utilities',description:'Xử lý 15 m³/ngày, bán kính 8 ô. Cần đường, điện và nước; vốn xây 12 triệu đồng game.'},
   power: {name:'Trạm điện',cost:4200,upkeep:80,capacity:500,range:17,icon:'ϟ',color:'#eacc79',group:'utilities',description:'Cấp 500 kW trong bán kính 17 ô khi nối vào đường.'},
   water: {name:'Trạm cấp nước',cost:3200,upkeep:55,capacity:500,range:17,icon:'◈',color:'#83c8ed',group:'utilities',description:'Cấp 75 m³ nước/ngày trong bán kính 17 ô khi nối vào đường.'},
   sewage: {name:'Xử lý nước thải',cost:3900,upkeep:60,capacity:600,range:17,icon:'≈',color:'#77b8c9',group:'utilities',description:'Xử lý 90 m³ nước thải/ngày trong bán kính 17 ô. Nước thải chưa xử lý làm tăng ô nhiễm và giảm hạnh phúc.'},
@@ -16,10 +19,22 @@ export const CATALOG = {
   park: {name:'Công viên',cost:850,upkeep:8,range:6,icon:'♧',color:'#8ce0ac',group:'parks',description:'Tạo không gian xanh, nâng hạnh phúc cho nhà ở trong bán kính 6 ô.'},
   bus: {name:'Bến xe buýt',cost:5200,upkeep:50,range:15,icon:'▣',color:'#f2bc92',group:'transport',description:'Bến vận hành các tuyến xe buýt. Xây điểm dừng rồi tạo tuyến trong Quản lý xe buýt.'},
   busStop: {name:'Điểm dừng xe buýt',cost:280,upkeep:1,range:5,icon:'▣',color:'#f2bc92',group:'transport',description:'Đặt cạnh đường kết nối. Tuyến cần ít nhất hai điểm dừng; nhà ở và nơi làm việc gần tuyến sẽ giảm ô tô.'},
+  waterPump: {name:'Nhà máy nước',cost:650000,upkeep:2000,capacity:5000/.15,range:24,service:'water',color:'#83c8ed',group:'utilities',description:'Cấp 5.000 m³/ngày trong bán kính 24 ô. Cần đường nối cổng thành phố.'},
+  treatmentPlant: {name:'Nhà máy nước thải',cost:1200000,upkeep:4000,capacity:5000/.15,range:24,service:'sewage',color:'#77b8c9',group:'utilities',description:'Xử lý 5.000 m³/ngày, bán kính 24 ô. Chỉ vận hành khi có đường, điện và nước.'},
+  wasteCenter: {name:'Trung tâm thu gom rác',cost:600000,upkeep:2200,range:18,service:'waste',collection:8,color:'#b8c4ba',group:'utilities',description:'Thu gom 8 đơn vị rác/ngày mỗi nhà trong bán kính 18 ô, gấp đôi trạm nhỏ. Cần điện, nước và đường; đặt xa nhà ở.'},
+  secondarySchool: {name:'Trường trung học',cost:2500000,upkeep:5000,range:14,service:'school',color:'#f2bc92',group:'services',description:'Cải thiện giáo dục trong bán kính 14 ô. Cần đường, điện và nước; chưa mô phỏng chỗ học theo từng học sinh.'},
+  university: {name:'Đại học',cost:8000000,upkeep:12000,range:22,service:'school',color:'#f2bc92',group:'services',description:'Phục vụ giáo dục trong bán kính 22 ô. Chi phí cao; cần đường, điện và nước. Chưa có bằng cấp hay tuyển sinh riêng.'},
+  hospital: {name:'Bệnh viện',cost:6000000,upkeep:12000,range:20,service:'clinic',color:'#dfaaa6',group:'services',description:'Phục hồi sức khỏe trong bán kính 20 ô. Cần đường, điện và nước; chưa có hàng đợi khám hay giường bệnh.'},
+  fireCenter: {name:'Trung tâm cứu hỏa',cost:1800000,upkeep:4000,range:18,service:'fire',color:'#e69e7b',group:'services',description:'Giảm nguy cơ và dập cháy trong bán kính 18 ô. Cần đường, điện và nước; chưa điều phối xe cứu hỏa riêng.'},
+  policeCenter: {name:'Sở cảnh sát',cost:1600000,upkeep:4000,range:18,service:'police',color:'#a6bcd2',group:'services',description:'Giảm mất an ninh trong bán kính 18 ô. Cần đường, điện và nước; thất nghiệp vẫn làm tăng nguy cơ.'},
+  plaza: {name:'Quảng trường',cost:220000,upkeep:450,range:8,service:'park',color:'#c8d4ac',group:'parks',description:'Không gian công cộng giúp tăng hạnh phúc trong bán kính 8 ô. Cần đường, điện và nước.'},
+  sportsPark: {name:'Công viên thể thao',cost:350000,upkeep:700,range:11,service:'park',color:'#8ce0ac',group:'parks',description:'Không gian xanh và sân chơi phục vụ bán kính 11 ô. Cần đường, điện và nước; chưa có lịch thi đấu.'},
   bulldoze: {name:'Phá dỡ',cost:0,icon:'⌫',color:'#ef9f91',group:'bulldoze',description:'Phá dỡ từng ô và hoàn lại 25% chi phí xây. Kiểm tra trước khi kéo.'},
   inspect: {name:'Xem thông tin',cost:0,icon:'⌖',color:'#d1dedc',group:'inspect',description:'Chọn một ô để xem cư dân, kết nối và dịch vụ.'}
 };
-for(const v of Object.values(CATALOG)){v.cost*=LEGACY_BC_FACTOR;if(v.upkeep)v.upkeep*=LEGACY_BC_FACTOR;}
-export const BUILDINGS = ['power','water','sewage','waste','school','clinic','fire','police','park','bus','busStop'];
+// New facilities use BC directly; existing prices remain compatible with paid assets.
+for(const v of Object.values(CATALOG))if(!v.service){v.cost*=LEGACY_BC_FACTOR;if(v.upkeep)v.upkeep*=LEGACY_BC_FACTOR;}
+export const serviceKind=kind=>CATALOG[kind]?.service||kind;
+export const BUILDINGS = Object.keys(CATALOG).filter(k=>['utilities','services','parks','transport'].includes(CATALOG[k].group));
 export const ZONES = ['residential','commercial','industrial'];
 export const ROADS = ['road','avenue'];

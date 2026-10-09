@@ -1,5 +1,36 @@
 # Build City 26 — trạng thái triển khai
 
+## 09/10 — giao diện từ gói người dùng, chặng phát hành mới
+
+Đã xem cả bốn ảnh Build_City_26_Giao_Dien.zip. Dựng lại trang chủ, đăng ký, đăng nhập và HUD theo xanh đêm/xanh ngọc/vàng, chữ lớn và bố cục chia ảnh/form. Trang chủ là màn đầu mỗi lần mở; nút Bắt đầu xây dựng mở đăng ký khi chưa đăng nhập, không đi thẳng vào thành phố tutorial cũ. Tài khoản mới do server tạo đất trống/100 triệu; không xóa account hoặc save cũ. Chọn địa phương/recovery/email cũ vẫn là luồng thật.
+
+Trang chủ chưa tải core/Three.js; đã kiểm trước bấm có 0 canvas world3d. Sau mở game, quay trang chủ dừng simulation và GPU draw; tải lại không cộng thời gian offline. Ảnh ven biển riêng dùng built-in imagegen, WebP 481.128 byte, không phải cảnh mô phỏng; ghi chú trên UI. Toàn prompt/nguồn tại art-direction.md. Không có AI API runtime, không thêm texture cho game.
+
+Kiểm: toàn 110 tests đạt (203,95s), build sau sửa điều hướng đạt 9,79s. Browser 1280×720: home→Bắt đầu→đăng ký đúng3input; card bottom715px, hiển thị đủ; hiện/ẩn password đổi type thật; login2input; mở game giữ26triệu bản kit đã lưu; quayhome. Không có JSerror. Ảnh reference-home/reference-register/reference-login; chưa mobile mới, chưa production bản này. Không thêm BXH giả vào trang chủ; BXH server vẫn chưa hoàn tất.
+
+Nhà residential/commercial trên production cũ vẫn nhiều mẫu lặp; đang triển khai mỹ thuật riêng theo yêu cầu mới, cần QA geometry/save/performance trước phát hành.
+
+## 09/10/2026 — trạng thái hiện tại, vốn mới 100 triệu
+
+Mục này thay các thông tin chờ GitHub/Vercel ở lịch sử bên dưới. Đã đọc toàn bộ đặc tả 1.356 dòng mới và cập nhật bản trong repo; `feature-coverage.md` đối chiếu 20 nhóm I, 32 dịch vụ S, mẫu công trình và bảng giá. Toàn Lệnh 0–28/A–I **chưa hoàn tất**; không đánh dấu catalog/mesh là hệ thống dịch vụ I3 hoàn chỉnh.
+
+**Đã chỉnh mã và chơi được:**
+- Vốn của tài khoản mới và thành phố mới là **100 triệu ₫ = 100.000 BC**, cả bản thường và địa phương Việt Nam. Server tự dựng trạng thái đầu, không nhận số tiền khởi đầu từ client. Retry đăng ký vẫn trả thành phố cũ, không cấp lại tiền. Save/ledger cũ giữ số dư; schema 6 không đổi.
+- Khách mới bắt đầu đất trống. Menu bắt đầu lại có màn xác nhận, giữ địa hình/tên và tạo backup trước khi thay; cloud cũ giữ nguyên. Cổng vào có nút đưa camera đến đúng ô xây đường.
+- Có **24 công trình** gồm ba trạm nhỏ (điện 100 kW, nước/nước thải 15 m³/ngày), các nhà máy nước, trung tâm rác, trường trung học/đại học, bệnh viện, cứu hỏa/cảnh sát lớn, quảng trường và thể thao. Công suất/phạm vi/phí thật; đường đứt hoặc thiếu tiện ích ảnh hưởng vận hành. Thu gom lớn xử lý rác nhanh hơn, alias dịch vụ không nhân đôi hạnh phúc.
+- Menu xây có hình SVG riêng nhẹ, tên/giá/phí/công suất; model dùng geometry/material chung. Không thêm texture hoặc WebGL context. Chưa có nhân sự, hàng đợi, giường bệnh/xe dispatch riêng cho các biến thể; chưa đáp ứng đủ I3/I4.
+
+**Kiểm tra:** npm ci đạt (25 packages, 0 vulnerabilities); `npm test` **110/110 đạt**, 0 skip, 165,11 giây; build đạt **32,90 giây**. Regression gồm tạo tài khoản server 100.000 BC ở bản thường/Hải Phòng, openingCash đúng, tải lại không nhận vốn thêm, save cũ không giảm tiền, cả 24 công trình save/render, tiện ích/coverage/garbage và xây thành phố có dân/việc làm với 100 triệu. Bài địa phương trước đó thất bại vì còn so với fixture tutorial 12 tỷ; đã sửa kỳ vọng theo quyết định mới và chạy lại toàn bộ đạt.
+
+**Browser thực:** localhost5180 1280×720: reset từ bản đang có tạo backup, 0 dân/100 triệu; xây 5 đường + ba trạm nhỏ + dân cư/thương mại, còn **26 triệu**. Lưu/reload vẫn 26 triệu, không có JS error. Ảnh `empty-start-100-million.png`, `starter-utilities-budget.png`, `expanded-building-menu.png`. Chưa kiểm lại điện thoại: viewport override IAB không có hiệu lực. Chưa benchmark đông dân mới; số đo trước 19,9 FPS/1.000 cư dân vẫn chưa đạt mục tiêu. Three chunk 550,03 KB (gzip 140,70 KB) còn warning.
+
+**Production:** GitHub đã push 9108038 và Vercel Ready; tên miền chính **https://buildcity26.vercel.app/**. Server secrets đã cấu hình. Supabase Site URL/redirect domain chính đã lưu và kiểm UI (`production-supabase-redirects.png`). Bản vốn/công trình mới đang chuẩn bị push, cần kiểm deployment tương ứng trước khi gọi đã phát hành.
+
+**QA tài khoản thật (bản 9108038):** đăng ký A/B, first city Hải Phòng, retry idempotent, trùng username, sai mật khẩu, profile/RLS riêng, chống owner spoof, chặn đọc/sửa/xóa/save người khác, own save retry và lưu/mở bằng phiên thứ hai đã đạt. Bài stale CAS chưa đạt (mã lỗi chưa xác nhận); một lần retry khác dừng do server Auth 503. Chưa chạy xong recovery/rotation/revocation/logout toàn chuỗi; chưa gọi toàn tài khoản production hoàn thành. Script chỉ dùng key công khai/JWT, không admin key. Tài khoản QA còn trong Auth, credentials chỉ ở RAM.
+
+**Phần còn lại:** worker; thế giới xây 12,8 km/sparse streaming/mua đất; graph lane/parking/đa phương thức; dịch vụ có staff/queue/dispatch/resources; toàn BOQ và thi công; lifecycle/firm/hộ; nâng cấp F; 300 nhiệm vụ E/account EXP; BXH server authoritative và các nhóm I chưa triển khai. Thứ tự và giới hạn tại CODEX_HANDOFF/feature-coverage. Không có nút giả cho các nhóm chưa triển khai.
+
+
 Đặc tả mới nhất: Build_City_26_Full_Codex_Prompts.md, 1.111 dòng, bổ sung Lệnh 20 / Phụ lục H. Đã đọc toàn bộ đặc tả và kiểm tra thay đổi. Các mốc dưới đây là lịch sử triển khai, không phải xác nhận hoàn tất toàn đặc tả. Giao diện tiền Việt (₫), 1 BC nội bộ = 1.000 đồng game; không dùng API AI.
 
 ## Lệnh 0 — kiểm tra nền, cấu hình đang tiếp tục

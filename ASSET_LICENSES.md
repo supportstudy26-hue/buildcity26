@@ -19,3 +19,7 @@ Dữ liệu địa lý chế độ Việt Nam (khác map procedural):
 | Điểm tham chiếu Hoàng Sa | Cổng thông tin Đà Nẵng; bảng tọa độ công bố | Trích xuất dữ kiện tên/tọa độ có dẫn nguồn, không sao chép hình bản đồ/ảnh/văn bản bài viết |
 
 Chi tiết, URL nguồn và giới hạn tại docs/vietnam-map.md. Không sử dụng bất kỳ bản đồ/asset Cities: Skylines.
+
+Menu công trình (`src/ui/build-card.js`) và model biến thể mới là SVG/primitive tự viết cho Build City 26, không lấy từ game khác, không thêm bitmap/texture/âm thanh bên ngoài.
+
+Ảnh ven biển `public/art/coastal-city-v1.webp`: tạo riêng bằng built-in imagegen theo art direction từ ZIP người dùng, ngày09/10/2026. Prompt và cách dùng ở docs/art-direction.md; UI ghi ảnh minh họa. Không lấy ảnh từ Cities: Skylines, không gọi AI runtime.
