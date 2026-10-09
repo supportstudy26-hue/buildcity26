@@ -1,4 +1,4 @@
-import {benchmarkCity} from './scenario.js';
+import {benchmarkCity,architectureCity} from './scenario.js';
 import {PerformanceSample} from './metrics.js';
 import {ThreeCityRenderer} from '../game/render/three-renderer.js';
 import {stepSimulation,serialize} from '../game/core.js';
@@ -17,11 +17,13 @@ $('start').onclick=async()=>{
   try{
     const start=performance.now();
     if($('scenario').value==='sandbox')city=benchmarkCity(Number($('population').value));
+    else if($('scenario').value==='architecture')city=architectureCity();
     else{const manifest=await fetchGeoJSON('manifest.json'),catalog=await fetchGeoJSON('catalog.json',{checksum:manifest.files['catalog.json'].sha256}),region=catalog.provinces.flatMap(p=>p.regions).find(r=>r.id===$('scenario').value);city=createVietnamCity(await loadRegion(region),manifest);}
-    loadMs=+(performance.now()-start).toFixed(1);renderer.reset();renderer.setQuality($('quality').value);pending=0;last=performance.now();sample.start(last);$('status').textContent='Đang đo 30 giây · '+($('scenario').value==='sandbox'?'giờ đi làm':'DEM thật, chưa có cư dân');
+    loadMs=+(performance.now()-start).toFixed(1);renderer.reset();if($('scenario').value==='architecture')renderer.focusTile(18,19);renderer.setQuality($('quality').value);pending=0;last=performance.now();sample.start(last);$('status').textContent='Đang đo 30 giây · '+($('scenario').value==='sandbox'?'giờ đi làm':$('scenario').value==='architecture'?'kiến trúc + cư dân thực trong fixture riêng':'DEM thật, chưa có cư dân');
   }catch(e){$('status').textContent=e.message;enableControls();}
 };
 function enableControls(){for(const id of ['start','scenario','population','quality'])$(id).disabled=false;}
+$('zoomIn').onclick=()=>renderer.zoomAt(1.3);$('zoomOut').onclick=()=>renderer.zoomAt(1/1.3);
 $('view').onclick=()=>renderer.topView();$('home').onclick=()=>renderer.center();$('night').onclick=()=>renderer.night=!renderer.night;
 $('panel').onclick=()=>{$('results').hidden=!$('results').hidden;$('panel').textContent=$('results').hidden?'Mở số liệu':'Thu gọn';};
 let pointer=null;$('world').onpointerdown=e=>{pointer=[e.clientX,e.clientY];$('world').setPointerCapture(e.pointerId);};$('world').onpointermove=e=>{if(pointer){renderer.panBy(e.clientX-pointer[0],e.clientY-pointer[1]);pointer=[e.clientX,e.clientY];}};$('world').onpointerup=()=>pointer=null;$('world').onwheel=e=>{e.preventDefault();renderer.zoomAt(e.deltaY<0?1.08:1/1.08,e.clientX,e.clientY);};

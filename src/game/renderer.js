@@ -1,3 +1,4 @@
+import {buildingParts,buildingDesign} from './render/building-designs.js';
 import {geographyBuildRule} from './geography/city.js';
 import {serviceKind} from '../config/catalog.js';
 import { formatMoney } from '../config/money.js';
@@ -20,9 +21,9 @@ export class CityRenderer {
   zoomAt(factor,px=this.width/2,py=this.height/2){const old=this.zoom;this.zoom=Math.max(.35,Math.min(2.4,this.zoom*factor));const ratio=this.zoom/old;this.pan.x=px-this.width/2-(px-this.width/2-this.pan.x)*ratio;this.pan.y=py-this.height/2-(py-this.height/2-this.pan.y)*ratio;}
   polygon(points,color,stroke){const c=this.ctx;c.beginPath();points.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.closePath();c.fillStyle=color;c.fill();if(stroke){c.strokeStyle=stroke;c.lineWidth=.5;c.stroke();}}
   diamond(x,y,size,color,stroke,z=0){this.polygon([[x-size,y-size],[x+size,y-size],[x+size,y+size],[x-size,y+size]].map(([a,b])=>this.project(a,b,z)),color,stroke);}
-  box(x,y,w,d,h,color){
+  box(x,y,w,d,h,color,z=0){
     const pts=[[x-w/2,y-d/2],[x+w/2,y-d/2],[x+w/2,y+d/2],[x-w/2,y+d/2]];
-    const bottom=pts.map(([a,b])=>this.project(a,b));const top=pts.map(([a,b])=>this.project(a,b,h));
+    const bottom=pts.map(([a,b])=>this.project(a,b,z));const top=pts.map(([a,b])=>this.project(a,b,z+h));
     this.polygon([bottom[1],bottom[2],top[2],top[1]],shade(color,.72));this.polygon([bottom[2],bottom[3],top[3],top[2]],shade(color,.85));this.polygon(top,shade(color,1.07));return {bottom,top};
   }
   line(x1,y1,x2,y2,color,width,z=0){const a=this.project(x1,y1,z),b=this.project(x2,y2,z),c=this.ctx;c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.strokeStyle=color;c.lineWidth=width*this.zoom;c.lineCap='round';c.stroke();}
@@ -34,12 +35,29 @@ export class CityRenderer {
     if(pine){for(let k=0;k<3;k++){const yy=q.y+5*z-k*5*z,w=(8-k*1.4)*z;this.polygon([{x:q.x,y:yy-13*z},{x:q.x+w,y:yy},{x:q.x,y:yy+3*z},{x:q.x-w,y:yy}],[ '#547d67','#668e70','#7ea47b'][k]);}}
     else{c.fillStyle='#527b61';c.beginPath();c.ellipse(q.x,q.y,8*z,10*z,0,0,Math.PI*2);c.fill();c.fillStyle='#709b71';c.beginPath();c.ellipse(q.x-2*z,q.y-2*z,6*z,8*z,-.3,0,Math.PI*2);c.fill();c.fillStyle='#99b57b';c.beginPath();c.ellipse(q.x-3*z,q.y-5*z,3.6*z,4*z,-.4,0,Math.PI*2);c.fill();}
   }
+  designedBuilding(t,x,y){
+    const design=buildingDesign(t,x,y),parts=buildingParts(t,x,y,0,0,0).sort((a,b)=>(a.position[0]+a.position[2])-(b.position[0]+b.position[2]));
+    this.diamond(x,y,.44,'#cbd0bb','#e8e2c055');
+    for(const p of parts){
+      if(p.detail&&this.zoom<.65)continue;
+      const [dx,z,dy]=p.position,[w,h,d]=p.scale,a=x+dx/20,b=y+dy/20,bottom=(z-h/2)*2.6;
+      if(p.shape==='gable'){
+        const corners=[[a-w/40,b-d/40],[a+w/40,b-d/40],[a+w/40,b+d/40],[a-w/40,b+d/40]].map(([u,v])=>this.project(u,v,bottom));
+        const r1=this.project(a,b-d/40,bottom+h*2.6),r2=this.project(a,b+d/40,bottom+h*2.6);
+        this.polygon([corners[0],r1,r2,corners[3]],p.color);this.polygon([r1,corners[1],corners[2],r2],shade(p.color,.78));this.polygon([corners[3],corners[2],r2],shade(p.color,.9));
+      }else if(p.shape==='cylinder'||p.shape==='cone'){
+        this.box(a,b,w/20,d/20,h*2.6,p.color,bottom);const q=this.project(a,b,(z+h/2)*2.6);this.ctx.fillStyle=shade(p.color,1.12);this.ctx.beginPath();this.ctx.ellipse(q.x,q.y,w*.75*this.zoom,d*.36*this.zoom,0,0,Math.PI*2);this.ctx.fill();
+      }else this.box(a,b,w/20,d/20,h*2.6,p.shape==='window'&&this.night?'#f0d499':p.color,bottom);
+    }
+    if((!t.active)||(t.kind==='residential'&&((t.garbage||0)>40||!t.sewage))){const q=this.project(x,y,design.height*2.6+22),c=this.ctx;c.fillStyle='#f5c182';c.beginPath();c.arc(q.x,q.y,5*this.zoom,0,Math.PI*2);c.fill();c.fillStyle='#294044';c.font=`bold ${8*this.zoom}px sans-serif`;c.textAlign='center';c.fillText('!',q.x,q.y+3*this.zoom);}
+  }
   building(t,x,y){
     const k=serviceKind(t.kind),c=this.ctx,n=noise(x,y);if(!k)return;
     if(k==='park'&&t.kind==='plaza'){this.diamond(x,y,.46,'#d4d7bf');this.diamond(x,y,.24,'#82bdc9');this.box(x,y,.04,.04,15,'#c4e3e5');return;}
     if(k==='park'&&t.kind==='sportsPark'){this.diamond(x,y,.46,'#8cb68a');this.diamond(x,y,.32,'#699b90');this.line(x-.3,y,x+.3,y,'#e4e6c9',1);this.tree(x-.35,y-.35,.6);return;}
     if(k==='park'){this.diamond(x,y,.46,'#739f77','#a4c493');this.line(x-.3,y,x+.3,y,'#e6d7b4',4);this.line(x,y-.3,x,y+.3,'#e6d7b4',4);this.tree(x-.24,y-.21,.95);this.tree(x+.23,y+.21,.8);this.box(x+.2,y-.22,.15,.2,4,'#dfb787');return;}
     if(k==='busStop'){this.diamond(x,y,.4,'#d4d8c3');this.box(x,y,.54,.22,3,'#d1b58f');this.line(x-.25,y+.15,x-.25,y+.15,'#537b81',2,17);this.box(x-.25,y+.15,.17,.12,20,'#e5bb7d');return;}
+    if(buildingDesign(t,x,y)){this.designedBuilding(t,x,y);return;}
     let h=k==='residential'?t.level===1?15+n*11:33+t.level*13: k==='commercial'?24+n*12:k==='industrial'?14:t.kind==='hospital'?38:t.kind==='university'?32:20;
     const color=colors[k]?.[Math.floor(n*(colors[k]?.length||1))]||'#d5d8c4';
     this.polygon([[x-.33,y-.33],[x+.33,y-.33],[x+.33+h*.018,y+.33+h*.012],[x-.33+h*.018,y+.33+h*.012]].map(([a,b])=>this.project(a,b)),'#253e3b26');

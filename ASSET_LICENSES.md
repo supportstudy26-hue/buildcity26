@@ -23,3 +23,5 @@ Chi tiết, URL nguồn và giới hạn tại docs/vietnam-map.md. Không sử 
 Menu công trình (`src/ui/build-card.js`) và model biến thể mới là SVG/primitive tự viết cho Build City 26, không lấy từ game khác, không thêm bitmap/texture/âm thanh bên ngoài.
 
 Ảnh ven biển `public/art/coastal-city-v1.webp`: tạo riêng bằng built-in imagegen theo art direction từ ZIP người dùng, ngày09/10/2026. Prompt và cách dùng ở docs/art-direction.md; UI ghi ảnh minh họa. Không lấy ảnh từ Cities: Skylines, không gọi AI runtime.
+
+Kiến trúc 09/10: 13 thiết kế procedural gốc trong building-designs.js, shared roof prism trong gable-geometry.js. Nhà/cửa hàng/xưởng không dùng ảnh, texture hoặc model thương mại bên ngoài.

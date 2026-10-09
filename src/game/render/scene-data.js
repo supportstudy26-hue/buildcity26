@@ -1,3 +1,4 @@
+import {buildingParts} from './building-designs.js';
 import {SIZE,isRoad,neighbors,CATALOG} from '../core.js';
 import {serviceKind} from '../../config/catalog.js';
 import {CELL_METERS} from '../../config/simulation.js';
@@ -58,6 +59,7 @@ export function chunkParts(s,x0,y0,layer='normal'){
     }
     // A foundation pad encloses the sloping ground below the footprint.
     const low=Math.min(...cellHeights(s.world,i,SIZE));box(cx,(base+low)/2,cz,16,Math.max(.15,base-low),16,'#c9c9b5',false,null,i);
+    if(['residential','commercial','industrial'].includes(t.kind)){parts.push(...buildingParts(t,x,y,cx,cz,base,overlayColor(t,layer),i));continue;}
     const family=serviceKind(t.kind);
     if(family==='park'){
       box(cx,base+.08,cz,16,.15,16,'#81a77a',false,null,i);box(cx,base+.18,cz,2,.1,16,'#e5d0a3',false,null,i);box(cx,base+.18,cz,16,.1,2,'#e5d0a3',false,null,i);

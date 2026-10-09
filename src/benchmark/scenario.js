@@ -21,3 +21,21 @@ export function benchmarkCity(population){
   s.name=`Đo ${population.toLocaleString('vi-VN')} cư dân`;
   return s;
 }
+
+// Visual QA uses the same simulation and renderer, and never reads/writes player saves.
+export function architectureCity(){
+  const s=createCity();for(const t of s.tiles)Object.assign(t,{kind:null,zone:null,level:0,residents:0,age:20,assetId:null,historicalCost:0});
+  const put=(x,y,kind,level=1,residents=0)=>Object.assign(s.tiles[index(x,y)],{kind,zone:['residential','commercial','industrial'].includes(kind)?kind:null,level,residents});
+  for(const y of [14,18,22,26])for(let x=7;x<=29;x++)put(x,y,'road');
+  for(let y=12;y<=26;y++)for(const x of [7,29])put(x,y,'road');
+  for(let x=0;x<7;x++)put(x,18,'road');
+  for(let x=8;x<=28;x++){
+    put(x,13,'residential',1,16);put(x,17,'residential',3,72);put(x,21,'commercial');put(x,25,'industrial');
+  }
+  for(const [j,kind] of ['power','waterPump','treatmentPlant','waste','school','clinic','fire','police','park','bus'].entries())put(8+j*2,15,kind);
+  for(const x of [8,12,16,20,24,28])put(x,19,'power');
+  s.households=[];s.citizens=[];s.firms=[];s.vehicles=[];s.events=[];s.nextEntityId=1;s.societySeed=(s.initialSeed^0x26bc1234)>>>0;
+  analyze(s);initializeFoundation(s,SIZE,random);s.clock=createClock(0);s.clock.step=8*3600;s.clock.seconds=s.clock.step;
+  for(const c of s.citizens)c.schedule.depart=8*3600+Math.floor(c.walkSpeed*20);
+  for(let i=0;i<36;i++)stepSimulation(s);s.name='Kiểm thử kiến trúc riêng';return s;
+}

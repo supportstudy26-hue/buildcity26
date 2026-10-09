@@ -49,3 +49,7 @@ npm ci đạt; toàn 110/110 tests đạt, không skip (165,11s); build đạt (
 Browser localhost5180: màn reviewreset/backup, 0 dân100triệu; xây5đường+ba trạm+hai zone còn26triệu, save/reload giữ26triệu, JSerror không có. Ảnh empty-start-100-million/starter-utilities-budget. Chưa benchmark/mobile mới.
 
 Production9108038 Ready/domain chính/redirect đã kiểm. Authlive A/B qua đăng ký/RLS/savehai phiên, staleCAS/recovery chuỗi chưa đạt, server503 có gặp. Xem implementation-status để không nhầm QA fixture với live.
+
+## Chặng kiến trúc riêng 09/10
+
+17/17 tests mục tiêu đạt: building-designs, render-quality, expanded-city, benchmark. Build đạt 15,30s. Khu QA riêng dùng renderer/core thật và không lưu tài khoản. 13 mẫu độc lập, chọn ổn định theo tọa độ; save cũ không thay đổi tiền/entities. Xem docs/implementation-status và architecture-performance-before/after.json: median58,5FPS ở1.848 dân; p9549,4ms, 17longtasks còn hạn chế. Chưa mobile/10.000dân mới; không gọi toàn đặc tả hoàn tất.

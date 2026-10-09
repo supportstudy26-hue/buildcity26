@@ -1,9 +1,10 @@
+import {createGableGeometry} from './gable-geometry.js';
 import * as T from 'three';
 import {STEP_SECONDS} from '../../config/simulation.js';
 import {SIZE,isRoad,CATALOG} from '../core.js';
 import {surfaceHeight,terrainHeight,waterHeightAt} from '../systems/terrain.js';
 import {REGION,chunkParts,chunkSignature,terrainArrays} from './scene-data.js';
-import {PROFILES,AutoQuality,detailVisible} from './quality.js';
+import {PROFILES,AutoQuality,detailVisible,frameDue} from './quality.js';
 const vec=(x,y,z)=>new T.Vector3(x,y,z);
 export function updateBounds(mesh){mesh.instanceMatrix.needsUpdate=true;if(mesh.instanceColor)mesh.instanceColor.needsUpdate=true;mesh.computeBoundingBox();mesh.computeBoundingSphere();}
 export class ThreeCityRenderer{
@@ -15,7 +16,7 @@ export class ThreeCityRenderer{
     this.camera=new T.PerspectiveCamera(43,1,.3,4000);this.target=vec(310,2,370);this.distance=410;this.yaw=Math.PI/4;this.polar=.86;
     this.sun=new T.DirectionalLight('#ffe4c5',2.1);this.sun.position.set(-300,900,180);this.sun.castShadow=true;this.sun.shadow.camera.left=-700;this.sun.shadow.camera.right=700;this.sun.shadow.camera.top=700;this.sun.shadow.camera.bottom=-700;this.sun.shadow.camera.near=1;this.sun.shadow.camera.far=1800;this.sun.shadow.bias=-.0004;this.scene.add(this.sun);
     this.ambient=new T.HemisphereLight('#d8edee','#71865c',2.0);this.scene.add(this.ambient);this.scene.add(this.sun.target);
-    this.geometries={box:new T.BoxGeometry(1,1,1),window:new T.BoxGeometry(1,1,1),cone:new T.ConeGeometry(.5,1,7),cylinder:new T.CylinderGeometry(.5,.5,1,10),ico:new T.IcosahedronGeometry(.5,0)};
+    this.geometries={gable:createGableGeometry(T),box:new T.BoxGeometry(1,1,1),window:new T.BoxGeometry(1,1,1),cone:new T.ConeGeometry(.5,1,7),cylinder:new T.CylinderGeometry(.5,.5,1,10),ico:new T.IcosahedronGeometry(.5,0)};
     this.material=new T.MeshLambertMaterial();this.windowMaterial=new T.MeshBasicMaterial({color:'#7299a4'});
     this.groundMaterial=new T.MeshLambertMaterial({vertexColors:true});this.waterMaterial=new T.MeshLambertMaterial({color:'#76adb0',transparent:true,opacity:.84});
     this.pickables=[];this.regions=new Map();this.actorGroup=new T.Group();this.scene.add(this.actorGroup);this.actorMeshes=new Map();
@@ -82,7 +83,7 @@ export class ThreeCityRenderer{
     }
   }
   minimap(){const s=this.getCity(),c=this.mc,w=this.mini.width,h=this.mini.height;for(let i=0;i<s.tiles.length;i++){const t=s.tiles[i];c.fillStyle=t.terrain==='water'?'#75a9ae':isRoad(t)?'#4c6a70':CATALOG[t.kind||t.zone]?.color||'#94ae7d';c.fillRect(i%SIZE*w/SIZE,Math.floor(i/SIZE)*h/SIZE,w/SIZE+.2,h/SIZE+.2);}c.strokeStyle='#fff';c.strokeRect(this.target.x/(SIZE*20)*w-10,this.target.z/(SIZE*20)*h-7,20,14);}
-  frame(ms){if(this.dead)return;this.raf=requestAnimationFrame(this.frame);if(document.hidden||document.body?.dataset.screen==='home'||ms-(this.lastDraw||0)<1000/PROFILES[this.quality].fps)return;this.lastDraw=ms;const s=this.getCity();if(this.follow){const c=s.citizens.find(c=>c.id===this.follow);if(c){const p=this.actorPosition(c);this.target.x=p.x;this.target.z=p.y;}}
+  frame(ms){if(this.dead)return;this.raf=requestAnimationFrame(this.frame);if(document.hidden||document.body?.dataset.screen==='home'||!frameDue(ms,this.lastDraw,PROFILES[this.quality].fps))return;this.lastDraw=ms;const s=this.getCity();if(this.follow){const c=s.citizens.find(c=>c.id===this.follow);if(c){const p=this.actorPosition(c);this.target.x=p.x;this.target.z=p.y;}}
     this.updateCamera();if(ms-(this.lastCheck||0)>250||this.lastPaths<0){this.rebuild(s);this.lastCheck=ms;this.lastPaths=s.day;}
     const night=this.night;this.scene.background.set(night?'#182e3b':'#c3d3ca');this.scene.fog.color.copy(this.scene.background);this.sun.intensity=night?.3:2.1;this.ambient.intensity=night?.75:2;this.windowMaterial.color.set(night?'#ffe1a3':'#7299a4');
     this.matrix.multiplyMatrices(this.camera.projectionMatrix,this.camera.matrixWorldInverse);this.frustum.setFromProjectionMatrix(this.matrix);for(const r of this.regions.values()){const distance=r.center.distanceTo(this.target),limit=PROFILES[this.quality].details+this.distance*.35,selected=this.selected&&this.selected.x>=r.x&&this.selected.x<r.x+REGION&&this.selected.y>=r.y&&this.selected.y<r.y+REGION;r.detailed=detailVisible(r.detailed,distance,limit,selected);for(const m of r.assets.children){if(m.userData.detail)m.visible=r.detailed;m.castShadow=this.quality==='high'&&distance<600&&!m.userData.detail;}}

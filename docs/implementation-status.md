@@ -1,14 +1,26 @@
 # Build City 26 — trạng thái triển khai
 
+## 09/10 — 13 mẫu kiến trúc riêng, giữ bản lưu và kiểm hiệu năng
+
+Đã triển khai model gốc cho 4 nhà thấp tầng, 3 chung cư theo cấp thực, 3 thương mại và 3 xưởng/kho. Hình dáng khác nhau: mái ngói prism, sân trong chữ L, biệt thự có cánh bên, chung cư giật cấp/hai khối/ban công, nhà chợ, văn phòng kính, xưởng mái đôi/kho/tank chế biến. Hash ô đất giữ mẫu ổn định khi save/load; palette mặt tiền, mái và accent có biến thể. Inspector có tên kiến trúc. Three và Canvas dùng chung descriptors; không sửa tiền/dân/logic/save schema. Mái chung chỉ 8 tam giác, dùng instancing; cửa sổ strip thay nhiều ô cửa, không thêm texture. Thấp tầng 8–13 parts, chung cư cấp 3 12–18, thương mại 9–16, công nghiệp 9; details xa có LOD.
+
+Sửa cap renderer nhận sai nhịp rAF phân số bằng tolerance 0,5 ms, tránh bỏ khung chỉ vì 16,6 < 16,67 ms. Giữ cap 30/60 theo profile, không đổi thời gian mô phỏng.
+
+**Kiểm:** 17/17 tests chặng này đạt, 0 skip, 20,58 giây (thiết kế/phân bố, giới hạn footprint/parts, save không mutation, màu overlay, raycast mái shared, frame timing, catalog/utilities và benchmark có employer/journey thật). Trước đó toàn suite 110/110 đạt. Build sau sửa đạt 15,30 giây; Three 555,04 KB / gzip 142,84 KB còn warning >500 KB. Browser không có JS error; ảnh `architecture-real-closeup.png` là renderer thật, không concept. Khu QA trong benchmark tách riêng, không ghi tài khoản/save/BXH; renderer game thường dùng chính module này.
+
+**Đo 30 giây, IAB Chrome 155, 1280×720, medium/DPR1, cùng fixture/seed/góc rộng:** 1.848 cư dân, 924 có việc, 596 đang đi, 308 xe, 328 lượt đến. Trước sửa nhịp vẽ: median 30,7 FPS, 1.088 frames (~36,3 frames/s), p95 33,8 ms, 7 long tasks, dài nhất 802 ms. Sau: median 58,5 FPS, 1.211 frames (~40,4 frames/s), p95 49,4 ms, 17 long tasks, dài nhất 472 ms. Cả hai 40 draw calls, 57.576 triangles, 17 geometries, 0 textures. CPU tick p95 sau 3,9 ms. Median tốt hơn nhưng p95/long task chưa ổn định; không tuyên bố 60 FPS duy trì. JSON nguyên số đo tại architecture-performance-before/after.json. Chưa thiết bị điện thoại thật hoặc đo 10.000 người ở chặng này. Snapshot fixture 2.477.668 byte vượt trần cloud 2 MB hiện tại; fixture không ghi cloud, cần xử lý snapshot lớn riêng trước gọi save đông dân hoàn tất.
+
+**Phát hành:** giao diện/vốn 697e2ee đã Vercel Ready và kiểm domain chính. Chặng kiến trúc chuẩn bị push, chưa xác nhận production cho đến khi có deployment tương ứng Ready.
+
 ## 09/10 — giao diện từ gói người dùng, chặng phát hành mới
 
 Đã xem cả bốn ảnh Build_City_26_Giao_Dien.zip. Dựng lại trang chủ, đăng ký, đăng nhập và HUD theo xanh đêm/xanh ngọc/vàng, chữ lớn và bố cục chia ảnh/form. Trang chủ là màn đầu mỗi lần mở; nút Bắt đầu xây dựng mở đăng ký khi chưa đăng nhập, không đi thẳng vào thành phố tutorial cũ. Tài khoản mới do server tạo đất trống/100 triệu; không xóa account hoặc save cũ. Chọn địa phương/recovery/email cũ vẫn là luồng thật.
 
 Trang chủ chưa tải core/Three.js; đã kiểm trước bấm có 0 canvas world3d. Sau mở game, quay trang chủ dừng simulation và GPU draw; tải lại không cộng thời gian offline. Ảnh ven biển riêng dùng built-in imagegen, WebP 481.128 byte, không phải cảnh mô phỏng; ghi chú trên UI. Toàn prompt/nguồn tại art-direction.md. Không có AI API runtime, không thêm texture cho game.
 
-Kiểm: toàn 110 tests đạt (203,95s), build sau sửa điều hướng đạt 9,79s. Browser 1280×720: home→Bắt đầu→đăng ký đúng3input; card bottom715px, hiển thị đủ; hiện/ẩn password đổi type thật; login2input; mở game giữ26triệu bản kit đã lưu; quayhome. Không có JSerror. Ảnh reference-home/reference-register/reference-login; chưa mobile mới, chưa production bản này. Không thêm BXH giả vào trang chủ; BXH server vẫn chưa hoàn tất.
+Kiểm: toàn 110 tests đạt (203,95s), build sau sửa điều hướng đạt 9,79s. Browser 1280×720: home→Bắt đầu→đăng ký đúng3input; card bottom715px, hiển thị đủ; hiện/ẩn password đổi type thật; login2input; mở game giữ26triệu bản kit đã lưu; quayhome. Không có JSerror. Ảnh reference-home/reference-register/reference-login; chưa mobile mới. Production commit 697e2ee đã Vercel Ready và reload domain chính hiện trang chủ mới; form đăng ký 3 ô mới đã kiểm thực (production-new-register.png). Không thêm BXH giả vào trang chủ; BXH server vẫn chưa hoàn tất.
 
-Nhà residential/commercial trên production cũ vẫn nhiều mẫu lặp; đang triển khai mỹ thuật riêng theo yêu cầu mới, cần QA geometry/save/performance trước phát hành.
+Kiến trúc riêng đang được kiểm/đo ở chặng ngay dưới; không coi ảnh concept là chất lượng model trong game.
 
 ## 09/10/2026 — trạng thái hiện tại, vốn mới 100 triệu
 
@@ -24,7 +36,7 @@ Mục này thay các thông tin chờ GitHub/Vercel ở lịch sử bên dưới
 
 **Browser thực:** localhost5180 1280×720: reset từ bản đang có tạo backup, 0 dân/100 triệu; xây 5 đường + ba trạm nhỏ + dân cư/thương mại, còn **26 triệu**. Lưu/reload vẫn 26 triệu, không có JS error. Ảnh `empty-start-100-million.png`, `starter-utilities-budget.png`, `expanded-building-menu.png`. Chưa kiểm lại điện thoại: viewport override IAB không có hiệu lực. Chưa benchmark đông dân mới; số đo trước 19,9 FPS/1.000 cư dân vẫn chưa đạt mục tiêu. Three chunk 550,03 KB (gzip 140,70 KB) còn warning.
 
-**Production:** GitHub đã push 9108038 và Vercel Ready; tên miền chính **https://buildcity26.vercel.app/**. Server secrets đã cấu hình. Supabase Site URL/redirect domain chính đã lưu và kiểm UI (`production-supabase-redirects.png`). Bản vốn/công trình mới đang chuẩn bị push, cần kiểm deployment tương ứng trước khi gọi đã phát hành.
+**Production:** GitHub đã push 9108038 và Vercel Ready; tên miền chính **https://buildcity26.vercel.app/**. Server secrets đã cấu hình. Supabase Site URL/redirect domain chính đã lưu và kiểm UI (`production-supabase-redirects.png`). Bản vốn/công trình/giao diện697e2ee đã push và Vercel Ready (deployment 6EwyAXcwD8m7Qwrzt8RpgdhSrmid); đã reload domain chính và kiểm form mới.
 
 **QA tài khoản thật (bản 9108038):** đăng ký A/B, first city Hải Phòng, retry idempotent, trùng username, sai mật khẩu, profile/RLS riêng, chống owner spoof, chặn đọc/sửa/xóa/save người khác, own save retry và lưu/mở bằng phiên thứ hai đã đạt. Bài stale CAS chưa đạt (mã lỗi chưa xác nhận); một lần retry khác dừng do server Auth 503. Chưa chạy xong recovery/rotation/revocation/logout toàn chuỗi; chưa gọi toàn tài khoản production hoàn thành. Script chỉ dùng key công khai/JWT, không admin key. Tài khoản QA còn trong Auth, credentials chỉ ở RAM.
 

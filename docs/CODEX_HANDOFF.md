@@ -8,7 +8,7 @@ Triển khai toàn đặc tả root Lệnh 0–28 và A–I. Mục tiêu lớn c
 
 npm ci; npm test 110/110; npm run build. UI desktop thực khởi đầu 100 triệu, xây kit còn 26 triệu, save/reload giữ tiền. Tất cả công trình mới dùng service family của nền mô phỏng có sẵn, chưa staff/dispatch. Không đổi schema/DB, không reset account hoặc save đang có.
 
-GitHub supportstudy26-hue/buildcity26 đã có quyền push qua deploy key chỉ repo. Không đưa private key hay env secret lên Git. Vercel đã có project buildcity26, domain https://buildcity26.vercel.app/, Supabase redirect đúng domain. Bản vốn mới cần xác nhận deployment Ready tương ứng trước báo phát hành.
+GitHub supportstudy26-hue/buildcity26 đã có quyền push qua deploy key chỉ repo. Không đưa private key hay env secret lên Git. Vercel đã có project buildcity26, domain https://buildcity26.vercel.app/, Supabase redirect đúng domain. Bản vốn/giao diện697e2ee đã Vercel Ready, domain chính hiện trang chủ/register mới; chặng 13 kiến trúc đang kiểm/đo/push.
 
 ## Điểm cần xử lý tiếp theo
 
@@ -20,4 +20,4 @@ GitHub supportstudy26-hue/buildcity26 đã có quyền push qua deploy key chỉ
 
 ## Giới hạn hiện hữu
 
-Nguồn địa lý có caveat OSM2023 và DEM2017; quần đảo có điểm/đường bờ chưa đầy đủ, chưa DEM xây. 14 nhiệm vụ casual, cấp có công thức/100 triệu bonus nhưng chưa 300 mission và account verified. JSONB snapshot max2MB. Mobile mới chưa kiểm; benchmark trước 1000 cư dân 19,9FPS chưa đạt. Không mô tả toàn game như thành phố thật đã hoàn thành.
+Nguồn địa lý có caveat OSM2023 và DEM2017; quần đảo có điểm/đường bờ chưa đầy đủ, chưa DEM xây. 14 nhiệm vụ casual, cấp có công thức/100 triệu bonus nhưng chưa 300 mission và account verified. JSONB snapshot max2MB. Mobile mới chưa kiểm; benchmark kiến trúc 1.848 cư dân median58,5FPS nhưng p9549,4ms và long tasks chưa ổn định; chưa đạt 60FPS duy trì. Fixture snapshot2,48MB vượt trần cloud2MB. Không mô tả toàn game như thành phố thật đã hoàn thành.
