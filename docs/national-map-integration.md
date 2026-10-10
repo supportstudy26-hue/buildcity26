@@ -47,3 +47,11 @@ Sau khi rebuild localhost trong lúc tab cũ còn mở, gặp lỗi dynamic impo
 - `scripts/offline-worker.template.js`: cache riêng5 file nhẹ/metadata/alias quốc gia sau khi người chơi yêu cầu; whitelist và giới hạn stream tối đa2,8MB tổng. Không precache GIS ở khởi động, không cache full14,1MB, auth/API, request có Authorization/query. Mất mạng chỉ dùng bản đã tải; chưa có trả503. Checksum vẫn kiểm khi chooser đọc. `tests/offline-worker.test.js`:3/3 đạt, gồm mất mạng, private/full/oversize không cache. Chưa giả lập network-offline qua trình duyệt vật lý.
 - Import chooser lỗi lúc chọn địa phương đăng ký trả thông báo và giữ form; không tạo tài khoản hay xóa tiến trình.
 - **Phân biệt bản phát hành:**16adcf9 đã push/Ready. Bản sửa tải chunk0b72ff1 và phần offline mới chỉ local; push bổ sung đã bị automatic approval review từ chối vì hết usage limit xét duyệt. Không dùng đường khác để bỏ qua approval và không tuyên bố các sửa này đã online.
+
+- Bố cục local1280×720: bốn inset nằm từy247,90 tới593,49, trong dialog đáy666; controls zoom/full nằm cùng màn. Ảnh`national-map-compact-local.png`, khác bản production. Build sau chỉnh bố cục đạt17,07s.
+
+Production cũng đã bấm tải ranh đầy đủ: nút chuyển thành **Đã tải ranh chi tiết**, giữ1.608 thành phần. Bản bổ sung local hiện là0b72ff1/eecab4e và commit bố cục laptop kế tiếp (offline, xử lý chunk, bố cục); production16adcf9.
+
+### Các file map sửa/thêm
+
+`src/game/geography/{chooser,city,data,overview,national,local-projection,save-metadata}.js`; `src/config/vietnam-province-ids.json`; `src/app.js`; `src/style.css`; `scripts/offline-worker.template.js`; `tests/national-map.test.js`, `tests/offline-worker.test.js`, `tests/archipelagos.test.js`; `public/geodata/vn-map-20250701-v1/` (GeoJSON nhẹ/full,5 metadata/lookup/reference và nguồn/contract); README/ASSET_LICENSES/implementation-status/vietnam-map và các ảnh QA. Danh sách toàn bộ chặng mỹ thuật/cư dân kèm theo có trong commit16adcf9; những file này không đồng nghĩa mọi nghiệp vụ144 mẫu đã xong.

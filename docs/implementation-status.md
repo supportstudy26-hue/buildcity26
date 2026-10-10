@@ -181,3 +181,5 @@ Push HTTPS thực thất bại vì credential helper trỏ GitHub CLI đã bị 
 Commit16adcf9 đã push GitHub, Vercel Ready22s; QA domain thật đủ34 vùng/1.608 polygon, tra Bắc Giang→Bắc Ninh, ba quick-focus đảo đúng hành chính và cấm xây. Ảnhnational-map-production.png. Giữ bản lưu/tài khoản người dùng, không reset thành phố production.
 
 Đã bổ sung local cache riêng cho5 file quốc gia nhẹ, ngân sách tối đa2,8MB; full14,1MB và private requests không cache. Offline tests3/3 đạt; suite133/133 trước đó vẫn là bằng chứng regression, chưa gọi số134 là full-suite đã chạy. Bổ sung bắt lỗi dynamic import trong form đăng ký giữ các ô đã nhập. Commit0b72ff1 và bổ sung này chưa push vì auto-review hết usage limit; production chỉ xác nhận16adcf9.
+
+Bố cục local thu gọn theo chiều cao laptop, cả4 inset trong dialog1280×720; ảnhnational-map-compact-local.png. Build cuối17,07s đạt; source diff check đạt. Phần này chưa có trên production16adcf9.
