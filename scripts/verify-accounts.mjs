@@ -24,8 +24,11 @@ try{
  stage='register B';
  const sa=await session(a,regA.data),regB=await api('register',{username:usernameB,password,cityName:'Thành phố kiểm tra B',requestId:randomUUID()});assert.equal(regB.status,201);const sb=await session(b,regB.data);assert.notEqual(sa.user.id,sb.user.id);
  stage='idempotent registration';
- const first=await a.from('cities').select('state').eq('id',regA.data.firstCity).single();assert.ifError(first.error);assert.equal(first.data.state.world.geography.regionId,'31-start');assert.equal(first.data.state.money,10000000);assert.equal(first.data.state.citizens.length,0);
+ const first=await a.from('cities').select('state').eq('id',regA.data.firstCity).single();assert.ifError(first.error);assert.equal(first.data.state.world.geography.regionId,'31-start');assert.equal(first.data.state.money,10000000);assert.equal(first.data.state.ledger.openingCash,10000000);assert.equal(first.data.state.citizens.length,0);
  const retry=await api('register',fieldsA);assert.ok([200,201].includes(retry.status));assert.equal(retry.data.firstCity,regA.data.firstCity);assert.equal(retry.data.recoveryCode,regA.data.recoveryCode);
+ const afterRetry=await a.from('cities').select('state').eq('id',regA.data.firstCity).single();assert.ifError(afterRetry.error);assert.deepEqual(afterRetry.data.state,first.data.state);
+ const defaultCity=await b.from('cities').select('state').eq('id',regB.data.firstCity).single();assert.ifError(defaultCity.error);assert.equal(defaultCity.data.state.money,10000000);assert.equal(defaultCity.data.state.ledger.openingCash,10000000);
+ console.log('PASS: new default/geographic cities start at 10 billion dong, retry does not grant again');
  const duplicate=await api('register',{...fieldsA,requestId:randomUUID()});assert.equal(duplicate.status,409);
  assert.equal((await api('login',{username:usernameA,password:'wrong password'})).status,401);
  stage='RLS A/B';

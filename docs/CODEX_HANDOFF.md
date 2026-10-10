@@ -1,4 +1,4 @@
-Cập nhật10/10: NEW_CITY_CASH_BC=10.000.000 BC (10tỷ₫) cho thành phố/tài khoản mới, không cộng vào save cũ. Themegame mới ở src/ui/city-theme.css: paper/forest, scene giảm màu vàng. Toàn149tests/build đạt; ảnhinterface-forest-paper-20261010.png, đang kiểmproduction.
+Cập nhật10/10: NEW_CITY_CASH_BC=10.000.000 BC (10tỷ₫) cho thành phố/tài khoản mới, không cộng vào save cũ. Themegame mới ở src/ui/city-theme.css: paper/forest, scene giảm màu vàng. Toàn149tests/build đạt; ảnhinterface-forest-paper-20261010.png, codecda29fb đã push; Vercelye5KefMga3vWrHi9X2tbSZ4VXALi Ready/domain chính đã kiểm. LiveQA hai account xác nhận10tỷ/ledger/retry không cấp lại và RLS/Auth/save đạt. Không cầnSQL/keys mới.
 
 Production 10/10/2026: code `6dde065` đã push main; Vercel `7HDdYVRnJXUBUZnuqALqvUYXYvDY` Ready/domain buildcity26.vercel.app đã kiểm thật. Bản chốt giới hạn chung 50 người+xe, low/mobile30; benchmark 5.000 dân xác nhận50/30. Thị trường production đọc Supabase thành công; migrations finance/CAS đã áp dụng, không cần thêm key.
 
