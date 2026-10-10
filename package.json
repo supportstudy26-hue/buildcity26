@@ -10,7 +10,8 @@
     "preview": "vite preview --host 0.0.0.0",
     "test": "node --test tests/*.test.js",
     "test:live": "node --env-file-if-exists=.env.local --env-file-if-exists=.env.test.local scripts/verify-supabase.mjs",
-    "test:accounts:live": "node --env-file-if-exists=.env.local scripts/verify-accounts.mjs"
+    "test:accounts:live": "node --env-file-if-exists=.env.local scripts/verify-accounts.mjs",
+    "test:finance:live": "node --env-file-if-exists=.env.local scripts/verify-finance.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",

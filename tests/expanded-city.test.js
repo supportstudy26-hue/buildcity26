@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createCity,createEmptyCity,place,analyze,serialize,validateSave,index,tick,CATALOG} from '../src/game/core.js';
+import {createCity,createEmptyCity,place,analyze,serialize,validateSave,index,tick,stepSimulation,CATALOG} from '../src/game/core.js';
 import {BUILDINGS,serviceKind} from '../src/config/catalog.js';
 import {chunkParts} from '../src/game/render/scene-data.js';
 
@@ -19,7 +19,7 @@ test('player can build a connected, supplied growing city from empty land',()=>{
  assert.ok(place(s,2,17,'power').ok);assert.ok(place(s,3,17,'waterPump').ok);
  assert.ok(place(s,4,17,'treatmentPlant').ok);assert.ok(place(s,5,17,'residential').ok);
  assert.ok(place(s,6,17,'commercial').ok);assert.equal(s.tiles[index(5,17)].active,true);
- for(let day=0;day<14;day++)tick(s);
+ for(let second=0;second<1140;second++)stepSimulation(s);
  assert.ok(s.metrics.population>0);assert.ok(s.tiles[index(5,17)].sewage);assert.ok(s.metrics.jobs>0);
 });
 test('larger water/sewage facilities supply actual capacity, charge once and stop on disconnection',()=>{
@@ -58,10 +58,10 @@ test('all 24 facilities survive saves and have light geometry; old saves remain 
 
 test('100-million start can afford utilities, homes and employment without changing legacy saves',()=>{
  const s=createEmptyCity();assert.equal(s.money,100000);
- for(let x=0;x<5;x++)assert.ok(place(s,x,18,'road').ok);
- for(const [x,y,kind] of [[0,17,'smallPower'],[1,17,'smallWater'],[2,17,'smallSewage'],[3,17,'residential'],[4,17,'commercial']])assert.ok(place(s,x,y,kind).ok);
- assert.equal(s.money,26000);assert.equal(s.metrics.power,100);assert.equal(s.metrics.water,15);assert.equal(s.metrics.sewage,15);
- for(let day=0;day<10;day++)tick(s);
+ for(let x=0;x<3;x++)assert.ok(place(s,x,18,'road').ok);
+ for(const [x,y,kind] of [[0,17,'smallPower'],[1,17,'smallWater'],[2,17,'smallSewage'],[0,19,'residential'],[1,19,'commercial']])assert.ok(place(s,x,y,kind).ok);
+ assert.equal(s.money,17400);assert.equal(s.metrics.power,100);assert.equal(s.metrics.water,15);assert.equal(s.metrics.sewage,15);
+ for(let second=0;second<1140;second++)stepSimulation(s);
  assert.ok(s.metrics.population>0);assert.ok(s.metrics.jobs>0);assert.ok(s.money>0);
  const copy=validateSave(JSON.parse(JSON.stringify(serialize(s))));assert.equal(copy.money,s.money);
  assert.equal(validateSave(serialize(createCity())).money,12000000);

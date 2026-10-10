@@ -54,3 +54,12 @@ src/game/core.js là facade; src/game/systems/ chứa hệ thống mô phỏng v
 Menu có 34 tỉnh/thành, preview địa hình/thủy hệ thật 12,8 km, 36 khu chơi tải theo lựa chọn. Khu xây vẫn 1,28 km; chưa có mua đất/full world. Hoàng Sa/Trường Sa có nhãn, phóng tới, danh sách điểm đảo/tọa độ và đường bờ Trường Sa từ nguồn thật; chưa có DEM đảo để mở khu xây. Xem docs/vietnam-map.md về nguồn, giấy phép và phần chưa kiểm chứng. Save 6 giữ địa hình; bản cũ tiếp tục mở được. Production có cache asset/public geodata offline, không cache tài khoản/API.
 
 Bản GIS snapshot 2025-07-01 và 63 tên cũ đã tích hợp vào màn Việt Nam; file full tải theo yêu cầu. Xem [bằng chứng và giới hạn bản đồ](docs/national-map-integration.md). Bộ cư dân/phương tiện đang ở chặng đầu; xem [trạng thái 144 mẫu](docs/mobility-integration-status.md), không phải cả 144 model/nghiệp vụ đều hoàn thành.
+
+
+### Thị trường tiền game (10/10)
+
+Trong menu **Cổ phiếu & xổ số** hoặc màn ngân sách: 6 cổ phiếu hư cấu, mua/bán/danh mục và xổ số 6/45. Đăng nhập rồi lưu city lên Supabase để giao dịch; khách chỉ xem giá/kết quả. Chu kỳ server 5 giờ thực (18.000 giây UTC), độc lập tốc độ 1×/3×/8×. Một vé 10.000 đồng game. Đối soát vé đã đến hạn để nhận thưởng một lần.
+
+Dự án hiện tại đã chạy migration 202610100001_financial_game và 202610100002_conflict_http. Cài mới dùng schema.sql; dự án có sẵn chạy hai migration theo thứ tự, giữ seed và dữ liệu. Không cần cron/trình duyệt mở để xác định kỳ đã đóng. Không đưa secret seed hoặc service-role ra frontend. Kiểm tra thật bằng `QA_BASE_URL=https://buildcity26.vercel.app QA_ALLOW_CREATE=1 npm run test:finance:live` (tạo hai user QA riêng, không dùng admin key). Script tài khoản riêng kiểm recovery/RLS không đụng tài khoản người chơi.
+
+Đồ họa giữ toàn bộ dân số/mô phỏng nhưng chỉ render người/xe gần camera: tối đa 50 đối tượng đang đi lại tính cả người và xe, ở mọi quy mô dân số; máy yếu/điện thoại tối đa 30. Chất lượng cao cũng không vượt cap. Giới hạn cloud snapshot vẫn 2 MB; chưa gọi city 5.000 dân lưu cloud hoàn chỉnh. Xem docs/implementation-status.md và các JSON hiệu năng.

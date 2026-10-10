@@ -21,6 +21,7 @@ test('SQL schema/migration execute in PostgreSQL and RLS isolates two authentica
     await db.exec(await readFile(new URL('../supabase/migrations/202610080003_terrain_saves.sql',import.meta.url),'utf8'));
     await db.exec(await readFile(new URL('../supabase/migrations/202610080004_clock_saves.sql',import.meta.url),'utf8'));
     await db.exec(await readFile(new URL('../supabase/migrations/202610080005_geography_saves.sql',import.meta.url),'utf8'));
+    await db.exec(await readFile(new URL('../supabase/migrations/202610100002_conflict_http.sql',import.meta.url),'utf8'));
     const results=await db.exec(await readFile(new URL('../supabase/tests/rls.sql',import.meta.url),'utf8'));
     assert.ok(results.some(result=>result.rows.some(row=>String(row.result).startsWith('PASS:'))));
     const {rows}=await db.query('select count(*)::integer as count from auth.users');assert.equal(rows[0].count,0);

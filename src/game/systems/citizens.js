@@ -1,3 +1,4 @@
+import {weatherState} from './weather.js';
 import {chooseBusPlan,busDock} from './bus-planning.js';
 import {roadControllers} from './road-controller.js';
 import {mobilityPath} from './mobility-path.js';
@@ -33,7 +34,7 @@ export function updateCitizens(s, calendar, route, size) {
       j.graphVersion=s.graphVersion;c.state=valid?(j.mode==='car'?'in-vehicle':'walking'):'blocked';c.waitReason=valid?'':'Đường trên hành trình đã bị phá hoặc ngắt kết nối';
     }
     if(c.state==='blocked')continue;
-    const controlled=j.laneVersion===1?control(c):{speed:j.speed,reason:''};j.actualSpeed=controlled.speed;c.waitReason=controlled.reason;
+    const controlled=j.laneVersion===1?control(c):{speed:j.speed,reason:''};j.actualSpeed=controlled.speed*(j.mode==='car'?weatherState(s).roadSpeedFactor:1);c.waitReason=controlled.reason;
     let remaining=j.actualSpeed*STEP_SECONDS;
     while(remaining>0&&j.segment<j.path.length-1) {
       const a=j.path[j.segment],b=j.path[j.segment+1],length=distanceMeters(a,b),needed=length-j.distance;

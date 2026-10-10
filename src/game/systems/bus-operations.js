@@ -1,3 +1,4 @@
+import {weatherState} from './weather.js';
 import {calendar} from './clock.js';
 import {route} from './roads.js';import {mobilityPath} from './mobility-path.js';import {busDock} from './bus-planning.js';
 import {startJourney} from './citizens.js';import {distanceMeters} from './world.js';import {emit} from './events.js';import {recordCash} from './economy.js';import {roadControllers} from './road-controller.js';
@@ -47,7 +48,7 @@ export function updateBuses(s){
   }
   const j=v.trip;if(!j)continue;
   if(j.graphVersion!==s.graphVersion){j.graphVersion=s.graphVersion;if(j.path.slice(j.segment).some(p=>p.road!=null&&!s.network.connected.has(p.road))){v.state='blocked';v.speed=0;v.blockedGraph=s.graphVersion;v.waitReason='Đường của tuyến bị ngắt';continue;}}
-  const controlled=control({id:v.id,kind:v.kind,position:v.position,journey:j});j.actualSpeed=controlled.speed;v.speed=j.actualSpeed;v.waitReason=controlled.reason;
+  const controlled=control({id:v.id,kind:v.kind,position:v.position,journey:j});j.actualSpeed=controlled.speed*weatherState(s).roadSpeedFactor;v.speed=j.actualSpeed;v.waitReason=controlled.reason;
   let remaining=j.actualSpeed;
   while(remaining>0&&j.segment<j.path.length-1){const a=j.path[j.segment],b=j.path[j.segment+1],length=distanceMeters(a,b),travelled=Math.min(remaining,Math.max(0,length-j.distance));j.distance+=travelled;v.travelled+=travelled;remaining-=travelled;const t=length?Math.min(1,j.distance/length):1;v.position={x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t,z:a.z+(b.z-a.z)*t};if(j.distance>=length-1e-8){j.segment++;j.distance=0;}}
   for(const id of v.passengers){const c=people.get(id);if(c)c.position={...v.position};}

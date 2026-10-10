@@ -49,10 +49,10 @@ test('construction load preserves escrow/progress, completion and cancellation p
   const s=createCity(),at=index(13,20);const cash=s.money;
   assert.ok(command(s,'construct',{x:13,y:20,kind:'park'}).ok);assert.equal(s.tiles[at].kind,null);
   const contract=s.contracts[0],reserved=s.money;assert.equal(cash-reserved,contract.escrow);
-  until(s,86400);assert.ok(contract.progress>0&&contract.progress<1);const restored=validateSave(serialize(s));assert.deepEqual(restored.contracts,s.contracts);
+  until(s,450);assert.ok(contract.progress>0&&contract.progress<1);const restored=validateSave(serialize(s));assert.deepEqual(restored.contracts,s.contracts);
   assert.ok(command(restored,'cancel-construction',{id:contract.id}).ok);const after=restored.money;assert.equal(command(restored,'cancel-construction',{id:contract.id}).ok,false);assert.equal(restored.money,after);
   // Continue a second branch of the same snapshot to completion.
-  const complete=validateSave(serialize(s));until(complete,10*86400);assert.equal(complete.tiles[at].kind,'park');assert.equal(complete.contracts[0].status,'completed');assert.equal(complete.contracts[0].escrow,0);
+  const complete=validateSave(serialize(s));until(complete,900);assert.equal(complete.tiles[at].kind,'park');assert.equal(complete.contracts[0].status,'completed');assert.equal(complete.contracts[0].escrow,0);
   const load=validateSave(serialize(complete));assert.deepEqual(serialize(load),serialize(complete));assert.equal(load.contracts[0].paid,contract.committed);
 });
 test('calendar uses real months and Vietnamese đồng display uses one stable conversion',()=>{

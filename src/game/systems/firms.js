@@ -1,7 +1,8 @@
+import {jobsCapacity} from '../../config/building-economy.js';
 import { emit } from './events.js';
 export function reconcileFirms(s) {
   const old=new Map(s.firms.map(f=>[f.home,f]));
-  s.firms=s.tiles.flatMap((t,i)=>['commercial','industrial'].includes(t.kind)?[{...old.get(i),id:old.get(i)?.id||`firm-${t.assetId}`,home:i,capacity:(t.kind==='commercial'?16:28)*t.level,employees:[],active:t.active}]:[]);
+  s.firms=s.tiles.flatMap((t,i)=>['commercial','industrial'].includes(t.kind)?[{...old.get(i),id:old.get(i)?.id||`firm-${t.assetId}`,home:i,capacity:jobsCapacity(t),employees:[],active:t.active}]:[]);
   const firms=new Map(s.firms.map(f=>[f.id,f]));
   for(const c of s.citizens) {
     const f=firms.get(c.work);

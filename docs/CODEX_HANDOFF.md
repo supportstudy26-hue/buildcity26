@@ -4,6 +4,10 @@
 
 Triển khai toàn đặc tả root Lệnh 0–28 và A–I. Mục tiêu lớn chưa đạt; xem feature-coverage, không coi 24 catalog items là toàn dịch vụ. Yêu cầu mới hơn 09/10: tài khoản/thành phố mới có 100 triệu đồng game; giữ save cũ.
 
+## 10/10 — Chặng mới
+
+Đã triển khai 13 blueprint 3D có giá/thi công/owner thật, escrow nâng cấp có điều kiện/capacity/maintenance, mưa/nắng tác động simulation; save 6 additive, legacy được giữ. Cổ phiếu/xổ số 5 giờ thực dùng Supabase RPC và private tables, tiền game chính city/ledger, retry/CAS/durable requests. Hai migration 202610100001 và 202610100002 đã chạy live. Lỗi CAS gây infinite retry của PostgREST đã đổi PT409; live finance/account/RLS hai user và hai device đều PASS. Cả renderer giới hạn chung người + xe tối đa 50, low/mobile30 theo yêu cầu cuối; không cắt dân số hay path khỏi save. Xem implementation-status mới nhất và JSON đo hiệu năng. Trần snapshot 2 MB vẫn là blocker save thành phố đông dân, phải làm compact snapshots/shared path thật, không bỏ entities.
+
 ## Bản vừa kiểm
 
 npm ci; npm test 110/110; npm run build. UI desktop thực khởi đầu 100 triệu, xây kit còn 26 triệu, save/reload giữ tiền. Tất cả công trình mới dùng service family của nền mô phỏng có sẵn, chưa staff/dispatch. Không đổi schema/DB, không reset account hoặc save đang có.

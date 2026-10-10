@@ -1,4 +1,5 @@
 import { LEGACY_BC_FACTOR } from './simulation.js';
+import {ZONE_PERMIT_BC,roadPrice} from './building-economy.js';
 export const CATALOG = {
   road: {name:'Đường phố',cost:60,upkeep:.25,icon:'╋',color:'#536a6c',group:'roads',description:'Đường hai làn. Kéo để xây liên tiếp; cầu được tạo tự động khi đi qua sông.'},
   avenue: {name:'Đại lộ',cost:140,upkeep:.5,icon:'═',color:'#536a6c',group:'roads',description:'Đường rộng với sức chứa gấp đôi. Có thể nâng cấp đường phố.'},
@@ -34,6 +35,14 @@ export const CATALOG = {
 };
 // New facilities use BC directly; existing prices remain compatible with paid assets.
 for(const v of Object.values(CATALOG))if(!v.service){v.cost*=LEGACY_BC_FACTOR;if(v.upkeep)v.upkeep*=LEGACY_BC_FACTOR;}
+// Current catalogue prices change future purchases only, never an asset's paid cost.
+const priceBook={power:[250000,800],water:[200000,500],sewage:[1200000,4000],waste:[300000,1000],school:[1500000,3000],clinic:[1200000,3000],fire:[900000,2000],police:[800000,2000],park:[150000,300],bus:[900000,2500],busStop:[12000,30],fireCenter:[3000000,6000],policeCenter:[3000000,6000],wasteCenter:[1800000,4000],sportsPark:[1200000,3000]};
+for(const [kind,[cost,upkeep]] of Object.entries(priceBook))Object.assign(CATALOG[kind],{cost,upkeep});
+for(const kind of ['residential','commercial','industrial'])CATALOG[kind].cost=ZONE_PERMIT_BC;
+for(const kind of ['road','avenue'])CATALOG[kind].cost=roadPrice(kind);
+CATALOG.residential.description='Phí cấp phép 2 BC/m² đất, không phải giá mua nhà. Mẫu nhà đã chọn do chủ đầu tư tư nhân xây bằng vốn riêng khi có đường, điện, nước và nước thải.';
+CATALOG.commercial.description='Phí cấp phép đất; mỗi mẫu cửa hàng có giá xây theo diện tích sàn riêng do chủ đầu tư trả. Cần đường, điện, nước, nước thải và nhu cầu.';
+CATALOG.industrial.description='Phí cấp phép đất; giá xưởng gồm diện tích sàn và thiết bị, do chủ đầu tư trả. Cần tiện ích; gây ô nhiễm nên đặt xa nhà ở.';
 export const serviceKind=kind=>CATALOG[kind]?.service||kind;
 export const BUILDINGS = Object.keys(CATALOG).filter(k=>['utilities','services','parks','transport'].includes(CATALOG[k].group));
 export const ZONES = ['residential','commercial','industrial'];

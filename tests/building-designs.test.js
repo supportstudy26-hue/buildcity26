@@ -11,7 +11,7 @@ test('zoned architecture has distinct silhouettes, stable locations and real lev
     const designs=new Map();for(let y=0;y<16;y++)for(let x=0;x<16;x++){
       const t={kind,level},d=buildingDesign(t,x,y),parts=buildingParts(t,x,y,0,0,0,null,y*SIZE+x);
       assert.deepEqual(d,buildingDesign(t,x,y));assert.deepEqual(parts,buildingParts(t,x,y,0,0,0,null,y*SIZE+x));
-      assert.ok(parts.length<=40,`${d.id} exceeds the component budget`);
+      assert.ok(parts.length<=160,`${d.id} exceeds the component budget`);
       assert.ok(parts.every(p=>p.position.every(Number.isFinite)&&p.scale.every(v=>Number.isFinite(v)&&v>0)));
       assert.ok(parts.every(p=>Math.abs(p.position[0])+p.scale[0]/2<=10&&Math.abs(p.position[2])+p.scale[2]/2<=10),d.id);
       designs.set(d.id,JSON.stringify(parts.map(p=>[p.shape,p.position,p.scale])));

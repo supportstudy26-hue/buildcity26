@@ -111,3 +111,21 @@ Các dịch vụ hiện có vẫn dựa trên mô phỏng vùng/công suất c�
 ## Cập nhật kiểm tra 10/10/2026
 
 Sau tích hợp người/xe và GIS mới, full suite 133/133 đạt (198,344s), không skip. Local quota fallback mở rộng cho active save và backup, lossless, giữ pending cloud payload; 10 kiểm tra storage đạt. Không nâng schema DB. Renderer medium người/xe dùng budget220, xem mobility-integration-status.md cho số liệu mới; số liệu art trước đó không được dùng làm benchmark cho model người/xe mới. Chặng 144 model/nghiệp vụ còn thiếu được ghi riêng, không coi hoàn thành qua catalogue.
+
+## 10/10 — Hình khối theo ảnh, bản chơi và bản lưu thực
+
+13 mẫu RCI đã thay bằng `reference-buildings.js`: ba nhà liền kề mái ngói/ban công/bồn nước, nhà mái ngói có hiên, biệt thự, sân trong; ba chung cư có podium, cánh/tòa riêng, tầng cửa kính và ban công; cửa hàng mái bằng/awning sọc, chợ nhiều gian, văn phòng kính; xưởng răng cưa, kho có cửa bốc dỡ, nhà máy tank và đường ống. Mesh đặc xoay được, dùng shared geometry/material; không dán PNG vào mặt phẳng. Menu có 13 bản thiết kế lựa chọn thật, lưu blueprint và trả đúng phí đất; khi đủ tiện ích dự án xây theo mẫu đó. Nâng cấp thay kích thước/công suất và chi phí, không miễn phí theo ngày.
+
+Đã kiểm browser trong index game: từ vốn 100 triệu xây 4 đường, 3 tiện ích nhỏ, 4 phân khu (nhà phố/cửa hàng/xưởng/chung cư hai khối) còn 1,8 triệu; sau thi công có cư dân/việc làm thật. Save → reload giữ 57 cư dân/1,8 triệu và 4 hình khối riêng. Ảnh `city-3d-playable-20261010.png` là bản chơi thường đã xây, không ảnh concept hoặc benchmark. Inspector chỉ rõ nhà phố 432 triệu + phí đất 800 nghìn, chủ đầu tư tư nhân, cấp/sức chứa/điện nước và điều kiện nâng. Chưa đủ rác/công viên thì nút nâng bị khóa có lý do.
+
+Không mô tả 13 mesh là đủ 216 ảnh tham chiếu hoặc giống từng pixel. 24 dịch vụ hiện có giữ factory riêng và nâng trang bị theo cấp, chưa thêm toàn I3/I4. Mưa giảm tốc đường 25%, nắng nóng tăng nhu cầu điện 15%/nước 10%; chưa ngập lụt/địa chất/bão.
+
+Theo yêu cầu giới hạn người đang đi: cả Three lẫn Canvas cull theo camera, chọn gần nhất bằng bounded heap, ưu tiên actor đang theo dõi, dùng chung budget: mọi quy mô dân số chỉ tối đa 50 người + xe; Thấp và điện thoại tối đa 30. Danh sách active chỉ lọc lại theo bước mô phỏng; geometry/material và đối tượng mô phỏng giữ nguyên. Không xóa cư dân/hành trình để giảm số hiển thị.
+
+### Đo chặng trung gian cap100/150 (trước yêu cầu chốt50/30)
+
+30s Chrome155/IAB 1280×720 medium/DPR1. 1.000 dân: 100 rendered, 50 drawcalls/105.702 triangles, median 30,6 FPS, p95 frame50ms. 5.000: 150 rendered, 51 drawcalls/150.326 triangles, median30,1 FPS, p95 frame50,2ms, tickp95 27,4ms. Cư dân/việc/xe/journey/lượt đến giữ bằng baseline220; giảm số render không làm dân số giả. Xem performance-3d-1000/5000-after-cap-20261010.json và baseline. Không khẳng định60FPS hoặc điện thoại thật. 5.000 fixture save6,48MB vượtcloud2MB, vẫnchưa savecityđôngdân hoàn thiện.
+
+### Giới hạn cuối 50/30 theo yêu cầu người chơi
+
+5.000 dân, medium, 30,05 giây thực: 50 người/xe được vẽ chung, 1.988 hành trình và 833 xe vẫn trong mô phỏng. Median 30 FPS, p95 frame 50,2ms, tick p95 21,4ms, 129.214 triangles / 51 draw calls. Xem `performance-3d-5000-cap50-20261010.json` và ảnh cùng tên. Không tuyên bố 60 FPS hoặc đã chuyển mô phỏng sang worker.

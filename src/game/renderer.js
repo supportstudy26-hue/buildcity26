@@ -1,3 +1,4 @@
+import {actorBudget,nearestActors} from './render/actor-budget.js';
 import {actorArt,citizenMotion,worldMobilityParts} from './render/mobility-models.js';
 import {vehicleArtId} from '../config/mobility-art.js';
 import {buildingParts,buildingDesign} from './render/building-designs.js';
@@ -84,10 +85,10 @@ export class CityRenderer {
   refreshCars(s){this.cars=[];for(const [j,trip] of (s.network.trips||[]).slice(0,64).entries()){if(trip.path.length>1&&trip.vehicles>0)this.cars.push({from:trip.from,to:trip.to,path:trip.path,offset:j*1.78,color:['#f6e9cb','#e3a274','#a8d0df','#ecd080'][j%4],bus:false});}for(const line of (s.network.busLines||[]).filter(l=>l.ok))for(let j=0;j<line.vehicles;j++)if(line.path.length>1)this.cars.push({path:line.path,offset:j*line.path.length/line.vehicles,color:'#f0be80',bus:true});}
   drawCars(s){
     const c=this.ctx;this.actorPoints=[];
-    const actors=[...s.citizens.filter(a=>a.journey||a.state==='waiting-bus'),...s.vehicles.filter(v=>v.kind==='bus'&&v.busPhase&&v.busPhase!=='depot')];
-    for(const actor of actors){
-      const at=this.project(actor.position.x/20-.5,actor.position.y/20-.5,actor.position.z*2.6);
-      if(at.x<0||at.x>this.width||at.y<0||at.y>this.height||this.actorPoints.length>=100)continue;
+    if(this.actorCity!==s||this.actorStep!==s.clock.step){this.actorCity=s;this.actorStep=s.clock.step;this.activeActors=[...s.citizens.filter(a=>a.journey||a.state==='waiting-bus'),...s.vehicles.filter(v=>v.kind==='bus'&&v.busPhase&&v.busPhase!=='depot')];}
+    const self=this;
+    function* candidates(){for(const actor of self.activeActors){const at=self.project(actor.position.x/20-.5,actor.position.y/20-.5,actor.position.z*2.6);if(at.x<0||at.x>self.width||at.y<0||at.y>self.height)continue;yield{c:actor,at,d:(at.x-self.width/2)**2+(at.y-self.height/2)**2};}}
+    for(const {c:actor,at} of nearestActors(candidates(),actorBudget(s.citizens.length,'medium',this.width<600),this.follow)){
       this.actorPoints.push({id:actor.id,x:at.x,y:at.y});
       const j=actor.journey||actor.trip,target=j?.path[j.segment+1],yaw=target?Math.atan2(target.x-actor.position.x,target.y-actor.position.y):(actor.visualYaw||0),bus=actor.kind==='bus';
       const motion=bus?{distance:actor.travelled||0,speed:actor.speed,doors:actor.doors}:citizenMotion(s,actor,0);

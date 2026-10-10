@@ -11,5 +11,5 @@ export const BUILDING_ART=Object.freeze({
 });
 export const DESIGN_ART=Object.freeze({townhouse:'row-houses','tile-house':'detached-house','garden-villa':'residential-villa',courtyard:'rural-house',
  'terraced-apartment':'midrise-apartments','twin-apartment':'social-housing','balcony-apartment':'affordable-apartments',
- 'shop-house':'low-commercial','market-hall':'traditional-market','glass-office':'high-commercial',sawtooth:'textile-factory',warehouse:'private-warehouse',processing:'food-factory'});
+ 'shop-house':'corner-shop','market-hall':'traditional-market','glass-office':'high-commercial',sawtooth:'textile-factory',warehouse:'private-warehouse',processing:'food-factory'});
 export function artForBuilding(kind,designId=null){return BuildingArtRegistry[DESIGN_ART[designId]||BUILDING_ART[kind]]||null;}

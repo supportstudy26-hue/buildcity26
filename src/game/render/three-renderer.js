@@ -1,3 +1,4 @@
+import {actorBudget,nearestActors} from './actor-budget.js';
 import {vehicleArtId} from '../../config/mobility-art.js';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 import {actorArt,citizenMotion,worldMobilityParts} from './mobility-models.js';
@@ -66,13 +67,21 @@ export class ThreeCityRenderer{
   // Lag interpolation along the saved path; it does not predict through blocked roads.
   actorPosition(c){const j=c.journey||c.trip;if(!j||c.state==='blocked'||!this.renderAlpha)return c.position;let back=(1-this.renderAlpha)*(j.actualSpeed??j.speed)*STEP_SECONDS,seg=j.segment,d=j.distance;while(back>d&&seg>0){back-=d;seg--;d=Math.hypot(j.path[seg+1].x-j.path[seg].x,j.path[seg+1].y-j.path[seg].y,j.path[seg+1].z-j.path[seg].z);}d=Math.max(0,d-back);const a=j.path[seg],b=j.path[seg+1],len=Math.hypot(b.x-a.x,b.y-a.y,b.z-a.z),u=len?d/len:0;return{x:a.x+(b.x-a.x)*u,y:a.y+(b.y-a.y)*u,z:a.z+(b.z-a.z)*u};}
   drawActors(s){
-    const parts=[],profile=PROFILES[this.quality],budget=this.quality==='low'?100:this.quality==='high'?360:220,vehicles=new Map(s.vehicles.map(v=>[v.id,v]));
-    const visible=[];
-    for(const c of s.citizens){if(!c.journey&&c.state!=='waiting-bus')continue;const p=this.actorPosition(c),point=vec(p.x,p.z+1,p.y);if(!this.frustum.containsPoint(point))continue;visible.push({c,p,d:point.distanceToSquared(this.camera.position)});}
-    for(const v of s.vehicles)if(v.kind==='bus'&&v.busPhase&&v.busPhase!=='depot'){const p=this.actorPosition(v),point=vec(p.x,p.z+2,p.y);if(this.frustum.containsPoint(point))visible.push({c:v,p,d:point.distanceToSquared(this.camera.position),bus:true});}
-    visible.sort((a,b)=>a.c.id===this.follow?-1:b.c.id===this.follow?1:a.d-b.d);
-    this.visibleActors=visible.length;this.renderedActors=Math.min(budget,visible.length);
-    for(const {c,p,d,bus} of visible.slice(0,budget)){
+    const parts=[],profile=PROFILES[this.quality],budget=actorBudget(s.citizens.length,this.quality,this.width<600);
+    if(this.actorCity!==s||this.actorStep!==s.clock.step){
+      this.actorCity=s;this.actorStep=s.clock.step;
+      this.activeCitizens=s.citizens.filter(c=>c.journey||c.state==='waiting-bus');
+      this.activeBuses=s.vehicles.filter(v=>v.kind==='bus'&&v.busPhase&&v.busPhase!=='depot');
+      this.actorVehicles=new Map(s.vehicles.map(v=>[v.id,v]));
+    }
+    const vehicles=this.actorVehicles,point=vec(0,0,0),self=this;let visibleCount=0;
+    function* candidates(){
+      for(const c of self.activeCitizens){const p=self.actorPosition(c);point.set(p.x,p.z+1,p.y);if(!self.frustum.containsPoint(point))continue;visibleCount++;yield {c,p,d:point.distanceToSquared(self.camera.position)};}
+      for(const c of self.activeBuses){const p=self.actorPosition(c);point.set(p.x,p.z+2,p.y);if(!self.frustum.containsPoint(point))continue;visibleCount++;yield {c,p,d:point.distanceToSquared(self.camera.position),bus:true};}
+    }
+    const selected=nearestActors(candidates(),budget,this.follow);
+    this.visibleActors=visibleCount;this.renderedActors=selected.length;
+    for(const {c,p,d,bus} of selected){
       const journey=c.journey||c.trip,target=journey?.path[journey.segment+1],angle=target?Math.atan2(target.x-p.x,target.y-p.y):(c.visualYaw||0),distance=Math.sqrt(d),lod=distance<90?0:distance<profile.details+this.distance*.45?1:2;
       const id=bus?vehicleArtId(c):c.journey?.mode==='car'?vehicles.get(c.vehicle)?.artId: c.artId;
       const motion=bus?{speed:c.speed,distance:Math.max(0,(c.travelled||0)-(c.trip&&this.renderAlpha?(1-this.renderAlpha)*c.speed:0)),doors:c.doors,night:this.night}:citizenMotion(s,c,this.renderAlpha);
@@ -89,7 +98,7 @@ export class ThreeCityRenderer{
   minimap(){const s=this.getCity(),c=this.mc,w=this.mini.width,h=this.mini.height;for(let i=0;i<s.tiles.length;i++){const t=s.tiles[i];c.fillStyle=t.terrain==='water'?'#75a9ae':isRoad(t)?'#4c6a70':CATALOG[t.kind||t.zone]?.color||'#94ae7d';c.fillRect(i%SIZE*w/SIZE,Math.floor(i/SIZE)*h/SIZE,w/SIZE+.2,h/SIZE+.2);}c.strokeStyle='#fff';c.strokeRect(this.target.x/(SIZE*20)*w-10,this.target.z/(SIZE*20)*h-7,20,14);}
   frame(ms){if(this.dead)return;this.raf=requestAnimationFrame(this.frame);if(document.hidden||document.body?.dataset.screen==='home'||!frameDue(ms,this.lastDraw,PROFILES[this.quality].fps))return;this.lastDraw=ms;const s=this.getCity();if(this.follow){const c=s.citizens.find(c=>c.id===this.follow)||s.vehicles.find(v=>v.id===this.follow);if(c){const p=this.actorPosition(c);this.target.x=p.x;this.target.z=p.y;}}
     this.updateCamera();if(ms-(this.lastCheck||0)>250||this.lastPaths<0){this.rebuild(s);this.lastCheck=ms;this.lastPaths=s.day;}
-    const night=this.night;this.scene.background.set(night?'#182e3b':'#c3d3ca');this.scene.fog.color.copy(this.scene.background);this.sun.intensity=night?.3:2.1;this.ambient.intensity=night?.75:2;this.windowMaterial.color.set(night?'#ffe1a3':'#7299a4');
+    const night=this.night;this.scene.background.set(night?'#182e3b':'#c3d3ca');this.scene.fog.color.copy(this.scene.background);this.sun.intensity=night?.3:2.1;this.ambient.intensity=night?.75:2;this.windowMaterial.color.set(night?'#ffe1a3':'#ffffff');
     this.matrix.multiplyMatrices(this.camera.projectionMatrix,this.camera.matrixWorldInverse);this.frustum.setFromProjectionMatrix(this.matrix);for(const r of this.regions.values()){const distance=r.center.distanceTo(this.target),limit=PROFILES[this.quality].details+this.distance*.35,selected=this.selected&&this.selected.x>=r.x&&this.selected.x<r.x+REGION&&this.selected.y>=r.y&&this.selected.y<r.y+REGION;r.detailed=detailVisible(r.detailed,distance,limit,selected);for(const m of r.assets.children){if(m.userData.detail)m.visible=r.detailed;m.castShadow=this.quality==='high'&&distance<600&&!m.userData.detail;}}
     this.updateGhost(s);this.drawActors(s);const select=this.selected||this.hover;this.selection.visible=!!select;if(select)this.selection.position.set((select.x+.5)*20,surfaceHeight(s,select.i,SIZE)+.12,(select.y+.5)*20);this.gpu.render(this.scene,this.camera);this.onRender?.(ms);if(this.qualityPreference==='auto'){const value=this.autoQuality.sample(ms-(this.previousDraw||ms),ms);if(value)this.applyQuality(value);}this.fps=1000/(ms-(this.previousDraw||ms-33));this.previousDraw=ms;
   }
@@ -100,6 +109,6 @@ export class ThreeCityRenderer{
     this.batches(ghost.parts,this.ghostGroup,true);this.ghostKey=ghost.key;
   }
   reset(){this.lastPaths=-1;this.selected=null;this.center();}
-  stats(){return{mode:this.mode,quality:this.quality,qualityPreference:this.qualityPreference,pixelRatio:this.gpu.getPixelRatio(),triangles:this.gpu.info.render.triangles,regions:this.regions.size,drawCalls:this.gpu.info.render.calls,geometries:this.gpu.info.memory.geometries,textures:this.gpu.info.memory.textures,fps:Math.round(this.fps||0),citizens:this.getCity().citizens.length,sharedMaterials:6,activeActors:this.getCity().citizens.filter(c=>c.journey||c.state==='waiting-bus').length+this.getCity().vehicles.filter(v=>v.kind==='bus'&&v.busPhase!=='depot').length,visibleActors:this.visibleActors||0,renderedActors:this.renderedActors||0,actorBudget:this.quality==='low'?100:this.quality==='high'?360:220};}
+  stats(){return{mode:this.mode,quality:this.quality,qualityPreference:this.qualityPreference,pixelRatio:this.gpu.getPixelRatio(),triangles:this.gpu.info.render.triangles,regions:this.regions.size,drawCalls:this.gpu.info.render.calls,geometries:this.gpu.info.memory.geometries,textures:this.gpu.info.memory.textures,fps:Math.round(this.fps||0),citizens:this.getCity().citizens.length,sharedMaterials:6,activeActors:this.getCity().citizens.filter(c=>c.journey||c.state==='waiting-bus').length+this.getCity().vehicles.filter(v=>v.kind==='bus'&&v.busPhase!=='depot').length,visibleActors:this.visibleActors||0,renderedActors:this.renderedActors||0,actorBudget:actorBudget(this.getCity().citizens.length,this.quality,this.width<600)};}
   dispose(){this.dead=true;cancelAnimationFrame(this.raf);this.view.removeEventListener('webglcontextlost',this.contextLost);for(const r of this.regions.values()){this.removeRegion(r);r.ground.geometry.dispose();r.water.geometry.dispose();}for(const m of this.actorMeshes.values())m.dispose();Object.values(this.geometries).forEach(g=>g.dispose());for(const m of [this.material,this.groundMaterial,this.windowMaterial,this.waterMaterial,this.selection.material])m.dispose();this.selection.geometry.dispose();for(const m of this.ghostGroup.children)m.dispose();this.ghostMaterial.dispose();this.gpu.dispose();this.gpu.forceContextLoss();}
 }

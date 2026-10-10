@@ -4,8 +4,8 @@ import {createProgression,validateProgression} from './progression.js';
 import { STEP_SECONDS, DAY_SECONDS, RULE_VERSION, CELL_METERS } from '../../config/simulation.js';
 import {createTerrain,validateTerrain} from './terrain.js';
 import { cashBalance } from './economy.js';
-const fields=['mobilityVersion','playback','progression','world','ruleVersion','currency','currencyMigration','initialSeed','societySeed','clock','nextEntityId','nextEventId','graphVersion','households','citizens','firms','vehicles','contracts','commandSequence','commandReceipts','events','ledger'];
-export function foundationSnapshot(s) { return structuredClone(Object.fromEntries(fields.map(k=>[k,s[k]]))); }
+const fields=['weatherMode','privateInvestment','mobilityVersion','playback','progression','world','ruleVersion','currency','currencyMigration','initialSeed','societySeed','clock','nextEntityId','nextEventId','graphVersion','households','citizens','firms','vehicles','contracts','commandSequence','commandReceipts','events','ledger'];
+export function foundationSnapshot(s) { return structuredClone(Object.fromEntries(fields.filter(k=>s[k]!==undefined).map(k=>[k,s[k]]))); }
 export function loadFoundation(s,raw,size) {
   if(raw.schemaVersion===3&&raw.ruleVersion==='foundation-3')raw={...raw,world:createTerrain(size,{flat:true}),progression:createProgression()};
   // Compatibility for the first terrain-4 checkpoint before missions were added.

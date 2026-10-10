@@ -21,12 +21,12 @@ try{
   const hidden=await b.from('cities').select('*').eq('id',id);assert.ifError(hidden.error);assert.deepEqual(hidden.data,[]);
   const update=await b.from('cities').update({name:'B sửa A'}).eq('id',id).select('id');assert.ifError(update.error);assert.deepEqual(update.data,[]);
   const spoof=await b.from('cities').insert({id:randomUUID(),owner_id:loginA.data.user.id,name:'Owner giả',state:payload});assert.ok(spoof.error,'RLS phải chặn giả owner_id');
-  await assert.rejects(save(b,id,1,'B RPC A'),e=>['40001','42501'].includes(e.code));
-  const forbiddenDelete=await b.rpc('delete_city_v2',{p_city_id:id,p_expected_revision:1});assert.equal(forbiddenDelete.error?.code,'40001');
+  await assert.rejects(save(b,id,1,'B RPC A'),e=>['PT409','42501'].includes(e.code));
+  const forbiddenDelete=await b.rpc('delete_city_v2',{p_city_id:id,p_expected_revision:1});assert.equal(forbiddenDelete.error?.code,'PT409');
   const guest=await anon.from('cities').select('id').eq('id',id);assert.ok(guest.error,'Khách phải bị từ chối truy cập bảng');
   const nextRequest=randomUUID();row=await save(a,id,1,'BC26 QA A updated',nextRequest);assert.equal(row.revision,2);assert.equal((await save(a,id,1,'BC26 QA A updated',nextRequest)).revision,2);
-  await assert.rejects(save(a,id,1,'Thiết bị cũ'),e=>e.code==='40001');
-  const staleDelete=await a.rpc('delete_city_v2',{p_city_id:id,p_expected_revision:1});assert.equal(staleDelete.error?.code,'40001');
+  await assert.rejects(save(a,id,1,'Thiết bị cũ'),e=>e.code==='PT409');
+  const staleDelete=await a.rpc('delete_city_v2',{p_city_id:id,p_expected_revision:1});assert.equal(staleDelete.error?.code,'PT409');
   const secondDevice=client();const login=await secondDevice.auth.signInWithPassword({email:process.env.QA_A_EMAIL,password:process.env.QA_A_PASSWORD});if(login.error)throw login.error;
   const opened=await secondDevice.from('cities').select('*').eq('id',id).single();assert.ifError(opened.error);assert.equal(opened.data.revision,2);assert.deepEqual(opened.data.state,payload);await secondDevice.auth.signOut({scope:'local'});
   const bId=randomUUID();await save(b,bId,0,'BC26 QA B');created.push({client:b,id:bId});const isolated=await a.from('cities').select('id').eq('id',bId);assert.ifError(isolated.error);assert.deepEqual(isolated.data,[]);

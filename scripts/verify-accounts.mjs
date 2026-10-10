@@ -46,7 +46,7 @@ try{
  stage='second-device load state';
  const load=await other.from('cities').select('revision,state').eq('id',id).single();assert.ifError(load.error);assert.equal(load.data.revision,2);assert.deepEqual(load.data.state,payload);
  stage='second-device stale conflict';
- const stale=await other.rpc('save_city_v2',{p_city_id:id,p_name:'Thiết bị cũ',p_state:payload,p_expected_revision:1,p_request_id:randomUUID()});console.log('QA: stale save SQL code',stale.error?.code||'none','transport timeout',/timeout|abort|fetch/i.test(stale.error?.message||''));assert.equal(stale.error?.code,'40001');
+ const stale=await other.rpc('save_city_v2',{p_city_id:id,p_name:'Thiết bị cũ',p_state:payload,p_expected_revision:1,p_request_id:randomUUID()});console.log('QA: stale save SQL code',stale.error?.code||'none','transport timeout',/timeout|abort|fetch/i.test(stale.error?.message||''));assert.equal(stale.error?.code,'PT409');
  assert.equal((await api('recover',{username:usernameA,password:newPassword,code:'F'.repeat(48)})).status,401);
  stage='recover and revoke';
  const recovered=await api('recover',{username:usernameA,password:newPassword,code:regA.data.recoveryCode});assert.equal(recovered.status,200);assert.equal(recovered.data.recoveryCode.length,48);assert.notEqual(recovered.data.recoveryCode,regA.data.recoveryCode);

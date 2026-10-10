@@ -1,5 +1,6 @@
 import {facilityDesign,facilityParts} from './facility-designs.js';
 import {artForBuilding} from '../../config/building-art.js';
+import {referenceBuildingParts} from './reference-buildings.js';
 // Original modular architecture. Coordinates select a stable design; no saved data is rewritten.
 const homes=[
   {id:'townhouse',name:'Nhà phố ban công',width:8.2,depth:12,height:8.4,roof:'flat'},
@@ -30,15 +31,16 @@ export function buildingDesign(t,x,y){
   const hash=designHash(x,y),level=Math.max(1,Number(t.level)||1);
   const list=t.kind==='residential'?(level>=3?towers:homes):t.kind==='commercial'?shops:t.kind==='industrial'?factories:null;
   if(!list)return facilityDesign(t);
-  const item=list[hash%list.length],floors=t.kind==='residential'&&level>=3?Math.min(8,level+1):t.kind==='residential'&&level===2?3:null;
-  return{...item,artId:artForBuilding(t.kind,item.id).id,footprint:[20,20],entrance:[0,0,8.5],height:floors?floors*3.1:item.height,floors,wall:walls[(hash>>>4)%walls.length],roofColor:roofs[(hash>>>9)%roofs.length],accent:['#529d98','#d89159','#7e9db4','#b56a53'][(hash>>>14)%4]};
+  const item=[...homes,...shops,...factories,...towers].find(d=>d.id===(t.development?.designId||t.blueprint))||list[hash%list.length],floors=t.kind==='residential'&&level>=3?Math.min(8,level+1):t.kind==='residential'&&level===2?3:null;
+  return{...item,artId:artForBuilding(t.kind,item.id).id,footprint:[20,20],entrance:[0,0,8.5],height:item.id==='townhouse'?(t.development?level+2:level===1?3:level===2?4:6)*3+2.5:towers.some(d=>d.id===item.id)?Math.max(4,level+1)*3.1+3.5:floors?floors*3.1:item.height,floors,wall:walls[(hash>>>4)%walls.length],roofColor:roofs[(hash>>>9)%roofs.length],accent:['#529d98','#d89159','#7e9db4','#b56a53'][(hash>>>14)%4]};
 }
 export function buildingParts(t,x,y,cx,cz,base,overlay=null,tile=null){
   const design=buildingDesign(t,x,y);if(!design)return[];if(facilityDesign(t))return facilityParts(t,cx,cz,base,overlay,tile);
+  const reference=referenceBuildingParts(design,t,cx,cz,base,overlay,tile);if(reference)return reference;
   const parts=[],{id,width:w,depth:d,height:h,roof,roofColor,accent}=design,color=overlay||design.wall;
   const add=(shape,dx,z,dz,width,height,depth,tint,detail=false,rotation=null)=>parts.push({shape,position:[cx+dx,base+z,cz+dz],scale:[width,height,depth],color:tint,detail,rotation,tile});
   const box=(dx,z,dz,width,height,depth,tint=color,detail=false)=>add('box',dx,z,dz,width,height,depth,tint,detail);
-  const glass=(dx,z,dz,width,height,depth)=>add('window',dx,z,dz,width,height,depth,'#c1dce1',true);
+  const glass=(dx,z,dz,width,height,depth)=>{add('box',dx,z,dz,width>.2?width+.22:width,height+.22,depth>.2?depth+.22:depth,'#50787b',true);add('window',dx,z,dz+.03,width,height,depth,'#a3cccc',true);if(width>3)for(const q of [-1,1])box(dx+q*width*.22,z,dz+.1,.12,height,.12,'#e8dfc9',true);else if(depth>3)for(const q of [-1,1])box(dx+.1,z,dz+q*depth*.22,.12,height,.12,'#e8dfc9',true);};
   const cap=(dx,z,dz,width,depth,pitched=roof==='gable')=>add(pitched?'gable':'box',dx,z+(pitched?1.35:.2),dz,width,pitched?2.7:.4,depth,roofColor);
   const front=d/2+.07;
   const windows=(count=Math.min(7,Math.max(1,Math.floor(h/3))))=>{
@@ -94,6 +96,7 @@ export function buildingParts(t,x,y,cx,cz,base,overlay=null,tile=null){
     if(id==='market-hall'){box(0,2.5,front+1.1,14,.25,2.2,accent);for(const side of [-1,1])glass(side*4,1.3,front,4,2.2,.14);box(0,1.5,front+.1,1,3,.3,'#eee0c5');}
     if(id==='glass-office'){glass(0,h/2,front,w*.8,h-1,.14);glass(w/2+.08,h/2,0,.14,h-1,d*.8);box(-w/2+.45,h/2,front+.16,.9,h,.35,accent);box(0,h+1.1,0,5,1.6,5,'#c6d5d4');}
   }
+  if(!['sawtooth','warehouse','processing'].includes(id)){add('cylinder',-2,h+.9,-3,1.4,1.8,1.4,'#aebcb7',true);box(4,.5,7,1.6,.8,1.1,'#b68e62',true);add('ico',4,1.2,7,1.8,1.5,1.5,'#7b9c68',true);}
   if(t.fire>0)add('cone',0,h+2,0,2,5,2,'#e69355');
   return parts;
 }

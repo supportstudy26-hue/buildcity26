@@ -21,11 +21,11 @@ begin
   begin
     perform public.save_city_v2(saved.id,'Thiết bị cũ','{"schemaVersion":1}',1,'f0260000-0000-4000-8000-000000000006');
     raise exception 'FAIL: stale device overwrote revision';
-  exception when serialization_failure then null; end;
+  exception when sqlstate 'PT409' then null; end;
   begin
     perform public.delete_city_v2(saved.id,1);
     raise exception 'FAIL: stale delete';
-  exception when serialization_failure then null; end;
+  exception when sqlstate 'PT409' then null; end;
 end $$;
 
 select set_config('request.jwt.claim.sub','b0260000-0000-4000-8000-000000000002',true);
@@ -47,11 +47,11 @@ begin
   begin
     perform public.save_city_v2('c0260000-0000-4000-8000-000000000003','B RPC A','{"schemaVersion":1}',2,'10260000-0000-4000-8000-000000000007');
     raise exception 'FAIL: B RPC updated A';
-  exception when serialization_failure then null; end;
+  exception when sqlstate 'PT409' then null; end;
   begin
     perform public.delete_city_v2('c0260000-0000-4000-8000-000000000003',2);
     raise exception 'FAIL: B RPC deleted A';
-  exception when serialization_failure then null; end;
+  exception when sqlstate 'PT409' then null; end;
   perform public.save_city_v2('20260000-0000-4000-8000-000000000008','Thành phố B','{"schemaVersion":1}',0,'30260000-0000-4000-8000-000000000009');
   select count(*) into n from public.cities where id in ('c0260000-0000-4000-8000-000000000003','20260000-0000-4000-8000-000000000008');
   if n<>1 then raise exception 'FAIL: B library isolation'; end if;

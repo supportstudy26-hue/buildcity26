@@ -1,6 +1,6 @@
 import {BUILDING_ART,artForBuilding} from '../../config/building-art.js';
 const heights={smallPower:8.6,power:8.6,smallWater:6.3,water:17,waterPump:8.3,smallSewage:5.8,sewage:7,treatmentPlant:8,waste:6.3,wasteCenter:9,school:8.1,secondarySchool:11,university:14.3,clinic:8,hospital:19,fire:10.3,fireCenter:14.3,police:11,policeCenter:18,bus:8,busStop:3.6,park:7,plaza:5.8,sportsPark:5.8};
-export function facilityDesign(t){const art=artForBuilding(t.kind);return heights[t.kind]?{id:t.kind,artId:BUILDING_ART[t.kind],name:art.nameVi,height:heights[t.kind],width:18,depth:18,entrance:[0,0,8.5],footprint:[20,20]}:null;}
+export function facilityDesign(t){const art=artForBuilding(t.kind);return heights[t.kind]?{id:t.kind,artId:BUILDING_ART[t.kind],name:art.nameVi,height:heights[t.kind]+(t.upgrade?(t.level-1)*3.5:0),width:18,depth:18,entrance:[0,0,8.5],footprint:[20,20]}:null;}
 // Low-poly metre-scale reconstructions of the supplied PNG references. Shared primitives,
 // no baked vehicles/occupancy, no change to service capacity or saved state.
 export function facilityParts(t,cx,cz,base,overlay=null,tile=null){
@@ -87,6 +87,14 @@ export function facilityParts(t,cx,cz,base,overlay=null,tile=null){
   for(const [x,z] of [[4,5],[-4,-5]]){box(x,.9,z,3,.25,.8,'#a78c63',true);box(x,1.2,z-.3,3,.6,.15,'#a78c63',true);}break;
  }
  }
+ if(t.upgrade&&t.level>1){for(let n=1;n<t.level;n++){
+   const x=-7+(n-1)*4;
+   if(['park','plaza','sportsPark'].includes(t.kind)){box(x,.9,-7,2.3,.3,1.2,'#a98c64',true);box(x,1.8,-7,.2,3,.2,cream);box(x,3.4,-7,3,.3,2.5,teal);}
+   else if(['smallPower','power'].includes(t.kind)){box(x,1.8,7,2.8,3.3,2.4,steel);for(const z of [6.6,7.4])cyl(x,3.9,z,.55,1.2,'#946c51');}
+   else if(['smallWater','water','waterPump'].includes(t.kind)){cyl(x,2.1,-7,2.8,4,steel);pipe(x,1.2,-4,.6,.6,5);}
+   else if(['smallSewage','sewage','treatmentPlant'].includes(t.kind)){box(x,.8,7,3,1.2,3,steel);box(x,1.5,7,2.5,.12,2.5,'#719a89');}
+   else{const y=heights[t.kind]+(n-1)*3.5;box(0,y+1.6,-1,5.5,3.2,5.5,cream,false);box(0,y+3.35,-1,6,.3,6,teal);add('window',0,y+1.8,1.8,4,1.5,.12,glass,true);}
+  }}
  if(t.fire>0)add('cone',0,design.height+2,0,2,5,2,'#e69355');
  return parts;
 }

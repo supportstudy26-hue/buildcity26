@@ -18,7 +18,7 @@ export function overlayColor(t,layer){
 }
 export function chunkSignature(s,x0,y0,layer){
   let text=layer;
-  for(let y=y0;y<y0+REGION;y++)for(let x=x0;x<x0+REGION;x++){const t=s.tiles[y*SIZE+x];text+=`${t.kind}/${t.zone}/${t.level}/${!!t.active}/${t.fire>0}/${overlayColor(t,layer)};`;if(['waste','wasteCenter'].includes(t.kind))text+=Math.round(t.garbage||0);if(isRoad(t))text+=neighbors(y*SIZE+x).map(i=>s.tiles[i].kind).join(',');}
+  for(let y=y0;y<y0+REGION;y++)for(let x=x0;x<x0+REGION;x++){const t=s.tiles[y*SIZE+x];text+=`${t.kind}/${t.zone}/${t.level}/${!!t.active}/${t.development?Math.floor(t.development.work/t.development.required*4):0}/${t.upgrade?.status}/${t.fire>0}/${overlayColor(t,layer)};`;if(['waste','wasteCenter'].includes(t.kind))text+=Math.round(t.garbage||0);if(isRoad(t))text+=neighbors(y*SIZE+x).map(i=>s.tiles[i].kind).join(',');}
   return text;
 }
 // Roads and bridge ghosts use the same deck, joins, piers and railings.
@@ -59,7 +59,7 @@ export function chunkParts(s,x0,y0,layer='normal'){
     const i=y*SIZE+x,t=s.tiles[i],cx=(x+.5)*CELL_METERS,cz=(y+.5)*CELL_METERS,base=surfaceHeight(s,i,SIZE),n=noise(x,y);
     if(isRoad(t)){parts.push(...roadParts(s,x,y,t.kind,layer));continue;}
     if(!t.kind){
-      if(t.zone)box(cx,base+.025,cz,18,.05,18,CATALOG[t.zone].color,false,null,i);
+      if(t.zone){const color=CATALOG[t.zone].color;box(cx,base+.025,cz,18,.05,18,'#b0b899',false,null,i);for(const dx of [-8.8,8.8])box(cx+dx,base+.1,cz,.2,.1,18,color,false,null,i);for(const dz of [-8.8,8.8])box(cx,base+.1,cz+dz,18,.1,.2,color,false,null,i);if(t.development){const height=.6+2.4*t.development.work/t.development.required;box(cx,base+.15,cz,12,.3,10,'#adab96',false,null,i);for(const dx of [-5.5,5.5])for(const dz of [-4.5,4.5])box(cx+dx,base+height/2,cz+dz,.3,height,.3,'#c4b497',false,null,i);}else{box(cx-6,base+1,cz+6,.12,2,.12,'#856d52',false,null,i);box(cx-6,base+1.6,cz+6,1.6,.7,.15,color,false,null,i);}}
       else if(t.terrain==='grass'&&n>.88){const h=terrainHeight(s.world,cx,cz);tree(cx,cz,h,.75+noise(y,x)*.45,i);}
       continue;
     }
