@@ -1,3 +1,10 @@
+## 10/10 — Báo rõ quy hoạch đang chờ xây
+
+- Giữ cơ chế xây thật: tư nhân xây mẫu 3D đã chọn khi đủ đường nối cổng, điện, nước, nước thải, nhu cầu và vốn; 900 giây game thi công (3 phút thực ở 1×). Không đổi giá, tài khoản hay schema bản lưu.
+- Hướng dẫn khi chọn mẫu phân khu ghi rõ tự xây; hover ô đã quy hoạch và inspector báo điều kiện thiếu, tiến độ và thời gian còn lại. Đưa điều kiện và nút chọn tiện ích lên đầu inspector; đặt quy hoạch bằng tay có thông báo lý do đang chờ.
+- Kiểm tra: 9/9 development-upgrades PASS, gồm phát triển cả 13 mẫu mesh, dừng/tiếp tục khi mất tiện ích, nâng cấp và save/load giữa thi công; build PASS 11,03 giây. Browser mã mới localhost: dựng đường/trạm điện/ô dân cư bằng lệnh game thật; inspector hiện chính xác thiếu nước sạch và nước thải, hai điều kiện đường/điện đạt. Bổ sung nước/nước thải và chạy 8×: nhà 3D hoàn thành, inspector Đang hoạt động, 24 chỗ ở, 2 cư dân; nguyên giá 432 triệu tư nhân, phí quy hoạch 800.000. Không có console error. Bằng chứng development-missing-utilities-20261010.png và development-house-completed-20261010.png.
+- Giới hạn: tiến độ xây casual, chưa mô phỏng vật tư và đội thi công tư nhân. Chưa xác nhận triển khai thay đổi này trên Vercel.
+
 ## 10/10 — Giao diện sáng, khối 3D rõ hơn và báo giá xây thống nhất
 
 - HUD trắng ngà/xanh rừng; chữ, thẻ công trình, inspector, nút và trạng thái lỗi được chỉnh độ tương phản/khoảng cách. Menu chọn xong vẫn tự đóng. Giá quy hoạch và vốn xây tư nhân tiếp tục ghi riêng.
