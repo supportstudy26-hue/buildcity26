@@ -25,3 +25,11 @@ Menu công trình (`src/ui/build-card.js`) và model biến thể mới là SVG/
 Ảnh ven biển `public/art/coastal-city-v1.webp`: tạo riêng bằng built-in imagegen theo art direction từ ZIP người dùng, ngày09/10/2026. Prompt và cách dùng ở docs/art-direction.md; UI ghi ảnh minh họa. Không lấy ảnh từ Cities: Skylines, không gọi AI runtime.
 
 Kiến trúc 09/10: 13 thiết kế procedural gốc trong building-designs.js, shared roof prism trong gable-geometry.js. Nhà/cửa hàng/xưởng không dùng ảnh, texture hoặc model thương mại bên ngoài.
+
+## GIS Việt Nam từ gói người dùng (10/10/2026)
+
+`public/geodata/vn-map-20250701-v1/`: Nguyễn Duy Liêm (2025), Dữ liệu GIS Việt Nam, Free-GIS-Data, commit `ccb9f4ae992418bfeefd06da1eb42d0249632176`. README nguồn cho phép dùng công khai miễn phí và yêu cầu trích nguồn; không tuyên bố MIT. Xem NGUON_VA_GIOI_HAN.md và manifest.json cùng thư mục. Full/light đã bổ sung Côn Đảo có nguồn và sửa nhãn Đồng Tháp; hình ngoài khơi chưa xác minh đất nổi, chỉ tham chiếu.
+
+## Bộ ảnh cư dân/phương tiện do người dùng cung cấp
+
+Nguồn bất biến `art-source/Build_City_26_People_Vehicles/`; SHA nguồn và mô tả từng frame giữ theo manifest. WebP alpha tại `public/art/mobility/` được tạo bằng script của repo, không tải asset game khác. Model 3D được viết bằng hình học riêng trong `mobility-models.js`, không coi PNG là model. Chưa xác minh quyền bên thứ ba ngoài nguồn gói do người dùng cung cấp; không tự gán giấy phép nguồn. Không gọi API AI khi game chạy.

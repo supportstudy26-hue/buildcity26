@@ -1,0 +1,31 @@
+{
+  "version": "vn-map-20250701-v1",
+  "snapshot": "2025-07-01",
+  "sourceCommit": "ccb9f4ae992418bfeefd06da1eb42d0249632176",
+  "files": {
+    "vietnam-34-light.geojson": {
+      "bytes": 1924832,
+      "sha256": "2d1fb10b8f9e2f3d94bc2b7c1401dfca61d41e6b03f46642b46e45195e74814d"
+    },
+    "vietnam-34-full.geojson": {
+      "bytes": 14088803,
+      "sha256": "3ccff89968e335fdbdee9f80b218519cdaeceb62ba56fdafdd95105a41e8d83a"
+    },
+    "provinces.json": {
+      "bytes": 19058,
+      "sha256": "c42a3351eb4796e1e76ee55bc0ae41e141c4d3ae68ae74fcfa95ac0c687f66d6"
+    },
+    "islands.json": {
+      "bytes": 69364,
+      "sha256": "657aee105a94e3b1800f3201ac47fe389859355d5d8fb82cbdb2d30cae805799"
+    },
+    "old-63-to-new-34.csv": {
+      "bytes": 2367,
+      "sha256": "22d7112cac7464d83dae4e5b0d1d2b964b10fabd663b2f0b637c69be77af0856"
+    },
+    "offshore-island-reef-reference.geojson": {
+      "bytes": 2272385,
+      "sha256": "0ba66b592b5459709f31d67b48b4d141d65a4bbf815405df54144253b3ad42e0"
+    }
+  }
+}

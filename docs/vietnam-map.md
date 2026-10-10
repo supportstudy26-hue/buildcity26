@@ -32,3 +32,7 @@ Chạy bước quần đảo sau bước địa hình để cập nhật checksu
 ## Chưa hoàn thành
 
 DEM/đường bờ đầy đủ Hoàng Sa, DEM đảo Trường Sa; full world xây 12,8 km, mua đất và streaming chunk 200 m; topology pháp lý hiện hành; land cover/thủy văn/triều/độ mặn. Đây là chặng A của Lệnh 20 / Phụ lục H, không phải hoàn tất toàn đặc tả.
+
+## Cập nhật 10/10/2026
+
+Màn quốc gia hiện dùng GeoJSON nguyên văn từ gói mới `vn-map-20250701-v1`, 34 ID `vn-*`, 6 thành phố / 28 tỉnh, snapshot 2025-07-01; không dùng lớp overview OSM cũ hay loại các polygon ngoài khơi khỏi geometry nữa. Các lớp ngoài khơi hiển thị tham chiếu và khóa xây. 36 gói DEM/OSM cũ vẫn là nguồn khu xây cục bộ; ngày metadata của chúng không phải phiên bản ranh quốc gia. Xem [national-map-integration.md](national-map-integration.md) để phân biệt nguồn và giới hạn.

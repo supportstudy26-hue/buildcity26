@@ -1,3 +1,4 @@
+import {assignMobilityArt} from '../../config/mobility-art.js';
 import { entityId, emit } from './events.js';
 import { position } from './world.js';
 const first=['An','Bình','Chi','Duy','Hà','Hải','Lan','Linh','Minh','Nam','Ngọc','Phúc','Quân','Thảo','Trang','Vy'];
@@ -20,6 +21,7 @@ export function reconcileHouseholds(s, size, rng) {
       s.citizens.push(c); residents.push(c); h.members.push(c.id); alive.add(c.id); emit(s,'resident-added',c.id,{home:i});
     }
   }
+  assignMobilityArt(s);
   s.citizens=s.citizens.filter(c=>alive.has(c.id));
   for(const h of s.households) h.members=h.members.filter(id=>alive.has(id));
   s.households=s.households.filter(h=>h.members.length);

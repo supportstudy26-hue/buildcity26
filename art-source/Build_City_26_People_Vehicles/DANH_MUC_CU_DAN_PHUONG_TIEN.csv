@@ -1,0 +1,145 @@
+﻿id,ten_tieng_viet,nhom,loai,atlas,thu_tu,x,y,rong_px,cao_px,atlas_rong_px,atlas_cao_px,animation_profile
+pv-child-boy,Bé trai,01-residents,person,atlases/01-residents.png,1,215,26,137,338,1305,1206,humanoid
+pv-child-girl,Bé gái,01-residents,person,atlases/01-residents.png,2,590,31,156,336,1305,1206,humanoid
+pv-teen-boy,Nam thiếu niên,01-residents,person,atlases/01-residents.png,3,967,0,146,390,1305,1206,humanoid
+pv-teen-girl,Nữ thiếu niên,01-residents,person,atlases/01-residents.png,4,203,386,154,407,1305,1206,humanoid
+pv-adult-man,Nam trưởng thành,01-residents,person,atlases/01-residents.png,5,573,379,163,424,1305,1206,humanoid
+pv-adult-woman,Nữ trưởng thành,01-residents,person,atlases/01-residents.png,6,964,393,158,406,1305,1206,humanoid
+pv-elder-man,Ông cao tuổi,01-residents,person,atlases/01-residents.png,7,173,794,198,380,1305,1206,humanoid
+pv-elder-woman,Bà cao tuổi,01-residents,person,atlases/01-residents.png,8,581,806,135,377,1305,1206,humanoid
+pv-wheelchair-user,Cư dân dùng xe lăn,01-residents,person,atlases/01-residents.png,9,902,806,302,373,1305,1206,wheelchair
+pv-office-worker,Nhân viên văn phòng,02-daily-life,person,atlases/02-daily-life.png,1,133,7,164,406,1230,1278,humanoid
+pv-teacher,Giáo viên,02-daily-life,person,atlases/02-daily-life.png,2,546,12,131,391,1230,1278,humanoid
+pv-retail-worker,Nhân viên cửa hàng,02-daily-life,person,atlases/02-daily-life.png,3,946,8,199,406,1230,1278,humanoid
+pv-restaurant-worker,Nhân viên nhà hàng,02-daily-life,person,atlases/02-daily-life.png,4,145,426,176,409,1230,1278,humanoid
+pv-factory-worker,Công nhân nhà máy,02-daily-life,person,atlases/02-daily-life.png,5,526,426,176,408,1230,1278,humanoid
+pv-farmer,Nông dân,02-daily-life,person,atlases/02-daily-life.png,6,930,438,177,398,1230,1278,humanoid
+pv-tourist,Khách du lịch,02-daily-life,person,atlases/02-daily-life.png,7,144,845,157,408,1230,1278,humanoid
+pv-jogger,Người chạy bộ,02-daily-life,person,atlases/02-daily-life.png,8,545,853,146,407,1230,1278,humanoid
+pv-delivery-rider-person,Nhân viên giao hàng,02-daily-life,person,atlases/02-daily-life.png,9,942,845,191,407,1230,1278,humanoid
+pv-police-officer,Cảnh sát,03-service-people,person,atlases/03-service-people.png,1,156,20,150,391,1263,1245,humanoid
+pv-firefighter,Lính cứu hỏa,03-service-people,person,atlases/03-service-people.png,2,550,19,171,392,1263,1245,humanoid
+pv-paramedic,Nhân viên cấp cứu,03-service-people,person,atlases/03-service-people.png,3,975,29,173,382,1263,1245,humanoid
+pv-doctor,Bác sĩ,03-service-people,person,atlases/03-service-people.png,4,167,440,133,376,1263,1245,humanoid
+pv-sanitation-worker,Nhân viên vệ sinh,03-service-people,person,atlases/03-service-people.png,5,511,439,210,371,1263,1245,humanoid
+pv-utility-technician,Kỹ thuật viên điện nước,03-service-people,person,atlases/03-service-people.png,6,982,440,150,380,1263,1245,humanoid
+pv-construction-worker,Công nhân xây dựng,03-service-people,person,atlases/03-service-people.png,7,144,834,165,389,1263,1245,humanoid
+pv-transit-driver,Lái xe công cộng,03-service-people,person,atlases/03-service-people.png,8,576,849,114,373,1263,1245,humanoid
+pv-harbor-worker,Nhân viên cảng,03-service-people,person,atlases/03-service-people.png,9,977,830,166,396,1263,1245,humanoid
+pv-compact-car,Ô tô cỡ nhỏ,04-private-cars,road,atlases/04-private-cars.png,1,66,147,293,228,1254,1254,car
+pv-sedan,Ô tô sedan,04-private-cars,road,atlases/04-private-cars.png,2,472,166,307,209,1254,1254,car
+pv-electric-car,Ô tô điện,04-private-cars,road,atlases/04-private-cars.png,3,858,165,328,215,1254,1254,car
+pv-suv,Ô tô SUV,04-private-cars,road,atlases/04-private-cars.png,4,55,528,329,240,1254,1254,car
+pv-family-minivan,Xe gia đình,04-private-cars,road,atlases/04-private-cars.png,5,462,514,329,255,1254,1254,car
+pv-pickup,Xe bán tải,04-private-cars,road,atlases/04-private-cars.png,6,849,537,361,235,1254,1254,car
+pv-taxi,Taxi,04-private-cars,road,atlases/04-private-cars.png,7,55,938,326,216,1254,1254,car
+pv-accessible-taxi,Taxi hỗ trợ xe lăn,04-private-cars,road,atlases/04-private-cars.png,8,442,901,367,249,1254,1254,car
+pv-limousine,Xe đưa đón cao cấp,04-private-cars,road,atlases/04-private-cars.png,9,855,933,350,223,1254,1254,car
+pv-commuter-bicycle,Xe đạp,05-two-wheelers,two-wheel,atlases/05-two-wheelers.png,1,105,117,266,246,1254,1254,bicycle
+pv-mountain-bicycle,Xe đạp địa hình,05-two-wheelers,two-wheel,atlases/05-two-wheelers.png,2,496,126,273,235,1254,1254,bicycle
+pv-electric-bicycle,Xe đạp điện,05-two-wheelers,two-wheel,atlases/05-two-wheelers.png,3,909,121,259,245,1254,1254,bicycle
+pv-step-through-scooter,Xe máy tay ga,05-two-wheelers,two-wheel,atlases/05-two-wheelers.png,4,108,510,255,249,1254,1254,motorcycle
+pv-electric-scooter-motorbike,Xe máy điện,05-two-wheelers,two-wheel,atlases/05-two-wheelers.png,5,506,506,259,255,1254,1254,motorcycle
+pv-commuter-motorcycle,Xe máy phổ thông,05-two-wheelers,two-wheel,atlases/05-two-wheelers.png,6,896,512,282,250,1254,1254,motorcycle
+pv-delivery-motorbike,Xe máy giao hàng,05-two-wheelers,two-wheel,atlases/05-two-wheelers.png,7,99,900,250,242,1254,1254,motorcycle
+pv-cargo-bicycle,Xe đạp chở hàng,05-two-wheelers,two-wheel,atlases/05-two-wheelers.png,8,476,906,323,227,1254,1254,bicycle
+pv-pedicab,Xích lô,05-two-wheelers,two-wheel,atlases/05-two-wheelers.png,9,907,893,285,244,1254,1254,bicycle
+pv-delivery-van,Xe tải van,06-road-freight,road,atlases/06-road-freight.png,1,71,146,269,212,1254,1254,car
+pv-light-box-truck,Xe tải nhỏ,06-road-freight,road,atlases/06-road-freight.png,2,481,116,272,241,1254,1254,car
+pv-medium-truck,Xe tải trung,06-road-freight,road,atlases/06-road-freight.png,3,904,139,289,216,1254,1254,car
+pv-container-truck,Xe đầu kéo container,06-road-freight,road,atlases/06-road-freight.png,4,48,518,324,248,1254,1254,car
+pv-refrigerated-truck,Xe tải lạnh,06-road-freight,road,atlases/06-road-freight.png,5,495,525,271,237,1254,1254,car
+pv-tanker-truck,Xe bồn,06-road-freight,road,atlases/06-road-freight.png,6,890,527,315,240,1254,1254,car
+pv-timber-truck,Xe chở gỗ,06-road-freight,road,atlases/06-road-freight.png,7,56,908,320,235,1254,1254,car
+pv-car-carrier,Xe chở ô tô,06-road-freight,road,atlases/06-road-freight.png,8,478,907,328,248,1254,1254,car
+pv-postal-van,Xe bưu chính,06-road-freight,road,atlases/06-road-freight.png,9,917,921,279,229,1254,1254,car
+pv-police-car,Xe cảnh sát,07-emergency,road,atlases/07-emergency.png,1,87,221,298,179,1254,1254,car
+pv-police-van,Xe tuần tra,07-emergency,road,atlases/07-emergency.png,2,480,179,282,225,1254,1254,car
+pv-ambulance,Xe cứu thương,07-emergency,road,atlases/07-emergency.png,3,868,171,298,232,1254,1254,car
+pv-fire-engine,Xe cứu hỏa,07-emergency,road,atlases/07-emergency.png,4,67,531,328,231,1254,1254,car
+pv-ladder-fire-truck,Xe thang cứu hỏa,07-emergency,road,atlases/07-emergency.png,5,459,529,340,237,1254,1254,car
+pv-rescue-truck,Xe cứu nạn,07-emergency,road,atlases/07-emergency.png,6,863,535,316,235,1254,1254,car
+pv-tow-truck,Xe kéo cứu hộ,07-emergency,road,atlases/07-emergency.png,7,67,883,318,240,1254,1254,car
+pv-flatbed-recovery,Xe cứu hộ sàn,07-emergency,road,atlases/07-emergency.png,8,450,935,380,187,1254,1254,car
+pv-incident-command,Xe chỉ huy ứng cứu,07-emergency,road,atlases/07-emergency.png,9,865,866,319,274,1254,1254,car
+pv-garbage-truck,Xe thu gom rác,08-municipal,road,atlases/08-municipal.png,1,67,141,292,215,1254,1254,car
+pv-recycling-truck,Xe tái chế,08-municipal,road,atlases/08-municipal.png,2,488,141,303,216,1254,1254,car
+pv-street-sweeper,Xe quét đường,08-municipal,road,atlases/08-municipal.png,3,901,150,266,207,1254,1254,car
+pv-water-sprinkler-truck,Xe tưới rửa đường,08-municipal,road,atlases/08-municipal.png,4,42,529,333,238,1254,1254,car
+pv-sewer-service-truck,Xe thông hút cống,08-municipal,road,atlases/08-municipal.png,5,485,528,305,220,1254,1254,car
+pv-maintenance-van,Xe bảo trì,08-municipal,road,atlases/08-municipal.png,6,901,527,290,223,1254,1254,car
+pv-bucket-truck,Xe sửa đèn điện,08-municipal,road,atlases/08-municipal.png,7,55,897,317,245,1254,1254,car
+pv-hearse,Xe tang lễ,08-municipal,road,atlases/08-municipal.png,8,451,930,352,207,1254,1254,car
+pv-park-service-cart,Xe chăm sóc công viên,08-municipal,road,atlases/08-municipal.png,9,913,910,279,230,1254,1254,car
+pv-excavator,Máy xúc,09-construction,construction,atlases/09-construction.png,1,74,122,318,241,1254,1254,construction
+pv-wheel-loader,Máy xúc lật,09-construction,construction,atlases/09-construction.png,2,478,144,302,228,1254,1254,construction
+pv-bulldozer,Máy ủi,09-construction,construction,atlases/09-construction.png,3,886,128,290,253,1254,1254,construction
+pv-road-roller,Xe lu,09-construction,construction,atlases/09-construction.png,4,77,531,296,230,1254,1254,construction
+pv-asphalt-paver,Máy trải nhựa,09-construction,construction,atlases/09-construction.png,5,463,530,348,231,1254,1254,construction
+pv-concrete-mixer,Xe trộn bê tông,09-construction,construction,atlases/09-construction.png,6,884,521,305,242,1254,1254,construction
+pv-dump-truck,Xe ben,09-construction,construction,atlases/09-construction.png,7,69,925,292,215,1254,1254,construction
+pv-mobile-crane,Xe cẩu,09-construction,construction,atlases/09-construction.png,8,465,930,351,207,1254,1254,construction
+pv-forklift,Xe nâng,09-construction,construction,atlases/09-construction.png,9,920,928,254,210,1254,1254,construction
+pv-city-bus,Xe buýt đô thị,10-public-transit,road-transit,atlases/10-public-transit.png,1,66,132,316,232,1254,1254,bus
+pv-electric-bus,Xe buýt điện,10-public-transit,road-transit,atlases/10-public-transit.png,2,462,130,307,235,1254,1254,bus
+pv-articulated-bus,Xe buýt nối khớp,10-public-transit,road-transit,atlases/10-public-transit.png,3,843,131,346,236,1254,1254,bus
+pv-minibus,Xe buýt nhỏ,10-public-transit,road-transit,atlases/10-public-transit.png,4,76,524,301,237,1254,1254,bus
+pv-intercity-coach,Xe khách liên tỉnh,10-public-transit,road-transit,atlases/10-public-transit.png,5,445,515,366,247,1254,1254,bus
+pv-school-bus,Xe đưa đón học sinh,10-public-transit,road-transit,atlases/10-public-transit.png,6,896,533,290,219,1254,1254,bus
+pv-tram,Tàu điện mặt đất,10-public-transit,road-transit,atlases/10-public-transit.png,7,55,907,354,236,1254,1254,rail
+pv-metro-car,Toa metro,10-public-transit,road-transit,atlases/10-public-transit.png,8,476,911,338,229,1254,1254,rail
+pv-shuttle-cart,Xe điện du lịch,10-public-transit,road-transit,atlases/10-public-transit.png,9,917,913,284,214,1254,1254,bus
+pv-diesel-locomotive,Đầu máy diesel,11-railway,rail,atlases/11-railway.png,1,64,130,309,230,1254,1254,rail
+pv-electric-locomotive,Đầu máy điện,11-railway,rail,atlases/11-railway.png,2,469,120,314,240,1254,1254,rail
+pv-passenger-coach,Toa khách,11-railway,rail,atlases/11-railway.png,3,882,129,307,226,1254,1254,rail
+pv-sleeper-coach,Toa giường nằm,11-railway,rail,atlases/11-railway.png,4,51,520,321,238,1254,1254,rail
+pv-high-speed-train,Đầu tàu tốc độ cao,11-railway,rail,atlases/11-railway.png,5,459,538,333,222,1254,1254,rail
+pv-container-wagon,Toa container,11-railway,rail,atlases/11-railway.png,6,882,527,338,233,1254,1254,rail
+pv-tank-wagon,Toa bồn,11-railway,rail,atlases/11-railway.png,7,55,934,330,227,1254,1254,rail
+pv-hopper-wagon,Toa hàng rời,11-railway,rail,atlases/11-railway.png,8,461,937,334,233,1254,1254,rail
+pv-maintenance-railcar,Xe bảo trì đường sắt,11-railway,rail,atlases/11-railway.png,9,892,931,309,220,1254,1254,rail
+pv-river-ferry,Phà sông,12-small-boats,water,atlases/12-small-boats.png,1,92,152,270,220,1254,1254,water
+pv-vehicle-ferry,Phà chở xe,12-small-boats,water,atlases/12-small-boats.png,2,485,124,293,256,1254,1254,water
+pv-waterbus,Buýt đường sông,12-small-boats,water,atlases/12-small-boats.png,3,917,180,252,196,1254,1254,water
+pv-speedboat,Ca nô,12-small-boats,water,atlases/12-small-boats.png,4,91,598,261,177,1254,1254,water
+pv-fishing-boat,Thuyền đánh cá,12-small-boats,water,atlases/12-small-boats.png,5,513,528,261,246,1254,1254,water
+pv-tugboat,Tàu kéo,12-small-boats,water,atlases/12-small-boats.png,6,925,531,263,249,1254,1254,water
+pv-rescue-boat,Ca nô cứu hộ,12-small-boats,water,atlases/12-small-boats.png,7,95,943,256,220,1254,1254,water
+pv-patrol-boat,Tàu tuần tra,12-small-boats,water,atlases/12-small-boats.png,8,514,963,235,209,1254,1254,water
+pv-sailboat,Thuyền buồm,12-small-boats,water,atlases/12-small-boats.png,9,940,892,221,285,1254,1254,water
+pv-container-ship,Tàu container,13-large-ships,water,atlases/13-large-ships.png,1,40,131,331,259,1254,1254,water
+pv-bulk-carrier,Tàu hàng rời,13-large-ships,water,atlases/13-large-ships.png,2,463,131,331,258,1254,1254,water
+pv-oil-tanker,Tàu chở dầu,13-large-ships,water,atlases/13-large-ships.png,3,882,133,334,258,1254,1254,water
+pv-ro-ro-ship,Tàu chở xe,13-large-ships,water,atlases/13-large-ships.png,4,33,536,349,254,1254,1254,water
+pv-cruise-ship,Tàu du lịch,13-large-ships,water,atlases/13-large-ships.png,5,454,539,354,250,1254,1254,water
+pv-coastal-cargo,Tàu hàng ven biển,13-large-ships,water,atlases/13-large-ships.png,6,894,539,329,256,1254,1254,water
+pv-barge,Sà lan,13-large-ships,water,atlases/13-large-ships.png,7,39,947,354,215,1254,1254,water
+pv-dredger,Tàu nạo vét,13-large-ships,water,atlases/13-large-ships.png,8,455,928,345,233,1254,1254,water
+pv-research-vessel,Tàu nghiên cứu,13-large-ships,water,atlases/13-large-ships.png,9,883,942,334,230,1254,1254,water
+pv-regional-turboprop,Máy bay cánh quạt,14-airplanes,airplane,atlases/14-airplanes.png,1,66,163,325,226,1254,1254,prop-aircraft
+pv-regional-jet,Máy bay phản lực nhỏ,14-airplanes,airplane,atlases/14-airplanes.png,2,476,166,326,221,1254,1254,airplane
+pv-narrowbody-airliner,Máy bay chở khách,14-airplanes,airplane,atlases/14-airplanes.png,3,884,161,326,226,1254,1254,airplane
+pv-widebody-airliner,Máy bay thân rộng,14-airplanes,airplane,atlases/14-airplanes.png,4,50,527,366,250,1254,1254,airplane
+pv-cargo-airplane,Máy bay vận tải,14-airplanes,airplane,atlases/14-airplanes.png,5,472,531,354,250,1254,1254,airplane
+pv-business-jet,Máy bay thương gia,14-airplanes,airplane,atlases/14-airplanes.png,6,895,555,316,217,1254,1254,airplane
+pv-light-aircraft,Máy bay dân dụng nhỏ,14-airplanes,airplane,atlases/14-airplanes.png,7,78,943,303,183,1254,1254,prop-aircraft
+pv-seaplane,Thủy phi cơ,14-airplanes,airplane,atlases/14-airplanes.png,8,486,940,310,205,1254,1254,prop-aircraft
+pv-firefighting-airplane,Máy bay chữa cháy,14-airplanes,airplane,atlases/14-airplanes.png,9,889,925,316,211,1254,1254,prop-aircraft
+pv-medical-helicopter,Trực thăng cấp cứu,15-helicopters,rotor,atlases/15-helicopters.png,1,56,109,337,234,1254,1254,helicopter
+pv-rescue-helicopter,Trực thăng cứu hộ,15-helicopters,rotor,atlases/15-helicopters.png,2,459,113,322,227,1254,1254,helicopter
+pv-fire-helicopter,Trực thăng chữa cháy,15-helicopters,rotor,atlases/15-helicopters.png,3,864,110,334,239,1254,1254,helicopter
+pv-police-helicopter,Trực thăng tuần tra,15-helicopters,rotor,atlases/15-helicopters.png,4,52,503,341,240,1254,1254,helicopter
+pv-tourist-helicopter,Trực thăng du lịch,15-helicopters,rotor,atlases/15-helicopters.png,5,476,509,297,234,1254,1254,helicopter
+pv-cargo-helicopter,Trực thăng vận tải,15-helicopters,rotor,atlases/15-helicopters.png,6,845,512,382,235,1254,1254,tandem-helicopter
+pv-utility-helicopter,Trực thăng kỹ thuật,15-helicopters,rotor,atlases/15-helicopters.png,7,48,897,343,242,1254,1254,helicopter
+pv-survey-drone,Drone khảo sát,15-helicopters,rotor,atlases/15-helicopters.png,8,483,936,318,192,1254,1254,drone
+pv-delivery-drone,Drone giao hàng,15-helicopters,rotor,atlases/15-helicopters.png,9,858,918,365,220,1254,1254,drone
+pv-farm-tractor,Máy kéo,16-special-machines,special,atlases/16-special-machines.png,1,29,46,373,342,1312,1199,construction
+pv-combine-harvester,Máy gặt,16-special-machines,special,atlases/16-special-machines.png,2,415,36,507,362,1312,1199,construction
+pv-tractor-trailer,Rơ-moóc nông nghiệp,16-special-machines,special,atlases/16-special-machines.png,3,922,51,359,323,1312,1199,trailer
+pv-irrigation-cart,Xe tưới nông nghiệp,16-special-machines,special,atlases/16-special-machines.png,4,34,423,320,321,1312,1199,construction
+pv-snowplow,Xe dọn tuyết,16-special-machines,special,atlases/16-special-machines.png,5,397,406,481,367,1312,1199,construction
+pv-airport-baggage-tug,Xe kéo hành lý,16-special-machines,special,atlases/16-special-machines.png,6,890,488,396,258,1312,1199,car
+pv-airport-fuel-truck,Xe tiếp nhiên liệu sân bay,16-special-machines,special,atlases/16-special-machines.png,7,42,830,423,307,1312,1199,car
+pv-airport-stairs,Xe thang máy bay,16-special-machines,special,atlases/16-special-machines.png,8,519,798,380,361,1312,1199,construction
+pv-cable-car,Cabin cáp treo,16-special-machines,special,atlases/16-special-machines.png,9,978,756,273,412,1312,1199,cable-car

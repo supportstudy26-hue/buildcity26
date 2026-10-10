@@ -1,0 +1,242 @@
+[
+  {
+    "group": "residential",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.4889,
+    "bytes": 2174194
+  },
+  {
+    "group": "commerce",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.4673,
+    "bytes": 2382780
+  },
+  {
+    "group": "offices",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.491,
+    "bytes": 2204550
+  },
+  {
+    "group": "processing",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.4398,
+    "bytes": 2501516
+  },
+  {
+    "group": "resources",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.4545,
+    "bytes": 2426778
+  },
+  {
+    "group": "agriculture",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.4986,
+    "bytes": 2362640
+  },
+  {
+    "group": "generation",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.5436,
+    "bytes": 2119738
+  },
+  {
+    "group": "power-network",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.589,
+    "bytes": 1883743
+  },
+  {
+    "group": "water",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.538,
+    "bytes": 2094910
+  },
+  {
+    "group": "environment",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.5564,
+    "bytes": 2041417
+  },
+  {
+    "group": "education",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.4978,
+    "bytes": 2279435
+  },
+  {
+    "group": "healthcare",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.5144,
+    "bytes": 2137163
+  },
+  {
+    "group": "social-care",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.4944,
+    "bytes": 2256574
+  },
+  {
+    "group": "fire-rescue",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.5357,
+    "bytes": 2047514
+  },
+  {
+    "group": "security-civic",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.5386,
+    "bytes": 2047309
+  },
+  {
+    "group": "post-telecom",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.5272,
+    "bytes": 2115598
+  },
+  {
+    "group": "local-transit",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.5229,
+    "bytes": 2145300
+  },
+  {
+    "group": "regional-transit",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.489,
+    "bytes": 2288227
+  },
+  {
+    "group": "marine",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.4954,
+    "bytes": 2144437
+  },
+  {
+    "group": "parks",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.4739,
+    "bytes": 2469708
+  },
+  {
+    "group": "sports-culture",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.5156,
+    "bytes": 2160344
+  },
+  {
+    "group": "tourism",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.5611,
+    "bytes": 2011544
+  },
+  {
+    "group": "infrastructure",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.5538,
+    "bytes": 1990557
+  },
+  {
+    "group": "modules",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "transparentFraction": 0.5011,
+    "bytes": 2194085
+  }
+]

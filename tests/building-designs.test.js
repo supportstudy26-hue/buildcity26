@@ -39,6 +39,6 @@ test('shared pitched roof has eight triangles, finite normals and picks its actu
 
 test('visual QA exercises all 13 real designs with households and jobs, without storage',async()=>{
   const {architectureCity}=await import('../src/benchmark/scenario.js'),city=architectureCity(),ids=new Set();
-  city.tiles.forEach((t,i)=>{const d=buildingDesign(t,i%SIZE,Math.floor(i/SIZE));if(d)ids.add(d.id);});
+  city.tiles.forEach((t,i)=>{const d=buildingDesign(t,i%SIZE,Math.floor(i/SIZE));if(d&&['residential','commercial','industrial'].includes(t.kind))ids.add(d.id);});
   assert.equal(ids.size,13);assert.ok(city.citizens.length>1000);assert.ok(city.firms.length>10);assert.ok(city.citizens.some(c=>c.work));
 });

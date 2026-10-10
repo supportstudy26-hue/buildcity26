@@ -1,0 +1,6258 @@
+{
+  "format": "build-city-26-art-atlas",
+  "version": 1,
+  "generatedWith": "built-in image generation",
+  "assetCount": 216,
+  "atlasCount": 24,
+  "projection": {
+    "type": "orthographic-isometric",
+    "intendedAzimuthDegrees": 45,
+    "intendedElevationDegrees": 35,
+    "note": "Intended art direction, not measured camera calibration."
+  },
+  "frameMethod": "Bounding rectangles of nine major alpha components per atlas, row-major; no original PNG pixels altered. Anchors are initial display defaults, not surveyed footprints.",
+  "groups": [
+    {
+      "id": "residential",
+      "label": "Nhà ở",
+      "atlas": "atlases/01-residential.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "commerce",
+      "label": "Thương mại",
+      "atlas": "atlases/02-commerce.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "offices",
+      "label": "Văn phòng",
+      "atlas": "atlases/03-offices.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "processing",
+      "label": "Nhà máy chế biến",
+      "atlas": "atlases/04-processing.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "resources",
+      "label": "Tài nguyên và kho",
+      "atlas": "atlases/05-resources.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "agriculture",
+      "label": "Nông nghiệp",
+      "atlas": "atlases/06-agriculture.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "generation",
+      "label": "Nhà máy điện",
+      "atlas": "atlases/07-generation.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "power-network",
+      "label": "Mạng điện",
+      "atlas": "atlases/08-power-network.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "water",
+      "label": "Nước và nước thải",
+      "atlas": "atlases/09-water.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "environment",
+      "label": "Rác và môi trường",
+      "atlas": "atlases/10-environment.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "education",
+      "label": "Giáo dục",
+      "atlas": "atlases/11-education.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "healthcare",
+      "label": "Y tế",
+      "atlas": "atlases/12-healthcare.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "social-care",
+      "label": "Phúc lợi và hậu sự",
+      "atlas": "atlases/13-social-care.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "fire-rescue",
+      "label": "Cứu hỏa và cứu nạn",
+      "atlas": "atlases/14-fire-rescue.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "security-civic",
+      "label": "An ninh và hành chính",
+      "atlas": "atlases/15-security-civic.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "post-telecom",
+      "label": "Bưu chính và viễn thông",
+      "atlas": "atlases/16-post-telecom.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "local-transit",
+      "label": "Giao thông công cộng",
+      "atlas": "atlases/17-local-transit.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "regional-transit",
+      "label": "Ga tàu và sân bay",
+      "atlas": "atlases/18-regional-transit.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "marine",
+      "label": "Cảng và hàng hải",
+      "atlas": "atlases/19-marine.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "parks",
+      "label": "Công viên và cảnh quan",
+      "atlas": "atlases/20-parks.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "sports-culture",
+      "label": "Thể thao và văn hóa",
+      "atlas": "atlases/21-sports-culture.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "tourism",
+      "label": "Du lịch và sự kiện",
+      "atlas": "atlases/22-tourism.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "infrastructure",
+      "label": "Cầu đường và bãi đỗ",
+      "atlas": "atlases/23-infrastructure.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    },
+    {
+      "id": "modules",
+      "label": "Mô-đun mở rộng",
+      "atlas": "atlases/24-modules.png",
+      "width": 1254,
+      "height": 1254,
+      "assetCount": 9
+    }
+  ],
+  "assets": [
+    {
+      "id": "detached-house",
+      "nameVi": "Nhà biệt lập",
+      "group": "residential",
+      "atlas": "atlases/01-residential.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 42,
+        "y": 84,
+        "width": 351,
+        "height": 311
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "compact two-story Vietnamese detached house, clay tile roof and garden",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "row-houses",
+      "nameVi": "Nhà liền kề",
+      "group": "residential",
+      "atlas": "atlases/01-residential.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 463,
+        "y": 50,
+        "width": 344,
+        "height": 352
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "three narrow Vietnamese townhouses with balconies, adjoining party walls",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "midrise-apartments",
+      "nameVi": "Chung cư trung tầng",
+      "group": "residential",
+      "atlas": "atlases/01-residential.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 887,
+        "y": 28,
+        "width": 315,
+        "height": 376
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "six-story apartment block, cream facade and turquoise balconies",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "mixed-use",
+      "nameVi": "Nhà ở kết hợp cửa hàng",
+      "group": "residential",
+      "atlas": "atlases/01-residential.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 45,
+        "y": 434,
+        "width": 357,
+        "height": 385
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "five-story shophouse apartment building, storefront ground floor and apartments above",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "affordable-apartments",
+      "nameVi": "Căn hộ giá thuê thấp",
+      "group": "residential",
+      "atlas": "atlases/01-residential.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 478,
+        "y": 434,
+        "width": 337,
+        "height": 401
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "simple economical eight-story apartment block, clean practical repetitive facade",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "highrise-apartments",
+      "nameVi": "Chung cư cao tầng",
+      "group": "residential",
+      "atlas": "atlases/01-residential.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 898,
+        "y": 406,
+        "width": 306,
+        "height": 435
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "twenty-story residential tower on compact landscaped podium",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "social-housing",
+      "nameVi": "Nhà ở xã hội",
+      "group": "residential",
+      "atlas": "atlases/01-residential.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 29,
+        "y": 848,
+        "width": 390,
+        "height": 365
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "pair of modest six-story residential blocks and small shared courtyard",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "rural-house",
+      "nameVi": "Nhà ở nông thôn",
+      "group": "residential",
+      "atlas": "atlases/01-residential.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 446,
+        "y": 883,
+        "width": 389,
+        "height": 309
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "Vietnamese single-story rural house, terracotta roof, small vegetable garden",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "residential-villa",
+      "nameVi": "Biệt thự",
+      "group": "residential",
+      "atlas": "atlases/01-residential.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 863,
+        "y": 855,
+        "width": 368,
+        "height": 351
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "modern Vietnamese three-story villa, shaded terrace and pocket garden",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "corner-shop",
+      "nameVi": "Cửa hàng nhỏ",
+      "group": "commerce",
+      "atlas": "atlases/02-commerce.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 44,
+        "y": 124,
+        "width": 345,
+        "height": 287
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "small corner grocery storefront with striped awning, no lettering",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "low-commercial",
+      "nameVi": "Thương mại thấp tầng",
+      "group": "commerce",
+      "atlas": "atlases/02-commerce.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 433,
+        "y": 56,
+        "width": 404,
+        "height": 376
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "two-story retail building with several storefronts and tiled roof",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "high-commercial",
+      "nameVi": "Thương mại cao tầng",
+      "group": "commerce",
+      "atlas": "atlases/02-commerce.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 885,
+        "y": 2,
+        "width": 333,
+        "height": 426
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "urban department store, six floors and window display podium",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "supermarket",
+      "nameVi": "Siêu thị",
+      "group": "commerce",
+      "atlas": "atlases/02-commerce.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 6,
+        "y": 542,
+        "width": 421,
+        "height": 304
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "one-story supermarket with loading door and small entrance forecourt",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "shopping-mall",
+      "nameVi": "Trung tâm thương mại",
+      "group": "commerce",
+      "atlas": "atlases/02-commerce.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 430,
+        "y": 446,
+        "width": 406,
+        "height": 386
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "modern four-story shopping mall, terraced roof",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "traditional-market",
+      "nameVi": "Chợ dân sinh",
+      "group": "commerce",
+      "atlas": "atlases/02-commerce.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 833,
+        "y": 504,
+        "width": 418,
+        "height": 328
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "Vietnamese traditional covered market hall, terracotta roof and open stalls",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "night-market",
+      "nameVi": "Chợ đêm",
+      "group": "commerce",
+      "atlas": "atlases/02-commerce.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 32,
+        "y": 880,
+        "width": 375,
+        "height": 308
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "compact organized market pavilion with warm unlit decorative lanterns and stalls",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "container-market",
+      "nameVi": "Chợ container",
+      "group": "commerce",
+      "atlas": "atlases/02-commerce.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 421,
+        "y": 853,
+        "width": 418,
+        "height": 356
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "two-story arrangement of colorful shipping container shops, walkways",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "food-truck-lot",
+      "nameVi": "Bãi xe bán đồ ăn",
+      "group": "commerce",
+      "atlas": "atlases/02-commerce.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 851,
+        "y": 889,
+        "width": 392,
+        "height": 316
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "small food truck parking court with one truck, tables and utility booth",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "low-office",
+      "nameVi": "Văn phòng thấp tầng",
+      "group": "offices",
+      "atlas": "atlases/03-offices.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 37,
+        "y": 110,
+        "width": 371,
+        "height": 305
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "three-story office building, cream walls and shaded glass",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "high-office",
+      "nameVi": "Văn phòng cao tầng",
+      "group": "offices",
+      "atlas": "atlases/03-offices.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 473,
+        "y": 0,
+        "width": 314,
+        "height": 434
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "eighteen-story modern office tower, teal glass and simple facade",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "software-office",
+      "nameVi": "Văn phòng phần mềm",
+      "group": "offices",
+      "atlas": "atlases/03-offices.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 864,
+        "y": 54,
+        "width": 359,
+        "height": 360
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "five-story modern technology office with solar roof",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "finance-office",
+      "nameVi": "Văn phòng tài chính",
+      "group": "offices",
+      "atlas": "atlases/03-offices.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 40,
+        "y": 432,
+        "width": 372,
+        "height": 400
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "ten-story business office, stone podium and blue glass",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "media-office",
+      "nameVi": "Văn phòng truyền thông",
+      "group": "offices",
+      "atlas": "atlases/03-offices.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 432,
+        "y": 462,
+        "width": 428,
+        "height": 369
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "six-story media office with studio annex and small dish",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "telecom-office",
+      "nameVi": "Văn phòng viễn thông",
+      "group": "offices",
+      "atlas": "atlases/03-offices.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 877,
+        "y": 411,
+        "width": 352,
+        "height": 412
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "five-story communications office with equipment rooftop",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "company-headquarters",
+      "nameVi": "Trụ sở doanh nghiệp",
+      "group": "offices",
+      "atlas": "atlases/03-offices.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 21,
+        "y": 852,
+        "width": 407,
+        "height": 373
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "eight-story company headquarters with central entry courtyard",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "science-business",
+      "nameVi": "Khu văn phòng nghiên cứu",
+      "group": "offices",
+      "atlas": "atlases/03-offices.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 437,
+        "y": 883,
+        "width": 436,
+        "height": 342
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "laboratory-office block with roof ventilation and green courtyard",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "signature-skyscraper",
+      "nameVi": "Cao ốc đặc biệt",
+      "group": "offices",
+      "atlas": "atlases/03-offices.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 919,
+        "y": 808,
+        "width": 301,
+        "height": 439
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "original slender stepped skyscraper with sky gardens, no resemblance to famous landmarks",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "wood-mill",
+      "nameVi": "Xưởng gỗ",
+      "group": "processing",
+      "atlas": "atlases/04-processing.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 7,
+        "y": 49,
+        "width": 416,
+        "height": 341
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "sawmill with workshop, log stacks and covered cutting bay",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "paper-mill",
+      "nameVi": "Nhà máy giấy",
+      "group": "processing",
+      "atlas": "atlases/04-processing.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 432,
+        "y": 13,
+        "width": 401,
+        "height": 390
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "paper factory, process hall, short industrial stacks and wood-chip storage",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "food-factory",
+      "nameVi": "Xưởng thực phẩm",
+      "group": "processing",
+      "atlas": "atlases/04-processing.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 841,
+        "y": 66,
+        "width": 406,
+        "height": 337
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "food processing factory with clean loading docks and stainless tanks",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "textile-factory",
+      "nameVi": "Nhà máy dệt",
+      "group": "processing",
+      "atlas": "atlases/04-processing.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 8,
+        "y": 463,
+        "width": 429,
+        "height": 355
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "textile factory, long sawtooth roof and loading bay",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "materials-factory",
+      "nameVi": "Xưởng vật liệu",
+      "group": "processing",
+      "atlas": "atlases/04-processing.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 433,
+        "y": 424,
+        "width": 387,
+        "height": 395
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "building material factory, cement silo and covered sheds",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "steelworks",
+      "nameVi": "Nhà máy luyện kim",
+      "group": "processing",
+      "atlas": "atlases/04-processing.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 833,
+        "y": 391,
+        "width": 412,
+        "height": 447
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "steel foundry with furnace hall, smokestack and metal bundles",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "chemical-factory",
+      "nameVi": "Nhà máy hóa chất",
+      "group": "processing",
+      "atlas": "atlases/04-processing.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 12,
+        "y": 828,
+        "width": 411,
+        "height": 404
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "chemical processing plant with tanks, compact pipes and safety perimeter",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "electronics-factory",
+      "nameVi": "Nhà máy điện tử",
+      "group": "processing",
+      "atlas": "atlases/04-processing.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 424,
+        "y": 857,
+        "width": 414,
+        "height": 354
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "clean electronics manufacturing building with white panels and teal accents",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "pharma-factory",
+      "nameVi": "Nhà máy dược",
+      "group": "processing",
+      "atlas": "atlases/04-processing.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 840,
+        "y": 854,
+        "width": 405,
+        "height": 364
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "pharmaceutical manufacturing facility, clean white laboratories and loading dock",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "stone-quarry",
+      "nameVi": "Mỏ đá",
+      "group": "resources",
+      "atlas": "atlases/05-resources.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 4,
+        "y": 52,
+        "width": 425,
+        "height": 354
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "small terraced stone quarry tile with crusher and conveyor, no huge terrain",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "coal-mine",
+      "nameVi": "Mỏ than",
+      "group": "resources",
+      "atlas": "atlases/05-resources.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 445,
+        "y": 20,
+        "width": 403,
+        "height": 385
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "coal mine entry with small headframe, dark coal pile and conveyor",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "ore-mine",
+      "nameVi": "Mỏ quặng",
+      "group": "resources",
+      "atlas": "atlases/05-resources.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 860,
+        "y": 27,
+        "width": 391,
+        "height": 386
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "metal ore mine facility with orange-brown ore bins and headframe",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "oil-well",
+      "nameVi": "Giếng dầu",
+      "group": "resources",
+      "atlas": "atlases/05-resources.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 4,
+        "y": 444,
+        "width": 419,
+        "height": 345
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "onshore oil extraction pumpjack and two tanks",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "forestry-yard",
+      "nameVi": "Lâm trường",
+      "group": "resources",
+      "atlas": "atlases/05-resources.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 423,
+        "y": 431,
+        "width": 410,
+        "height": 365
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "forestry work yard, timber shelter and managed trees",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "private-warehouse",
+      "nameVi": "Kho tư nhân",
+      "group": "resources",
+      "atlas": "atlases/05-resources.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 831,
+        "y": 474,
+        "width": 419,
+        "height": 321
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "industrial warehouse with loading docks, blue steel roof",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "public-warehouse",
+      "nameVi": "Kho công cộng",
+      "group": "resources",
+      "atlas": "atlases/05-resources.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 3,
+        "y": 876,
+        "width": 427,
+        "height": 323
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "municipal supply warehouse, neat sheds and organized pallets",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "cold-storage",
+      "nameVi": "Kho lạnh",
+      "group": "resources",
+      "atlas": "atlases/05-resources.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 430,
+        "y": 860,
+        "width": 417,
+        "height": 348
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "refrigerated warehouse with compressor units and insulated loading bays",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "small-workshop",
+      "nameVi": "Xưởng sản xuất nhỏ",
+      "group": "resources",
+      "atlas": "atlases/05-resources.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 849,
+        "y": 827,
+        "width": 400,
+        "height": 368
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "light manufacturing workshop with small yard and rooftop ventilation",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "grain-farm",
+      "nameVi": "Nông trại ngũ cốc",
+      "group": "agriculture",
+      "atlas": "atlases/06-agriculture.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 10,
+        "y": 44,
+        "width": 413,
+        "height": 357
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "grain farm tile, barn and small golden crop beds",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "vegetable-farm",
+      "nameVi": "Nông trại rau",
+      "group": "agriculture",
+      "atlas": "atlases/06-agriculture.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 429,
+        "y": 91,
+        "width": 396,
+        "height": 308
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "vegetable farm tile, storage shed and neat green crop rows",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "cotton-farm",
+      "nameVi": "Nông trại bông",
+      "group": "agriculture",
+      "atlas": "atlases/06-agriculture.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 835,
+        "y": 81,
+        "width": 409,
+        "height": 319
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "cotton farm with small barn and white-dotted crop rows",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "livestock-farm",
+      "nameVi": "Trại chăn nuôi",
+      "group": "agriculture",
+      "atlas": "atlases/06-agriculture.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 9,
+        "y": 468,
+        "width": 414,
+        "height": 308
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "livestock barn with fenced pens and very few tiny livestock",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "greenhouse",
+      "nameVi": "Nhà kính",
+      "group": "agriculture",
+      "atlas": "atlases/06-agriculture.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 427,
+        "y": 457,
+        "width": 402,
+        "height": 317
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "two glass greenhouse tunnels, service shed and water tank",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "dairy-farm",
+      "nameVi": "Trại bò sữa",
+      "group": "agriculture",
+      "atlas": "atlases/06-agriculture.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 836,
+        "y": 468,
+        "width": 412,
+        "height": 324
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "dairy barn, milking facility and fenced compact pasture",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "rice-farm",
+      "nameVi": "Nông trại lúa",
+      "group": "agriculture",
+      "atlas": "atlases/06-agriculture.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 9,
+        "y": 805,
+        "width": 430,
+        "height": 383
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "Vietnamese rice farm tile, farmhouse and shallow rectangular rice paddies",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "feed-factory",
+      "nameVi": "Xưởng thức ăn chăn nuôi",
+      "group": "agriculture",
+      "atlas": "atlases/06-agriculture.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 429,
+        "y": 796,
+        "width": 405,
+        "height": 411
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "agricultural feed mill with grain silos and loading bay",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "aquaculture-farm",
+      "nameVi": "Trại nuôi thủy sản",
+      "group": "agriculture",
+      "atlas": "atlases/06-agriculture.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 836,
+        "y": 856,
+        "width": 409,
+        "height": 327
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "two contained rectangular aquaculture ponds with aerators and service shed",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "wind-turbine",
+      "nameVi": "Turbine gió",
+      "group": "generation",
+      "atlas": "atlases/07-generation.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 77,
+        "y": 30,
+        "width": 244,
+        "height": 383
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "single wind turbine on compact maintenance base",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "small-coal-power",
+      "nameVi": "Nhà máy điện than nhỏ",
+      "group": "generation",
+      "atlas": "atlases/07-generation.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 418,
+        "y": 55,
+        "width": 404,
+        "height": 375
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "small coal power station, one boiler hall and stack",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "large-coal-power",
+      "nameVi": "Nhà máy điện than lớn",
+      "group": "generation",
+      "atlas": "atlases/07-generation.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 836,
+        "y": 46,
+        "width": 413,
+        "height": 386
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "large compact coal plant with two stacks and coal storage",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "gas-power",
+      "nameVi": "Nhà máy điện khí",
+      "group": "generation",
+      "atlas": "atlases/07-generation.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 15,
+        "y": 443,
+        "width": 394,
+        "height": 385
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "gas turbine power station, turbine halls and exhaust stacks",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "solar-farm",
+      "nameVi": "Trang trại điện mặt trời",
+      "group": "generation",
+      "atlas": "atlases/07-generation.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 412,
+        "y": 496,
+        "width": 447,
+        "height": 311
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "six organized solar panel banks and control hut",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "geothermal-power",
+      "nameVi": "Nhà máy điện địa nhiệt",
+      "group": "generation",
+      "atlas": "atlases/07-generation.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 848,
+        "y": 460,
+        "width": 402,
+        "height": 366
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "geothermal plant, low piping and steam turbine building",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "hydro-power",
+      "nameVi": "Nhà máy thủy điện",
+      "group": "generation",
+      "atlas": "atlases/07-generation.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 6,
+        "y": 836,
+        "width": 449,
+        "height": 373
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "compact hydro dam segment with powerhouse, contained water only on own base",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "nuclear-power",
+      "nameVi": "Nhà máy điện hạt nhân",
+      "group": "generation",
+      "atlas": "atlases/07-generation.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 453,
+        "y": 831,
+        "width": 434,
+        "height": 376
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "stylized nuclear station, two cooling towers and containment dome",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "backup-generator",
+      "nameVi": "Máy phát dự phòng",
+      "group": "generation",
+      "atlas": "atlases/07-generation.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 873,
+        "y": 887,
+        "width": 379,
+        "height": 285
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "diesel emergency generator enclosure and fuel tank on service pad",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "battery-storage",
+      "nameVi": "Pin lưu trữ",
+      "group": "power-network",
+      "atlas": "atlases/08-power-network.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 27,
+        "y": 79,
+        "width": 404,
+        "height": 307
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "battery energy storage containers and inverter cabinets",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "transformer-station",
+      "nameVi": "Trạm biến áp",
+      "group": "power-network",
+      "atlas": "atlases/08-power-network.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 443,
+        "y": 65,
+        "width": 378,
+        "height": 315
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "compact transformer station with transformer, busbars and safety fence",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "distribution-substation",
+      "nameVi": "Trạm phân phối điện",
+      "group": "power-network",
+      "atlas": "atlases/08-power-network.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 844,
+        "y": 93,
+        "width": 387,
+        "height": 294
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "distribution substation with switching cabinets and small control building",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "highvoltage-substation",
+      "nameVi": "Trạm cao áp",
+      "group": "power-network",
+      "atlas": "atlases/08-power-network.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 20,
+        "y": 431,
+        "width": 451,
+        "height": 390
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "larger high voltage substation with gantries and transformers",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "power-pylon",
+      "nameVi": "Cột điện cao áp",
+      "group": "power-network",
+      "atlas": "atlases/08-power-network.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 515,
+        "y": 420,
+        "width": 252,
+        "height": 395
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "single steel lattice high voltage pylon with ground feet, no wires extending out",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "distribution-pole",
+      "nameVi": "Cột điện phân phối",
+      "group": "power-network",
+      "atlas": "atlases/08-power-network.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 961,
+        "y": 423,
+        "width": 165,
+        "height": 392
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "single distribution pole and mounted small transformer",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "rooftop-solar",
+      "nameVi": "Mái nhà điện mặt trời",
+      "group": "power-network",
+      "atlas": "atlases/08-power-network.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 34,
+        "y": 903,
+        "width": 383,
+        "height": 300
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "small flat rooftop module fitted with solar panels, isolated upgrade attachment",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "switchgear-building",
+      "nameVi": "Nhà điều khiển điện",
+      "group": "power-network",
+      "atlas": "atlases/08-power-network.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 444,
+        "y": 884,
+        "width": 367,
+        "height": 314
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "substation switchgear control building with electrical cabinets",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "pumped-storage",
+      "nameVi": "Trạm thủy điện tích năng",
+      "group": "power-network",
+      "atlas": "atlases/08-power-network.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 836,
+        "y": 837,
+        "width": 400,
+        "height": 371
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "pumped storage turbine building with compact reservoir and pipe",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "surface-water-pump",
+      "nameVi": "Trạm bơm nước mặt",
+      "group": "water",
+      "atlas": "atlases/09-water.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 20,
+        "y": 62,
+        "width": 408,
+        "height": 330
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "river water pump station with intake pipes and tiny contained water edge",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "groundwater-pump",
+      "nameVi": "Trạm bơm nước ngầm",
+      "group": "water",
+      "atlas": "atlases/09-water.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 447,
+        "y": 90,
+        "width": 365,
+        "height": 287
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "groundwater well pump house with pipes and service apron",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "advanced-water-pump",
+      "nameVi": "Trạm bơm nâng cao",
+      "group": "water",
+      "atlas": "atlases/09-water.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 841,
+        "y": 85,
+        "width": 396,
+        "height": 303
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "advanced water pump facility with multiple pumps and filtration housings",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "water-tower",
+      "nameVi": "Tháp nước",
+      "group": "water",
+      "atlas": "atlases/09-water.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 49,
+        "y": 414,
+        "width": 331,
+        "height": 395
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "elevated municipal water tower on sturdy legs",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "water-tank",
+      "nameVi": "Bể chứa nước",
+      "group": "water",
+      "atlas": "atlases/09-water.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 421,
+        "y": 456,
+        "width": 418,
+        "height": 345
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "large cylindrical ground water reservoir and valve shed",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "sewage-outlet",
+      "nameVi": "Cửa xả nước thải",
+      "group": "water",
+      "atlas": "atlases/09-water.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 855,
+        "y": 475,
+        "width": 387,
+        "height": 317
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "sewage outlet headworks with pipes and small contained water strip",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "sewage-treatment",
+      "nameVi": "Trạm xử lý nước thải",
+      "group": "water",
+      "atlas": "atlases/09-water.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 12,
+        "y": 863,
+        "width": 404,
+        "height": 329
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "wastewater treatment plant with two circular settling tanks and control building",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "advanced-treatment",
+      "nameVi": "Trạm xử lý nước thải nâng cao",
+      "group": "water",
+      "atlas": "atlases/09-water.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 423,
+        "y": 850,
+        "width": 417,
+        "height": 346
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "advanced wastewater plant with aeration basins and enclosed filtration hall",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "flood-pump",
+      "nameVi": "Trạm bơm chống ngập",
+      "group": "water",
+      "atlas": "atlases/09-water.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 862,
+        "y": 857,
+        "width": 380,
+        "height": 338
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "stormwater pumping station with flood outlet gate and pump building",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "waste-transfer",
+      "nameVi": "Trạm trung chuyển rác",
+      "group": "environment",
+      "atlas": "atlases/10-environment.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 18,
+        "y": 92,
+        "width": 410,
+        "height": 305
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "waste transfer hall with covered refuse containers",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "landfill",
+      "nameVi": "Khu chôn lấp rác",
+      "group": "environment",
+      "atlas": "atlases/10-environment.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 438,
+        "y": 92,
+        "width": 399,
+        "height": 311
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "small contained landfill work cell, earth berm and weighbridge shed",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "incinerator",
+      "nameVi": "Lò đốt rác phát điện",
+      "group": "environment",
+      "atlas": "atlases/10-environment.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 849,
+        "y": 47,
+        "width": 388,
+        "height": 368
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "waste incineration power plant with reception hall and clean tall stack",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "recycling-center",
+      "nameVi": "Trung tâm tái chế",
+      "group": "environment",
+      "atlas": "atlases/10-environment.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 18,
+        "y": 488,
+        "width": 410,
+        "height": 317
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "recycling sorting facility, colorful material bins and conveyor hall",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "sludge-processing",
+      "nameVi": "Trạm xử lý bùn",
+      "group": "environment",
+      "atlas": "atlases/10-environment.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 438,
+        "y": 473,
+        "width": 411,
+        "height": 317
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "sludge processing plant with drying beds and enclosed digester",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "detention-pond",
+      "nameVi": "Hồ điều hòa",
+      "group": "environment",
+      "atlas": "atlases/10-environment.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 861,
+        "y": 466,
+        "width": 376,
+        "height": 343
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "landscaped stormwater detention pond with outlet and walking perimeter",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "environment-monitor",
+      "nameVi": "Trạm quan trắc môi trường",
+      "group": "environment",
+      "atlas": "atlases/10-environment.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 32,
+        "y": 856,
+        "width": 387,
+        "height": 341
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "environment monitoring station with compact sensors and white service cabin",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "floodgate",
+      "nameVi": "Cống ngăn lũ",
+      "group": "environment",
+      "atlas": "atlases/10-environment.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 429,
+        "y": 873,
+        "width": 409,
+        "height": 324
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "flood control gate segment with mechanical headworks and contained water",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "levee-segment",
+      "nameVi": "Đoạn đê/kè",
+      "group": "environment",
+      "atlas": "atlases/10-environment.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 860,
+        "y": 924,
+        "width": 375,
+        "height": 273
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "short levee and riverbank retaining wall segment on grass footprint",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "nursery-school",
+      "nameVi": "Nhà trẻ/mầm non",
+      "group": "education",
+      "atlas": "atlases/11-education.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 12,
+        "y": 85,
+        "width": 414,
+        "height": 292
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "Vietnamese kindergarten, colorful low building and small playground",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "primary-school",
+      "nameVi": "Trường tiểu học",
+      "group": "education",
+      "atlas": "atlases/11-education.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 432,
+        "y": 79,
+        "width": 387,
+        "height": 296
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "Vietnamese primary school with two classroom wings and assembly courtyard",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "secondary-school",
+      "nameVi": "Trường trung học",
+      "group": "education",
+      "atlas": "atlases/11-education.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 826,
+        "y": 82,
+        "width": 419,
+        "height": 302
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "three-story secondary school, courtyard and small sports field",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "vocational-school",
+      "nameVi": "Trường nghề",
+      "group": "education",
+      "atlas": "atlases/11-education.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 6,
+        "y": 482,
+        "width": 423,
+        "height": 295
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "vocational school with workshops and teaching block",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "college",
+      "nameVi": "Cao đẳng",
+      "group": "education",
+      "atlas": "atlases/11-education.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 432,
+        "y": 485,
+        "width": 387,
+        "height": 294
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "compact college campus with lecture hall and training wing",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "university",
+      "nameVi": "Đại học",
+      "group": "education",
+      "atlas": "atlases/11-education.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 826,
+        "y": 449,
+        "width": 424,
+        "height": 338
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "university campus, main lecture building, library annex and green courtyard",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "library",
+      "nameVi": "Thư viện",
+      "group": "education",
+      "atlas": "atlases/11-education.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 10,
+        "y": 852,
+        "width": 415,
+        "height": 341
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "public library, large shaded windows and quiet landscaped entrance",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "research-campus",
+      "nameVi": "Cơ sở nghiên cứu",
+      "group": "education",
+      "atlas": "atlases/11-education.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 431,
+        "y": 835,
+        "width": 414,
+        "height": 346
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "academic research laboratories with service wing and roof equipment",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "student-dorm",
+      "nameVi": "Ký túc xá",
+      "group": "education",
+      "atlas": "atlases/11-education.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 850,
+        "y": 821,
+        "width": 393,
+        "height": 372
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "six-story student dormitory with shared ground-floor entry and bike racks",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "clinic",
+      "nameVi": "Phòng khám",
+      "group": "healthcare",
+      "atlas": "atlases/12-healthcare.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 41,
+        "y": 122,
+        "width": 349,
+        "height": 283
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "small neighborhood medical clinic, white walls and turquoise accent",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "small-hospital",
+      "nameVi": "Bệnh viện nhỏ",
+      "group": "healthcare",
+      "atlas": "atlases/12-healthcare.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 439,
+        "y": 63,
+        "width": 368,
+        "height": 343
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "four-story district hospital, ambulance entrance and medical emblem not red cross",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "large-hospital",
+      "nameVi": "Bệnh viện lớn",
+      "group": "healthcare",
+      "atlas": "atlases/12-healthcare.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 855,
+        "y": 35,
+        "width": 374,
+        "height": 390
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "eight-story hospital complex, distinct emergency entrance and courtyard",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "medical-research",
+      "nameVi": "Viện nghiên cứu y tế",
+      "group": "healthcare",
+      "atlas": "atlases/12-healthcare.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 15,
+        "y": 464,
+        "width": 413,
+        "height": 327
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "medical research institute with laboratory wing and HVAC equipment",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "ambulance-depot",
+      "nameVi": "Trạm cấp cứu",
+      "group": "healthcare",
+      "atlas": "atlases/12-healthcare.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 433,
+        "y": 476,
+        "width": 391,
+        "height": 304
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "ambulance service depot with three garage bays",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "medical-helipad",
+      "nameVi": "Trạm trực thăng cấp cứu",
+      "group": "healthcare",
+      "atlas": "atlases/12-healthcare.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 831,
+        "y": 478,
+        "width": 412,
+        "height": 329
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "medical helicopter hangar and helipad without helicopter",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "hospital-wing",
+      "nameVi": "Cánh điều trị mở rộng",
+      "group": "healthcare",
+      "atlas": "atlases/12-healthcare.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 21,
+        "y": 851,
+        "width": 400,
+        "height": 357
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "isolated hospital ward extension module, white teal facade",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "pharmacy",
+      "nameVi": "Nhà thuốc",
+      "group": "healthcare",
+      "atlas": "atlases/12-healthcare.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 448,
+        "y": 880,
+        "width": 322,
+        "height": 321
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "small pharmacy retail building, simple teal medical symbol no text",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "rehabilitation-center",
+      "nameVi": "Trung tâm phục hồi chức năng",
+      "group": "healthcare",
+      "atlas": "atlases/12-healthcare.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 804,
+        "y": 884,
+        "width": 438,
+        "height": 327
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "accessible rehabilitation clinic with ramp and therapy garden",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "elder-care",
+      "nameVi": "Cơ sở chăm sóc người cao tuổi",
+      "group": "social-care",
+      "atlas": "atlases/13-social-care.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 13,
+        "y": 47,
+        "width": 411,
+        "height": 344
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "elder care residence with accessible shaded terraces and garden",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "childcare-center",
+      "nameVi": "Trung tâm chăm sóc trẻ em",
+      "group": "social-care",
+      "atlas": "atlases/13-social-care.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 441,
+        "y": 76,
+        "width": 392,
+        "height": 310
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "childcare support center, safe courtyard and warm facade",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "accessibility-center",
+      "nameVi": "Trung tâm hỗ trợ tiếp cận",
+      "group": "social-care",
+      "atlas": "atlases/13-social-care.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 862,
+        "y": 61,
+        "width": 383,
+        "height": 322
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "community accessibility support facility with ramps and tactile entrance",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "welfare-office",
+      "nameVi": "Văn phòng phúc lợi",
+      "group": "social-care",
+      "atlas": "atlases/13-social-care.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 18,
+        "y": 479,
+        "width": 391,
+        "height": 313
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "municipal welfare office, modest public-service building",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "community-center",
+      "nameVi": "Trung tâm cộng đồng",
+      "group": "social-care",
+      "atlas": "atlases/13-social-care.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 426,
+        "y": 471,
+        "width": 419,
+        "height": 323
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "community center with multipurpose hall and gathering courtyard",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "social-housing-block",
+      "nameVi": "Khu nhà xã hội",
+      "group": "social-care",
+      "atlas": "atlases/13-social-care.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 857,
+        "y": 465,
+        "width": 391,
+        "height": 333
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "modest public housing courtyard block, four stories",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "cemetery",
+      "nameVi": "Nghĩa trang",
+      "group": "social-care",
+      "atlas": "atlases/13-social-care.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 19,
+        "y": 850,
+        "width": 434,
+        "height": 348
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "respectful landscaped cemetery tile with orderly gravestones and reception pavilion",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "crematorium",
+      "nameVi": "Nhà hỏa táng",
+      "group": "social-care",
+      "atlas": "atlases/13-social-care.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 468,
+        "y": 854,
+        "width": 370,
+        "height": 346
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "quiet modern crematorium with courtyard and discreet chimney",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "funeral-garage",
+      "nameVi": "Gara xe tang",
+      "group": "social-care",
+      "atlas": "atlases/13-social-care.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 855,
+        "y": 898,
+        "width": 382,
+        "height": 304
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "funeral transport garage with two enclosed bays and simple service building",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "small-fire-station",
+      "nameVi": "Trạm cứu hỏa nhỏ",
+      "group": "fire-rescue",
+      "atlas": "atlases/14-fire-rescue.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 49,
+        "y": 81,
+        "width": 349,
+        "height": 324
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "small fire station, two red garage doors and watch room",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "large-fire-station",
+      "nameVi": "Trạm cứu hỏa lớn",
+      "group": "fire-rescue",
+      "atlas": "atlases/14-fire-rescue.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 426,
+        "y": 25,
+        "width": 420,
+        "height": 390
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "large fire station, four red garage doors and training tower",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "forest-watchtower",
+      "nameVi": "Tháp quan sát cháy rừng",
+      "group": "fire-rescue",
+      "atlas": "atlases/14-fire-rescue.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 891,
+        "y": 32,
+        "width": 330,
+        "height": 390
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "wood-and-steel lookout tower on small forest clearing",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "fire-helicopter-depot",
+      "nameVi": "Depot trực thăng chữa cháy",
+      "group": "fire-rescue",
+      "atlas": "atlases/14-fire-rescue.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 20,
+        "y": 489,
+        "width": 431,
+        "height": 296
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "fire helicopter service hangar and water refill pad, no helicopter",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "disaster-warning-center",
+      "nameVi": "Trung tâm cảnh báo thiên tai",
+      "group": "fire-rescue",
+      "atlas": "atlases/14-fire-rescue.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 470,
+        "y": 428,
+        "width": 351,
+        "height": 355
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "emergency warning center with sensor mast and operations building",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "small-shelter",
+      "nameVi": "Nơi trú ẩn nhỏ",
+      "group": "fire-rescue",
+      "atlas": "atlases/14-fire-rescue.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 841,
+        "y": 533,
+        "width": 404,
+        "height": 249
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "small evacuation shelter, robust building and supply shed",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "large-shelter",
+      "nameVi": "Nơi trú ẩn lớn",
+      "group": "fire-rescue",
+      "atlas": "atlases/14-fire-rescue.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 11,
+        "y": 848,
+        "width": 448,
+        "height": 342
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "large disaster shelter with several dormitory halls and supply yard",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "rescue-center",
+      "nameVi": "Trạm cứu nạn",
+      "group": "fire-rescue",
+      "atlas": "atlases/14-fire-rescue.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 463,
+        "y": 817,
+        "width": 392,
+        "height": 362
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "technical rescue station with equipment bays and training frame",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "combined-response-center",
+      "nameVi": "Trung tâm cứu hộ kết hợp",
+      "group": "fire-rescue",
+      "atlas": "atlases/14-fire-rescue.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 861,
+        "y": 805,
+        "width": 386,
+        "height": 365
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "combined emergency center with separate red teal blue service bays",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "small-police-station",
+      "nameVi": "Đồn cảnh sát nhỏ",
+      "group": "security-civic",
+      "atlas": "atlases/15-security-civic.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 26,
+        "y": 48,
+        "width": 385,
+        "height": 352
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "small police station, blue accent facade and two garage bays",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "large-police-station",
+      "nameVi": "Đồn cảnh sát lớn",
+      "group": "security-civic",
+      "atlas": "atlases/15-security-civic.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 427,
+        "y": 62,
+        "width": 403,
+        "height": 326
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "large police station, blue garages and secured intake wing",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "police-headquarters",
+      "nameVi": "Trụ sở cảnh sát",
+      "group": "security-civic",
+      "atlas": "atlases/15-security-civic.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 851,
+        "y": 25,
+        "width": 386,
+        "height": 388
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "municipal police headquarters, six-story administration and service yard",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "prison",
+      "nameVi": "Nhà tù",
+      "group": "security-civic",
+      "atlas": "atlases/15-security-civic.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 16,
+        "y": 474,
+        "width": 416,
+        "height": 317
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "small humane prison complex with secure perimeter, courtyard and guard tower",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "holding-facility",
+      "nameVi": "Cơ sở tạm giữ",
+      "group": "security-civic",
+      "atlas": "atlases/15-security-civic.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 452,
+        "y": 537,
+        "width": 384,
+        "height": 249
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "secure temporary custody annex with controlled entrance",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "city-hall",
+      "nameVi": "Tòa thị chính",
+      "group": "security-civic",
+      "atlas": "atlases/15-security-civic.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 855,
+        "y": 433,
+        "width": 390,
+        "height": 382
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "original Vietnamese-inspired city hall, civic clock tower and tiled roofs, no famous landmark copy",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "city-finance-center",
+      "nameVi": "Trung tâm tài chính đô thị",
+      "group": "security-civic",
+      "atlas": "atlases/15-security-civic.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 23,
+        "y": 826,
+        "width": 382,
+        "height": 382
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "municipal financial office with stone podium and teal glass tower",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "permit-office",
+      "nameVi": "Văn phòng cấp phép",
+      "group": "security-civic",
+      "atlas": "atlases/15-security-civic.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 432,
+        "y": 860,
+        "width": 402,
+        "height": 339
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "municipal planning permit office with public lobby and shaded entrance",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "port-security",
+      "nameVi": "Trạm an ninh cảng",
+      "group": "security-civic",
+      "atlas": "atlases/15-security-civic.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 856,
+        "y": 852,
+        "width": 390,
+        "height": 348
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "port police and security office with checkpoint canopy",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "mailbox",
+      "nameVi": "Hòm thư công cộng",
+      "group": "post-telecom",
+      "atlas": "atlases/16-post-telecom.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 71,
+        "y": 113,
+        "width": 274,
+        "height": 279
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "one bright yellow public mailbox on compact sidewalk base",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "post-office",
+      "nameVi": "Bưu cục",
+      "group": "post-telecom",
+      "atlas": "atlases/16-post-telecom.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 397,
+        "y": 52,
+        "width": 413,
+        "height": 369
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "neighborhood post office, yellow accents and delivery entrance",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "mail-sorting",
+      "nameVi": "Trung tâm phân loại thư",
+      "group": "post-telecom",
+      "atlas": "atlases/16-post-telecom.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 800,
+        "y": 66,
+        "width": 452,
+        "height": 355
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "mail sorting warehouse with sorting hall and van loading bays",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "mail-van-depot",
+      "nameVi": "Gara xe bưu chính",
+      "group": "post-telecom",
+      "atlas": "atlases/16-post-telecom.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 6,
+        "y": 474,
+        "width": 476,
+        "height": 352
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "postal delivery vehicle depot, yellow garage doors",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "cell-tower",
+      "nameVi": "Tháp viễn thông",
+      "group": "post-telecom",
+      "atlas": "atlases/16-post-telecom.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 489,
+        "y": 423,
+        "width": 306,
+        "height": 403
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "communications antenna tower with compact service hut",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "network-node",
+      "nameVi": "Node mạng viễn thông",
+      "group": "post-telecom",
+      "atlas": "atlases/16-post-telecom.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 816,
+        "y": 470,
+        "width": 432,
+        "height": 356
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "network exchange building and enclosed cabinets",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "data-center",
+      "nameVi": "Trung tâm dữ liệu",
+      "group": "post-telecom",
+      "atlas": "atlases/16-post-telecom.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 23,
+        "y": 862,
+        "width": 451,
+        "height": 340
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "secure data center with cooling units and backup power enclosure",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "satellite-uplink",
+      "nameVi": "Trạm uplink vệ tinh",
+      "group": "post-telecom",
+      "atlas": "atlases/16-post-telecom.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 489,
+        "y": 857,
+        "width": 358,
+        "height": 335
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "ground satellite uplink facility with two dishes and control hut",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "network-cabinet",
+      "nameVi": "Tủ mạng khu phố",
+      "group": "post-telecom",
+      "atlas": "atlases/16-post-telecom.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 875,
+        "y": 892,
+        "width": 325,
+        "height": 278
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "street-side telecommunications cabinets on service pad",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "bus-depot",
+      "nameVi": "Depot xe buýt",
+      "group": "local-transit",
+      "atlas": "atlases/17-local-transit.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 11,
+        "y": 81,
+        "width": 444,
+        "height": 320
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "municipal bus depot with covered maintenance bays and apron, no buses",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "bus-stop",
+      "nameVi": "Điểm dừng xe buýt",
+      "group": "local-transit",
+      "atlas": "atlases/17-local-transit.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 471,
+        "y": 135,
+        "width": 318,
+        "height": 265
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "bus shelter with bench and route display without text",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "tram-depot",
+      "nameVi": "Depot tram",
+      "group": "local-transit",
+      "atlas": "atlases/17-local-transit.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 810,
+        "y": 83,
+        "width": 436,
+        "height": 333
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "tram maintenance depot with tracks ending inside bays",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "tram-stop",
+      "nameVi": "Trạm tram",
+      "group": "local-transit",
+      "atlas": "atlases/17-local-transit.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 13,
+        "y": 499,
+        "width": 390,
+        "height": 297
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "compact tram stop with two platforms and overhead wire supports",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "metro-depot",
+      "nameVi": "Depot metro",
+      "group": "local-transit",
+      "atlas": "atlases/17-local-transit.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 408,
+        "y": 445,
+        "width": 478,
+        "height": 376
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "metro rolling stock maintenance depot with service tracks",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "metro-station",
+      "nameVi": "Trạm metro",
+      "group": "local-transit",
+      "atlas": "atlases/17-local-transit.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 890,
+        "y": 494,
+        "width": 351,
+        "height": 288
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "urban metro entrance pavilion with stairs and elevator",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "taxi-depot",
+      "nameVi": "Depot taxi",
+      "group": "local-transit",
+      "atlas": "atlases/17-local-transit.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 11,
+        "y": 881,
+        "width": 424,
+        "height": 310
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "taxi dispatch garage with small office and waiting bays",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "electric-bus-depot",
+      "nameVi": "Depot xe buýt điện",
+      "group": "local-transit",
+      "atlas": "atlases/17-local-transit.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 438,
+        "y": 888,
+        "width": 404,
+        "height": 294
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "electric bus depot with chargers and maintenance hall",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "park-and-ride",
+      "nameVi": "Bãi park-and-ride",
+      "group": "local-transit",
+      "atlas": "atlases/17-local-transit.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 849,
+        "y": 884,
+        "width": 395,
+        "height": 308
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "organized parking and transit interchange with bus canopy",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "passenger-train-station",
+      "nameVi": "Ga hành khách",
+      "group": "regional-transit",
+      "atlas": "atlases/18-regional-transit.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 10,
+        "y": 75,
+        "width": 424,
+        "height": 328
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "regional passenger railway station, two platforms and entrance hall",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "cargo-train-station",
+      "nameVi": "Ga hàng hóa",
+      "group": "regional-transit",
+      "atlas": "atlases/18-regional-transit.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 426,
+        "y": 65,
+        "width": 402,
+        "height": 341
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "cargo rail terminal with warehouse, two sidings and cargo crane",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "rail-maintenance",
+      "nameVi": "Depot bảo trì đường sắt",
+      "group": "regional-transit",
+      "atlas": "atlases/18-regional-transit.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 849,
+        "y": 79,
+        "width": 391,
+        "height": 329
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "rail maintenance workshop with small yard and rail equipment",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "rail-yard",
+      "nameVi": "Bãi đường sắt",
+      "group": "regional-transit",
+      "atlas": "atlases/18-regional-transit.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 13,
+        "y": 466,
+        "width": 423,
+        "height": 334
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "compact sorting rail yard with switches and operator cabin",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "regional-airport",
+      "nameVi": "Sân bay vùng",
+      "group": "regional-transit",
+      "atlas": "atlases/18-regional-transit.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 429,
+        "y": 437,
+        "width": 397,
+        "height": 365
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "small regional airport terminal with control tower and short illustrative apron",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "passenger-airport",
+      "nameVi": "Nhà ga sân bay hành khách",
+      "group": "regional-transit",
+      "atlas": "atlases/18-regional-transit.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 835,
+        "y": 474,
+        "width": 416,
+        "height": 326
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "modern passenger airport terminal with two jet bridges, no aircraft",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "cargo-airport",
+      "nameVi": "Nhà ga sân bay hàng hóa",
+      "group": "regional-transit",
+      "atlas": "atlases/18-regional-transit.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 9,
+        "y": 869,
+        "width": 451,
+        "height": 344
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "air cargo terminal with cargo apron and loading docks",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "air-control-tower",
+      "nameVi": "Tháp kiểm soát không lưu",
+      "group": "regional-transit",
+      "atlas": "atlases/18-regional-transit.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 501,
+        "y": 816,
+        "width": 310,
+        "height": 401
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "airport air traffic control tower with glass cab and service base",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "bike-parking",
+      "nameVi": "Bãi gửi xe đạp",
+      "group": "regional-transit",
+      "atlas": "atlases/18-regional-transit.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 835,
+        "y": 915,
+        "width": 407,
+        "height": 278
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "covered bicycle parking facility with racks and small reception kiosk",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "passenger-harbor",
+      "nameVi": "Cảng hành khách",
+      "group": "marine",
+      "atlas": "atlases/19-marine.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 36,
+        "y": 74,
+        "width": 390,
+        "height": 327
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "passenger harbor terminal and compact dock, water contained within own footprint",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "small-cargo-port",
+      "nameVi": "Cảng hàng hóa nhỏ",
+      "group": "marine",
+      "atlas": "atlases/19-marine.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 459,
+        "y": 87,
+        "width": 365,
+        "height": 295
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "small cargo quay with crane and warehouse, no ship",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "large-modular-port",
+      "nameVi": "Cảng mô-đun lớn",
+      "group": "marine",
+      "atlas": "atlases/19-marine.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 848,
+        "y": 71,
+        "width": 374,
+        "height": 327
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "modular port terminal with two cranes and container yard, compact footprint",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "ferry-dock",
+      "nameVi": "Bến phà",
+      "group": "marine",
+      "atlas": "atlases/19-marine.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 48,
+        "y": 467,
+        "width": 377,
+        "height": 286
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "ferry passenger dock with ramp, shelter and bollards",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "fishing-dock",
+      "nameVi": "Bến cá",
+      "group": "marine",
+      "atlas": "atlases/19-marine.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 449,
+        "y": 473,
+        "width": 373,
+        "height": 294
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "fishing landing dock with chilled handling shed and hoist",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "fish-processing",
+      "nameVi": "Nhà máy chế biến thủy sản",
+      "group": "marine",
+      "atlas": "atlases/19-marine.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 840,
+        "y": 432,
+        "width": 388,
+        "height": 338
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "fish processing facility with cold store and loading bays",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "offshore-oil-rig",
+      "nameVi": "Giàn dầu ngoài khơi",
+      "group": "marine",
+      "atlas": "atlases/19-marine.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 39,
+        "y": 768,
+        "width": 376,
+        "height": 426
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "offshore oil platform on steel legs with drilling derrick and service deck",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "marine-rescue",
+      "nameVi": "Trạm cứu hộ hàng hải",
+      "group": "marine",
+      "atlas": "atlases/19-marine.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 439,
+        "y": 806,
+        "width": 387,
+        "height": 382
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "marine emergency service station with boathouse and compact dock",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "boat-repair-yard",
+      "nameVi": "Xưởng sửa tàu",
+      "group": "marine",
+      "atlas": "atlases/19-marine.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 846,
+        "y": 859,
+        "width": 381,
+        "height": 332
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "boat repair shed and dry slipway, small compact marine yard",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "small-park",
+      "nameVi": "Công viên nhỏ",
+      "group": "parks",
+      "atlas": "atlases/20-parks.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 34,
+        "y": 63,
+        "width": 371,
+        "height": 309
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "small neighborhood park with trees, benches and central path",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "public-plaza",
+      "nameVi": "Quảng trường",
+      "group": "parks",
+      "atlas": "atlases/20-parks.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 447,
+        "y": 55,
+        "width": 385,
+        "height": 327
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "public plaza with original simple fountain, paving and shade trees",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "park-maintenance",
+      "nameVi": "Depot bảo trì công viên",
+      "group": "parks",
+      "atlas": "atlases/20-parks.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 866,
+        "y": 71,
+        "width": 369,
+        "height": 315
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "park maintenance shed with tool stores and garden service yard",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "large-city-park",
+      "nameVi": "Công viên đô thị lớn",
+      "group": "parks",
+      "atlas": "atlases/20-parks.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 23,
+        "y": 419,
+        "width": 375,
+        "height": 351
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "larger city park entrance and landscaped paths, compact representative footprint",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "zoo",
+      "nameVi": "Sở thú",
+      "group": "parks",
+      "atlas": "atlases/20-parks.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 415,
+        "y": 437,
+        "width": 429,
+        "height": 323
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "zoo entrance with two original animal enclosures and landscape, no lettering",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "amusement-park",
+      "nameVi": "Khu vui chơi",
+      "group": "parks",
+      "atlas": "atlases/20-parks.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 862,
+        "y": 416,
+        "width": 373,
+        "height": 374
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "compact amusement park with original colorful carousel and small coaster",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "nature-reserve",
+      "nameVi": "Khu bảo tồn",
+      "group": "parks",
+      "atlas": "atlases/20-parks.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 31,
+        "y": 803,
+        "width": 377,
+        "height": 400
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "nature reserve ranger station, boardwalk and native trees",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "botanical-garden",
+      "nameVi": "Vườn thực vật",
+      "group": "parks",
+      "atlas": "atlases/20-parks.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 423,
+        "y": 819,
+        "width": 411,
+        "height": 374
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "botanical garden with glass conservatory and organized planted beds",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "playground",
+      "nameVi": "Sân chơi trẻ em",
+      "group": "parks",
+      "atlas": "atlases/20-parks.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 853,
+        "y": 835,
+        "width": 388,
+        "height": 360
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "safe playground with slides, swing frame and trees",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "sports-center",
+      "nameVi": "Trung tâm thể thao",
+      "group": "sports-culture",
+      "atlas": "atlases/21-sports-culture.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 21,
+        "y": 100,
+        "width": 397,
+        "height": 294
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "public sports center with indoor hall and small outdoor court",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "stadium",
+      "nameVi": "Sân vận động",
+      "group": "sports-culture",
+      "atlas": "atlases/21-sports-culture.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 437,
+        "y": 73,
+        "width": 384,
+        "height": 318
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "compact stadium with green pitch and low grandstands",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "museum",
+      "nameVi": "Bảo tàng",
+      "group": "sports-culture",
+      "atlas": "atlases/21-sports-culture.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 848,
+        "y": 93,
+        "width": 389,
+        "height": 305
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "original modern museum with galleries and sculpture garden",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "maritime-museum",
+      "nameVi": "Bảo tàng hàng hải",
+      "group": "sports-culture",
+      "atlas": "atlases/21-sports-culture.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 25,
+        "y": 479,
+        "width": 401,
+        "height": 332
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "maritime museum with nautical-inspired roof and small boat display",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "theater",
+      "nameVi": "Nhà hát",
+      "group": "sports-culture",
+      "atlas": "atlases/21-sports-culture.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 441,
+        "y": 474,
+        "width": 389,
+        "height": 326
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "original performing arts theater with curved roof and entrance plaza",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "culture-house",
+      "nameVi": "Nhà văn hóa",
+      "group": "sports-culture",
+      "atlas": "atlases/21-sports-culture.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 852,
+        "y": 507,
+        "width": 385,
+        "height": 289
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "Vietnamese community culture hall with tiled roof and shaded veranda",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "swimming-pool",
+      "nameVi": "Hồ bơi công cộng",
+      "group": "sports-culture",
+      "atlas": "atlases/21-sports-culture.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 24,
+        "y": 877,
+        "width": 400,
+        "height": 317
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "public swimming facility with contained blue pool and changing rooms",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "gym",
+      "nameVi": "Phòng tập",
+      "group": "sports-culture",
+      "atlas": "atlases/21-sports-culture.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 450,
+        "y": 883,
+        "width": 376,
+        "height": 297
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "neighborhood gym building, generous windows and accessible entrance",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "cinema",
+      "nameVi": "Rạp chiếu phim",
+      "group": "sports-culture",
+      "atlas": "atlases/21-sports-culture.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 854,
+        "y": 873,
+        "width": 382,
+        "height": 310
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "cinema building with angular canopy, blank display panels no text",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "hotel",
+      "nameVi": "Khách sạn",
+      "group": "tourism",
+      "atlas": "atlases/22-tourism.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 64,
+        "y": 56,
+        "width": 347,
+        "height": 386
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "eight-story hotel, rooftop terrace and entry canopy",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "resort",
+      "nameVi": "Khu nghỉ dưỡng",
+      "group": "tourism",
+      "atlas": "atlases/22-tourism.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 444,
+        "y": 136,
+        "width": 376,
+        "height": 304
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "compact seaside resort with villas and contained pool",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "tourist-information",
+      "nameVi": "Trung tâm thông tin du lịch",
+      "group": "tourism",
+      "atlas": "atlases/22-tourism.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 842,
+        "y": 139,
+        "width": 377,
+        "height": 288
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "tourist visitor center, shaded pavilion and map panel with no readable text",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "convention-center",
+      "nameVi": "Trung tâm hội nghị",
+      "group": "tourism",
+      "atlas": "atlases/22-tourism.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 20,
+        "y": 516,
+        "width": 432,
+        "height": 303
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "modern convention center with two halls and arrival plaza",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "event-pavilion",
+      "nameVi": "Khu tổ chức sự kiện",
+      "group": "tourism",
+      "atlas": "atlases/22-tourism.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 451,
+        "y": 492,
+        "width": 391,
+        "height": 314
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "outdoor events pavilion and modest stage with green seating area",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "beach-facility",
+      "nameVi": "Khu tiện ích bãi biển",
+      "group": "tourism",
+      "atlas": "atlases/22-tourism.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 857,
+        "y": 492,
+        "width": 381,
+        "height": 320
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "beach service building, shaded umbrellas and lifeguard lookout on compact sand footprint",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "marina",
+      "nameVi": "Bến du thuyền",
+      "group": "tourism",
+      "atlas": "atlases/22-tourism.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 18,
+        "y": 852,
+        "width": 425,
+        "height": 334
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "small leisure marina pontoons and service office, no yachts",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "food-stall",
+      "nameVi": "Quầy thức ăn",
+      "group": "tourism",
+      "atlas": "atlases/22-tourism.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 468,
+        "y": 867,
+        "width": 331,
+        "height": 293
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "Vietnamese street food stall, awning and two tables, no readable lettering",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "market-pavilion",
+      "nameVi": "Mô-đun chợ",
+      "group": "tourism",
+      "atlas": "atlases/22-tourism.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 825,
+        "y": 862,
+        "width": 408,
+        "height": 308
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "small covered market pavilion with organized counter stalls",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "surface-parking",
+      "nameVi": "Bãi đỗ xe mặt đất",
+      "group": "infrastructure",
+      "atlas": "atlases/23-infrastructure.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 25,
+        "y": 107,
+        "width": 383,
+        "height": 278
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "surface parking facility with marked empty slots and booth",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "multistory-parking",
+      "nameVi": "Nhà đỗ xe nhiều tầng",
+      "group": "infrastructure",
+      "atlas": "atlases/23-infrastructure.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 435,
+        "y": 49,
+        "width": 391,
+        "height": 365
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "four-story parking garage with ramps and green facade accents",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "underground-parking",
+      "nameVi": "Bãi đỗ xe ngầm",
+      "group": "infrastructure",
+      "atlas": "atlases/23-infrastructure.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 864,
+        "y": 130,
+        "width": 370,
+        "height": 284
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "underground parking entrance ramp and elevator pavilion, only visible surface structure",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "road-bridge",
+      "nameVi": "Cầu đường bộ",
+      "group": "infrastructure",
+      "atlas": "atlases/23-infrastructure.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 17,
+        "y": 516,
+        "width": 407,
+        "height": 290
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "short two-lane road bridge segment with realistic supports",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "highway-bridge",
+      "nameVi": "Cầu cao tốc",
+      "group": "infrastructure",
+      "atlas": "atlases/23-infrastructure.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 436,
+        "y": 461,
+        "width": 380,
+        "height": 320
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "short divided highway viaduct segment with robust piers",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "drawbridge",
+      "nameVi": "Cầu mở",
+      "group": "infrastructure",
+      "atlas": "atlases/23-infrastructure.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 853,
+        "y": 463,
+        "width": 379,
+        "height": 347
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "compact bascule drawbridge with two raised leaves and mechanical control hut",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "road-tunnel-portal",
+      "nameVi": "Cửa hầm đường bộ",
+      "group": "infrastructure",
+      "atlas": "atlases/23-infrastructure.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 16,
+        "y": 842,
+        "width": 404,
+        "height": 339
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "two-lane road tunnel portal framed into compact planted earth mound",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "pedestrian-bridge",
+      "nameVi": "Cầu đi bộ và xe đạp",
+      "group": "infrastructure",
+      "atlas": "atlases/23-infrastructure.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 433,
+        "y": 890,
+        "width": 397,
+        "height": 280
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "short accessible pedestrian and cycle bridge with ramp approaches",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "road-maintenance-depot",
+      "nameVi": "Depot bảo trì đường",
+      "group": "infrastructure",
+      "atlas": "atlases/23-infrastructure.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 831,
+        "y": 862,
+        "width": 409,
+        "height": 326
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "municipal road maintenance depot with equipment shed and salt/material bins",
+      "levelVariant": "base/reference",
+      "kind": "building_or_infrastructure",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "school-wing",
+      "nameVi": "Cánh lớp học",
+      "group": "modules",
+      "atlas": "atlases/24-modules.png",
+      "slot": 1,
+      "row": 0,
+      "column": 0,
+      "frame": {
+        "x": 22,
+        "y": 54,
+        "width": 416,
+        "height": 352
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "isolated classroom wing expansion module, cream facade",
+      "levelVariant": "base/reference",
+      "kind": "module",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "library-wing",
+      "nameVi": "Cánh thư viện",
+      "group": "modules",
+      "atlas": "atlases/24-modules.png",
+      "slot": 2,
+      "row": 0,
+      "column": 1,
+      "frame": {
+        "x": 455,
+        "y": 78,
+        "width": 390,
+        "height": 335
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "isolated library reading room expansion module",
+      "levelVariant": "base/reference",
+      "kind": "module",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "fire-garage-wing",
+      "nameVi": "Gara cứu hỏa mở rộng",
+      "group": "modules",
+      "atlas": "atlases/24-modules.png",
+      "slot": 3,
+      "row": 0,
+      "column": 2,
+      "frame": {
+        "x": 860,
+        "y": 33,
+        "width": 382,
+        "height": 362
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "isolated fire garage module with two red doors",
+      "levelVariant": "base/reference",
+      "kind": "module",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "port-warehouse-module",
+      "nameVi": "Kho cảng",
+      "group": "modules",
+      "atlas": "atlases/24-modules.png",
+      "slot": 4,
+      "row": 1,
+      "column": 0,
+      "frame": {
+        "x": 8,
+        "y": 474,
+        "width": 441,
+        "height": 322
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "isolated port warehouse expansion module with loading bays",
+      "levelVariant": "base/reference",
+      "kind": "module",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "park-gate",
+      "nameVi": "Cổng công viên",
+      "group": "modules",
+      "atlas": "atlases/24-modules.png",
+      "slot": 5,
+      "row": 1,
+      "column": 1,
+      "frame": {
+        "x": 448,
+        "y": 492,
+        "width": 389,
+        "height": 304
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "original park entrance gate, ticket booths and planted entrance",
+      "levelVariant": "base/reference",
+      "kind": "module",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "rollercoaster-module",
+      "nameVi": "Trò chơi tàu lượn",
+      "group": "modules",
+      "atlas": "atlases/24-modules.png",
+      "slot": 6,
+      "row": 1,
+      "column": 2,
+      "frame": {
+        "x": 848,
+        "y": 429,
+        "width": 395,
+        "height": 358
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "compact complete amusement rollercoaster ride module",
+      "levelVariant": "base/reference",
+      "kind": "module",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "zoo-enclosure",
+      "nameVi": "Chuồng/khu nuôi sở thú",
+      "group": "modules",
+      "atlas": "atlases/24-modules.png",
+      "slot": 7,
+      "row": 2,
+      "column": 0,
+      "frame": {
+        "x": 22,
+        "y": 861,
+        "width": 427,
+        "height": 333
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "zoo habitat enclosure module with service shelter and planted enclosure",
+      "levelVariant": "base/reference",
+      "kind": "module",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "port-crane",
+      "nameVi": "Cẩu cảng",
+      "group": "modules",
+      "atlas": "atlases/24-modules.png",
+      "slot": 8,
+      "row": 2,
+      "column": 1,
+      "frame": {
+        "x": 458,
+        "y": 819,
+        "width": 368,
+        "height": 366
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "single port container gantry crane on compact rail base",
+      "levelVariant": "base/reference",
+      "kind": "module",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    },
+    {
+      "id": "port-gate",
+      "nameVi": "Cổng cảng",
+      "group": "modules",
+      "atlas": "atlases/24-modules.png",
+      "slot": 9,
+      "row": 2,
+      "column": 2,
+      "frame": {
+        "x": 843,
+        "y": 894,
+        "width": 396,
+        "height": 307
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.96
+      },
+      "referenceDescription": "port security gate module with inspection canopy and barrier lanes",
+      "levelVariant": "base/reference",
+      "kind": "module",
+      "uses": [
+        "ui-thumbnail",
+        "fixed-isometric-sprite",
+        "3d-model-reference"
+      ],
+      "requires3dMeshForFreeCamera": true
+    }
+  ]
+}

@@ -1,0 +1,371 @@
+{
+  "schemaVersion": 1,
+  "scope": "Design requirements only; no clips, rigs or runtime included",
+  "timeScaleRealToGame": 5,
+  "profiles": [
+    {
+      "id": "humanoid",
+      "nameVi": "Người đi bộ",
+      "states": [
+        "idle",
+        "walk",
+        "run",
+        "wait",
+        "cross",
+        "board",
+        "alight",
+        "sit",
+        "work"
+      ],
+      "pivots": [
+        "root",
+        "hips",
+        "spine",
+        "head",
+        "upperArm.L/R",
+        "forearm.L/R",
+        "hand.L/R",
+        "thigh.L/R",
+        "shin.L/R",
+        "foot.L/R"
+      ],
+      "note": "Gait phù hợp tốc độ và chiều cao; bàn chân không trượt khi dừng.",
+      "implemented": false
+    },
+    {
+      "id": "wheelchair",
+      "nameVi": "Người dùng xe lăn",
+      "states": [
+        "idle",
+        "roll",
+        "wait",
+        "board",
+        "alight"
+      ],
+      "pivots": [
+        "personRig",
+        "chairRoot",
+        "wheel.L",
+        "wheel.R",
+        "caster.L/R"
+      ],
+      "note": "Bánh quay theo khoảng đường; điều kiện route accessible và ramp phải có thật.",
+      "implemented": false
+    },
+    {
+      "id": "car",
+      "nameVi": "Xe đường bộ",
+      "states": [
+        "parked",
+        "boarding",
+        "driving",
+        "waiting",
+        "unloading"
+      ],
+      "pivots": [
+        "body",
+        "wheel.FL/FR/RL/RR",
+        "door.L/R",
+        "steering",
+        "lights"
+      ],
+      "note": "Bánh và góc lái từ controller; số bánh/pivot tùy model.",
+      "implemented": false
+    },
+    {
+      "id": "bicycle",
+      "nameVi": "Xe đạp",
+      "states": [
+        "parked",
+        "mount",
+        "pedal",
+        "coast",
+        "wait",
+        "dismount"
+      ],
+      "pivots": [
+        "body",
+        "frontWheel",
+        "rearWheel",
+        "handlebar",
+        "crank",
+        "riderRig"
+      ],
+      "note": "Đồng bộ crank/chân người lái; xích lô có ba bánh và ghế.",
+      "implemented": false
+    },
+    {
+      "id": "motorcycle",
+      "nameVi": "Xe máy",
+      "states": [
+        "parked",
+        "mount",
+        "drive",
+        "wait",
+        "dismount",
+        "deliver"
+      ],
+      "pivots": [
+        "body",
+        "frontWheel",
+        "rearWheel",
+        "handlebar",
+        "riderRig",
+        "cargoBox"
+      ],
+      "note": "Người đội mũ, vị trí yên/tay lái đúng, nghiêng khi cua có giới hạn.",
+      "implemented": false
+    },
+    {
+      "id": "construction",
+      "nameVi": "Máy công trình",
+      "states": [
+        "parked",
+        "travel",
+        "deploy",
+        "work",
+        "retract",
+        "return"
+      ],
+      "pivots": [
+        "root",
+        "wheelsOrTracks",
+        "turret",
+        "boom",
+        "stick",
+        "bucketOrTool"
+      ],
+      "note": "Chỉ dựng các pivot phù hợp từng máy; không gán gầu máy xúc cho mọi máy.",
+      "implemented": false
+    },
+    {
+      "id": "bus",
+      "nameVi": "Xe buýt",
+      "states": [
+        "depot",
+        "driving",
+        "queue",
+        "stop",
+        "openDoors",
+        "boarding",
+        "closeDoors",
+        "return"
+      ],
+      "pivots": [
+        "body",
+        "wheels",
+        "doors",
+        "steering",
+        "articulation"
+      ],
+      "note": "Khớp articulated bus, stop/capacity/boarding từ simulation.",
+      "implemented": false
+    },
+    {
+      "id": "rail",
+      "nameVi": "Phương tiện đường sắt",
+      "states": [
+        "depot",
+        "running",
+        "signalWait",
+        "stationStop",
+        "boarding",
+        "loading",
+        "unloading"
+      ],
+      "pivots": [
+        "body",
+        "bogie.front",
+        "bogie.rear",
+        "wheelsets",
+        "doors",
+        "couplers",
+        "pantographIfAny"
+      ],
+      "note": "Mỗi toa theo khoảng cách trên rail path; không gán cabin cho toa hàng.",
+      "implemented": false
+    },
+    {
+      "id": "water",
+      "nameVi": "Thuyền và tàu thủy",
+      "states": [
+        "berthed",
+        "loading",
+        "depart",
+        "cruise",
+        "waitBerth",
+        "dock",
+        "unload",
+        "work"
+      ],
+      "pivots": [
+        "hull",
+        "rudder",
+        "propeller",
+        "rampIfAny",
+        "craneIfAny"
+      ],
+      "note": "Mực nước/draft/clearance, wake theo tốc độ; tải và occupancy thật.",
+      "implemented": false
+    },
+    {
+      "id": "airplane",
+      "nameVi": "Máy bay phản lực",
+      "states": [
+        "gate",
+        "load",
+        "pushback",
+        "taxi",
+        "hold",
+        "takeoff",
+        "climb",
+        "cruise",
+        "approach",
+        "land",
+        "taxiIn",
+        "unload"
+      ],
+      "pivots": [
+        "fuselage",
+        "gear",
+        "flaps",
+        "ailerons",
+        "elevators",
+        "rudder",
+        "engineFans"
+      ],
+      "note": "Vận tốc/pitch/gear/flaps theo flight state, khóa runway không xung đột.",
+      "implemented": false
+    },
+    {
+      "id": "prop-aircraft",
+      "nameVi": "Máy bay cánh quạt",
+      "states": [
+        "parked",
+        "load",
+        "taxi",
+        "takeoff",
+        "climb",
+        "cruise",
+        "approach",
+        "land",
+        "unload",
+        "mission"
+      ],
+      "pivots": [
+        "fuselage",
+        "propeller.L/R",
+        "gearIfAny",
+        "controlSurfaces",
+        "floatsIfAny"
+      ],
+      "note": "Light aircraft có một propeller; seaplane có floats và water runway.",
+      "implemented": false
+    },
+    {
+      "id": "helicopter",
+      "nameVi": "Trực thăng",
+      "states": [
+        "parked",
+        "rotorStart",
+        "lift",
+        "cruise",
+        "hover",
+        "mission",
+        "land",
+        "rotorStop"
+      ],
+      "pivots": [
+        "body",
+        "mainRotor",
+        "tailRotorOrFan",
+        "landingGear",
+        "hoistIfAny"
+      ],
+      "note": "Rotor đúng loại, blur khi nhanh; hoist chỉ bật khi làm nhiệm vụ.",
+      "implemented": false
+    },
+    {
+      "id": "tandem-helicopter",
+      "nameVi": "Trực thăng hai rotor",
+      "states": [
+        "parked",
+        "rotorStart",
+        "lift",
+        "cruise",
+        "hover",
+        "load",
+        "land",
+        "rotorStop"
+      ],
+      "pivots": [
+        "body",
+        "rotor.front",
+        "rotor.rear",
+        "landingGear",
+        "cargoDoor"
+      ],
+      "note": "Hai rotor tandem; không thêm tail rotor sai.",
+      "implemented": false
+    },
+    {
+      "id": "drone",
+      "nameVi": "Drone",
+      "states": [
+        "base",
+        "startup",
+        "takeoff",
+        "cruise",
+        "hover",
+        "mission",
+        "return",
+        "land",
+        "charge"
+      ],
+      "pivots": [
+        "body",
+        "rotors",
+        "cameraOrParcelPod"
+      ],
+      "note": "Survey 4 rotor/delivery 6 rotor; pin và parcel/task từ core.",
+      "implemented": false
+    },
+    {
+      "id": "trailer",
+      "nameVi": "Rơ-moóc",
+      "states": [
+        "parked",
+        "coupled",
+        "towed",
+        "loading",
+        "unloading"
+      ],
+      "pivots": [
+        "body",
+        "wheels",
+        "hitch",
+        "bedIfAny"
+      ],
+      "note": "Follower sau tractor, không có động cơ hoặc tự chạy.",
+      "implemented": false
+    },
+    {
+      "id": "cable-car",
+      "nameVi": "Cabin cáp treo",
+      "states": [
+        "station",
+        "boarding",
+        "cableTravel",
+        "approachStation",
+        "alight"
+      ],
+      "pivots": [
+        "hanger",
+        "cabin",
+        "doors"
+      ],
+      "note": "Bám cable spline; cabin giữ hướng thẳng đứng với dao động nhỏ.",
+      "implemented": false
+    }
+  ]
+}

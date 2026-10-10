@@ -1,4 +1,4 @@
-import {benchmarkCity,architectureCity} from './scenario.js';
+import {benchmarkCity,architectureCity,facilityCity} from './scenario.js';
 import {PerformanceSample} from './metrics.js';
 import {ThreeCityRenderer} from '../game/render/three-renderer.js';
 import {stepSimulation,serialize} from '../game/core.js';
@@ -10,7 +10,7 @@ let city=benchmarkCity(1000),last=performance.now(),pending=0,report=null,loadMs
 const view=document.createElement('canvas');view.id='world3d';$('world').before(view);$('world').style.opacity='0';
 const renderer=new ThreeCityRenderer($('world'),$('mini'),()=>city,view);renderer.setQuality('medium');
 const sample=new PerformanceSample();renderer.onRender=ms=>sample.frame(ms);
-function stats(){return{...sample.report(),...renderer.stats(),scenario:$('scenario').value,loadMs,geographyCache:geographyCacheStats(),population:city.citizens.length,activeAgents:city.citizens.filter(c=>!!c.journey).length,vehicles:city.vehicles.length,employed:city.citizens.filter(c=>!!c.work).length,arrivals:city.citizens.reduce((n,c)=>n+c.attendance,0),pathfindingQueue:'synchronous / not yet queued',saveBytes:new TextEncoder().encode(JSON.stringify(serialize(city))).length,heapBytes:performance.memory?.usedJSHeapSize??null,viewport:[innerWidth,innerHeight],browser:navigator.userAgent,timeScale:5,seed:city.initialSeed,simulationSeconds:city.clock.seconds};}
+function stats(){return{...sample.report(),...renderer.stats(),scenario:$('scenario').value,loadMs,geographyCache:geographyCacheStats(),population:city.citizens.length,activeAgents:city.citizens.filter(c=>!!c.journey).length,vehicles:city.vehicles.length,employed:city.citizens.filter(c=>!!c.work).length,arrivals:city.citizens.reduce((n,c)=>n+c.attendance,0),pathfindingQueue:'synchronous / not yet queued',gpuMemoryBytes:null,saveBytes:new TextEncoder().encode(JSON.stringify(serialize(city))).length,heapBytes:performance.memory?.usedJSHeapSize??null,viewport:[innerWidth,innerHeight],browser:navigator.userAgent,timeScale:5,seed:city.initialSeed,simulationSeconds:city.clock.seconds};}
 function output(){report=stats();$('results').textContent=JSON.stringify(report,null,2);}
 $('start').onclick=async()=>{
   sample.running=false;$('start').disabled=true;$('scenario').disabled=true;$('population').disabled=true;$('quality').disabled=true;$('status').textContent='Đang chuẩn bị dữ liệu…';$('results').textContent='';
@@ -18,8 +18,9 @@ $('start').onclick=async()=>{
     const start=performance.now();
     if($('scenario').value==='sandbox')city=benchmarkCity(Number($('population').value));
     else if($('scenario').value==='architecture')city=architectureCity();
+    else if($('scenario').value==='facilities')city=facilityCity();
     else{const manifest=await fetchGeoJSON('manifest.json'),catalog=await fetchGeoJSON('catalog.json',{checksum:manifest.files['catalog.json'].sha256}),region=catalog.provinces.flatMap(p=>p.regions).find(r=>r.id===$('scenario').value);city=createVietnamCity(await loadRegion(region),manifest);}
-    loadMs=+(performance.now()-start).toFixed(1);renderer.reset();if($('scenario').value==='architecture')renderer.focusTile(18,19);renderer.setQuality($('quality').value);pending=0;last=performance.now();sample.start(last);$('status').textContent='Đang đo 30 giây · '+($('scenario').value==='sandbox'?'giờ đi làm':$('scenario').value==='architecture'?'kiến trúc + cư dân thực trong fixture riêng':'DEM thật, chưa có cư dân');
+    loadMs=+(performance.now()-start).toFixed(1);renderer.reset();if(['architecture','facilities'].includes($('scenario').value))renderer.focusTile(18,19);renderer.setQuality($('quality').value);pending=0;last=performance.now();sample.start(last);$('status').textContent='Đang đo 30 giây · '+($('scenario').value==='sandbox'?'giờ đi làm':['architecture','facilities'].includes($('scenario').value)?'kiến trúc + cư dân thực trong fixture riêng':'DEM thật, chưa có cư dân');
   }catch(e){$('status').textContent=e.message;enableControls();}
 };
 function enableControls(){for(const id of ['start','scenario','population','quality'])$(id).disabled=false;}

@@ -1,3 +1,4 @@
+import {BUILDINGS} from '../config/catalog.js';
 import {createCity,analyze,SIZE,index,stepSimulation} from '../game/core.js';
 import {initializeFoundation} from '../game/systems/foundation.js';
 import {createClock} from '../game/systems/clock.js';
@@ -38,4 +39,13 @@ export function architectureCity(){
   analyze(s);initializeFoundation(s,SIZE,random);s.clock=createClock(0);s.clock.step=8*3600;s.clock.seconds=s.clock.step;
   for(const c of s.citizens)c.schedule.depart=8*3600+Math.floor(c.walkSpeed*20);
   for(let i=0;i<36;i++)stepSimulation(s);s.name='Kiểm thử kiến trúc riêng';return s;
+}
+
+export function facilityCity(){
+ const s=architectureCity();
+ for(const [j,kind] of BUILDINGS.entries()){
+  const x=8+(j%11)*2,y=15+Math.floor(j/11)*4,t=s.tiles[index(x,y)];
+  Object.assign(t,{kind,zone:null,level:1,age:20,residents:0});
+ }
+ analyze(s);s.name='Kiểm thử tất cả công trình đang xây được';return s;
 }

@@ -18,9 +18,9 @@ test('real reference positions fit their geographic windows, including both arch
   const hoang=hs.points.find(p=>p.name==='Đảo Hoàng Sa');assert.ok(Math.abs(hoang.anchor[0]-(111+36/60+7/3600))<1e-6);assert.ok(Math.abs(hoang.anchor[1]-(16+32/60))<1e-6);
   const ts=data.archipelagos[1].points.find(p=>p.name==='Đảo Trường Sa');assert.deepEqual(ts.anchor,[111.9196858,8.6446406]);
 });
-test('administrative maritime components cannot render as land; source boundary remains unchanged',()=>{
+test('overview preserves all administrative maritime components without changing the source',()=>{
   const f=boundaries.features.find(f=>f.id==='56'),before=JSON.stringify(f);assert.equal(f.geometry.coordinates.length,8);
-  const land=overviewLandGeometry(f);assert.equal(land.coordinates.length,1);assert.equal(JSON.stringify(f),before);
+  const land=overviewLandGeometry(f);assert.equal(land.coordinates.length,f.geometry.coordinates.length);assert.equal(JSON.stringify(f),before);
   for(const other of boundaries.features.filter(f=>f.id!=='56'))assert.equal(overviewLandGeometry(other),other.geometry);
 });
 test('overview coast lines are bounded actual OSM ways and the added package has a verified checksum',async()=>{

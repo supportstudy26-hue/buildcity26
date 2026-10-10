@@ -52,3 +52,5 @@ src/game/core.js là facade; src/game/systems/ chứa hệ thống mô phỏng v
 ## Bản đồ Việt Nam (chặng A)
 
 Menu có 34 tỉnh/thành, preview địa hình/thủy hệ thật 12,8 km, 36 khu chơi tải theo lựa chọn. Khu xây vẫn 1,28 km; chưa có mua đất/full world. Hoàng Sa/Trường Sa có nhãn, phóng tới, danh sách điểm đảo/tọa độ và đường bờ Trường Sa từ nguồn thật; chưa có DEM đảo để mở khu xây. Xem docs/vietnam-map.md về nguồn, giấy phép và phần chưa kiểm chứng. Save 6 giữ địa hình; bản cũ tiếp tục mở được. Production có cache asset/public geodata offline, không cache tài khoản/API.
+
+Bản GIS snapshot 2025-07-01 và 63 tên cũ đã tích hợp vào màn Việt Nam; file full tải theo yêu cầu. Xem [bằng chứng và giới hạn bản đồ](docs/national-map-integration.md). Bộ cư dân/phương tiện đang ở chặng đầu; xem [trạng thái 144 mẫu](docs/mobility-integration-status.md), không phải cả 144 model/nghiệp vụ đều hoàn thành.

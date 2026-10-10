@@ -1,14 +1,16 @@
+import {packArchive,unpackArchive} from './archive-codec.js';
 import { serialize, validateSave, SIZE, SAVE_VERSION } from '../game/core.js';
 const PREFIX = 'bc26:v1:';
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export const localKey = (owner = 'guest') => PREFIX + owner;
 export function saveLocal(city, owner = 'guest', cloud = null, sync = {}, storage = localStorage) {
   const data = { city: serialize(city), cloud, ...sync, modifiedAt: Date.now() };
-  storage.setItem(localKey(owner), JSON.stringify(data)); return data;
+  const raw=JSON.stringify(data);
+  try{storage.setItem(localKey(owner),raw);}catch(error){if(!/quota/i.test(error.name+' '+error.message))throw error;try{storage.setItem(localKey(owner),packArchive(raw));}catch{throw error;}}return data;
 }
 export function loadLocal(owner = 'guest', storage = localStorage) {
   const raw = storage.getItem(localKey(owner)); if (!raw) return null;
-  const data = JSON.parse(raw), city = validateSave(data.city);
+  const data = JSON.parse(unpackArchive(raw)), city = validateSave(data.city);
   const cloud = data.cloud && UUID.test(data.cloud.id) && Number.isSafeInteger(data.cloud.revision) && data.cloud.revision > 0 ? { id: data.cloud.id, revision: data.cloud.revision } : null;
   let pending = null;
   if (data.pending) {
@@ -25,22 +27,27 @@ export function archiveLocal(owner = 'guest', storage = localStorage, uuid = () 
   const raw = storage.getItem(localKey(owner));
   if (raw) {
     const prefix=`${PREFIX}backup:${owner}:`;
-    for(let i=0;i<storage.length;i++){const key=storage.key(i);if(key?.startsWith(prefix)&&storage.getItem(key)===raw)return;}
-    storage.setItem(`${prefix}${uuid()}`, raw);
+    for(let i=0;i<storage.length;i++){const key=storage.key(i);if(key?.startsWith(prefix)){try{if(unpackArchive(storage.getItem(key))===unpackArchive(raw))return;}catch{/* Retain unreadable backups too. */}}}
+    const key=`${prefix}${uuid()}`;
+    try{storage.setItem(key,raw);}catch(error){
+      if(!/quota/i.test(error.name+' '+error.message))throw error;
+      // Add a compact copy without deleting existing drafts or backups.
+      try{storage.setItem(key,packArchive(unpackArchive(raw)));}catch{throw error;}
+    }
   }
 }
 export function listLocalBackups(owner = 'guest', storage = localStorage) {
   const prefix = `${PREFIX}backup:${owner}:`, rows = [];
   for (let i = 0; i < storage.length; i++) {
     const key = storage.key(i); if (!key?.startsWith(prefix)) continue;
-    try { const data = JSON.parse(storage.getItem(key)); rows.push({ key, name: data.city?.name || 'Bản lưu cũ', modifiedAt: data.modifiedAt || 0 }); }
+    try { const data = JSON.parse(unpackArchive(storage.getItem(key))); rows.push({ key, name: data.city?.name || 'Bản lưu cũ', modifiedAt: data.modifiedAt || 0 }); }
     catch { rows.push({ key, name: 'Bản lưu cần phục hồi', modifiedAt: 0 }); }
   }
   return rows.sort((a, b) => b.modifiedAt - a.modifiedAt);
 }
 export function readLocalBackup(key, owner = 'guest', storage = localStorage) {
   if (!key.startsWith(`${PREFIX}backup:${owner}:`)) throw new Error('Bản lưu không thuộc tài khoản này.');
-  const raw = storage.getItem(key); if (!raw) throw new Error('Không tìm thấy bản lưu.'); return raw;
+  const raw = storage.getItem(key); if (!raw) throw new Error('Không tìm thấy bản lưu.'); return unpackArchive(raw);
 }
 export function removeLocalBackup(key, owner = 'guest', storage = localStorage) {
   readLocalBackup(key, owner, storage); storage.removeItem(key);

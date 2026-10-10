@@ -1,22 +1,30 @@
+import {chooseBusPlan,busDock} from './bus-planning.js';
+import {roadControllers} from './road-controller.js';
+import {mobilityPath} from './mobility-path.js';
 import { DAY_SECONDS, STEP_SECONDS } from '../../config/simulation.js';
 import { position, distanceMeters } from './world.js';
 import { emit } from './events.js';
-function begin(s,c,goal,route,size) {
+export function startJourney(s,c,goal,route,size,allowTransit=true) {
+  if(allowTransit&&!c.busPlan){const plan=chooseBusPlan(s,c,goal);if(plan){c.busPlan={...plan,tripId:`bus-${c.id}-${s.clock.step}`};goal=plan.board;}}
   const roads=route(s,c.goal,goal);
   if(!roads.length) {c.state='blocked';c.waitReason='Chưa có đường nối nguồn và đích';c.retryGoal=goal;return;}
   const mode=c.vehicle?'car':'walk';
-  c.journey={id:`trip-${c.id}-${s.clock.step}`,origin:c.goal,destination:goal,mode,speed:mode==='car'?30/3.6:c.walkSpeed,path:[{...c.position},...roads.map(i=>({...position(i,size,s),road:i})),{...position(goal,size,s)}],segment:0,distance:0,departedAt:s.clock.seconds,graphVersion:s.graphVersion};
+  c.journey={id:`trip-${c.id}-${s.clock.step}`,origin:c.goal,destination:goal,mode,speed:mode==='car'?30/3.6:c.walkSpeed,path:mobilityPath(s,c.goal,goal,roads,size,mode,c.position),laneVersion:1,segment:0,distance:0,departedAt:s.clock.seconds,graphVersion:s.graphVersion};
+  if(c.busPlan?.stage==='walk-to-stop'){const line=s.busLines.find(l=>l.id===c.busPlan.line),dock=line&&busDock(s,line,line.stops.indexOf(goal));if(dock)c.journey.path[c.journey.path.length-1]={...dock.door};}
   c.goal=goal;c.retryGoal=null;c.state=mode==='car'?'in-vehicle':'walking';c.waitReason='';emit(s,'trip-started',c.id,{destination:goal,mode});
 }
 export function updateCitizens(s, calendar, route, size) {
   const time=s.clock.seconds%DAY_SECONDS,weekday=calendar.weekday!==0&&calendar.weekday!==6;
+  const control=roadControllers(s);
   const firms=new Map(s.firms.map(f=>[f.id,f]));
   for(const c of s.citizens) {
     const work=firms.get(c.work);
-    if(c.state==='blocked'&&!c.journey&&c.retryGoal!=null&&c.retryVersion!==s.graphVersion){c.retryVersion=s.graphVersion;begin(s,c,c.retryGoal,route,size);}
+    if(c.state==='on-bus')continue;
+    if(c.state==='waiting-bus'){if(!s.busLines.some(l=>l.id===c.busPlan?.line)){const goal=c.busPlan.destination;c.busPlan=null;c.state='home';startJourney(s,c,goal,route,size,false);}else continue;}
+    if(c.state==='blocked'&&!c.journey&&c.retryGoal!=null&&c.retryVersion!==s.graphVersion){c.retryVersion=s.graphVersion;startJourney(s,c,c.retryGoal,route,size);}
     if(!c.journey&&c.state!=='blocked') {
-      if(c.state==='home'||c.state==='sleeping') {c.state=time<6*3600||time>=22*3600?'sleeping':'home';if(weekday&&work?.active&&time>=c.schedule.depart&&time<c.schedule.return) begin(s,c,work.home,route,size);}
-      else if(c.state==='at-work'&&time>=c.schedule.return) begin(s,c,c.home,route,size);
+      if(c.state==='home'||c.state==='sleeping') {c.state=time<6*3600||time>=22*3600?'sleeping':'home';if(weekday&&work?.active&&time>=c.schedule.depart&&time<c.schedule.return) startJourney(s,c,work.home,route,size);}
+      else if(c.state==='at-work'&&time>=c.schedule.return) startJourney(s,c,c.home,route,size);
     }
     const j=c.journey;if(!j)continue;
     if(j.graphVersion!==s.graphVersion) {
@@ -25,16 +33,20 @@ export function updateCitizens(s, calendar, route, size) {
       j.graphVersion=s.graphVersion;c.state=valid?(j.mode==='car'?'in-vehicle':'walking'):'blocked';c.waitReason=valid?'':'Đường trên hành trình đã bị phá hoặc ngắt kết nối';
     }
     if(c.state==='blocked')continue;
-    let remaining=j.speed*STEP_SECONDS;
+    const controlled=j.laneVersion===1?control(c):{speed:j.speed,reason:''};j.actualSpeed=controlled.speed;c.waitReason=controlled.reason;
+    let remaining=j.actualSpeed*STEP_SECONDS;
     while(remaining>0&&j.segment<j.path.length-1) {
       const a=j.path[j.segment],b=j.path[j.segment+1],length=distanceMeters(a,b),needed=length-j.distance;
-      const travelled=Math.min(remaining,Math.max(0,needed));j.distance+=travelled;remaining-=travelled;
+      const travelled=Math.min(remaining,Math.max(0,needed));j.distance+=travelled;remaining-=travelled;c.travelled=(c.travelled||0)+travelled;
       const t=length?Math.min(1,j.distance/length):1;
       c.position={x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t,z:a.z+(b.z-a.z)*t};
       if(j.distance>=length-1e-8){j.segment++;j.distance=0;}
     }
     if(j.segment===j.path.length-1) {
-      const id=j.id;c.journey=null;c.state=c.goal===c.home?'home':'at-work';
+      const id=j.id;c.journey=null;
+      if(c.busPlan?.stage==='walk-to-stop'){c.state='waiting-bus';c.busPlan.stage='waiting';c.waitingSince=s.clock.seconds;c.waitReason='Chờ xe buýt tại điểm dừng';emit(s,'bus-queue-entered',c.id,{line:c.busPlan.line,stop:c.goal});continue;}
+      if(c.busPlan?.stage==='walk-from-stop')c.busPlan=null;
+      c.state=c.goal===c.home?'home':'at-work';
       if(c.state==='at-work') c.attendance++;
       emit(s,'trip-arrived',c.id,{trip:id,destination:c.goal});
     }

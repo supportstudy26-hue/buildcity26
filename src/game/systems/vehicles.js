@@ -1,7 +1,11 @@
+import {updateBuses,releaseBusPassengers} from './bus-operations.js';
+import {assignMobilityArt} from '../../config/mobility-art.js';
 import {position} from './world.js';
 import { entityId } from './events.js';
 export function reconcileVehicles(s) {
   const ids=new Set(s.citizens.map(c=>c.id));
+  for(const v of s.vehicles)if(v.kind==='bus'&&!(s.busLines||[]).some(l=>l.id===v.operator&&v.fleetIndex<l.vehicles))releaseBusPassengers(s,v);
+  for(const c of s.citizens)if(c.busPlan&&!s.busLines.some(l=>l.id===c.busPlan.line)){const goal=c.busPlan.destination;c.busPlan=null;c.journey=null;c.state='blocked';c.retryGoal=goal;c.retryVersion=-1;c.goal=Math.min(s.tiles.length-1,Math.max(0,Math.floor(c.position.y/20)*s.mapSize+Math.floor(c.position.x/20)));c.waitReason='Tuyến đã ngừng · tìm đường đi bộ';}
   s.vehicles=s.vehicles.filter(v=>v.kind==='bus'?(s.busLines||[]).some(l=>l.id===v.operator&&v.fleetIndex<l.vehicles):v.owner&&ids.has(v.owner));
   for(const c of s.citizens) {
     if(c.vehicle&&!s.vehicles.some(v=>v.id===c.vehicle)) c.vehicle=null;
@@ -13,15 +17,17 @@ export function reconcileVehicles(s) {
   }
   for(const line of s.busLines||[]) for(let i=0;i<line.vehicles;i++) if(!s.vehicles.some(v=>v.operator===line.id&&v.fleetIndex===i)) {
     const stop=line.stops[0],x=(stop%s.mapSize+.5)*20,y=(Math.floor(stop/s.mapSize)+.5)*20;
-    s.vehicles.push({id:entityId(s,'vehicle'),kind:'bus',owner:null,operator:line.id,fleetIndex:i,state:'parked',position:position(stop,s.mapSize,s),passengers:[],goal:stop,speed:0,route:null});
+    s.vehicles.push({id:entityId(s,'vehicle'),kind:'bus',owner:null,operator:line.id,fleetIndex:i,state:'parked',position:position(s.network.services.bus[0]??stop,s.mapSize,s),passengers:[],goal:s.network.services.bus[0]??stop,speed:0,route:null});
   }
+  assignMobilityArt(s);
 }
 export function updateVehicles(s) {
   const citizens=new Map(s.citizens.map(c=>[c.id,c]));
   for(const v of s.vehicles) {
-    if(v.kind==='bus')continue; // Bus schedules/boarding belong to stage 11.
+    if(v.kind==='bus')continue;
     const c=citizens.get(v.owner); if(!c) continue;
-    if(c.journey?.mode==='car') {v.position={...c.position};v.state=c.state==='blocked'?'blocked':'travelling';v.speed=c.state==='blocked'?0:c.journey.speed;v.goal=c.goal;v.passengers=[c.id];}
+    if(c.journey?.mode==='car') {v.position={...c.position};v.state=c.state==='blocked'?'blocked':'travelling';v.speed=c.state==='blocked'?0:(c.journey.actualSpeed??c.journey.speed);v.travelled=c.travelled||0;v.goal=c.goal;v.passengers=[c.id];}
     else {v.state='parked';v.speed=0;v.passengers=[];v.position={...c.position};}
   }
+  updateBuses(s);
 }

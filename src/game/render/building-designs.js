@@ -1,3 +1,5 @@
+import {facilityDesign,facilityParts} from './facility-designs.js';
+import {artForBuilding} from '../../config/building-art.js';
 // Original modular architecture. Coordinates select a stable design; no saved data is rewritten.
 const homes=[
   {id:'townhouse',name:'Nhà phố ban công',width:8.2,depth:12,height:8.4,roof:'flat'},
@@ -27,12 +29,12 @@ export function designHash(x,y){let n=(Math.imul(x+19,374761393)^Math.imul(y+37,
 export function buildingDesign(t,x,y){
   const hash=designHash(x,y),level=Math.max(1,Number(t.level)||1);
   const list=t.kind==='residential'?(level>=3?towers:homes):t.kind==='commercial'?shops:t.kind==='industrial'?factories:null;
-  if(!list)return null;
+  if(!list)return facilityDesign(t);
   const item=list[hash%list.length],floors=t.kind==='residential'&&level>=3?Math.min(8,level+1):t.kind==='residential'&&level===2?3:null;
-  return{...item,height:floors?floors*3.1:item.height,floors,wall:walls[(hash>>>4)%walls.length],roofColor:roofs[(hash>>>9)%roofs.length],accent:['#529d98','#d89159','#7e9db4','#b56a53'][(hash>>>14)%4]};
+  return{...item,artId:artForBuilding(t.kind,item.id).id,footprint:[20,20],entrance:[0,0,8.5],height:floors?floors*3.1:item.height,floors,wall:walls[(hash>>>4)%walls.length],roofColor:roofs[(hash>>>9)%roofs.length],accent:['#529d98','#d89159','#7e9db4','#b56a53'][(hash>>>14)%4]};
 }
 export function buildingParts(t,x,y,cx,cz,base,overlay=null,tile=null){
-  const design=buildingDesign(t,x,y);if(!design)return[];
+  const design=buildingDesign(t,x,y);if(!design)return[];if(facilityDesign(t))return facilityParts(t,cx,cz,base,overlay,tile);
   const parts=[],{id,width:w,depth:d,height:h,roof,roofColor,accent}=design,color=overlay||design.wall;
   const add=(shape,dx,z,dz,width,height,depth,tint,detail=false,rotation=null)=>parts.push({shape,position:[cx+dx,base+z,cz+dz],scale:[width,height,depth],color:tint,detail,rotation,tile});
   const box=(dx,z,dz,width,height,depth,tint=color,detail=false)=>add('box',dx,z,dz,width,height,depth,tint,detail);

@@ -1,0 +1,217 @@
+﻿Mã ảnh,Tên công trình,Nhóm,File PNG,Vị trí 1–9,X,Y,Rộng,Cao
+detached-house,Nhà biệt lập,residential,atlases/01-residential.png,1,42,84,351,311
+row-houses,Nhà liền kề,residential,atlases/01-residential.png,2,463,50,344,352
+midrise-apartments,Chung cư trung tầng,residential,atlases/01-residential.png,3,887,28,315,376
+mixed-use,Nhà ở kết hợp cửa hàng,residential,atlases/01-residential.png,4,45,434,357,385
+affordable-apartments,Căn hộ giá thuê thấp,residential,atlases/01-residential.png,5,478,434,337,401
+highrise-apartments,Chung cư cao tầng,residential,atlases/01-residential.png,6,898,406,306,435
+social-housing,Nhà ở xã hội,residential,atlases/01-residential.png,7,29,848,390,365
+rural-house,Nhà ở nông thôn,residential,atlases/01-residential.png,8,446,883,389,309
+residential-villa,Biệt thự,residential,atlases/01-residential.png,9,863,855,368,351
+corner-shop,Cửa hàng nhỏ,commerce,atlases/02-commerce.png,1,44,124,345,287
+low-commercial,Thương mại thấp tầng,commerce,atlases/02-commerce.png,2,433,56,404,376
+high-commercial,Thương mại cao tầng,commerce,atlases/02-commerce.png,3,885,2,333,426
+supermarket,Siêu thị,commerce,atlases/02-commerce.png,4,6,542,421,304
+shopping-mall,Trung tâm thương mại,commerce,atlases/02-commerce.png,5,430,446,406,386
+traditional-market,Chợ dân sinh,commerce,atlases/02-commerce.png,6,833,504,418,328
+night-market,Chợ đêm,commerce,atlases/02-commerce.png,7,32,880,375,308
+container-market,Chợ container,commerce,atlases/02-commerce.png,8,421,853,418,356
+food-truck-lot,Bãi xe bán đồ ăn,commerce,atlases/02-commerce.png,9,851,889,392,316
+low-office,Văn phòng thấp tầng,offices,atlases/03-offices.png,1,37,110,371,305
+high-office,Văn phòng cao tầng,offices,atlases/03-offices.png,2,473,0,314,434
+software-office,Văn phòng phần mềm,offices,atlases/03-offices.png,3,864,54,359,360
+finance-office,Văn phòng tài chính,offices,atlases/03-offices.png,4,40,432,372,400
+media-office,Văn phòng truyền thông,offices,atlases/03-offices.png,5,432,462,428,369
+telecom-office,Văn phòng viễn thông,offices,atlases/03-offices.png,6,877,411,352,412
+company-headquarters,Trụ sở doanh nghiệp,offices,atlases/03-offices.png,7,21,852,407,373
+science-business,Khu văn phòng nghiên cứu,offices,atlases/03-offices.png,8,437,883,436,342
+signature-skyscraper,Cao ốc đặc biệt,offices,atlases/03-offices.png,9,919,808,301,439
+wood-mill,Xưởng gỗ,processing,atlases/04-processing.png,1,7,49,416,341
+paper-mill,Nhà máy giấy,processing,atlases/04-processing.png,2,432,13,401,390
+food-factory,Xưởng thực phẩm,processing,atlases/04-processing.png,3,841,66,406,337
+textile-factory,Nhà máy dệt,processing,atlases/04-processing.png,4,8,463,429,355
+materials-factory,Xưởng vật liệu,processing,atlases/04-processing.png,5,433,424,387,395
+steelworks,Nhà máy luyện kim,processing,atlases/04-processing.png,6,833,391,412,447
+chemical-factory,Nhà máy hóa chất,processing,atlases/04-processing.png,7,12,828,411,404
+electronics-factory,Nhà máy điện tử,processing,atlases/04-processing.png,8,424,857,414,354
+pharma-factory,Nhà máy dược,processing,atlases/04-processing.png,9,840,854,405,364
+stone-quarry,Mỏ đá,resources,atlases/05-resources.png,1,4,52,425,354
+coal-mine,Mỏ than,resources,atlases/05-resources.png,2,445,20,403,385
+ore-mine,Mỏ quặng,resources,atlases/05-resources.png,3,860,27,391,386
+oil-well,Giếng dầu,resources,atlases/05-resources.png,4,4,444,419,345
+forestry-yard,Lâm trường,resources,atlases/05-resources.png,5,423,431,410,365
+private-warehouse,Kho tư nhân,resources,atlases/05-resources.png,6,831,474,419,321
+public-warehouse,Kho công cộng,resources,atlases/05-resources.png,7,3,876,427,323
+cold-storage,Kho lạnh,resources,atlases/05-resources.png,8,430,860,417,348
+small-workshop,Xưởng sản xuất nhỏ,resources,atlases/05-resources.png,9,849,827,400,368
+grain-farm,Nông trại ngũ cốc,agriculture,atlases/06-agriculture.png,1,10,44,413,357
+vegetable-farm,Nông trại rau,agriculture,atlases/06-agriculture.png,2,429,91,396,308
+cotton-farm,Nông trại bông,agriculture,atlases/06-agriculture.png,3,835,81,409,319
+livestock-farm,Trại chăn nuôi,agriculture,atlases/06-agriculture.png,4,9,468,414,308
+greenhouse,Nhà kính,agriculture,atlases/06-agriculture.png,5,427,457,402,317
+dairy-farm,Trại bò sữa,agriculture,atlases/06-agriculture.png,6,836,468,412,324
+rice-farm,Nông trại lúa,agriculture,atlases/06-agriculture.png,7,9,805,430,383
+feed-factory,Xưởng thức ăn chăn nuôi,agriculture,atlases/06-agriculture.png,8,429,796,405,411
+aquaculture-farm,Trại nuôi thủy sản,agriculture,atlases/06-agriculture.png,9,836,856,409,327
+wind-turbine,Turbine gió,generation,atlases/07-generation.png,1,77,30,244,383
+small-coal-power,Nhà máy điện than nhỏ,generation,atlases/07-generation.png,2,418,55,404,375
+large-coal-power,Nhà máy điện than lớn,generation,atlases/07-generation.png,3,836,46,413,386
+gas-power,Nhà máy điện khí,generation,atlases/07-generation.png,4,15,443,394,385
+solar-farm,Trang trại điện mặt trời,generation,atlases/07-generation.png,5,412,496,447,311
+geothermal-power,Nhà máy điện địa nhiệt,generation,atlases/07-generation.png,6,848,460,402,366
+hydro-power,Nhà máy thủy điện,generation,atlases/07-generation.png,7,6,836,449,373
+nuclear-power,Nhà máy điện hạt nhân,generation,atlases/07-generation.png,8,453,831,434,376
+backup-generator,Máy phát dự phòng,generation,atlases/07-generation.png,9,873,887,379,285
+battery-storage,Pin lưu trữ,power-network,atlases/08-power-network.png,1,27,79,404,307
+transformer-station,Trạm biến áp,power-network,atlases/08-power-network.png,2,443,65,378,315
+distribution-substation,Trạm phân phối điện,power-network,atlases/08-power-network.png,3,844,93,387,294
+highvoltage-substation,Trạm cao áp,power-network,atlases/08-power-network.png,4,20,431,451,390
+power-pylon,Cột điện cao áp,power-network,atlases/08-power-network.png,5,515,420,252,395
+distribution-pole,Cột điện phân phối,power-network,atlases/08-power-network.png,6,961,423,165,392
+rooftop-solar,Mái nhà điện mặt trời,power-network,atlases/08-power-network.png,7,34,903,383,300
+switchgear-building,Nhà điều khiển điện,power-network,atlases/08-power-network.png,8,444,884,367,314
+pumped-storage,Trạm thủy điện tích năng,power-network,atlases/08-power-network.png,9,836,837,400,371
+surface-water-pump,Trạm bơm nước mặt,water,atlases/09-water.png,1,20,62,408,330
+groundwater-pump,Trạm bơm nước ngầm,water,atlases/09-water.png,2,447,90,365,287
+advanced-water-pump,Trạm bơm nâng cao,water,atlases/09-water.png,3,841,85,396,303
+water-tower,Tháp nước,water,atlases/09-water.png,4,49,414,331,395
+water-tank,Bể chứa nước,water,atlases/09-water.png,5,421,456,418,345
+sewage-outlet,Cửa xả nước thải,water,atlases/09-water.png,6,855,475,387,317
+sewage-treatment,Trạm xử lý nước thải,water,atlases/09-water.png,7,12,863,404,329
+advanced-treatment,Trạm xử lý nước thải nâng cao,water,atlases/09-water.png,8,423,850,417,346
+flood-pump,Trạm bơm chống ngập,water,atlases/09-water.png,9,862,857,380,338
+waste-transfer,Trạm trung chuyển rác,environment,atlases/10-environment.png,1,18,92,410,305
+landfill,Khu chôn lấp rác,environment,atlases/10-environment.png,2,438,92,399,311
+incinerator,Lò đốt rác phát điện,environment,atlases/10-environment.png,3,849,47,388,368
+recycling-center,Trung tâm tái chế,environment,atlases/10-environment.png,4,18,488,410,317
+sludge-processing,Trạm xử lý bùn,environment,atlases/10-environment.png,5,438,473,411,317
+detention-pond,Hồ điều hòa,environment,atlases/10-environment.png,6,861,466,376,343
+environment-monitor,Trạm quan trắc môi trường,environment,atlases/10-environment.png,7,32,856,387,341
+floodgate,Cống ngăn lũ,environment,atlases/10-environment.png,8,429,873,409,324
+levee-segment,Đoạn đê/kè,environment,atlases/10-environment.png,9,860,924,375,273
+nursery-school,Nhà trẻ/mầm non,education,atlases/11-education.png,1,12,85,414,292
+primary-school,Trường tiểu học,education,atlases/11-education.png,2,432,79,387,296
+secondary-school,Trường trung học,education,atlases/11-education.png,3,826,82,419,302
+vocational-school,Trường nghề,education,atlases/11-education.png,4,6,482,423,295
+college,Cao đẳng,education,atlases/11-education.png,5,432,485,387,294
+university,Đại học,education,atlases/11-education.png,6,826,449,424,338
+library,Thư viện,education,atlases/11-education.png,7,10,852,415,341
+research-campus,Cơ sở nghiên cứu,education,atlases/11-education.png,8,431,835,414,346
+student-dorm,Ký túc xá,education,atlases/11-education.png,9,850,821,393,372
+clinic,Phòng khám,healthcare,atlases/12-healthcare.png,1,41,122,349,283
+small-hospital,Bệnh viện nhỏ,healthcare,atlases/12-healthcare.png,2,439,63,368,343
+large-hospital,Bệnh viện lớn,healthcare,atlases/12-healthcare.png,3,855,35,374,390
+medical-research,Viện nghiên cứu y tế,healthcare,atlases/12-healthcare.png,4,15,464,413,327
+ambulance-depot,Trạm cấp cứu,healthcare,atlases/12-healthcare.png,5,433,476,391,304
+medical-helipad,Trạm trực thăng cấp cứu,healthcare,atlases/12-healthcare.png,6,831,478,412,329
+hospital-wing,Cánh điều trị mở rộng,healthcare,atlases/12-healthcare.png,7,21,851,400,357
+pharmacy,Nhà thuốc,healthcare,atlases/12-healthcare.png,8,448,880,322,321
+rehabilitation-center,Trung tâm phục hồi chức năng,healthcare,atlases/12-healthcare.png,9,804,884,438,327
+elder-care,Cơ sở chăm sóc người cao tuổi,social-care,atlases/13-social-care.png,1,13,47,411,344
+childcare-center,Trung tâm chăm sóc trẻ em,social-care,atlases/13-social-care.png,2,441,76,392,310
+accessibility-center,Trung tâm hỗ trợ tiếp cận,social-care,atlases/13-social-care.png,3,862,61,383,322
+welfare-office,Văn phòng phúc lợi,social-care,atlases/13-social-care.png,4,18,479,391,313
+community-center,Trung tâm cộng đồng,social-care,atlases/13-social-care.png,5,426,471,419,323
+social-housing-block,Khu nhà xã hội,social-care,atlases/13-social-care.png,6,857,465,391,333
+cemetery,Nghĩa trang,social-care,atlases/13-social-care.png,7,19,850,434,348
+crematorium,Nhà hỏa táng,social-care,atlases/13-social-care.png,8,468,854,370,346
+funeral-garage,Gara xe tang,social-care,atlases/13-social-care.png,9,855,898,382,304
+small-fire-station,Trạm cứu hỏa nhỏ,fire-rescue,atlases/14-fire-rescue.png,1,49,81,349,324
+large-fire-station,Trạm cứu hỏa lớn,fire-rescue,atlases/14-fire-rescue.png,2,426,25,420,390
+forest-watchtower,Tháp quan sát cháy rừng,fire-rescue,atlases/14-fire-rescue.png,3,891,32,330,390
+fire-helicopter-depot,Depot trực thăng chữa cháy,fire-rescue,atlases/14-fire-rescue.png,4,20,489,431,296
+disaster-warning-center,Trung tâm cảnh báo thiên tai,fire-rescue,atlases/14-fire-rescue.png,5,470,428,351,355
+small-shelter,Nơi trú ẩn nhỏ,fire-rescue,atlases/14-fire-rescue.png,6,841,533,404,249
+large-shelter,Nơi trú ẩn lớn,fire-rescue,atlases/14-fire-rescue.png,7,11,848,448,342
+rescue-center,Trạm cứu nạn,fire-rescue,atlases/14-fire-rescue.png,8,463,817,392,362
+combined-response-center,Trung tâm cứu hộ kết hợp,fire-rescue,atlases/14-fire-rescue.png,9,861,805,386,365
+small-police-station,Đồn cảnh sát nhỏ,security-civic,atlases/15-security-civic.png,1,26,48,385,352
+large-police-station,Đồn cảnh sát lớn,security-civic,atlases/15-security-civic.png,2,427,62,403,326
+police-headquarters,Trụ sở cảnh sát,security-civic,atlases/15-security-civic.png,3,851,25,386,388
+prison,Nhà tù,security-civic,atlases/15-security-civic.png,4,16,474,416,317
+holding-facility,Cơ sở tạm giữ,security-civic,atlases/15-security-civic.png,5,452,537,384,249
+city-hall,Tòa thị chính,security-civic,atlases/15-security-civic.png,6,855,433,390,382
+city-finance-center,Trung tâm tài chính đô thị,security-civic,atlases/15-security-civic.png,7,23,826,382,382
+permit-office,Văn phòng cấp phép,security-civic,atlases/15-security-civic.png,8,432,860,402,339
+port-security,Trạm an ninh cảng,security-civic,atlases/15-security-civic.png,9,856,852,390,348
+mailbox,Hòm thư công cộng,post-telecom,atlases/16-post-telecom.png,1,71,113,274,279
+post-office,Bưu cục,post-telecom,atlases/16-post-telecom.png,2,397,52,413,369
+mail-sorting,Trung tâm phân loại thư,post-telecom,atlases/16-post-telecom.png,3,800,66,452,355
+mail-van-depot,Gara xe bưu chính,post-telecom,atlases/16-post-telecom.png,4,6,474,476,352
+cell-tower,Tháp viễn thông,post-telecom,atlases/16-post-telecom.png,5,489,423,306,403
+network-node,Node mạng viễn thông,post-telecom,atlases/16-post-telecom.png,6,816,470,432,356
+data-center,Trung tâm dữ liệu,post-telecom,atlases/16-post-telecom.png,7,23,862,451,340
+satellite-uplink,Trạm uplink vệ tinh,post-telecom,atlases/16-post-telecom.png,8,489,857,358,335
+network-cabinet,Tủ mạng khu phố,post-telecom,atlases/16-post-telecom.png,9,875,892,325,278
+bus-depot,Depot xe buýt,local-transit,atlases/17-local-transit.png,1,11,81,444,320
+bus-stop,Điểm dừng xe buýt,local-transit,atlases/17-local-transit.png,2,471,135,318,265
+tram-depot,Depot tram,local-transit,atlases/17-local-transit.png,3,810,83,436,333
+tram-stop,Trạm tram,local-transit,atlases/17-local-transit.png,4,13,499,390,297
+metro-depot,Depot metro,local-transit,atlases/17-local-transit.png,5,408,445,478,376
+metro-station,Trạm metro,local-transit,atlases/17-local-transit.png,6,890,494,351,288
+taxi-depot,Depot taxi,local-transit,atlases/17-local-transit.png,7,11,881,424,310
+electric-bus-depot,Depot xe buýt điện,local-transit,atlases/17-local-transit.png,8,438,888,404,294
+park-and-ride,Bãi park-and-ride,local-transit,atlases/17-local-transit.png,9,849,884,395,308
+passenger-train-station,Ga hành khách,regional-transit,atlases/18-regional-transit.png,1,10,75,424,328
+cargo-train-station,Ga hàng hóa,regional-transit,atlases/18-regional-transit.png,2,426,65,402,341
+rail-maintenance,Depot bảo trì đường sắt,regional-transit,atlases/18-regional-transit.png,3,849,79,391,329
+rail-yard,Bãi đường sắt,regional-transit,atlases/18-regional-transit.png,4,13,466,423,334
+regional-airport,Sân bay vùng,regional-transit,atlases/18-regional-transit.png,5,429,437,397,365
+passenger-airport,Nhà ga sân bay hành khách,regional-transit,atlases/18-regional-transit.png,6,835,474,416,326
+cargo-airport,Nhà ga sân bay hàng hóa,regional-transit,atlases/18-regional-transit.png,7,9,869,451,344
+air-control-tower,Tháp kiểm soát không lưu,regional-transit,atlases/18-regional-transit.png,8,501,816,310,401
+bike-parking,Bãi gửi xe đạp,regional-transit,atlases/18-regional-transit.png,9,835,915,407,278
+passenger-harbor,Cảng hành khách,marine,atlases/19-marine.png,1,36,74,390,327
+small-cargo-port,Cảng hàng hóa nhỏ,marine,atlases/19-marine.png,2,459,87,365,295
+large-modular-port,Cảng mô-đun lớn,marine,atlases/19-marine.png,3,848,71,374,327
+ferry-dock,Bến phà,marine,atlases/19-marine.png,4,48,467,377,286
+fishing-dock,Bến cá,marine,atlases/19-marine.png,5,449,473,373,294
+fish-processing,Nhà máy chế biến thủy sản,marine,atlases/19-marine.png,6,840,432,388,338
+offshore-oil-rig,Giàn dầu ngoài khơi,marine,atlases/19-marine.png,7,39,768,376,426
+marine-rescue,Trạm cứu hộ hàng hải,marine,atlases/19-marine.png,8,439,806,387,382
+boat-repair-yard,Xưởng sửa tàu,marine,atlases/19-marine.png,9,846,859,381,332
+small-park,Công viên nhỏ,parks,atlases/20-parks.png,1,34,63,371,309
+public-plaza,Quảng trường,parks,atlases/20-parks.png,2,447,55,385,327
+park-maintenance,Depot bảo trì công viên,parks,atlases/20-parks.png,3,866,71,369,315
+large-city-park,Công viên đô thị lớn,parks,atlases/20-parks.png,4,23,419,375,351
+zoo,Sở thú,parks,atlases/20-parks.png,5,415,437,429,323
+amusement-park,Khu vui chơi,parks,atlases/20-parks.png,6,862,416,373,374
+nature-reserve,Khu bảo tồn,parks,atlases/20-parks.png,7,31,803,377,400
+botanical-garden,Vườn thực vật,parks,atlases/20-parks.png,8,423,819,411,374
+playground,Sân chơi trẻ em,parks,atlases/20-parks.png,9,853,835,388,360
+sports-center,Trung tâm thể thao,sports-culture,atlases/21-sports-culture.png,1,21,100,397,294
+stadium,Sân vận động,sports-culture,atlases/21-sports-culture.png,2,437,73,384,318
+museum,Bảo tàng,sports-culture,atlases/21-sports-culture.png,3,848,93,389,305
+maritime-museum,Bảo tàng hàng hải,sports-culture,atlases/21-sports-culture.png,4,25,479,401,332
+theater,Nhà hát,sports-culture,atlases/21-sports-culture.png,5,441,474,389,326
+culture-house,Nhà văn hóa,sports-culture,atlases/21-sports-culture.png,6,852,507,385,289
+swimming-pool,Hồ bơi công cộng,sports-culture,atlases/21-sports-culture.png,7,24,877,400,317
+gym,Phòng tập,sports-culture,atlases/21-sports-culture.png,8,450,883,376,297
+cinema,Rạp chiếu phim,sports-culture,atlases/21-sports-culture.png,9,854,873,382,310
+hotel,Khách sạn,tourism,atlases/22-tourism.png,1,64,56,347,386
+resort,Khu nghỉ dưỡng,tourism,atlases/22-tourism.png,2,444,136,376,304
+tourist-information,Trung tâm thông tin du lịch,tourism,atlases/22-tourism.png,3,842,139,377,288
+convention-center,Trung tâm hội nghị,tourism,atlases/22-tourism.png,4,20,516,432,303
+event-pavilion,Khu tổ chức sự kiện,tourism,atlases/22-tourism.png,5,451,492,391,314
+beach-facility,Khu tiện ích bãi biển,tourism,atlases/22-tourism.png,6,857,492,381,320
+marina,Bến du thuyền,tourism,atlases/22-tourism.png,7,18,852,425,334
+food-stall,Quầy thức ăn,tourism,atlases/22-tourism.png,8,468,867,331,293
+market-pavilion,Mô-đun chợ,tourism,atlases/22-tourism.png,9,825,862,408,308
+surface-parking,Bãi đỗ xe mặt đất,infrastructure,atlases/23-infrastructure.png,1,25,107,383,278
+multistory-parking,Nhà đỗ xe nhiều tầng,infrastructure,atlases/23-infrastructure.png,2,435,49,391,365
+underground-parking,Bãi đỗ xe ngầm,infrastructure,atlases/23-infrastructure.png,3,864,130,370,284
+road-bridge,Cầu đường bộ,infrastructure,atlases/23-infrastructure.png,4,17,516,407,290
+highway-bridge,Cầu cao tốc,infrastructure,atlases/23-infrastructure.png,5,436,461,380,320
+drawbridge,Cầu mở,infrastructure,atlases/23-infrastructure.png,6,853,463,379,347
+road-tunnel-portal,Cửa hầm đường bộ,infrastructure,atlases/23-infrastructure.png,7,16,842,404,339
+pedestrian-bridge,Cầu đi bộ và xe đạp,infrastructure,atlases/23-infrastructure.png,8,433,890,397,280
+road-maintenance-depot,Depot bảo trì đường,infrastructure,atlases/23-infrastructure.png,9,831,862,409,326
+school-wing,Cánh lớp học,modules,atlases/24-modules.png,1,22,54,416,352
+library-wing,Cánh thư viện,modules,atlases/24-modules.png,2,455,78,390,335
+fire-garage-wing,Gara cứu hỏa mở rộng,modules,atlases/24-modules.png,3,860,33,382,362
+port-warehouse-module,Kho cảng,modules,atlases/24-modules.png,4,8,474,441,322
+park-gate,Cổng công viên,modules,atlases/24-modules.png,5,448,492,389,304
+rollercoaster-module,Trò chơi tàu lượn,modules,atlases/24-modules.png,6,848,429,395,358
+zoo-enclosure,Chuồng/khu nuôi sở thú,modules,atlases/24-modules.png,7,22,861,427,333
+port-crane,Cẩu cảng,modules,atlases/24-modules.png,8,458,819,368,366
+port-gate,Cổng cảng,modules,atlases/24-modules.png,9,843,894,396,307

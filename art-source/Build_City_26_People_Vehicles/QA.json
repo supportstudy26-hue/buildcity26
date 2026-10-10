@@ -1,0 +1,182 @@
+{
+  "checks": [
+    {
+      "group": "01-residents",
+      "width": 1305,
+      "height": 1206,
+      "mode": "RGBA",
+      "transparentFraction": 0.6829930805741408,
+      "majorSilhouettes": 9,
+      "allFramesInBounds": true,
+      "edgeTouches": 0,
+      "frameContamination": []
+    },
+    {
+      "group": "02-daily-life",
+      "width": 1230,
+      "height": 1278,
+      "mode": "RGBA",
+      "transparentFraction": 0.6803847475094469,
+      "majorSilhouettes": 9,
+      "allFramesInBounds": true,
+      "edgeTouches": 0,
+      "frameContamination": []
+    },
+    {
+      "group": "03-service-people",
+      "width": 1263,
+      "height": 1245,
+      "mode": "RGBA",
+      "transparentFraction": 0.7100560595509512,
+      "majorSilhouettes": 9,
+      "allFramesInBounds": true,
+      "edgeTouches": 0,
+      "frameContamination": []
+    },
+    {
+      "group": "04-private-cars",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparentFraction": 0.622244225177995,
+      "majorSilhouettes": 9,
+      "allFramesInBounds": true,
+      "edgeTouches": 0,
+      "frameContamination": []
+    },
+    {
+      "group": "05-two-wheelers",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparentFraction": 0.7221020326661223,
+      "majorSilhouettes": 9,
+      "allFramesInBounds": true,
+      "edgeTouches": 0,
+      "frameContamination": []
+    },
+    {
+      "group": "06-road-freight",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparentFraction": 0.6460722816174843,
+      "majorSilhouettes": 9,
+      "allFramesInBounds": true,
+      "edgeTouches": 0,
+      "frameContamination": []
+    },
+    {
+      "group": "07-emergency",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparentFraction": 0.6369079869457608,
+      "majorSilhouettes": 9,
+      "allFramesInBounds": true,
+      "edgeTouches": 0,
+      "frameContamination": []
+    },
+    {
+      "group": "08-municipal",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparentFraction": 0.49977488305365414,
+      "majorSilhouettes": 9,
+      "allFramesInBounds": true,
+      "edgeTouches": 0,
+      "frameContamination": []
+    },
+    {
+      "group": "09-construction",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparentFraction": 0.6537268937168207,
+      "majorSilhouettes": 9,
+      "allFramesInBounds": true,
+      "edgeTouches": 0,
+      "frameContamination": []
+    },
+    {
+      "group": "10-public-transit",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparentFraction": 0.5870967290634881,
+      "majorSilhouettes": 9,
+      "allFramesInBounds": true,
+      "edgeTouches": 0,
+      "frameContamination": []
+    },
+    {
+      "group": "11-railway",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparentFraction": 0.6596009197998621,
+      "majorSilhouettes": 9,
+      "allFramesInBounds": true,
+      "edgeTouches": 0,
+      "frameContamination": []
+    },
+    {
+      "group": "12-small-boats",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparentFraction": 0.7624532914132511,
+      "majorSilhouettes": 9,
+      "allFramesInBounds": true,
+      "edgeTouches": 0,
+      "frameContamination": []
+    },
+    {
+      "group": "13-large-ships",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparentFraction": 0.650383843471227,
+      "majorSilhouettes": 9,
+      "allFramesInBounds": true,
+      "edgeTouches": 0,
+      "frameContamination": []
+    },
+    {
+      "group": "14-airplanes",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparentFraction": 0.6151129781827339,
+      "majorSilhouettes": 9,
+      "allFramesInBounds": true,
+      "edgeTouches": 0,
+      "frameContamination": []
+    },
+    {
+      "group": "15-helicopters",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "transparentFraction": 0.5907908091237227,
+      "majorSilhouettes": 9,
+      "allFramesInBounds": true,
+      "edgeTouches": 0,
+      "frameContamination": []
+    },
+    {
+      "group": "16-special-machines",
+      "width": 1312,
+      "height": 1199,
+      "mode": "RGBA",
+      "transparentFraction": 0.45752558025997275,
+      "majorSilhouettes": 9,
+      "allFramesInBounds": true,
+      "edgeTouches": 0,
+      "frameContamination": []
+    }
+  ],
+  "scope": "PNG alpha and primary silhouette bounding frames; not gameplay/animation/performance verification",
+  "assetCount": 144
+}

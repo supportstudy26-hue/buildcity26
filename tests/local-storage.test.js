@@ -26,3 +26,23 @@ test('migration preserves an uncertain cloud request and schedules the migrated 
 });
 
 test('identical raw backup is reused without multiplying quota consumption',()=>{const s=storage();saveLocal(createCity(),'A',null,{},s);archiveLocal('A',s,()=>id);archiveLocal('A',s,()=>requestId);assert.equal(listLocalBackups('A',s).length,1);});
+
+test('quota fallback keeps exact draft bytes, old backups, owner separation and export compatibility',()=>{
+ const s=storage(),city=createCity();saveLocal(city,'A',null,{pending:null},s);const raw=s.getItem(localKey('A'));
+ const oldKey='bc26:v1:backup:A:old';s.setItem(oldKey,raw);city.name='New';saveLocal(city,'A',null,{},s);const newest=s.getItem(localKey('A'));
+ const set=s.setItem;s.setItem=(key,value)=>{if(key.includes('backup')&&value.length>newest.length/2){const e=new Error('Full');e.name='QuotaExceededError';throw e;}set(key,value);};
+ archiveLocal('A',s,()=>id);assert.equal(s.getItem(oldKey),raw);assert.equal(s.getItem(localKey('A')),newest);
+ assert.equal(readLocalBackup('bc26:v1:backup:A:'+id,'A',s),newest);assert.throws(()=>readLocalBackup('bc26:v1:backup:A:'+id,'B',s));
+ assert.ok(s.getItem('bc26:v1:backup:A:'+id).length<newest.length/2);assert.equal(listLocalBackups('A',s).length,2);
+ archiveLocal('A',s,()=>requestId);assert.equal(listLocalBackups('A',s).length,2);
+});
+
+test('active draft quota fallback preserves exact pending payload and compressed archives stay readable and deduplicated',()=>{
+ const s=storage(),write=s.setItem;s.setItem=(key,value)=>{if(value.length>300000){const e=new Error('QuotaExceededError');e.name='QuotaExceededError';throw e;}write(key,value);};
+ const city=createCity(),pending={id,requestId,revision:4,name:city.name,state:serialize(city)};
+ saveLocal(city,'A',{id,revision:4},{pending,conflict:true},s);
+ assert.equal(JSON.parse(s.getItem(localKey('A'))).format,'bc26-local-archive-gzip-v1');
+ const loaded=loadLocal('A',s);assert.deepEqual(loaded.pending,pending);assert.deepEqual(serialize(loaded.city),serialize(city));assert.equal(loaded.conflict,true);
+ archiveLocal('A',s,()=>id);archiveLocal('A',s,()=>requestId);assert.equal(listLocalBackups('A',s).length,1);
+ const raw=JSON.parse(readLocalBackup(listLocalBackups('A',s)[0].key,'A',s));assert.deepEqual(raw.pending,pending);assert.deepEqual(raw.city,serialize(city));assert.equal(loadLocal('B',s),null);
+});

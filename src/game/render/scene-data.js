@@ -18,19 +18,15 @@ export function overlayColor(t,layer){
 }
 export function chunkSignature(s,x0,y0,layer){
   let text=layer;
-  for(let y=y0;y<y0+REGION;y++)for(let x=x0;x<x0+REGION;x++){const t=s.tiles[y*SIZE+x];text+=`${t.kind}/${t.zone}/${t.level}/${!!t.active}/${t.fire>0}/${overlayColor(t,layer)};`;if(isRoad(t))text+=neighbors(y*SIZE+x).map(i=>s.tiles[i].kind).join(',');}
+  for(let y=y0;y<y0+REGION;y++)for(let x=x0;x<x0+REGION;x++){const t=s.tiles[y*SIZE+x];text+=`${t.kind}/${t.zone}/${t.level}/${!!t.active}/${t.fire>0}/${overlayColor(t,layer)};`;if(['waste','wasteCenter'].includes(t.kind))text+=Math.round(t.garbage||0);if(isRoad(t))text+=neighbors(y*SIZE+x).map(i=>s.tiles[i].kind).join(',');}
   return text;
 }
-// Descriptors are original procedural components in metres, independent of GPU.
-export function chunkParts(s,x0,y0,layer='normal'){
-  const parts=[];
-  function part(shape,x,y,z,w,h,d,color,detail=false,rotation=null,tile=null){parts.push({shape,position:[x,y,z],scale:[w,h,d],color,detail,rotation,tile});}
-  const box=(x,y,z,w,h,d,color,detail=false,rotation=null,tile=null)=>part('box',x,y,z,w,h,d,color,detail,rotation,tile);
-  function tree(x,z,h,size,tile){box(x,h+size*2,z,.6,size*4,.6,'#7f775b',false,null,tile);part('cone',x,h+size*6,z,size*5,size*8,size*5,'#618b69',false,null,tile);part('cone',x,h+size*8,z,size*3.6,size*5,size*3.6,'#85aa79',false,null,tile);}
-  for(let y=y0;y<y0+REGION;y++)for(let x=x0;x<x0+REGION;x++){
-    const i=y*SIZE+x,t=s.tiles[i],cx=(x+.5)*CELL_METERS,cz=(y+.5)*CELL_METERS,base=surfaceHeight(s,i,SIZE),n=noise(x,y);
-    if(isRoad(t)){
-      const width=t.kind==='avenue'?18:12,road=overlayColor(t,layer)||'#526b70';
+// Roads and bridge ghosts use the same deck, joins, piers and railings.
+export function roadParts(s,x,y,kind=s.tiles[y*SIZE+x].kind,layer='normal',overlay=null){
+ const parts=[],i=y*SIZE+x,t=s.tiles[i],cx=(x+.5)*CELL_METERS,cz=(y+.5)*CELL_METERS,base=surfaceHeight(s,i,SIZE,kind);
+ const box=(px,py,pz,w,h,d,color,detail=false,rotation=null,tile=null)=>parts.push({shape:'box',position:[px,py,pz],scale:[w,h,d],color:overlay||color,detail,rotation,tile});
+
+      const width=kind==='avenue'?18:12,road=overlay||overlayColor({...t,kind},layer)||'#526b70';
       box(cx,base-.4,cz,width+.8,.5,width+.8,'#c7cabb',false,null,i);
       box(cx,base-.1,cz,width,.2,width,road,false,null,i);
       const links=neighbors(i).filter(ni=>isRoad(s.tiles[ni]));
@@ -50,8 +46,18 @@ export function chunkParts(s,x0,y0,layer='normal'){
         for(const side of [-1,1])box(cx+side*width*.35,(base+bed)/2,cz,1,base-bed,1,'#9faeab',false,null,i);
         for(const side of [-1,1])box(cx,base+.6,cz+side*(width/2+.2),20,.12,.12,'#dadac2',true,null,i);
       }
-      continue;
-    }
+
+ return parts;
+}
+// Descriptors are original procedural components in metres, independent of GPU.
+export function chunkParts(s,x0,y0,layer='normal'){
+  const parts=[];
+  function part(shape,x,y,z,w,h,d,color,detail=false,rotation=null,tile=null){parts.push({shape,position:[x,y,z],scale:[w,h,d],color,detail,rotation,tile});}
+  const box=(x,y,z,w,h,d,color,detail=false,rotation=null,tile=null)=>part('box',x,y,z,w,h,d,color,detail,rotation,tile);
+  function tree(x,z,h,size,tile){box(x,h+size*2,z,.6,size*4,.6,'#7f775b',false,null,tile);part('cone',x,h+size*6,z,size*5,size*8,size*5,'#618b69',false,null,tile);part('cone',x,h+size*8,z,size*3.6,size*5,size*3.6,'#85aa79',false,null,tile);}
+  for(let y=y0;y<y0+REGION;y++)for(let x=x0;x<x0+REGION;x++){
+    const i=y*SIZE+x,t=s.tiles[i],cx=(x+.5)*CELL_METERS,cz=(y+.5)*CELL_METERS,base=surfaceHeight(s,i,SIZE),n=noise(x,y);
+    if(isRoad(t)){parts.push(...roadParts(s,x,y,t.kind,layer));continue;}
     if(!t.kind){
       if(t.zone)box(cx,base+.025,cz,18,.05,18,CATALOG[t.zone].color,false,null,i);
       else if(t.terrain==='grass'&&n>.88){const h=terrainHeight(s.world,cx,cz);tree(cx,cz,h,.75+noise(y,x)*.45,i);}
@@ -59,40 +65,7 @@ export function chunkParts(s,x0,y0,layer='normal'){
     }
     // A foundation pad encloses the sloping ground below the footprint.
     const low=Math.min(...cellHeights(s.world,i,SIZE));box(cx,(base+low)/2,cz,16,Math.max(.15,base-low),16,'#c9c9b5',false,null,i);
-    if(['residential','commercial','industrial'].includes(t.kind)){parts.push(...buildingParts(t,x,y,cx,cz,base,overlayColor(t,layer),i));continue;}
-    const family=serviceKind(t.kind);
-    if(family==='park'){
-      box(cx,base+.08,cz,16,.15,16,'#81a77a',false,null,i);box(cx,base+.18,cz,2,.1,16,'#e5d0a3',false,null,i);box(cx,base+.18,cz,16,.1,2,'#e5d0a3',false,null,i);
-      if(t.kind==='plaza'){box(cx,base+.2,cz,15,.2,15,'#d5d4bd',false,null,i);part('cylinder',cx,base+.6,cz,7,.8,7,'#86bcc5',false,null,i);box(cx,base+2.1,cz,.4,3,.4,'#bbdce0',true,null,i);continue;}
-      if(t.kind==='sportsPark'){box(cx,base+.25,cz,11,.12,8,'#6e9d90',false,null,i);for(const side of [-1,1]){box(cx+side*5,base+1.4,cz,.15,2.8,4,'#dfdfc5',true,null,i);box(cx+side*5,base+2.8,cz,.15,.15,4,'#dfdfc5',true,null,i);}tree(cx-6,cz-6,base,.8,i);continue;}
-      tree(cx-4,cz-4,base,.8,i);tree(cx+4,cz+4,base,.9,i);box(cx+5,base+.8,cz-3,3,.3,1,'#bf9769',true,null,i);continue;
-    }
-    if(t.kind==='busStop'){
-      box(cx,base+2.7,cz,6,.3,3,'#e2ba7b',false,null,i);box(cx-2.7,base+1.35,cz, .25,2.7,.25,'#526f75',false,null,i);box(cx+2.7,base+1.35,cz,.25,2.7,.25,'#526f75',false,null,i);box(cx,base+.7,cz,4,.25,1,'#a78e6c',true,null,i);continue;
-    }
-    const color=overlayColor(t,layer)||palettes[family]?.[Math.floor(n*palettes[family].length)]||'#cdd6bf';
-    const h=t.kind==='residential'?(t.level===1?5.8+n*1.3:8+t.level*5):t.kind==='commercial'?8+n*3:t.kind==='industrial'?7:t.kind==='hospital'?12:t.kind==='university'?10:6.5;
-    box(cx,base+h/2,cz,11,h,t.kind==='industrial'?14:11,color,false,null,i);
-    box(cx,base+h+.3,cz,12,.6,t.kind==='industrial'?15:12,'#657d7d',false,null,i);
-    box(cx,base+1.2,cz+5.55,1.4,2.4,.13,'#506e72',true,null,i);
-    for(let floor=0;floor<Math.max(1,Math.floor(h/3));floor++)for(let w=0;w<3;w++){
-      part('window',cx-3.5+w*3.5,base+2+floor*3,cz+5.55,1.8,1.2,.1,'#a4cbd2',true,null,i);
-      part('window',cx+5.55,base+2+floor*3,cz-3.5+w*3.5,.1,1.2,1.8,'#a4cbd2',true,null,i);
-    }
-    if(t.kind==='residential'&&t.level===1){box(cx,base+2.8,cz+6,5,.2,1.8,'#e5bb8f',true,null,i);box(cx-4.5,base+.8,cz+6.4,1,1.5,1,'#7f9e72',true,null,i);}
-    if(t.kind==='commercial'){box(cx,base+3.6,cz+6,10,.2,1.5,'#daa06c',false,null,i);box(cx,base+5,cz+5.7,5,1,.2,'#e4cf9c',true,null,i);}
-    if(t.kind==='industrial'||family==='power'){box(cx+4,base+h+3,cz-4,1.4,7,1.4,'#acb6b0',false,null,i);box(cx-3,base+h+1,cz,3,1.4,3,'#a2aaa4',true,null,i);}
-    if(family==='water'||family==='sewage')part('cylinder',cx,base+h+1.3,cz,5,2.5,5,'#69a1af',false,null,i);
-    if(family==='clinic'){box(cx,base+h+1.4,cz,3,.6,.6,'#d57664',false,null,i);box(cx,base+h+1.4,cz,.6,3,.6,'#d57664',false,null,i);}
-    if(family==='school'){box(cx+5.8,base+5,cz+4,.12,10,.12,'#7e9291',true,null,i);box(cx+6.5,base+9,cz+4,1.4,.7,.05,'#daa268',true,null,i);}
-    if(family==='fire'||t.kind==='bus')for(let w=0;w<2;w++)box(cx-3+w*6,base+1.7,cz+5.6,3.7,3.2,.1,'#6a7e7e',false,null,i);
-    if(t.kind==='waterPump'||t.kind==='treatmentPlant')for(const side of [-1,1])part('cylinder',cx+side*4,base+1.2,cz-5,4,2,4,t.kind==='waterPump'?'#93c4ce':'#91b7a5',false,null,i);
-    if(t.kind==='hospital'||t.kind==='university')box(cx-6,base+2,cz,3,4,13,color,false,null,i);
-    if(t.kind==='secondarySchool')box(cx,base+h+.9,cz,4,.5,4,'#e7bc82',true,null,i);
-    if(t.kind==='fireCenter')box(cx+5,base+h+3,cz-4,1.5,6,1.5,'#dca38b',false,null,i);
-    if(t.kind==='policeCenter'){box(cx,base+h+2,cz,.18,4,.18,'#b9cbd3',true,null,i);box(cx,base+h+3,cz,3,.15,.15,'#b9cbd3',true,null,i);}
-    if(t.kind==='wasteCenter')for(const side of [-1,1])box(cx+side*4,base+1,cz+7,3,2,2,'#84aa85',true,null,i);
-    if(t.fire>0)part('cone',cx,base+h+2,cz,2,5,2,'#e69355',false,null,i);
+    parts.push(...buildingParts(t,x,y,cx,cz,base,overlayColor(t,layer),i));
   }
   for(const c of s.contracts)if(c.status==='building'&&c.tile%SIZE>=x0&&c.tile%SIZE<x0+REGION&&Math.floor(c.tile/SIZE)>=y0&&Math.floor(c.tile/SIZE)<y0+REGION){const x=(c.tile%SIZE+.5)*20,z=(Math.floor(c.tile/SIZE)+.5)*20,h=surfaceHeight(s,c.tile,SIZE);box(x,h+.1,z,18,.2,18,'#d4b387',false,null,c.tile);box(x,h+2,z,4,4,4,'#bca27a',false,null,c.tile);}
   return parts;
@@ -101,8 +74,12 @@ export function terrainArrays(s,x0,y0){
   const positions=[],colors=[];
   for(let y=y0;y<y0+REGION;y++)for(let x=x0;x<x0+REGION;x++){
     const i=y*SIZE+x,t=s.tiles[i],h=cellHeights(s.world,i,SIZE),p=[[x*20,h[0],y*20],[(x+1)*20,h[1],y*20],[x*20,h[2],(y+1)*20],[(x+1)*20,h[3],(y+1)*20]];
-    const color=t.terrain==='water'?[.33,.44,.42]:t.terrain==='sand'?[.77,.74,.57]:noise(x,y)>.5?[.49,.63,.43]:[.53,.66,.46];
-    for(const k of [0,2,1,1,2,3]){positions.push(...p[k]);colors.push(...color);}
+    for(const k of [0,2,1,1,2,3]){
+      const [px,py,pz]=p[k],v=noise(Math.floor(px/80),Math.floor(pz/80))*.025;
+      const coast=h.some(height=>height<s.world.waterHeight+.6);
+      const color=t.terrain==='water'?[.33,.44,.42]:t.terrain==='sand'?[.77+v,.74+v,.57+v]:coast?[.59+v,.65+v,.46+v]:[.51+v,.64+v,.44+v];
+      positions.push(px,py,pz);colors.push(...color);
+    }
   }
   return {positions,colors};
 }

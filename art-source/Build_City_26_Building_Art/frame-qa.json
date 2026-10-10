@@ -1,0 +1,146 @@
+[
+  {
+    "group": "residential",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "commerce",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "offices",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "processing",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "resources",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "agriculture",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "generation",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "power-network",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "water",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "environment",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "education",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "healthcare",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "social-care",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "fire-rescue",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "security-civic",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "post-telecom",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "local-transit",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "regional-transit",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "marine",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "parks",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "sports-culture",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "tourism",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "infrastructure",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  },
+  {
+    "group": "modules",
+    "mainAlphaComponents": 9,
+    "framesInBounds": true,
+    "edgeTouchingSlots": []
+  }
+]

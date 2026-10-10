@@ -1,0 +1,152 @@
+{
+  "created": "2026-10-10",
+  "snapshot": "2025-07-01",
+  "sourceCommit": "ccb9f4ae992418bfeefd06da1eb42d0249632176",
+  "sourceSHA256": "d8a06b4d3a0e5612ec3319afed4c75ff7ffc46e6ffd82e9e40df24090133a664",
+  "checks": [
+    {
+      "check": "34 distinct province IDs",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "34 distinct names; Đồng Tháp and Lạng Sơn each exactly once",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "28 provinces and 6 cities for the explicitly chosen 2025 snapshot",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "63 unique former unit names mapped to new IDs",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "33 unmodified full geometries coordinate-for-coordinate identical to source",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "HCM keeps every original component and adds only the sourced Con Dao supplement",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "Con Dao source coordinates preserved in supplement",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "All full and light geometries valid and non-empty",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "Light LOD preserves polygon component counts",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "Every label anchor lies in its province geometry",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "Corrected Đồng Tháp is in Mekong region; Lạng Sơn remains in north",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "Phú Quốc polygon is correctly located southwest and linked to An Giang",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "Hoàng Sa offshore source components exist near 111–113E, 15.5–17.5N",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "Trường Sa focus area contains offshore geometry at original lon/lat",
+      "status": "passed",
+      "detail": {
+        "sourcePolygonComponentsInFocus": 325,
+        "notAnIslandCount": true
+      }
+    },
+    {
+      "check": "Archipelago parent IDs match Vietnamese administrative snapshot",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "All source geometries fit the same main-map extent",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "Every offshore reference feature explicitly non-buildable",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "All 34 names present as real text in exported SVG",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "Requested island/archipelago labels and Con Dao present in SVG",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "Interactive SVG has geometry for every province ID",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "Offline viewer embeds all map data with no external script/CDN",
+      "status": "passed",
+      "detail": null
+    },
+    {
+      "check": "High-resolution PNG size and decode",
+      "status": "passed",
+      "detail": {
+        "size": [
+          3600,
+          3750
+        ],
+        "mode": "RGB"
+      }
+    }
+  ],
+  "visualInspection": {
+    "status": "performed on raster preview",
+    "scope": "PNG and PDF raster previews inspected: all 34 legend names, placement, numbers, island labels, insets and footer. Not a cadastral verification."
+  },
+  "browserValidation": {
+    "status": "DOM smoke checks passed",
+    "environment": "jsdom; no real browser layout or pointer rendering",
+    "checksPassed": 234,
+    "realBrowserVisualCheck": "not performed",
+    "limits": [
+      "drag/pinch on physical devices not tested",
+      "game repository integration not tested"
+    ]
+  },
+  "notIncluded": [
+    "DEM",
+    "bathymetry",
+    "verified buildable land mask",
+    "terrain 3D",
+    "game repo integration",
+    "Supabase migrations",
+    "GitHub push",
+    "Vercel deployment"
+  ],
+  "sourcePre2025SHA256": "60d05e6e3f05061ef49bb330cbbec76e2875546d908120c40f3da9c2f5f1a419"
+}
