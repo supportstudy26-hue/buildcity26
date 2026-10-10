@@ -21,8 +21,9 @@ test('completing player tasks raises a level, pays exactly once, and keeps cash 
   // Attendance fixture; actual arrival behavior is exercised in foundation replay tests.
   for(const c of s.citizens.slice(0,20))c.attendance=1;updateProgression(s,true);
   assert.ok(command(s,'construct',{x:22,y:19,kind:'park'}).ok);
-  time(s,10*86400);stepSimulation(s);assert.equal(s.contracts[0].status,'completed');assert.equal(s.progression.xp,400);assert.equal(missionViews(s).find(m=>m.id==='park-built').value,1);s.tiles[index(22,19)].active=false;updateProgression(s,true);assert.equal(s.progression.tracking['park-built'],undefined);s.tiles[index(22,19)].active=true;updateProgression(s,true);
-  time(s,11*86400+10);const before=s.money;updateProgression(s,true);assert.equal(s.progression.xp,550);assert.equal(levelFromXp(s.progression.xp),2);assert.equal(s.money-before,100000);assert.deepEqual(s.progression.levelGrants,[2]);assert.equal(cashBalance(s),s.money);
+  assert.equal(s.contracts[0].status,'completed');assert.equal(missionViews(s).find(m=>m.id==='park-built').value,1);time(s,12*3600);s.tiles[index(22,19)].active=false;updateProgression(s,true);assert.equal(s.progression.tracking['park-built'],undefined);s.tiles[index(22,19)].active=true;updateProgression(s,true);
+  time(s,86400+10);updateProgression(s,true);assert.equal(s.progression.xp,400);
+  time(s,36*3600+10);const before=s.money;updateProgression(s,true);assert.equal(s.progression.xp,550);assert.equal(levelFromXp(s.progression.xp),2);assert.equal(s.money-before,100000);assert.deepEqual(s.progression.levelGrants,[2]);assert.equal(cashBalance(s),s.money);
   const restored=validateSave(serialize(s));updateProgression(restored,true);updateProgression(restored,true);assert.equal(restored.money,s.money);assert.equal(restored.progression.receipts.length,s.progression.receipts.length);assert.ok(missionViews(restored).some(m=>m.level===2&&!m.locked));
   const bad=serialize(restored);bad.progression.xp+=100;assert.throws(()=>validateSave(bad),/XP/);
 });

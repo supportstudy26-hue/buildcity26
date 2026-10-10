@@ -40,9 +40,9 @@ const priceBook={power:[250000,800],water:[200000,500],sewage:[1200000,4000],was
 for(const [kind,[cost,upkeep]] of Object.entries(priceBook))Object.assign(CATALOG[kind],{cost,upkeep});
 for(const kind of ['residential','commercial','industrial'])CATALOG[kind].cost=ZONE_PERMIT_BC;
 for(const kind of ['road','avenue'])CATALOG[kind].cost=roadPrice(kind);
-CATALOG.residential.description='Phí cấp phép 2 BC/m² đất, không phải giá mua nhà. Mẫu nhà đã chọn do chủ đầu tư tư nhân xây bằng vốn riêng khi có đường, điện, nước và nước thải.';
-CATALOG.commercial.description='Phí cấp phép đất; mỗi mẫu cửa hàng có giá xây theo diện tích sàn riêng do chủ đầu tư trả. Cần đường, điện, nước, nước thải và nhu cầu.';
-CATALOG.industrial.description='Phí cấp phép đất; giá xưởng gồm diện tích sàn và thiết bị, do chủ đầu tư trả. Cần tiện ích; gây ô nhiễm nên đặt xa nhà ở.';
+CATALOG.residential.description='Phí cấp phép 2 BC/m² đất, không phải giá mua nhà. Mẫu nhà 3D xuất hiện ngay khi đặt, vốn xây do chủ đầu tư trả. Cần đường, điện, nước và nước thải để hoạt động.';
+CATALOG.commercial.description='Phí cấp phép đất; mỗi mẫu cửa hàng có giá xây theo diện tích sàn riêng do chủ đầu tư trả. Xuất hiện ngay khi đặt; cần đường, điện, nước và nước thải để hoạt động.';
+CATALOG.industrial.description='Phí cấp phép đất; giá xưởng gồm diện tích sàn và thiết bị, do chủ đầu tư trả. Xuất hiện ngay khi đặt; cần tiện ích để hoạt động; gây ô nhiễm nên đặt xa nhà ở.';
 export const serviceKind=kind=>CATALOG[kind]?.service||kind;
 export const BUILDINGS = Object.keys(CATALOG).filter(k=>['utilities','services','parks','transport'].includes(CATALOG[k].group));
 export const ZONES = ['residential','commercial','industrial'];

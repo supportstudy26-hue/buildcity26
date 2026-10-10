@@ -10,18 +10,32 @@ import {startJourney} from '../src/game/systems/citizens.js';
 import {cashBalance} from '../src/game/systems/economy.js';
 function starter(){const s=createEmptyCity();for(let x=0;x<3;x++)assert.ok(place(s,x,18,'road').ok);for(const [x,y,k] of [[0,17,'smallPower'],[1,17,'smallWater'],[2,17,'smallSewage'],[0,19,'residential'],[1,19,'commercial'],[2,19,'industrial']])assert.ok(place(s,x,y,k).ok);return s;}
 const steps=(s,n)=>{for(let i=0;i<n;i++)stepSimulation(s);};
-test('10-billion real start builds all three zoned types in minutes; private capital is debited once and saves mid-development',()=>{
- let s=starter();const cash=s.money;assert.equal(cash,9916600);steps(s,450);const t=s.tiles[index(0,19)];assert.equal(t.kind,null);assert.equal(t.development.work,450);
- assert.equal(s.privateInvestment.available,20000000-432000-144000-356800);assert.equal(s.money,cash);
- const raw=JSON.parse(JSON.stringify(serialize(s)));s=validateSave(raw);assert.deepEqual(JSON.parse(JSON.stringify(serialize(s))),raw);steps(s,450);
- for(const k of ['residential','commercial','industrial'])assert.ok(s.tiles.some(t=>t.kind===k));assert.equal(s.metrics.population,0);steps(s,120);assert.equal(s.metrics.population,2);assert.equal(s.citizens.length,2);assert.equal(s.privateInvestment.projects.length,3);assert.equal(s.money,cash);assert.equal(cashBalance(s),cash);
- assert.equal(buildingDesign(s.tiles[index(0,19)],0,19).artId,'row-houses');assert.equal(buildingDesign(s.tiles[index(1,19)],1,19).artId,'corner-shop');
- const loaded=validateSave(JSON.parse(JSON.stringify(serialize(s))));assert.equal(loaded.citizens.length,2);assert.equal(loaded.privateInvestment.available,s.privateInvestment.available);
+test('placement creates all three building types immediately while paused and capital is charged once',()=>{
+ const s=starter(),cash=s.money;assert.equal(cash,9916600);
+ for(const kind of ['residential','commercial','industrial'])assert.ok(s.tiles.some(t=>t.kind===kind&&t.development.work===900));
+ assert.equal(s.metrics.population,0);assert.equal(s.privateInvestment.available,20000000-432000-144000-356800);
+ const raw=serialize(s),loaded=validateSave(raw);assert.deepEqual(serialize(loaded),raw);
+ steps(loaded,120);assert.ok(loaded.metrics.population>0);assert.equal(loaded.privateInvestment.projects.length,3);assert.equal(loaded.money,cash);assert.equal(cashBalance(loaded),cash);
+ assert.equal(buildingDesign(loaded.tiles[index(0,19)],0,19).artId,'row-houses');assert.equal(buildingDesign(loaded.tiles[index(1,19)],1,19).artId,'corner-shop');
 });
-test('disconnected utilities pause development; restored supply resumes saved progress without duplicate capital',()=>{
- const s=starter();steps(s,60);const i=index(0,19),amount=s.privateInvestment.available;assert.ok(place(s,0,17,'bulldoze').ok);steps(s,60);assert.equal(s.tiles[i].development.work,60);assert.ok(developmentConditions(s,s.tiles[i]).some(c=>!c.ok));
- assert.ok(place(s,0,17,'smallPower').ok);steps(s,60);assert.equal(s.tiles[i].development.work,120);assert.equal(s.privateInvestment.available,amount);
+test('a house appears without utilities; supplying it activates it without a second investment',()=>{
+ const s=createEmptyCity();s.playback.paused=true;assert.ok(place(s,0,19,'residential','tile-house').ok);
+ const i=index(0,19),t=s.tiles[i],capital=s.privateInvestment.available;assert.equal(t.kind,'residential');assert.equal(t.active,false);assert.equal(t.residents,0);assert.equal(residentCapacity(t),8);
+ for(let x=0;x<3;x++)assert.ok(place(s,x,18,'road').ok);
+ for(const [x,kind] of [[0,'smallPower'],[1,'smallWater'],[2,'smallSewage']])assert.ok(place(s,x,17,kind).ok);
+ assert.equal(t.active,true);steps(s,60);assert.equal(t.development.work,900);assert.equal(s.privateInvestment.available,capital);
  const corrupt=serialize(s);corrupt.privateInvestment.available++;assert.throws(()=>validateSave(corrupt),/đối chiếu/);
+});
+test('old unfinished funded and unstarted plots load as completed once without resetting the save',()=>{
+ const s=starter(),raw=serialize(s),i=index(0,19);raw.tiles[i].kind=null;raw.tiles[i].level=0;raw.tiles[i].assetId=null;raw.tiles[i].development.work=450;
+ const loaded=validateSave(raw);assert.equal(loaded.tiles[i].kind,'residential');assert.equal(loaded.tiles[i].development.work,900);assert.equal(loaded.money,s.money);assert.equal(loaded.clock.seconds,s.clock.seconds);assert.equal(loaded.privateInvestment.available,s.privateInvestment.available);assert.equal(loaded.privateInvestment.projects.length,3);
+ assert.deepEqual(serialize(validateSave(serialize(loaded))),serialize(loaded));
+ const fresh=createEmptyCity(),legacy=serialize(fresh);Object.assign(legacy.tiles[i],{zone:'residential',blueprint:'tile-house'});
+ const unstarted=validateSave(legacy);assert.equal(unstarted.tiles[i].kind,'residential');assert.equal(unstarted.money,fresh.money);assert.equal(unstarted.privateInvestment.projects.length,1);assert.deepEqual(serialize(validateSave(serialize(unstarted))),serialize(unstarted));
+});
+test('insufficient investor capital rejects instant placement atomically',()=>{
+ const s=createEmptyCity();s.privateInvestment={rule:'private-casual-15min-v1',opening:20000000,available:0,projects:[]};const before=serialize(s);
+ assert.equal(place(s,0,19,'residential','tile-house').ok,false);assert.deepEqual(serialize(s),before);
 });
 test('private upgrades preserve people/treasury, reserve once and grow actual capacity/mesh with sustained work',()=>{
  const s=createCity(),i=index(12,17),t=s.tiles[i];assert.ok(place(s,10,17,'waste').ok);assert.ok(place(s,10,19,'park').ok);analyze(s);const cash=s.money,people=s.citizens.map(c=>c.id),beforeParts=buildingParts(t,12,17,0,0,0);
@@ -44,7 +58,7 @@ test('prices use m² and appendix values, separate permit from privately funded 
 test('every one of the 13 selected blueprints becomes its actual 3D architecture at the recorded build price and capacity',()=>{
  for(const plan of Object.values(PRIVATE_DESIGNS)){
   const s=createEmptyCity(),i=index(0,19);for(const [x,y,k] of [[0,18,'road'],[1,18,'road'],[2,18,'road'],[0,17,'smallPower'],[1,17,'smallWater'],[2,17,'smallSewage']])assert.ok(place(s,x,y,k).ok);
-  assert.ok(place(s,0,19,plan.kind,plan.designId).ok);assert.equal(s.tiles[i].blueprint,plan.designId);steps(s,450);const saved=validateSave(JSON.parse(JSON.stringify(serialize(s))));steps(saved,450);
+  assert.ok(place(s,0,19,plan.kind,plan.designId).ok);assert.equal(s.tiles[i].blueprint,plan.designId);assert.equal(s.tiles[i].kind,plan.kind);const saved=validateSave(JSON.parse(JSON.stringify(serialize(s))));
   const t=saved.tiles[i],d=buildingDesign(t,0,19);assert.equal(d.id,plan.designId);assert.equal(t.development.basePrice,privateBuildPrice(plan.kind,plan.designId));assert.ok(Number.isFinite(d.height)&&d.height>4);assert.ok(buildingParts(t,0,19,0,0,0).some(p=>p.scale[1]>4),plan.designId);
   assert.equal(plan.kind==='residential'?residentCapacity(t):jobsCapacity(t),plan.capacity);assert.doesNotThrow(()=>validateSave(serialize(saved)));
  }

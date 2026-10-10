@@ -1,7 +1,7 @@
 import {placementQuote} from './systems/placement.js';
 import {weatherState,setWeatherMode,WEATHER_MODES} from './systems/weather.js';
-import {PRIVATE_DESIGNS,residentCapacity,jobsCapacity,MAINTENANCE_FACTORS,capacityFactor} from '../config/building-economy.js';
-import {updateDevelopment,validateDevelopment,validatePrivateInvestment} from './systems/development.js';
+import {PRIVATE_DESIGNS,privateBuildPrice,residentCapacity,jobsCapacity,MAINTENANCE_FACTORS,capacityFactor} from '../config/building-economy.js';
+import {materializeBuilding,materializePendingBuildings,updateDevelopment,validateDevelopment,validatePrivateInvestment} from './systems/development.js';
 import {startUpgrade,updateUpgrades,validateUpgrade} from './systems/upgrades.js';
 import {geographyBuildRule} from './geography/city.js';
 import {updateProgression} from './systems/progression.js';
@@ -99,9 +99,10 @@ export function place(s,x,y,kind,designId=null){
     }
     return {ok:false,message:'Ô này đã có công trình. Dùng phá dỡ để thay đổi.'};
   }
+  if(ZONES.includes(kind)&&(s.privateInvestment?.available??20000000)<privateBuildPrice(kind,designId))return {ok:false,message:'Chủ đầu tư không đủ vốn cho mẫu nhà này.'};
   const cost=quote.cost;
   recordCash(s,`place-${s.nextEntityId++}`,'construction-instant',-cost);t.historicalCost=cost;
-  if(ZONES.includes(kind)){t.zone=kind;t.age=0;if(designId)t.blueprint=designId;}else{t.kind=kind;t.level=1;t.assetId=entityId(s,'asset');}
+  if(ZONES.includes(kind)){t.zone=kind;t.age=0;if(designId)t.blueprint=designId;materializeBuilding(s,index(x,y));}else{t.kind=kind;t.level=1;t.assetId=entityId(s,'asset');}
   s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);return {ok:true,cost};
 }
 export function tick(s){
@@ -152,6 +153,8 @@ export function validateSave(raw){
   const s={schemaVersion:SAVE_VERSION,mapSize:SIZE,name:raw.name.trim(),money:raw.money,day:raw.day,seed:raw.seed>>>0,taxes:{...raw.taxes},milestones:[...new Set(raw.milestones)],busLines:migratedLines,loanBalance,budgets:{...budgets},tiles};
   if(raw.schemaVersion<3){s.money*=LEGACY_BC_FACTOR;s.loanBalance*=LEGACY_BC_FACTOR;s.world=createTerrain(SIZE,{flat:true});s.currency='BC';s.currencyMigration={from:raw.schemaVersion,factor:LEGACY_BC_FACTOR};analyze(s);initializeFoundation(s,SIZE,random);}
   else {loadFoundation(s,raw,SIZE);if(s.world.geography&&s.tiles.some((t,i)=>(t.terrain==='water')!==!!s.world.geography.waterMask[i]))throw new Error('Mặt nước không khớp nguồn địa lý của bản lưu.');initializeWorldCompatibility(s);analyze(s);}
+  const instantHomes=materializePendingBuildings(s),instantParks=updateConstruction(s,true);
+  if(instantHomes||instantParks){if(instantParks)s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);}
   return s;
 }
 
@@ -174,7 +177,7 @@ export function executeCommand(s,command){
     case 'place':result=place(s,p.x,p.y,p.kind,p.designId);break;
     case 'weather':result=setWeatherMode(s,p.mode);if(result.ok)analyze(s);break;
     case 'upgrade-building':result=Number.isInteger(p.tile)&&p.tile>=0&&p.tile<s.tiles.length?startUpgrade(s,p.tile,p.payer):{ok:false,message:'Ô đất không hợp lệ.'};break;
-    case 'construct':{const check=inside(p.x,p.y)?geographyBuildRule(s,index(p.x,p.y),p.kind):{ok:false,message:'Ô đất nằm ngoài bản đồ.'};if(!check.ok){result=check;break;}result=CATALOG[p.kind]?.group==='parks'&&inside(p.x,p.y)&&!s.tiles[index(p.x,p.y)].kind&&!s.tiles[index(p.x,p.y)].zone&&s.tiles[index(p.x,p.y)].terrain!=='water'?startConstruction(s,index(p.x,p.y),p.kind,Math.ceil(CATALOG[p.kind].cost*check.factor),900/DAY_SECONDS):{ok:false,message:'Chỉ công viên trên đất trống hỗ trợ thi công ở chặng nền.'};break;}
+    case 'construct':{const check=inside(p.x,p.y)?geographyBuildRule(s,index(p.x,p.y),p.kind):{ok:false,message:'Ô đất nằm ngoài bản đồ.'};if(!check.ok){result=check;break;}result=CATALOG[p.kind]?.group==='parks'&&inside(p.x,p.y)&&!s.tiles[index(p.x,p.y)].kind&&!s.tiles[index(p.x,p.y)].zone&&s.tiles[index(p.x,p.y)].terrain!=='water'?startConstruction(s,index(p.x,p.y),p.kind,Math.ceil(CATALOG[p.kind].cost*check.factor),900/DAY_SECONDS,true):{ok:false,message:'Chọn công viên trên ô đất trống.'};if(result.ok){s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);updateProgression(s,true);}break;}
     case 'cancel-construction':result=cancelConstruction(s,p.id);break;
     case 'rename':result=typeof p.name==='string'&&p.name.trim().length>=1&&p.name.trim().length<=36?(s.name=p.name.trim(),{ok:true}):{ok:false,message:'Tên thành phố cần 1–36 ký tự.'};break;
     case 'tax':result=ZONES.includes(p.kind)&&Number.isInteger(p.value)&&p.value>=0&&p.value<=20?(s.taxes[p.kind]=p.value,analyze(s),{ok:true}):{ok:false,message:'Thuế không hợp lệ.'};break;

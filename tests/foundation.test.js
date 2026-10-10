@@ -1,3 +1,4 @@
+import {startConstruction} from '../src/game/systems/construction.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -45,15 +46,14 @@ test('command replay is idempotent, conflicting payload/sequence cannot spend or
   const restored=validateSave(saved);assert.ok(executeCommand(restored,request).ok);assert.deepEqual(serialize(restored),saved);
   assert.equal(restored.money-restored.loanBalance,cash);assert.ok(Math.abs(cashBalance(restored)-restored.money)<.001);
 });
-test('construction load preserves escrow/progress, completion and cancellation pay once',()=>{
-  const s=createCity(),at=index(13,20);const cash=s.money;
-  assert.ok(command(s,'construct',{x:13,y:20,kind:'park'}).ok);assert.equal(s.tiles[at].kind,null);
-  const contract=s.contracts[0],reserved=s.money;assert.equal(cash-reserved,contract.escrow);
-  until(s,450);assert.ok(contract.progress>0&&contract.progress<1);const restored=validateSave(serialize(s));assert.deepEqual(restored.contracts,s.contracts);
-  assert.ok(command(restored,'cancel-construction',{id:contract.id}).ok);const after=restored.money;assert.equal(command(restored,'cancel-construction',{id:contract.id}).ok,false);assert.equal(restored.money,after);
-  // Continue a second branch of the same snapshot to completion.
-  const complete=validateSave(serialize(s));until(complete,900);assert.equal(complete.tiles[at].kind,'park');assert.equal(complete.contracts[0].status,'completed');assert.equal(complete.contracts[0].escrow,0);
-  const load=validateSave(serialize(complete));assert.deepEqual(serialize(load),serialize(complete));assert.equal(load.contracts[0].paid,contract.committed);
+test('park commands complete immediately; old funded contracts load without a second payment',()=>{
+ const s=createCity(),at=index(13,20),cash=s.money;
+ assert.ok(command(s,'construct',{x:13,y:20,kind:'park'}).ok);assert.equal(s.tiles[at].kind,'park');
+ const contract=s.contracts[0];assert.equal(contract.status,'completed');assert.equal(contract.progress,1);assert.equal(contract.escrow,0);assert.equal(cash-s.money,contract.paid);
+ const loaded=validateSave(serialize(s));assert.deepEqual(serialize(loaded),serialize(s));const after=loaded.money;
+ assert.equal(command(loaded,'cancel-construction',{id:contract.id}).ok,false);assert.equal(loaded.money,after);
+ const old=createCity();assert.ok(startConstruction(old,at,'park',150000,1).ok);const reserved=old.money;until(old,450);
+ const restored=validateSave(serialize(old));assert.equal(restored.tiles[at].kind,'park');assert.equal(restored.contracts[0].status,'completed');assert.equal(restored.money,reserved);assert.deepEqual(serialize(validateSave(serialize(restored))),serialize(restored));
 });
 test('calendar uses real months and Vietnamese đồng display uses one stable conversion',()=>{
   assert.equal(calendar(0).daysInMonth,31);assert.equal(calendar(31*86400).daysInMonth,28);assert.equal(calendar(59*86400).daysInMonth,31);

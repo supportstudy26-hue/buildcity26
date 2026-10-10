@@ -10,8 +10,8 @@ test('a disconnected road network disables downstream utilities and reconnecting
 test('insufficient funds leave money and map unchanged',()=>{
   const s=createCity();s.money=0;const before=serialize(s);assert.equal(place(s,6,10,'clinic').ok,false);assert.deepEqual(serialize(s),before);
 });
-test('zones do not build without water, then grow when supply is restored',()=>{
-  const s=createCity();place(s,9,17,'bulldoze');place(s,8,19,'residential');for(let i=0;i<80;i++)tick(s);assert.equal(s.tiles[index(8,19)].kind,null);
+test('houses appear immediately without water, then operate when supply is restored',()=>{
+  const s=createCity();place(s,9,17,'bulldoze');place(s,8,19,'residential');for(let i=0;i<80;i++)tick(s);assert.equal(s.tiles[index(8,19)].kind,'residential');assert.equal(s.tiles[index(8,19)].active,false);assert.equal(s.tiles[index(8,19)].residents,0);
   assert.ok(place(s,9,17,'water').ok);for(let i=0;i<1140;i++)stepSimulation(s);assert.equal(s.tiles[index(8,19)].kind,'residential');assert.ok(s.tiles[index(8,19)].residents>0);
 });
 test('traffic routes use contiguous connected roads',()=>{

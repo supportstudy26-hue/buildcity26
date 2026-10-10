@@ -10,19 +10,24 @@ export function developmentConditions(s,t){return [
  {name:'Nhu cầu phát triển',ok:(s.metrics?.demand[t.zone]||0)>0},
  {name:'Nguồn vốn chủ đầu tư',ok:!!t.development?.funded||(s.privateInvestment?.available??20000000)>=privateBuildPrice(t.zone,t.blueprint)}
  ];}
+// Keep the persisted contract format for existing saves; new placement settles it immediately.
+export function materializeBuilding(s,i){
+ const t=s.tiles[i];if(!t?.zone||t.kind)return {ok:false,message:'Ô đất không phải nhà đang chờ.'};
+ if(!t.development){const plan=privatePlan(t.zone,t.blueprint),price=privateBuildPrice(t.zone,t.blueprint);
+  if((s.privateInvestment?.available??20000000)<price)return {ok:false,message:'Chủ đầu tư không đủ vốn cho mẫu nhà này.'};
+  s.privateInvestment??={rule:DEVELOPMENT_RULE,opening:20000000,available:20000000,projects:[]};
+  const id=entityId(s,'investor');s.privateInvestment.available-=price;
+  t.development={version:1,rule:DEVELOPMENT_RULE,ownerId:id,designId:plan.designId,basePrice:price,funded:true,work:900,required:900,arrivals:0};
+  s.privateInvestment.projects.push({id,tile:i,price,seconds:s.clock.seconds});emit(s,'private-investment',id,{tile:i,amount:price});
+ }
+ t.development.work=t.development.required;t.kind=t.zone;t.level=1;t.assetId=entityId(s,'asset');s.graphVersion++;
+ emit(s,'private-building-completed',t.assetId,{tile:i,owner:t.development.ownerId,amount:t.development.basePrice});return {ok:true};
+}
+export function materializePendingBuildings(s){let changed=false;for(let i=0;i<s.tiles.length;i++)if(s.tiles[i].zone&&!s.tiles[i].kind&&materializeBuilding(s,i).ok)changed=true;return changed;}
 export function updateDevelopment(s){
  if(s._developmentGraph!==s.graphVersion){s._developmentQueue=s.tiles.flatMap((t,i)=>t.zone&&!t.kind?[i]:[]);s._developmentHomes=s.tiles.flatMap((t,i)=>t.kind==='residential'&&t.development?[i]:[]);s._developmentGraph=s.graphVersion;}
  let changed=false;
- for(const i of s._developmentQueue||[]){const t=s.tiles[i];if(t.kind||!t.zone)continue;
-  if(!developmentConditions(s,t).every(c=>c.ok))continue;
-  if(!t.development){const plan=privatePlan(t.zone,t.blueprint);s.privateInvestment??={rule:DEVELOPMENT_RULE,opening:20000000,available:20000000,projects:[]};
-   const price=privateBuildPrice(t.zone,t.blueprint),id=entityId(s,'investor');s.privateInvestment.available-=price;
-   t.development={version:1,rule:DEVELOPMENT_RULE,ownerId:id,designId:plan.designId,basePrice:price,funded:true,work:0,required:900,arrivals:0};
-   s.privateInvestment.projects.push({id,tile:i,price,seconds:s.clock.seconds});emit(s,'private-investment',id,{tile:i,amount:price});
-  }
-  const d=t.development;d.work=Math.min(d.required,d.work+STEP_SECONDS);
-  if(d.work===d.required){t.kind=t.zone;t.level=1;t.assetId=entityId(s,'asset');s.graphVersion++;emit(s,'private-building-completed',t.assetId,{tile:i,owner:d.ownerId,amount:d.basePrice});changed=true;}
- }
+ for(const i of s._developmentQueue||[])if(materializeBuilding(s,i).ok)changed=true;
  // Early casual arrivals follow the same clock, not a day-long random tick.
  for(const i of s._developmentHomes||[]){const t=s.tiles[i];if(t.kind==='residential'&&t.development?.version===1&&t.active&&t.happiness>=48&&t.residents<residentCapacity(t)){
   t.development.arrivals+=STEP_SECONDS;if(t.development.arrivals>=60){t.development.arrivals-=60;t.residents++;changed=true;}

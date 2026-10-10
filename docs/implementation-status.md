@@ -1,4 +1,11 @@
-## 10/10 — Báo rõ quy hoạch đang chờ xây
+## 10/10 — Đặt công trình xuất hiện ngay (yêu cầu mới nhất)
+
+- Thay chế độ chờ 15 phút game: đặt mẫu nhà/cửa hàng/xưởng là materialize mesh ngay trong lệnh place, kể cả tạm dừng hoặc chưa có tiện ích. Công viên qua lệnh construct cũng hoàn thành ngay, giữ hợp đồng và nhiệm vụ thật. Đường, điện, nước và dịch vụ vẫn quyết định hoạt động/cư dân; không tạo dân cư giả hoặc miễn chi phí.
+- Bản lưu cũ được kiểm tra trước, sau đó các ô chờ và công viên đang thi công được hoàn thành khi mở. Hợp đồng đã giữ vốn không thu lại; tiền, đồng hồ, người và lựa chọn kiến trúc giữ nguyên. Dùng cấu trúc save hiện có, không đổi schema SQL/RLS. Các nâng cấp cấp công trình vẫn theo điều kiện và thời gian nâng cấp hiện có.
+- Browser localhost: game đang dừng tại 00:48:39; đặt biệt thự chưa nối đường bằng lệnh game tăng sức chứa 24→36 ngay. Sau đó chọn Nhà mái ngói và bấm bản đồ bằng chuột, menu tự đóng, mô hình xuất hiện ngay, sức chứa 36→44; ngân sách chỉ trừ 800.000 phí cấp phép mỗi ô, giá xây giữ trong sổ tư nhân. Ảnh instant-building-placement-20261010.png.
+- Giữ cache danh sách công trình để không quét toàn bản đồ mỗi bước mô phỏng. Không thêm geometry/texture hoặc thay giới hạn 50 người+xe. Kiểm tra cuối: toàn suite 158/158 PASS, không skip, 95,82 giây; build PASS 16,44 giây; diff check sạch. Reload browser giữ 2 dân, 44 chỗ ở, 9.902.600 BC và clock 2.919 giây đang dừng, không console error. Chưa xác nhận deployment chặng đặt ngay.
+
+## 10/10 — Báo rõ quy hoạch đang chờ xây (chặng trước, đã thay bằng đặt ngay ở trên)
 
 - Giữ cơ chế xây thật: tư nhân xây mẫu 3D đã chọn khi đủ đường nối cổng, điện, nước, nước thải, nhu cầu và vốn; 900 giây game thi công (3 phút thực ở 1×). Không đổi giá, tài khoản hay schema bản lưu.
 - Hướng dẫn khi chọn mẫu phân khu ghi rõ tự xây; hover ô đã quy hoạch và inspector báo điều kiện thiếu, tiến độ và thời gian còn lại. Đưa điều kiện và nút chọn tiện ích lên đầu inspector; đặt quy hoạch bằng tay có thông báo lý do đang chờ.
