@@ -1,3 +1,5 @@
+Production 10/10/2026: code `6dde065` đã push main; Vercel `7HDdYVRnJXUBUZnuqALqvUYXYvDY` Ready/domain buildcity26.vercel.app đã kiểm thật. Bản chốt giới hạn chung 50 người+xe, low/mobile30; benchmark 5.000 dân xác nhận50/30. Thị trường production đọc Supabase thành công; migrations finance/CAS đã áp dụng, không cần thêm key.
+
 # Bàn giao Build City 26
 
 ## Mục tiêu đang tiếp tục
