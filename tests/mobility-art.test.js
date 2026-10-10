@@ -46,7 +46,7 @@ test('controller waits at red and preserves following distance independently of 
  const a={id:'a',state:'in-vehicle',position:{x:20,y:20,z:0},journey:j},b={id:'b',state:'in-vehicle',position:{x:25,y:20,z:0},journey:structuredClone(j)};
  s.citizens=[a,b];assert.equal(roadControllers(s)(a).speed,0);s.citizens.reverse();assert.equal(roadControllers(s)(a).speed,0);
  const parked={id:'bus',kind:'bus',busPhase:'stop',state:'parked',position:{x:30,y:20,z:0},visualYaw:Math.PI/2};s.vehicles=[parked];s.citizens=[a];assert.equal(roadControllers(s)(a).speed,0);s.vehicles=[];
- const intersection=18*64+11;a.position={x:224,y:360,z:0};a.journey={...j,path:[{x:224,y:345,z:0},{x:224,y:370,z:0,road:intersection}]};s.clock.seconds=30;s.citizens=[a];assert.ok(roadControllers(s)(a).reason.includes('đèn'));assert.equal(roadControllers(s)(a).speed,5);
+ const intersection=18*64+11;a.position={x:224,y:360,z:0};a.journey={...j,path:[{x:224,y:345,z:0},{x:224,y:370,z:0,road:intersection}]};s.clock.seconds=30;s.citizens=[a];assert.ok(roadControllers(s)(a).reason.includes('đèn'));assert.equal(roadControllers(s)(a).speed,3); // stop 7 m before the centre, outside the 12 m junction
 });
 test('new appearance IDs persist through save; unknown IDs cannot replace a city',()=>{
  const s=createCity();assert.ok(s.citizens.every(c=>c.artId===citizenArtId(c)));assert.ok(s.vehicles.every(v=>v.artId===vehicleArtId(v)));

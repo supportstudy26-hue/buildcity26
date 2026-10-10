@@ -1,0 +1,20 @@
+{
+  "created": "2026-10-10",
+  "catalogueId": "bc26-main-300-v1",
+  "checksPassed": 3825,
+  "missionCount": 300,
+  "stages": 100,
+  "xpRequiredForLevel100": 4230468,
+  "xpFromStages1To99": 4230468,
+  "lifetimeXpAfterAll300": 4356200,
+  "totalMissionMoney": 255510000,
+  "structuralValidation": "passed",
+  "referenceLogicValidation": "passed",
+  "limitations": [
+    "No integration into the actual game repository",
+    "No playtest of prices, population growth or mission difficulty",
+    "No Supabase transaction/RLS or multi-device integration test",
+    "No proof that all prerequisite services exist in the current game",
+    "Simulation fixtures demonstrate progression math, not completion in a real city"
+  ]
+}

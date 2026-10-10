@@ -1,3 +1,4 @@
+import {ROAD_KINDS} from '../../config/road-profiles.js';
 import {validateGeography} from '../geography/data.js';
 import {CELL_METERS} from '../../config/simulation.js';
 // Heightfield vertices are metres; old maps stay flat instead of lifting saved trips.
@@ -27,9 +28,9 @@ export function terrainHeight(world,x,y){
 export function cellHeights(world,tile,size){const x=tile%size,y=Math.floor(tile/size),at=(a,b)=>world?.heights?.[b*(size+1)+a]??0;return [at(x,y),at(x+1,y),at(x,y+1),at(x+1,y+1)];}
 export function surfaceHeight(s,tile,size,kind=s.tiles[tile].kind){
   const t=s.tiles[tile];if(!s.world||s.world.legacyFlat)return 0;
-  if(['road','avenue'].includes(kind)&&t.terrain==='water')return waterHeightAt(s.world,tile)+6;
+  if(ROAD_KINDS.includes(kind)&&t.terrain==='water')return waterHeightAt(s.world,tile)+6;
   const h=cellHeights(s.world,tile,size);
-  return kind?Math.max(...h)+(kind==='road'||kind==='avenue'?.14:.1):terrainHeight(s.world,(tile%size+.5)*CELL_METERS,(Math.floor(tile/size)+.5)*CELL_METERS);
+  return kind?Math.max(...h)+(ROAD_KINDS.includes(kind)?.14:.1):terrainHeight(s.world,(tile%size+.5)*CELL_METERS,(Math.floor(tile/size)+.5)*CELL_METERS);
 }
 export function slopeAt(world,tile,size){const h=cellHeights(world,tile,size);return Math.max(Math.abs(h[1]-h[0]),Math.abs(h[2]-h[0]),Math.abs(h[3]-h[1]),Math.abs(h[3]-h[2]))/CELL_METERS*100;}
 

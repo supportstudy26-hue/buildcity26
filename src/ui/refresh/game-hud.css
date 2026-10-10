@@ -1,0 +1,86 @@
+/* Scoped compatibility skin for working game panels. Auth and landing keep their layouts. */
+#legacyHudBridge{display:none!important}
+#game{--panel:#142330;--line:#32495a;--text:#f0f5fa;--muted:#adc0cd;--mint:#7ad6b0;--orange:#f7c85a;--yellow:#f7c85a;--blue:#6fbdff}
+.bc26-ui .bc26-stat:first-child strong{color:#f7c85a}
+.bc26-ui .bc26-stat:nth-child(2) strong{color:#f7c85a}
+.bc26-ui .bc26-stat:nth-child(3) strong{color:#6fbdff}
+.bc26-ui .bc26-stat:nth-child(4) strong{color:#b4a2ff}
+.bc26-ui .bc26-speeds{display:flex;gap:3px}.bc26-ui .bc26-speeds button{border:1px solid var(--bc-line);font-size:11px;padding:0 9px}
+.bc26-ui .bc26-speeds button[aria-pressed=true]{border-color:#7ad6b0;background:#28463e}
+.bc26-ui .bc26-brand{min-width:185px}.bc26-ui .bc26-logo{width:44px;height:44px}.bc26-ui .bc26-top-actions{flex-wrap:wrap;max-width:194px}
+.bc26-ui .bc26-statusbar{bottom:116px;right:88px;max-width:calc(100% - 120px);flex-wrap:wrap}
+.bc26-ui .bc26-time-rate{white-space:nowrap}
+.bc26-ui .bc26-tip{bottom:107px;left:20px;transform:none;max-width:calc(100% - 420px);background:#142330;color:#adc0cd;border:1px solid #32495a}
+.bc26-ui .bc26-card .building-thumb{width:90px;height:84px;float:right;margin:0 0 8px 8px;background:#253e47;border-radius:10px}
+.bc26-ui .bc26-card .building-thumb img{width:100%;height:100%;object-fit:contain}
+.bc26-ui .bc26-card{display:flow-root}
+.bc26-ui .bc26-drawer #detailBody{max-width:100%;min-width:0}
+.bc26-ui .bc26-drawer #detailBody .building-thumb{width:100%;height:130px;background:#203747;border-radius:12px;margin-bottom:12px}
+.bc26-ui .bc26-drawer #detailBody .building-thumb img{width:100%;height:100%;object-fit:contain}
+.bc26-ui .bc26-drawer .inspect-icon{display:none}
+.bc26-ui .bc26-drawer :is(.news-title,h3){color:#f0f5fa;margin-block:12px;font-size:16px}
+.bc26-ui .bc26-drawer :is(.detail-list>div,.upgrade-details,.development-details){border-color:#32495a;color:#f0f5fa}
+.bc26-ui .bc26-drawer .detail-list>div span{color:#adc0cd}
+.bc26-ui .bc26-drawer .detail-list>div{display:flex;gap:12px;justify-content:space-between;padding:9px 0}
+.bc26-ui .bc26-drawer .detail-list>div b{text-align:right;max-width:60%}
+.bc26-ui .bc26-drawer :is(.news-text,p,small){color:#adc0cd}
+.bc26-ui .bc26-drawer .action{min-height:44px;border:1px solid #426577;border-radius:10px;color:#f0f5fa;background:#243c4b;margin-top:8px;padding:10px}
+.bc26-ui .bc26-drawer .action.primary{color:#142330;background:#7ad6b0}
+.bc26-ui .bc26-drawer .good{color:#7ad6b0}.bc26-ui .bc26-drawer .warn{color:#ffadb0}
+#game :is(.minimap,.floating){background:#142330;color:#f0f5fa;border-color:#32495a}
+#game .minimap{bottom:115px;left:20px;width:158px;padding:9px;border-radius:14px}
+#game .minimap canvas{width:138px;height:80px;display:block}#game .minimap span{color:#adc0cd;font-size:10px}
+#game .map-controls{right:20px;bottom:116px;display:flex;flex-direction:column;gap:4px;width:52px;z-index:21}
+#game .map-controls .map-btn{width:48px;height:44px;min-height:44px;background:#142330;color:#f0f5fa;border-color:#32495a;border-radius:10px;font-size:19px}
+#game .map-controls :is(span,#layersBtn){display:none!important}
+#game .floating{right:80px;bottom:130px;z-index:25;max-width:calc(100% - 100px);max-height:calc(100% - 240px);overflow:auto}
+#game .floating .layer-option{min-height:44px;color:#f0f5fa}
+#game .compass{display:none}
+#game .map-source-info{background:#1c3040;color:#adc0cd;border-color:#32495a}
+body[data-screen=game] dialog:not(.auth-layout):not(.account-dialog){--panel:#142330;--line:#32495a;--text:#f0f5fa;--muted:#adc0cd;--mint:#7ad6b0;--orange:#f7c85a;--yellow:#f7c85a;--blue:#6fbdff;background:#142330;color:#f0f5fa;border-color:#32495a;box-shadow:0 20px 65px #09152370}
+body[data-screen=game] dialog:not(.auth-layout):not(.account-dialog) :is(.action,.hub-tile,.hub-tabs,.hub-summary,.budget-tabs,.mission-card,.resident-row,.field input,.field select,.mobility-card){background:#1c3040;border-color:#32495a;color:#f0f5fa}
+body[data-screen=game] dialog:not(.auth-layout):not(.account-dialog) :is(.hub-tile strong,.mission-card strong,h2,h3,.budget-table b){color:#f0f5fa}
+body[data-screen=game] dialog:not(.auth-layout):not(.account-dialog) :is(.hub-tile small,.hub-summary small,.hub-summary .badge,.budget-table span,.mission-card small){color:#adc0cd}
+body[data-screen=game] dialog:not(.auth-layout):not(.account-dialog) .action.primary{background:#7ad6b0;color:#103329}
+body[data-screen=game] dialog:not(.auth-layout):not(.account-dialog) .warn{color:#ffadb0}
+body[data-screen=game] dialog:not(.auth-layout):not(.account-dialog) .good{color:#7ad6b0}
+body[data-photo=true] #game :is(.bc26-ui,.map-controls,.minimap,.floating){display:none!important}
+@media(max-width:1150px){.bc26-ui .bc26-top-actions{max-width:100px}.bc26-ui .bc26-brand{min-width:150px}.bc26-ui .bc26-stat strong{font-size:15px}.bc26-ui .bc26-side{top:135px}.bc26-ui .bc26-right-tools{top:135px}}
+@media(max-width:860px){.bc26-ui .bc26-top-actions{flex-wrap:nowrap;max-width:none;height:64px}.bc26-ui .bc26-brand{min-width:0}.bc26-ui .bc26-brand strong{max-width:130px}.bc26-ui .bc26-side{top:175px}.bc26-ui .bc26-right-tools{top:175px}.bc26-ui .bc26-statusbar{right:75px;bottom:115px;max-width:calc(100% - 95px)}.bc26-ui .bc26-tip{max-width:calc(100% - 100px);bottom:89px;left:12px}.bc26-ui .bc26-weather{display:none}#game .map-controls{right:12px;bottom:110px}#game .minimap{left:12px;bottom:148px;width:112px}#game .minimap canvas{width:92px;height:60px}}
+@media(max-width:560px){.bc26-ui .bc26-top-actions .bc26-icon-btn{width:44px}.bc26-ui .bc26-brand strong{max-width:100px}.bc26-ui .bc26-logo{display:none}.bc26-ui .bc26-side{top:211px;width:calc(100% - 89px)}.bc26-ui .bc26-mission :is([data-mission-desc],.bc26-progress,.bc26-rewards,[data-mission-progress],[data-mission-pct]){display:none}.bc26-ui .bc26-mission h3{margin-block:6px}.bc26-ui .bc26-mission-open{margin-top:2px}.bc26-ui .bc26-right-tools{top:211px;max-height:calc(100% - 385px)}.bc26-ui .bc26-statusbar{font-size:10px;gap:3px;bottom:112px;padding:4px 8px}.bc26-ui .bc26-time-rate{flex-basis:100%;text-align:center}.bc26-ui .bc26-clock{font-size:10px}.bc26-ui .bc26-speeds button{padding:0 6px}.bc26-ui .bc26-tip{bottom:83px;font-size:10px}#game .minimap{display:none}.bc26-ui .bc26-toast{top:211px}.bc26-ui .bc26-stat-sub{max-width:128px;overflow:hidden;text-overflow:ellipsis}.bc26-ui .bc26-bottom .bc26-tool{min-width:63px}.bc26-ui .bc26-bottom{width:calc(100% - 24px);max-width:none}.bc26-ui .bc26-backdrop{padding:12px 12px 88px}}
+@media(max-height:500px){.bc26-ui .bc26-side,.bc26-ui .bc26-tip,#game .minimap{display:none}.bc26-ui .bc26-top{top:6px;left:6px;right:6px;flex-wrap:nowrap}.bc26-ui .bc26-stats{order:0;flex-basis:auto;grid-template-columns:1fr 1fr}.bc26-ui .bc26-brand{min-width:140px;flex:0}.bc26-ui .bc26-stat{min-height:38px;padding:3px}.bc26-ui .bc26-stat small,.bc26-ui .bc26-stat-sub{display:none}.bc26-ui .bc26-top-actions{max-width:100px;flex-wrap:wrap;height:auto}.bc26-ui .bc26-top-actions .bc26-icon-btn{height:38px}.bc26-ui .bc26-right-tools{top:105px;max-height:calc(100% - 190px)}.bc26-ui .bc26-statusbar{bottom:95px}.bc26-ui .bc26-backdrop{padding:8px 12px 88px}.bc26-ui .bc26-bottom{bottom:6px}}
+
+/* These explicit scoped rules override earlier palette compatibility styles. */
+#game .map-controls .map-btn{background:#142330!important;color:#f0f5fa!important;border-color:#32495a!important}
+#game .bc26-top-actions{flex-wrap:nowrap;max-width:none}
+.bc26-ui .bc26-tip:empty{display:none}
+@media(max-height:500px){#game .bc26-top-actions{flex-wrap:wrap;max-width:100px}}
+
+#game .map-controls{z-index:12}
+/* A short landscape viewport must remain the actual viewport, not a 480px canvas. */
+#game{min-height:0}
+@media(max-width:560px){
+ .bc26-ui .bc26-side,.bc26-ui .bc26-right-tools{top:232px}
+ .bc26-ui .bc26-time-rate{display:none}
+ .bc26-ui .bc26-clock{flex-basis:100%;font-size:9px}
+ .bc26-ui .bc26-statusbar{justify-content:flex-start;min-height:64px}
+ .bc26-ui .bc26-tip{display:none}
+}
+@media(max-height:500px){
+ #game .bc26-top{flex-wrap:nowrap}
+ #game .bc26-stats{order:0;flex-basis:0;grid-template-columns:repeat(4,minmax(0,1fr));padding:4px;gap:0}
+ #game .bc26-stat{min-width:0;min-height:40px;gap:4px}
+ #game .bc26-stat strong{font-size:13px}
+ #game .bc26-stat .bc26-stat-icon{width:20px;height:30px}
+ #game .bc26-brand{min-width:130px}
+ #game .bc26-statusbar{bottom:100px}
+}
+@media(max-height:500px) and (min-width:700px){
+ #game .bc26-top{height:96px;align-items:center}
+ #game .bc26-brand{height:64px;padding:6px;overflow:hidden}
+ #game .bc26-stats{height:64px;align-items:center;overflow:hidden}
+ #game .bc26-stat{height:44px;overflow:hidden}
+ #game .bc26-stat strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ #game .bc26-top-actions{display:grid;grid-template-columns:44px 44px;height:88px;padding:0;gap:0;flex-shrink:0}
+ #game .bc26-top-actions .bc26-icon-btn{min-height:44px;height:44px}
+}

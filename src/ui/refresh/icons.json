@@ -1,0 +1,290 @@
+[
+  {
+    "id": "money",
+    "label": "Ngân quỹ",
+    "color": "#f7c85a",
+    "file": "assets/icons/money.svg"
+  },
+  {
+    "id": "income",
+    "label": "Thu nhập",
+    "color": "#65d4aa",
+    "file": "assets/icons/income.svg"
+  },
+  {
+    "id": "expense",
+    "label": "Chi phí",
+    "color": "#ff947a",
+    "file": "assets/icons/expense.svg"
+  },
+  {
+    "id": "electricity",
+    "label": "Điện",
+    "color": "#f7c85a",
+    "file": "assets/icons/electricity.svg"
+  },
+  {
+    "id": "water",
+    "label": "Nước",
+    "color": "#6fbdff",
+    "file": "assets/icons/water.svg"
+  },
+  {
+    "id": "population",
+    "label": "Dân số",
+    "color": "#b4a2ff",
+    "file": "assets/icons/population.svg"
+  },
+  {
+    "id": "happiness",
+    "label": "Hài lòng",
+    "color": "#75d8ac",
+    "file": "assets/icons/happiness.svg"
+  },
+  {
+    "id": "level",
+    "label": "Cấp thành phố",
+    "color": "#b4a2ff",
+    "file": "assets/icons/level.svg"
+  },
+  {
+    "id": "road",
+    "label": "Đường bộ",
+    "color": "#b0c9d4",
+    "file": "assets/icons/road.svg"
+  },
+  {
+    "id": "residential",
+    "label": "Nhà ở",
+    "color": "#77d4ae",
+    "file": "assets/icons/residential.svg"
+  },
+  {
+    "id": "commercial",
+    "label": "Thương mại",
+    "color": "#73bcff",
+    "file": "assets/icons/commercial.svg"
+  },
+  {
+    "id": "industrial",
+    "label": "Công nghiệp",
+    "color": "#efbb76",
+    "file": "assets/icons/industrial.svg"
+  },
+  {
+    "id": "office",
+    "label": "Văn phòng",
+    "color": "#aaa2ff",
+    "file": "assets/icons/office.svg"
+  },
+  {
+    "id": "utilities",
+    "label": "Hạ tầng",
+    "color": "#77cbd6",
+    "file": "assets/icons/utilities.svg"
+  },
+  {
+    "id": "health",
+    "label": "Y tế",
+    "color": "#ff8d9e",
+    "file": "assets/icons/health.svg"
+  },
+  {
+    "id": "education",
+    "label": "Giáo dục",
+    "color": "#7abfff",
+    "file": "assets/icons/education.svg"
+  },
+  {
+    "id": "fire",
+    "label": "Cứu hỏa",
+    "color": "#ff9c72",
+    "file": "assets/icons/fire.svg"
+  },
+  {
+    "id": "police",
+    "label": "An ninh",
+    "color": "#88b6ff",
+    "file": "assets/icons/police.svg"
+  },
+  {
+    "id": "transport",
+    "label": "Giao thông",
+    "color": "#93b5ff",
+    "file": "assets/icons/transport.svg"
+  },
+  {
+    "id": "park",
+    "label": "Công viên",
+    "color": "#7bd18c",
+    "file": "assets/icons/park.svg"
+  },
+  {
+    "id": "waste",
+    "label": "Rác thải",
+    "color": "#93d0ac",
+    "file": "assets/icons/waste.svg"
+  },
+  {
+    "id": "sewage",
+    "label": "Nước thải",
+    "color": "#71bacd",
+    "file": "assets/icons/sewage.svg"
+  },
+  {
+    "id": "tourism",
+    "label": "Du lịch",
+    "color": "#eab585",
+    "file": "assets/icons/tourism.svg"
+  },
+  {
+    "id": "cargo",
+    "label": "Hàng hóa",
+    "color": "#deb77c",
+    "file": "assets/icons/cargo.svg"
+  },
+  {
+    "id": "terrain",
+    "label": "Địa hình",
+    "color": "#b3c6a2",
+    "file": "assets/icons/terrain.svg"
+  },
+  {
+    "id": "map",
+    "label": "Bản đồ",
+    "color": "#7bd0c4",
+    "file": "assets/icons/map.svg"
+  },
+  {
+    "id": "mission",
+    "label": "Nhiệm vụ",
+    "color": "#e9c168",
+    "file": "assets/icons/mission.svg"
+  },
+  {
+    "id": "ranking",
+    "label": "Bảng xếp hạng",
+    "color": "#e9bd58",
+    "file": "assets/icons/ranking.svg"
+  },
+  {
+    "id": "budget",
+    "label": "Ngân sách",
+    "color": "#e4c277",
+    "file": "assets/icons/budget.svg"
+  },
+  {
+    "id": "save",
+    "label": "Lưu thành phố",
+    "color": "#8bbcff",
+    "file": "assets/icons/save.svg"
+  },
+  {
+    "id": "settings",
+    "label": "Cài đặt",
+    "color": "#b6c6dc",
+    "file": "assets/icons/settings.svg"
+  },
+  {
+    "id": "search",
+    "label": "Tìm công trình",
+    "color": "#aec1d5",
+    "file": "assets/icons/search.svg"
+  },
+  {
+    "id": "alert",
+    "label": "Thông báo",
+    "color": "#f7bc70",
+    "file": "assets/icons/alert.svg"
+  },
+  {
+    "id": "upgrade",
+    "label": "Nâng cấp",
+    "color": "#73d0ab",
+    "file": "assets/icons/upgrade.svg"
+  },
+  {
+    "id": "bulldoze",
+    "label": "Tháo dỡ",
+    "color": "#f19b87",
+    "file": "assets/icons/bulldoze.svg"
+  },
+  {
+    "id": "pause",
+    "label": "Tạm dừng",
+    "color": "#b2c3d4",
+    "file": "assets/icons/pause.svg"
+  },
+  {
+    "id": "play",
+    "label": "Tiếp tục",
+    "color": "#7cd4b0",
+    "file": "assets/icons/play.svg"
+  },
+  {
+    "id": "close",
+    "label": "Đóng",
+    "color": "#b8c4d2",
+    "file": "assets/icons/close.svg"
+  },
+  {
+    "id": "check",
+    "label": "Hoàn thành",
+    "color": "#73d1a4",
+    "file": "assets/icons/check.svg"
+  },
+  {
+    "id": "sun",
+    "label": "Thời tiết",
+    "color": "#f8ce7e",
+    "file": "assets/icons/sun.svg"
+  },
+  {
+    "id": "clock",
+    "label": "Thời gian",
+    "color": "#a8c9e0",
+    "file": "assets/icons/clock.svg"
+  },
+  {
+    "id": "lock",
+    "label": "Chưa mở khóa",
+    "color": "#a9b9cc",
+    "file": "assets/icons/lock.svg"
+  },
+  {
+    "id": "layers",
+    "label": "Lớp dữ liệu",
+    "color": "#93c6df",
+    "file": "assets/icons/layers.svg"
+  },
+  {
+    "id": "undo",
+    "label": "Hoàn tác",
+    "color": "#c1b2ee",
+    "file": "assets/icons/undo.svg"
+  },
+  {
+    "id": "home",
+    "label": "Trang chủ",
+    "color": "#a2cbd6",
+    "file": "assets/icons/home.svg"
+  },
+  {
+    "id": "ship",
+    "label": "Đường thủy",
+    "color": "#84bccc",
+    "file": "assets/icons/ship.svg"
+  },
+  {
+    "id": "airplane",
+    "label": "Hàng không",
+    "color": "#c2bcf5",
+    "file": "assets/icons/airplane.svg"
+  },
+  {
+    "id": "citizen",
+    "label": "Hồ sơ cư dân",
+    "color": "#bbadf0",
+    "file": "assets/icons/citizen.svg"
+  }
+]

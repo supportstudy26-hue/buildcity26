@@ -14,7 +14,8 @@ export function placementQuote(s,i,kind){
     return {ok:true,cost:-salvage,refund:salvage+cancellation,cancellation,factor:rule.factor};
   }
   if(t.terrain==='water'&&!ROADS.includes(kind))return {ok:false,message:'Chỉ có thể xây cầu đường trên sông.'};
-  const upgrading=t.kind==='road'&&kind==='avenue';
+  const upgrading=ROADS.includes(t.kind)&&ROADS.includes(kind)&&t.kind!==kind;
+  if(t.kind===kind)return {ok:false,message:'Ô này đã có cùng loại đường/công trình.'};
   if((t.kind||t.zone)&&!upgrading)return {ok:false,message:'Ô này đã có công trình. Dùng phá dỡ để thay đổi.'};
   const cost=placementPrice(kind,t,rule.factor,CATALOG);
   if(s.money<cost)return {ok:false,cost,shortfall:cost-s.money,upgrading,message:upgrading?'Không đủ ngân sách để nâng cấp.':'Không đủ ngân sách. Kiểm tra thuế và chi phí vận hành.'};

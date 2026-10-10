@@ -1,3 +1,4 @@
+import {landmarkDesign,landmarkParts} from './landmark-parts.js';
 import {facilityDesign,facilityParts} from './facility-designs.js';
 import {artForBuilding} from '../../config/building-art.js';
 import {referenceBuildingParts} from './reference-buildings.js';
@@ -26,16 +27,17 @@ const towers=[
 const walls=['#f0dfc1','#cee2d7','#e5c6ac','#d3e2e7','#e9e8dc','#dfd1b8'];
 const roofs=['#b9694c','#78919a','#bd9970','#667e83'];
 export const ARCHITECTURE_NAMES=Object.freeze([...homes,...shops,...factories,...towers].map(d=>d.name));
-export function designHash(x,y){let n=(Math.imul(x+19,374761393)^Math.imul(y+37,668265263))>>>0;n=Math.imul(n^(n>>>13),1274126177)>>>0;return(n^(n>>>16))>>>0;}
+export {designHash} from './design-variation.js';
+import {designHash} from './design-variation.js';
 export function buildingDesign(t,x,y){
   const hash=designHash(x,y),level=Math.max(1,Number(t.level)||1);
   const list=t.kind==='residential'?(level>=3?towers:homes):t.kind==='commercial'?shops:t.kind==='industrial'?factories:null;
-  if(!list)return facilityDesign(t);
+  if(!list)return landmarkDesign(t)||facilityDesign(t);
   const item=[...homes,...shops,...factories,...towers].find(d=>d.id===(t.development?.designId||t.blueprint))||list[hash%list.length],floors=t.kind==='residential'&&level>=3?Math.min(8,level+1):t.kind==='residential'&&level===2?3:null;
-  return{...item,artId:artForBuilding(t.kind,item.id).id,footprint:[20,20],entrance:[0,0,8.5],height:item.id==='townhouse'?(t.development?level+2:level===1?3:level===2?4:6)*3+2.5:towers.some(d=>d.id===item.id)?Math.max(4,level+1)*3.1+3.5:floors?floors*3.1:item.height,floors,wall:walls[(hash>>>4)%walls.length],roofColor:roofs[(hash>>>9)%roofs.length],accent:['#529d98','#d89159','#7e9db4','#b56a53'][(hash>>>14)%4]};
+  return{...item,artId:artForBuilding(t.kind,item.id).id,footprint:[20,20],entrance:[0,0,8.5],height:item.id==='townhouse'?(t.development?level+2:level===1?3:level===2?4:6)*3+2.5:towers.some(d=>d.id===item.id)?((item.id==='twin-apartment'?8:item.id==='balcony-apartment'?6:4)+Math.max(0,level-1))*3.1+3.5:floors?floors*3.1:item.height,floors,wall:walls[(hash>>>4)%walls.length],roofColor:roofs[(hash>>>9)%roofs.length],accent:['#529d98','#d89159','#7e9db4','#b56a53'][(hash>>>14)%4]};
 }
 export function buildingParts(t,x,y,cx,cz,base,overlay=null,tile=null){
-  const design=buildingDesign(t,x,y);if(!design)return[];if(facilityDesign(t))return facilityParts(t,cx,cz,base,overlay,tile);
+  const design=buildingDesign(t,x,y);if(!design)return[];if(landmarkDesign(t))return landmarkParts(t,cx,cz,base,overlay,tile);if(facilityDesign(t))return facilityParts(t,cx,cz,base,overlay,tile);
   const reference=referenceBuildingParts(design,t,cx,cz,base,overlay,tile);if(reference)return reference;
   const parts=[],{id,width:w,depth:d,height:h,roof,roofColor,accent}=design,color=overlay||design.wall;
   const add=(shape,dx,z,dz,width,height,depth,tint,detail=false,rotation=null)=>parts.push({shape,position:[cx+dx,base+z,cz+dz],scale:[width,height,depth],color:tint,detail,rotation,tile});

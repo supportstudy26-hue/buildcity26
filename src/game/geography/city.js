@@ -1,3 +1,4 @@
+import {ROAD_KINDS} from '../../config/road-profiles.js';
 import {migrateGeographyMetadata} from './save-metadata.js';
 import {createEmptyCity,SIZE,analyze,random} from '../core.js';
 import {initializeFoundation} from '../systems/foundation.js';
@@ -20,7 +21,7 @@ function cellAverage(h,i){const x=i%64,y=Math.floor(i/64);return(h[y*65+x]+h[y*6
 export function geographyBuildRule(s,tile,kind){
   const g=s.world?.geography;if(!g||kind==='bulldoze')return {ok:true,factor:1};
   if(!g.insideProvince[tile])return {ok:false,message:'Ô đất nằm ngoài địa phương được chọn.'};
-  const slope=slopeAt(s.world,tile,SIZE),road=['road','avenue'].includes(kind);
+  const slope=slopeAt(s.world,tile,SIZE),road=ROAD_KINDS.includes(kind);
   if(s.tiles[tile].terrain==='water'&&!road)return {ok:false,message:'Không xây công trình trên biển, hồ hoặc sông. Chưa có công trình hỗ trợ mặt nước.'};
   if(!s.tiles[tile].terrain.startsWith('water')&&Math.min(...cellHeights(s.world,tile,SIZE))<0)return {ok:false,message:'Đất thấp hơn mực biển. Chưa có hệ thống đê/bảo vệ ngập.'};
   if(slope>(road?20:15))return {ok:false,message:`Dốc ${slope.toFixed(1)}% vượt giới hạn ${road?20:15}%. Chọn đất ít dốc hơn; san nền/hầm chưa có.`};

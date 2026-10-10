@@ -1,3 +1,4 @@
+import {ROAD_KINDS,profilePrice} from './road-profiles.js';
 // BC design prices from appendices A/D/F. 1 BC = 1,000 displayed game dong.
 // Starter utilities are deliberately smaller than the full-scale A2 plants.
 export const ECONOMY_VERSION='buildings-a-d-f-20261010';
@@ -30,5 +31,5 @@ export const UPGRADE_COST_FACTORS=[0,0,.25,.45,.7,1];
 export function capacityFactor(tile){return tile?.development?.version===1||tile?.upgrade?.version===1?CAPACITY_FACTORS[tile.level]||1:1;}
 export function residentCapacity(tile){return tile.development?.version===1?Math.floor(privatePlan(tile.kind,tile.development.designId).capacity*capacityFactor(tile)/4)*4:tile.upgrade?.version===1?Math.floor(tile.upgrade.baseCapacity*CAPACITY_FACTORS[tile.level]/CAPACITY_FACTORS[tile.upgrade.baseLevel]/4)*4:24*(tile.level||1);}
 export function jobsCapacity(tile){const base=tile.kind==='commercial'?16:28;return tile.development?.version===1?Math.floor(privatePlan(tile.kind,tile.development.designId).capacity*capacityFactor(tile)):tile.upgrade?.version===1?Math.floor(tile.upgrade.baseCapacity*CAPACITY_FACTORS[tile.level]/CAPACITY_FACTORS[tile.upgrade.baseLevel]):base*(tile.level||1);}
-export function roadPrice(kind,water=false){const width=kind==='avenue'?18:12;return water?20*width*350+2*25000:20*width*(kind==='avenue'?65:50)+20*4*25;}
-export function placementPrice(kind,tile,factor=1,catalog){const road=['road','avenue'].includes(kind);let p=road?roadPrice(kind,tile.terrain==='water'):catalog[kind].cost;if(tile.kind==='road'&&kind==='avenue')p-=roadPrice('road',tile.terrain==='water');return Math.ceil(p*factor);}
+export const roadPrice=profilePrice;
+export function placementPrice(kind,tile,factor=1,catalog){const road=ROAD_KINDS.includes(kind);let p=road?roadPrice(kind,tile.terrain==='water'):catalog[kind].cost;if(road&&ROAD_KINDS.includes(tile.kind))p=Math.max(0,p-roadPrice(tile.kind,tile.terrain==='water'));return Math.ceil(p*factor);}

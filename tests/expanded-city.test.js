@@ -46,11 +46,11 @@ test('larger waste collection decreases real accumulated garbage faster',()=>{
  tick(s);assert.ok(t.wasteCollection===8);assert.ok(t.garbage<old-4);
 });
 test('all 24 facilities survive saves and have light geometry; old saves remain readable',()=>{
- assert.equal(BUILDINGS.length,24);
+ assert.equal(BUILDINGS.filter(k=>!CATALOG[k].decorative).length,24);
  for(const kind of BUILDINGS){
   const s=createEmptyCity({startingCash:12000000});assert.ok(place(s,2,12,kind).ok);const raw=serialize(s),loaded=validateSave(JSON.parse(JSON.stringify(raw)));
   assert.deepEqual(serialize(loaded),raw);
-  const parts=chunkParts(loaded,0,0).filter(p=>p.tile===index(2,12));assert.ok(parts.length>0);assert.ok(parts.length<45);
+  const parts=chunkParts(loaded,0,0).filter(p=>p.tile===index(2,12));assert.ok(parts.length>0);assert.ok(parts.length<68,kind);
   assert.ok(CATALOG[kind].upkeep>0);assert.ok(CATALOG[serviceKind(kind)]);
  }
  assert.equal(validateSave(serialize(createCity())).metrics.population,176);

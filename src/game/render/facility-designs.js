@@ -1,3 +1,4 @@
+import {designHash} from './design-variation.js';
 import {BUILDING_ART,artForBuilding} from '../../config/building-art.js';
 const heights={smallPower:8.6,power:8.6,smallWater:6.3,water:17,waterPump:8.3,smallSewage:5.8,sewage:7,treatmentPlant:8,waste:6.3,wasteCenter:9,school:8.1,secondarySchool:11,university:14.3,clinic:8,hospital:19,fire:10.3,fireCenter:14.3,police:11,policeCenter:18,bus:8,busStop:3.6,park:7,plaza:5.8,sportsPark:5.8};
 export function facilityDesign(t){const art=artForBuilding(t.kind);return heights[t.kind]?{id:t.kind,artId:BUILDING_ART[t.kind],name:art.nameVi,height:heights[t.kind]+(t.upgrade?(t.level-1)*3.5:0),width:18,depth:18,entrance:[0,0,8.5],footprint:[20,20]}:null;}
@@ -5,17 +6,23 @@ export function facilityDesign(t){const art=artForBuilding(t.kind);return height
 // no baked vehicles/occupancy, no change to service capacity or saved state.
 export function facilityParts(t,cx,cz,base,overlay=null,tile=null){
  const design=facilityDesign(t);if(!design)return[];
- const parts=[],cream=overlay||'#e7dfc9',teal=overlay||'#377f85',roof='#ab6246',steel='#849599',glass='#76b0b4',green='#73966c',pave='#c7c5b4';
- const add=(shape,x,y,z,w,h,d,color,detail=false,rotation=null)=>parts.push({shape,position:[cx+x,base+y,cz+z],scale:[w,h,d],color:overlay||color,detail,rotation,tile});
+ const parts=[],hash=designHash(Math.floor(cx/20),Math.floor(cz/20)),cream=overlay||['#ece5d2','#e1e4d7','#e5dcc9'][(hash>>>4)%3],teal=overlay||['#377f85','#547f83','#427b72'][(hash>>>9)%3],roof=['#ab6246','#b67852','#9b6148'][(hash>>>12)%3],steel='#849599',glass='#76b0b4',green='#73966c',pave='#c9cec0';
+ const add=(shape,x,y,z,w,h,d,color,detail=false,rotation=null)=>parts.push({shape,position:[cx+x,base+y,cz+z],scale:[w,h,d],color:overlay||color,detail,rotation,material:shape==='window'?'glass':shape==='gable'?'tile':color===steel?'metal':color===green?'leaf':'concrete',tile});
  const box=(x,y,z,w,h,d,color=cream,detail=false)=>add('box',x,y,z,w,h,d,color,detail);
  const cyl=(x,y,z,w,h,color=steel,detail=false)=>add('cylinder',x,y,z,w,h,w,color,detail);
  const cap=(x,y,z,w,d,color=roof)=>add('gable',x,y+1,z,w,2,d,color);
- const hall=(x,z,w,d,h,pitched=true)=>{box(x,h/2+.3,z,w,h,d);if(pitched)cap(x,h+.3,z,w+.5,d+.5);else box(x,h+.5,z,w+.4,.4,d+.4,teal);for(let f=0;f<Math.floor(h/3);f++){add('window',x,2.2+f*3,z+d/2+.06,w*.7,1.3,.1,glass,true);add('window',x+w/2+.06,2.2+f*3,z,.1,1.3,d*.65,glass,true);}};
+ const hall=(x,z,w,d,h,pitched=true)=>{box(x,h/2+.3,z,w,h,d);if(pitched)cap(x,h+.3,z,w+.5,d+.5);else box(x,h+.5,z,w+.4,.4,d+.4,teal);if(['school','clinic','fire','smallWater','waterPump'].includes(t.kind)){box(x,Math.min(2.7,h*.65)/2+.3,z+d/2+.18,1.3,Math.min(2.7,h*.65),.15,'#426b70');for(let f=0;f<Math.floor(h/3);f++)add('window',x,2.2+f*3,z-d/2-.08,w*.65,1.3,.12,glass,true);}
+ for(let f=0;f<Math.floor(h/3);f++){add('window',x,2.2+f*3,z+d/2+.06,w*.7,1.3,.1,glass,true);add('window',x+w/2+.06,2.2+f*3,z,.1,1.3,d*.65,glass,true);}};
  const tree=(x,z)=>{box(x,1.6,z,.35,3,.35,'#827357',true);add('ico',x,3.8,z,3.2,4,3.2,green);};
  const entry=()=>{box(0,.3,7,3.6,.3,2.6,pave);box(0,.5,6.6,3,.25,1.8,'#e0d5bc',true);};
  const pipe=(x,y,z,w,h,d)=>box(x,y,z,w,h,d,teal);
  const tank=(x,z,size=5,y=.4,height=2)=>{cyl(x,y+height/2,z,size,height,steel);cyl(x,y+height+.07,z,size-.65,.12,'#578f97');box(x,y+height+.25,z,size,.2,.3,cream,true);};
  box(0,.1,0,18,.2,18,pave);
+ if(!['park','plaza','sportsPark'].includes(t.kind)){
+  // One continuous entry slab keeps even the university inside the scene's
+  // existing 44-part budget, including the terrain foundation below it.
+  box(0,.26,8.4,18,.12,1.2,'#e4dfce',false);
+ }
  switch(t.kind){
  case 'smallPower':case 'power':{
   hall(-5,-2,4,7,4);const large=t.kind==='power';

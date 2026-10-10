@@ -1,3 +1,4 @@
+import {LANDMARKS} from '../../config/landmarks.js';
 import {weatherState} from './weather.js';
 import {residentCapacity,jobsCapacity,capacityFactor,MAINTENANCE_FACTORS} from '../../config/building-economy.js';
 import { CATALOG, BUILDINGS, ZONES, serviceKind } from '../../config/catalog.js';
@@ -17,7 +18,7 @@ export function analyzeUtilities(s){
     if(t.kind)upkeep+=(CATALOG[t.kind]?.upkeep||0)*(t.upgrade?MAINTENANCE_FACTORS[t.level]:1)*(s.budgets?.[serviceKind(t.kind)]??100)/100;
     if(t.zone)zones.push(i);
     if(t.kind==='residential'){pop+=t.residents;homes+=residentCapacity(t);}
-    if(t.kind&&!isRoad(t)&&!['power','water','busStop'].includes(serviceKind(t.kind))){powerNeed+=(t.kind==='residential'?t.residents:ZONES.includes(t.kind)?18:8)* (t.kind==='residential'?1:capacityFactor(t));waterNeed+=(t.kind==='residential'?t.residents:ZONES.includes(t.kind)?14:6)*(t.kind==='residential'?1:capacityFactor(t));}
+    if(t.kind&&!isRoad(t)&&!['power','water','busStop'].includes(serviceKind(t.kind))){powerNeed+=(LANDMARKS[t.kind]?LANDMARKS[t.kind].power:t.kind==='residential'?t.residents:ZONES.includes(t.kind)?18:8)* (t.kind==='residential'?1:capacityFactor(t));waterNeed+=(LANDMARKS[t.kind]?LANDMARKS[t.kind].water/WATER_PER_PERSON:t.kind==='residential'?t.residents:ZONES.includes(t.kind)?14:6)*(t.kind==='residential'?1:capacityFactor(t));}
   });
   powerNeed*=weather.powerDemandFactor;waterNeed*=weather.waterDemandFactor;
   const power=Math.round(services.power.reduce((n,i)=>n+CATALOG[s.tiles[i].kind].capacity*capacityFactor(s.tiles[i]),0)*(s.budgets?.power??100)/100), water=Math.round(services.water.reduce((n,i)=>n+CATALOG[s.tiles[i].kind].capacity*capacityFactor(s.tiles[i]),0)*WATER_PER_PERSON*(s.budgets?.water??100)/100);
@@ -31,10 +32,10 @@ export function analyzeUtilities(s){
     return priority(s.tiles[a])-priority(s.tiles[b]);
   });
   for(const i of supplyOrder){const t=s.tiles[i];
-    const p=['power','water','busStop'].includes(serviceKind(t.kind))?0:t.kind==='residential'?t.residents:t.kind?ZONES.includes(t.kind)?18*capacityFactor(t):8*capacityFactor(t):0;
-    const w=['power','water','busStop'].includes(serviceKind(t.kind))?0:t.kind==='residential'?t.residents:t.kind?ZONES.includes(t.kind)?14*capacityFactor(t):6*capacityFactor(t):0;
+    const p=LANDMARKS[t.kind]?LANDMARKS[t.kind].power:isRoad(t)?0:['power','water','busStop'].includes(serviceKind(t.kind))?0:t.kind==='residential'?t.residents:t.kind?ZONES.includes(t.kind)?18*capacityFactor(t):8*capacityFactor(t):0;
+    const w=LANDMARKS[t.kind]?LANDMARKS[t.kind].water/WATER_PER_PERSON:isRoad(t)?0:['power','water','busStop'].includes(serviceKind(t.kind))?0:t.kind==='residential'?t.residents:t.kind?ZONES.includes(t.kind)?14*capacityFactor(t):6*capacityFactor(t):0;
     const powerDemand=p*weather.powerDemandFactor,waterDemand=w*weather.waterDemandFactor;
-    t.power=t.connected&&covered('power',i)&&powerRemaining>=powerDemand;t.water=t.connected&&covered('water',i)&&waterRemaining>=waterDemand;
+    t.power=t.connected&&(isRoad(t)||LANDMARKS[t.kind]&&powerDemand===0||covered('power',i))&&powerRemaining>=powerDemand;t.water=t.connected&&(isRoad(t)||LANDMARKS[t.kind]&&waterDemand===0||covered('water',i))&&waterRemaining>=waterDemand;
     if(t.power)powerRemaining-=powerDemand;if(t.water)waterRemaining-=waterDemand;
     t.active=t.kind==='busStop'?t.connected:t.connected&&t.power&&t.water&&(t.fire||0)<60;
   }
@@ -45,7 +46,7 @@ export function analyzeUtilities(s){
     t.wasteCollection=t.connected?Math.max(0,...services.waste.filter(n=>distance(i,n)<=CATALOG[s.tiles[n].kind].range*Math.sqrt(capacityFactor(s.tiles[n])*(s.budgets?.waste??100)/100)).map(n=>(CATALOG[s.tiles[n].kind].collection||4)*capacityFactor(s.tiles[n]))):0;
     t.sewage=t.connected&&covered('sewage',i)&&sewage>=waterNeed;
     t.pollution=clamp(industrial.reduce((p,n)=>p+Math.max(0,7-distance(i,n))*5,0)+(t.kind==='residential'&&!t.sewage?12:0)+(t.garbage||0)*.18,0,100);
-    t.services=t.connected?BUILDINGS.filter(k=>serviceKind(k)===k).filter(k=>!['power','water','bus','busStop'].includes(k)&&covered(k,i)):[];
+    t.services=t.connected?BUILDINGS.filter(k=>!CATALOG[k].decorative&&serviceKind(k)===k).filter(k=>!['power','water','bus','busStop'].includes(k)&&covered(k,i)):[];
     t.serviceStrengths=Object.fromEntries(t.services.map(kind=>[kind,Math.max(0,...services[kind].filter(n=>distance(i,n)<=CATALOG[s.tiles[n].kind].range*Math.sqrt(capacityFactor(s.tiles[n])*(s.budgets?.[kind]??100)/100)).map(n=>capacityFactor(s.tiles[n])))]));
     if(t.active&&t.kind==='commercial')jobs+=jobsCapacity(t);
     if(t.active&&t.kind==='industrial')jobs+=jobsCapacity(t);

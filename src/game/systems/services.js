@@ -1,11 +1,13 @@
+import {campaign} from './campaign.js';
+import {emit} from './events.js';
 import { clamp } from './world.js';
 import { random } from './rng.js';
 import { residentCapacity } from '../../config/building-economy.js';
 export function updateLegacyServices(s){
-  const m=s.metrics;
-  s.tiles.forEach(t=>{
+  const m=s.metrics,c=campaign(s);c.waste={at:s.clock.seconds,generated:0,collected:0};
+  s.tiles.forEach((t,i)=>{
     const service=kind=>t.connected&&t.services.includes(kind);const strength=kind=>t.serviceStrengths?.[kind]||1;
-    if(t.kind==='residential')t.garbage=clamp((t.garbage||0)+t.residents*.045-(t.connected&&t.services.includes('waste')?(t.wasteCollection||4):0),0,100);
+    if(t.kind==='residential'){const generated=t.residents*.045,available=(t.garbage||0)+generated,collected=t.connected&&t.services.includes('waste')?Math.min(available,t.wasteCollection||4):0;t.garbage=clamp(available-collected,0,100);c.waste.generated+=generated;c.waste.collected+=collected;if(collected>0)emit(s,'waste-collected',`waste-${s.day}-${t.id}`,{tile:i,amount:collected,applied:true});}
     if(['residential','industrial'].includes(t.kind)){
       const risk=(t.kind==='industrial'&&t.pollution>35)||(t.garbage||0)>45;
       t.hazard=clamp((t.hazard||0)+(risk&&!service('fire')?2:-3),0,100);

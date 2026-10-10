@@ -1,3 +1,4 @@
+import {remainingRouteValid} from './road-network.js';
 import {weatherState} from './weather.js';
 import {chooseBusPlan,busDock} from './bus-planning.js';
 import {roadControllers} from './road-controller.js';
@@ -6,13 +7,16 @@ import { DAY_SECONDS, STEP_SECONDS } from '../../config/simulation.js';
 import { position, distanceMeters } from './world.js';
 import { emit } from './events.js';
 export function startJourney(s,c,goal,route,size,allowTransit=true) {
+  const finalGoal=c.busPlan?.destination??goal;
+  if(!c.missionTrip)c.missionTrip={id:`trip-${c.id}-${s.clock.step}`,origin:c.goal,destination:finalGoal,startedAt:s.clock.seconds,purpose:finalGoal===c.home?'home':'work',mode:c.vehicle?'car':'walk'};
   if(allowTransit&&!c.busPlan){const plan=chooseBusPlan(s,c,goal);if(plan){c.busPlan={...plan,tripId:`bus-${c.id}-${s.clock.step}`};goal=plan.board;}}
-  const roads=route(s,c.goal,goal);
+  let mode=c.busPlan?'walk':c.vehicle?'car':'walk';let roads=route(s,c.retryOrigin??c.goal,goal,mode);
+  if(!roads.length&&mode==='car'){mode='walk';roads=route(s,c.retryOrigin??c.goal,goal,mode);}
   if(!roads.length) {c.state='blocked';c.waitReason='Chưa có đường nối nguồn và đích';c.retryGoal=goal;return;}
-  const mode=c.vehicle?'car':'walk';
-  c.journey={id:`trip-${c.id}-${s.clock.step}`,origin:c.goal,destination:goal,mode,speed:mode==='car'?30/3.6:c.walkSpeed,path:mobilityPath(s,c.goal,goal,roads,size,mode,c.position),laneVersion:1,segment:0,distance:0,departedAt:s.clock.seconds,graphVersion:s.graphVersion};
+  c.journey={id:`trip-${c.id}-${s.clock.step}`,origin:c.goal,destination:goal,mode,speed:mode==='car'?50/3.6:c.walkSpeed,path:mobilityPath(s,c.goal,goal,roads,size,mode,c.position),laneVersion:1,segment:0,distance:0,departedAt:s.clock.seconds,graphVersion:s.graphVersion};
   if(c.busPlan?.stage==='walk-to-stop'){const line=s.busLines.find(l=>l.id===c.busPlan.line),dock=line&&busDock(s,line,line.stops.indexOf(goal));if(dock)c.journey.path[c.journey.path.length-1]={...dock.door};}
-  c.goal=goal;c.retryGoal=null;c.state=mode==='car'?'in-vehicle':'walking';c.waitReason='';emit(s,'trip-started',c.id,{destination:goal,mode});
+  if(c.missionTrip&&!c.busPlan)c.missionTrip.mode=mode;
+  c.goal=goal;c.retryGoal=null;c.retryOrigin=null;c.state=mode==='car'?'in-vehicle':'walking';c.waitReason='';emit(s,'trip-started',c.id,{destination:goal,mode});
 }
 export function updateCitizens(s, calendar, route, size) {
   const time=s.clock.seconds%DAY_SECONDS,weekday=calendar.weekday!==0&&calendar.weekday!==6;
@@ -30,7 +34,8 @@ export function updateCitizens(s, calendar, route, size) {
     const j=c.journey;if(!j)continue;
     if(j.graphVersion!==s.graphVersion) {
       // Remain exactly where blocked. Resume the remaining path if it becomes valid.
-      const valid=j.path.slice(j.segment).filter(p=>p.road!=null).every(p=>s.network.connected.has(p.road));
+      const valid=remainingRouteValid(s,j.path.slice(Math.max(0,j.segment-1)),j.mode);
+      if(!valid){const target=c.goal;c.journey=null;c.retryGoal=target;c.retryOrigin=Math.min(s.tiles.length-1,Math.floor(c.position.y/20)*size+Math.floor(c.position.x/20));c.retryVersion=-1;c.state='blocked';c.waitReason='Hướng hoặc loại đường đã đổi; đang tìm hành trình hợp lệ';continue;}
       j.graphVersion=s.graphVersion;c.state=valid?(j.mode==='car'?'in-vehicle':'walking'):'blocked';c.waitReason=valid?'':'Đường trên hành trình đã bị phá hoặc ngắt kết nối';
     }
     if(c.state==='blocked')continue;
@@ -49,7 +54,8 @@ export function updateCitizens(s, calendar, route, size) {
       if(c.busPlan?.stage==='walk-from-stop')c.busPlan=null;
       c.state=c.goal===c.home?'home':'at-work';
       if(c.state==='at-work') c.attendance++;
-      emit(s,'trip-arrived',c.id,{trip:id,destination:c.goal});
+      const trip=c.missionTrip;c.missionTrip=null;
+      emit(s,'trip-arrived',c.id,{trip:trip?.id||id,origin:trip?.origin??j.origin,destination:c.goal,mode:trip?.mode||j.mode,purpose:trip?.purpose||(c.goal===c.home?'home':'work'),duration:s.clock.seconds-(trip?.startedAt??j.departedAt)});
     }
   }
 }

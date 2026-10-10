@@ -1,119 +1,217 @@
-/* Warm paper panels, forest accents, neutral numbers. No filters or extra GPU effects. */
-#game, dialog:not(.auth-layout) {
-  --panel: #fafcf8;
-  --line: #dbe4db;
-  --text: #233b36;
-  --muted: #60756e;
-  --mint: #147d68;
-  --orange: #a56c20;
-  --yellow: #bd882c;
-  --blue: #327fa4;
-  color: var(--text);
+/* Pearl surfaces, ink typography and teal navigation. No blur or post-processing. */
+#game, dialog {
+  --panel:#f8fafc; --line:#dce5eb; --text:#203746; --muted:#617785;
+  --mint:#087e80; --orange:#a56832; --yellow:#b8832e; --blue:#3687ba;
+  color:var(--text); font-variant-numeric:tabular-nums;
 }
-#game :is(.topbar,.left-panel,.right-panel,.tool-tray,.tool-info,.city-clock,.floating,.minimap,.save-status),
-dialog:not(.auth-layout) {
-  background: var(--panel);
-  border-color: var(--line);
-  box-shadow: 0 4px 18px #23493616;
-  backdrop-filter: none;
+#game :is(.topbar,.left-panel,.right-panel,.tool-tray,.tool-info,.city-clock,.floating,.minimap,.save-status),dialog:not(.auth-layout) {
+  background:var(--panel); border:1px solid var(--line); box-shadow:0 5px 20px #162e4018; backdrop-filter:none;
 }
-#game .topbar { border-top: 3px solid #20876f; }
-#game .brand { color: #223e36; font-weight: 850; }
-#game :is(.brand b,.city-identity>span) { color: var(--mint); }
-#game .city-identity input { color: var(--text); }
-#game :is(.stat strong,.treasury strong) { color: #233b36; font-weight: 750; }
-#game .stat small { color: var(--mint); }
-#game :is(.panel-title,.build-heading strong,.build-option strong,.news-card strong) { color: var(--text); }
-#game :is(.service-summary b,.info-grid b) { color: var(--text); }
-#game .mission-card { background: #f0f5eb; border-color: var(--line); }
-#game .mission-card strong small { color: var(--orange); }
-#game :is(.section-label span,.demand-bars span,.utility-row div>span,.time-block>span,.minimap span,.news-text) { color: var(--muted); }
-#game :is(.account-btn,.outline-btn,.news-action,.icon-btn,.map-btn,.weather-control,#restoreOverview),
-dialog:not(.auth-layout) :is(.action,.field input,.field select,.resident-row,.mobility-card) {
-  color: var(--text);
-  background: #f0f5ee;
-  border-color: #d5e0d5;
+#game :is(.topbar,.left-panel,.right-panel,.tool-tray,.city-clock,.minimap,.save-status){border-radius:18px}
+#game .topbar{border-top:3px solid var(--mint);padding-inline:18px;gap:16px}
+#game .brand{color:#203746;font-weight:850;letter-spacing:-.6px}
+#game :is(.brand b,.city-identity>span){color:var(--mint)}
+#game .city-identity input{color:var(--text);font-weight:750;letter-spacing:-.3px}
+#game .stat>span{font-size:10px;font-weight:700;letter-spacing:1.2px;color:var(--muted)}
+#game .stat strong{color:#203746;font-weight:750;letter-spacing:-.7px}
+#game .stat .population-value{display:block;min-width:44px;min-height:30px;padding:0;background:none;color:#203746;font:inherit;font-weight:750;font-size:20px;letter-spacing:-.7px;text-align:left;cursor:pointer}
+#game .stat small{color:var(--mint)}
+#game :is(.panel-title,.build-heading strong,.build-option strong,.news-card strong,.service-summary b,.info-grid b){color:var(--text)}
+#game .panel-title{font-size:11px;letter-spacing:1.4px;font-weight:750;padding-bottom:14px}
+#game :is(.left-panel,.right-panel,.tool-tray){scrollbar-width:thin;scrollbar-color:#b9ccd5 #f1f5f8}
+#game :is(.section-label span,.demand-bars span,.utility-row div>span,.time-block>span,.minimap span,.news-text){color:var(--muted)}
+#game :is(.account-btn,.outline-btn,.news-action,.icon-btn,.map-btn,.weather-control,#restoreOverview,.action),dialog :is(.action,.resident-row,.mobility-card){
+  color:var(--text);background:#eef3f7;border-color:#d7e3e9;border-radius:11px;
 }
-#game .account-btn { color: var(--mint); border-color: #a6cdbc; background: #eaf5ed; }
-#game :is(.icon-btn,.map-btn,#restoreOverview):hover { background: #e1eee3; }
-#game :is(.overview-tabs,.budget-tabs) { background: #eaf0e7; }
-#game .overview-tabs button { color: var(--muted); }
-#game .overview-tabs button.active { color: #12624f; background: #fff; box-shadow: 0 1px 4px #23493615; }
-#game :is(.meter,.progress) { background: #e0e8dc; }
-#game .utility-icon { background: #f6ebd4; color: #996c1e; }
-#game .water-icon { background: #e2f0f5; color: #327fa4; }
-#game .city-clock .time-controls button { background: #edf2e9; border-color: #d7e1d2; color: var(--muted); }
-#game .city-clock .time-controls button.active { background: #147d68; border-color: #147d68; color: #fff; }
-#game .city-clock #timeScale { color: var(--muted); }
-#game :is(.tool-info strong,.news-kicker,.build-option b) { color: var(--orange); }
-#game :is(.build-heading>div>span,.build-heading strong small,.build-option small,.build-option .facility-summary) { color: var(--muted); }
-#game .build-option { background: #fff; border-color: #dce5d8; color: var(--text); box-shadow: none; }
-#game .build-option:hover { background: #f2f7ee; border-color: #a1c3ad; }
-#game .build-option.active { background: #e9f4e9; border-color: #20876f; box-shadow: inset 3px 0 #20876f; }
-#game .build-option.active strong { color: #176a53; }
-#game .build-search input { color: var(--text); background: #fff; border-color: #d5e0d5; }
-#game .build-search input::placeholder { color: #718277; }
-#game .map-hint { background: #fafcf8ed; color: #405e50; }
-#game .map-source-info { background: #f7fbf0ed; color: #4c675a; }
-#game .badge.warn, dialog:not(.auth-layout) :is(.badge.warn,.warn,#marketError) { color: #9c522a; }
-#game #toast { color: #234438; background: #fbfff8; border-color: #a6cdbc; }
-#game .bottom-bar { background: #203e35; color: #edf4e9; border-color: #365b4c; box-shadow: 0 5px 20px #1d3b3526; }
-#game .tool-btn { color: #b4c9bd; }
-#game .tool-btn .glyph { color: #d6e6d9; }
-#game .tool-btn[data-group=utilities] .glyph { color: #edc77c; }
-#game .tool-btn[data-group=services] .glyph { color: #eda696; }
-#game .tool-btn[data-group=parks] .glyph { color: #9fd2a3; }
-#game .tool-btn[data-group=transport] .glyph { color: #a0cedc; }
-#game .tool-btn:hover { background: #335346; color: #fff; }
-#game .tool-btn.active { color: #fff; background: #39785f; border-color: #619e7f; }
-#game .tool-btn.active .glyph { color: #d8f3d8; }
-dialog:not(.auth-layout) :is(.action.primary,.lottery-grid button.active) { background: #147d68; color: #fff; border-color: #147d68; }
-dialog:not(.auth-layout) .action.danger { color: #a74f38; }
-dialog:not(.auth-layout) .form-error { color: #a74f38 !important; }
-dialog:not(.auth-layout) :is(.field input,.field select) { background: #fff; }
-dialog:not(.auth-layout) :is(.market-clock,.market-summary,.market-prizes span,.stock-order svg,.budget-table,.mobility-card) { background: #edf3e9; border-color: #d4e0d0; }
-dialog:not(.auth-layout) :is(.stock-row,.lottery-grid button) { color: var(--text); background: #fff; border-color: #d4e0d0; }
-dialog:not(.auth-layout) .stock-row.active { background: #e5f2e7; border-color: #20876f; }
-dialog:not(.auth-layout) :is(.market-clock b,.stock-order svg,.link-button) { color: var(--mint); }
-dialog:not(.auth-layout) :is(.market-clock small,.mobility-card small,.art-caption,.guide-list,.credit) { color: var(--muted); }
-dialog:not(.auth-layout) :is(.news-kicker,.market-prizes b) { color: var(--orange); }
-dialog:not(.auth-layout) :is(.ticket-list>div,.lottery-result) { border-color: var(--line); }
-#game button:focus-visible, dialog:not(.auth-layout) :is(button,input,select):focus-visible { outline-color: #147d68; }
+#game .account-btn{color:var(--mint);border-color:#b6d8d8;background:#e5f3f1}
+#game :is(.icon-btn,.map-btn,#restoreOverview,.outline-btn):hover,dialog .action:hover{background:#e2edf0;border-color:#aacbd0}
+#game :is(.overview-tabs,.budget-tabs),dialog .budget-tabs{background:#e9f0f4;border-radius:12px;padding:4px}
+#game .overview-tabs button,dialog .budget-tabs button{color:var(--muted);border-radius:9px}
+#game .overview-tabs button.active,dialog .budget-tabs button.active{color:#076a6b;background:#fff;box-shadow:0 2px 5px #162e4010}
+#game .city-status{padding:12px 0;font-weight:650}
+#game .live-dot{background:#15a793;box-shadow:0 0 0 4px #15a79312}
+#game :is(.meter,.progress){background:#e2ebee;border-radius:8px;height:6px;overflow:hidden}
+#game .progress i{background:#168f89}
+#game .demand-bars .r{background:#54bda8}#game .demand-bars .c{background:#65add3}#game .demand-bars .i{background:#e7b96c}
+#game .utility-icon{border-radius:12px;background:#fcf0d9;color:#aa7930}
+#game .water-icon{background:#e5f1f9;color:#3687ba}
+#game .service-summary{padding:12px 0;color:var(--muted)}
+#game .info-grid{gap:10px}
+#game .info-grid>div{background:#edf3f6;border:1px solid #e5edf1;padding:10px;border-radius:10px}
+#game .info-grid b{font-size:19px;margin-top:5px}
+#game .outline-btn{min-height:40px}
+#game .city-clock .time-controls button{background:#eef3f7;border-color:#dce6ec;color:var(--muted);border-radius:8px}
+#game .city-clock .time-controls button.active{background:var(--mint);border-color:var(--mint);color:#fff}
+#game .city-clock #timeScale{color:var(--muted)}
+#game .weather-control{font-size:12px;box-shadow:none}
+#game :is(.tool-info strong,.news-kicker,.build-option b){color:var(--orange)}
+#game :is(.build-heading>div>span,.build-heading strong small,.build-option small,.build-option .facility-summary){color:var(--muted)}
+#game .tool-tray{padding:16px}
+#game .build-heading{padding-bottom:12px;border-bottom:1px solid var(--line)}
+#game .build-option{background:#fff;border-color:#dce5eb;color:var(--text);border-radius:14px;min-height:114px;padding:12px;column-gap:13px;grid-template-columns:72px minmax(0,1fr);box-shadow:none}
+#game .build-option:hover{background:#f1f7f8;border-color:#a6ccd0}
+#game .build-option.active{background:#e7f4f2;border-color:#168f89;box-shadow:inset 3px 0 #168f89}
+#game .build-option.active strong{color:#086c67}
+#game .build-option strong{font-weight:750;font-size:14px}
+#game .build-option b{color:#08746e;font-size:12px;white-space:nowrap}
+#game .build-option .building-preview{background:#f0f4f3;border-radius:12px;width:72px}
+#game .build-search input{color:var(--text);background:#fff;border-color:var(--line);border-radius:11px}
+#game .build-search input::placeholder{color:#7a8e99}
+#game .build-item{position:relative;min-width:0}
+#game .build-item .build-option{height:100%;padding-right:34px}
+#game .build-favorite{position:absolute;top:8px;right:8px;width:30px;height:30px;display:grid;place-items:center;background:#f4f7f9;color:#7d929c;border:1px solid var(--line);border-radius:8px}
+#game .build-favorite[aria-pressed=true]{background:#fff3d5;color:#ad7625;border-color:#e3c58a}
+#game .build-favorite[aria-pressed=true] svg{fill:#edc67c33}
+#game .catalog-filter{display:flex;align-items:center;gap:7px;align-self:flex-start;min-height:36px;padding:8px 12px;margin-bottom:10px;background:#edf3f7;color:var(--muted);border:1px solid var(--line);border-radius:10px;font-size:12px}
+#game .catalog-filter[aria-pressed=true]{color:#a56832;background:#fff4da;border-color:#e3c58a}
+#game .tool-info{border-radius:12px;padding:10px 16px;max-width:540px;pointer-events:none}
+#game .map-hint{background:#f8fafce8;color:#476474;box-shadow:0 1px 4px #162e400a}
+#game .map-source-info{background:#f8fafce8;color:#617785}
+#game .badge.warn,dialog :is(.badge.warn,.warn,#marketError){color:#aa553a}
+#game #toast{color:#203746;background:#fff;border-color:#a6ccd0;border-radius:12px}
+#game .bottom-bar{background:#163547;color:#eaf4fa;border-color:#2d4a5d;border-radius:20px;padding:8px 12px;box-shadow:0 5px 18px #112b3b20}
+#game .tool-btn{color:#b8ceda;border-radius:12px}
+#game .tool-btn .glyph{color:#d4e5ed}
+#game .tool-btn[data-group=utilities] .glyph{color:#efd092}
+#game .tool-btn[data-group=services] .glyph{color:#f0a79a}
+#game .tool-btn[data-group=parks] .glyph{color:#a0d1b1}
+#game .tool-btn[data-group=transport] .glyph{color:#9ad2ef}
+#game .tool-btn:hover{background:#284b5e;color:#fff}
+#game .tool-btn.active{color:#fff;background:#137f80;border-color:#45aeaa;box-shadow:inset 0 1px #ffffff20}
+#game .tool-btn.active .glyph{color:#d4ffed}
+#game .tool-btn span:last-child{font-size:12px;font-weight:650}
+#game .map-btn{width:40px;height:40px;min-height:40px;border-radius:12px}
+#game #restoreOverview{width:auto;min-width:90px;padding:10px 13px;white-space:nowrap}
+#game .map-btn.active{color:#08746e;background:#def1ee;border-color:#168f89}
+#game .minimap canvas{border-radius:10px}
+#game .minimap span{font-size:10px;font-weight:650;letter-spacing:1px}
+#game .save-status span{font-size:11px}
+#game .mission-card{background:#fff;border-color:var(--line);border-radius:12px;padding:12px}
+#game .mission-card strong small{color:var(--orange)}
+#game .service-card{display:grid;border:1px solid var(--line);background:#fff;padding:12px;border-radius:12px;margin:8px 0;grid-template-columns:30px 1fr}
+#game .service-card i{background:#edf4f5;border-radius:9px;width:30px;height:34px;display:grid;place-items:center}
+#game .service-card>b{grid-column:2;text-align:left;font-size:13px}
+#game .service-card small{line-height:1.5;margin-top:4px}
+#game .detail-list{background:#fff;border:1px solid var(--line);border-radius:13px;padding:2px 12px;margin-block:14px}
+#game .detail-list div{padding-block:10px;gap:15px}
+#game .detail-list b{max-width:65%;text-align:right;color:#203746;font-weight:650}
+#game .right-panel .art-thumbnail{width:150px;height:125px;background:#eef4f1;border-radius:15px;margin-inline:auto;display:block}
+#game .inspect-icon{width:44px;height:44px;background:#edf4f5;border-radius:13px}
+#game .news-title{font-weight:750;letter-spacing:-.65px}
+#game .news-card{border-color:var(--line)}
+#game #placementPreview.placement-error{color:#aa553a}
+.population-status{display:block;border:0;padding:0;background:transparent;color:var(--mint);font:inherit;font-size:11px;text-align:left;cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}
+.population-status.warn{color:#aa553a}
+#game :is(button,input,select):focus-visible,dialog :is(button,input,select):focus-visible{outline:2px solid #087e80;outline-offset:3px}
+/* Shared controls for budgets, saves, resident inspectors, market and geography. */
+dialog:not(.auth-layout){padding:28px;border-radius:22px;width:min(720px,calc(100vw - 32px))}
+dialog.geo-dialog:not(.auth-layout){width:min(1120px,calc(100vw - 32px))}
+dialog::backdrop{background:#142f4966;backdrop-filter:none}
+dialog h2{font-size:26px;letter-spacing:-.7px;line-height:1.25;margin:8px 0 16px}
+dialog h3{font-size:15px;color:var(--text)}
+dialog p{line-height:1.65;color:var(--muted)}
+dialog .field{font-size:13px;font-weight:650;color:var(--text)}
+dialog :is(.field input,.field select){background:#fff;color:var(--text);border-color:var(--line);border-radius:10px;min-height:44px}
+dialog :is(.action.primary,.lottery-grid button.active),#game .action.primary{background:var(--mint);color:#fff;border-color:var(--mint)}
+dialog .action.primary:hover{background:#066b70}
+dialog :is(.action.danger,.form-error){color:#aa553a!important}
+dialog :is(.market-clock,.market-summary,.market-prizes span,.stock-order svg,.budget-table,.mobility-card,.geo-stats){background:#edf3f7;border-color:var(--line);border-radius:12px}
+dialog :is(.stock-row,.lottery-grid button){color:var(--text);background:#fff;border-color:var(--line)}
+dialog .stock-row.active{background:#e5f4f1;border-color:#168f89}
+dialog :is(.market-clock b,.stock-order svg,.link-button){color:var(--mint)}
+dialog :is(.market-clock small,.mobility-card small,.art-caption,.guide-list,.credit){color:var(--muted)}
+dialog :is(.news-kicker,.market-prizes b){color:var(--orange)}
+dialog :is(.ticket-list>div,.lottery-result,.saved-city,.resident-row){border-color:var(--line)}
+dialog .saved-city{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff;margin:10px 0}
+dialog .modal-close{background:#eaf1f5;color:#456474;border-radius:10px;width:34px;height:34px}
+dialog .range-row{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0}
+dialog input[type=range],dialog input[type=checkbox]{accent-color:var(--mint)}
+dialog :is(.geo-stats b,.geo-source summary){color:var(--text)}
+dialog :is(.geo-province,.geo-region){background:#fff;color:var(--text);border-color:var(--line);border-radius:10px}
+dialog :is(.geo-province.active,.geo-region.active){background:#e5f4f1;color:#08746e;border-color:#168f89}
+dialog .geo-inset{background:#eaf3f7;border-color:var(--line)}
+dialog .geo-inset strong{color:var(--text)}
+dialog .geo-inset small{color:var(--muted)}
+.hub-summary{display:flex;align-items:center;gap:14px;background:#e9f3f4;padding:15px;border-radius:14px;border:1px solid #d5e7e8}
+.hub-summary>.ui-icon,.hub-summary>span:first-child{color:#087e80}
+.hub-summary>div{flex:1;min-width:0}.hub-summary strong,.hub-summary small{display:block}.hub-summary strong{font-size:16px}.hub-summary small{font-size:12px;color:var(--muted);margin-top:5px}
+.hub-tabs{display:flex;gap:4px;padding:4px;background:#e9f0f4;border-radius:12px;margin:16px 0 8px}
+.hub-tabs button{flex:1;min-height:40px;padding:9px 6px;background:none;color:var(--muted);border-radius:9px;font-size:12px;font-weight:650}
+.hub-tabs button.active{background:#fff;color:var(--mint);box-shadow:0 2px 5px #162e4010}
+.hub-section{border-top:1px solid var(--line);margin-top:8px;padding-top:4px}
+.hub-section h3{font-size:12px;font-weight:750;letter-spacing:.6px;margin:16px 0 10px}
+.hub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.hub-tile{display:flex;align-items:center;gap:12px;text-align:left;min-height:78px;padding:12px;background:#fff;color:var(--text);border:1px solid var(--line);border-radius:13px}
+.hub-tile:hover{background:#edf7f7;border-color:#aacfd1}.hub-tile.danger{color:#aa553a}
+.hub-icon{display:grid;place-items:center;flex-shrink:0;width:40px;height:40px;border-radius:12px;background:#eaf3f4;color:#087e80}.hub-tile.danger .hub-icon{color:#aa553a;background:#faede7}
+.hub-tile strong{display:block;font-size:13px;font-weight:700}.hub-tile small{display:block;color:var(--muted);font-size:11px;line-height:1.5;margin-top:5px}.hub-arrow{margin-left:auto;color:#78929e;font-size:22px}
+/* Landing retains the supplied city illustration; forms share the in-game design. */
+.landing-primary{background:#82e4cd;color:#103a3c;border-color:#82e4cd;box-shadow:none}
+.landing-primary:hover{background:#abf0de}.landing-secondary{border-color:#688792;background:#123245ed}
+.landing-brand b,.landing-content h1 em{color:#a4ecd7}.landing-current:after{background:#a4ecd7}
+.landing-cards button{background:#173548ed;border-color:#647f8e66;box-shadow:none;border-radius:18px}
+.landing-cards button:hover{background:#24485b;border-color:#a4ecd7}.landing-cards .ui-icon{color:#a4ecd7}
+.landing-eyebrow{color:#ead4ad;border-color:#b9a58288;background:#143344cc}
+.auth-layout .auth-side{background:#f1f6f8}
+.auth-layout .auth-card{background:#fff;box-shadow:0 8px 30px #19394a0d;border:1px solid #d7e4ea;border-radius:22px;color:#203746}
+.auth-layout .auth-card h2{color:#203746}
+.auth-layout .auth-card>p:first-of-type,.auth-layout .auth-card .credit,.auth-layout .auth-save-note{color:#617785!important}
+.auth-layout .auth-card .field{color:#203746}
+.auth-layout .auth-card .field input{background:#f8fafc;border-color:#cfdee5;color:#203746;font-size:15px}
+.auth-layout .auth-card .field input::placeholder{color:#80929e}
+.auth-layout :is(.account-input-wrap>.ui-icon,.password-toggle,.auth-home){color:#547687}
+.auth-layout .auth-card .action.primary{background:#087e80;color:#fff;border-color:#087e80;font-size:16px}
+.auth-layout .auth-card .action.primary:hover{background:#086b70}
+.auth-layout .auth-card .link-button{color:#087e80}
+.auth-layout .auth-card .starting-place{background:#edf7f4;border-color:#cde4e0;border-radius:12px}
+.auth-layout .auth-card .starting-place strong{color:#203746}
+.auth-layout .auth-card .starting-place :is(small,em){color:#617785}
+.auth-layout .auth-card .starting-place b,.auth-layout .auth-emblem{color:#087e80}
+.auth-layout .auth-save-note{border-color:#dce5eb}
+.auth-layout .auth-card .form-error{color:#aa553a;background:#fff2ea;border-radius:10px}
+@media(min-width:1101px){
+  #game .topbar{left:16px;right:292px;top:16px;min-height:86px;gap:16px}
+  #game .city-clock{top:16px;right:16px;padding:11px 14px;width:260px}
+  #game .city-clock .time-block{min-width:0;width:100%}
+  #game .city-clock .time-controls{gap:3px}
+  #game :is(.left-panel,.right-panel){top:114px;max-height:calc(100dvh - 290px)}
+  #game .left-panel{left:16px;width:260px;padding:18px}
+  #game .right-panel{right:16px;width:292px;padding:18px}
+  #game .bottom-bar{max-width:calc(100vw - 350px);bottom:16px}
+  #game .tool-tray{top:114px;left:16px;bottom:178px;transform:none;width:318px}
+  #game .save-status{transform:none;right:16px;bottom:16px}
+  #game .minimap{left:16px;bottom:16px;width:164px;padding:8px}
+  #game .minimap canvas{width:146px;height:98px}
+  #game .map-controls{right:16px;bottom:106px}
+}
+@media(max-width:760px){
+  dialog:not(.auth-layout){padding:22px;width:calc(100vw - 20px);border-radius:18px}
+  .hub-summary{flex-wrap:wrap}.hub-summary .badge{font-size:10px}
+  .hub-grid{gap:7px}.hub-tile{padding:10px;gap:9px}.hub-icon{width:32px;height:34px}.hub-tile strong{font-size:12px}.hub-arrow{display:none}
+  .auth-layout .auth-intro{min-height:175px}.auth-layout .auth-caption{margin-top:24px}
+  .auth-layout .auth-card{border-radius:18px}.auth-layout .auth-card .field input{font-size:16px!important}
+}
+@media(max-width:600px){
+  #game .topbar{padding:9px 10px;border-radius:14px;gap:7px}
+  #game .build-option{min-height:108px}
+  #game .bottom-bar{padding:6px;border-radius:15px}
+  #game .tool-btn{min-width:57px;min-height:55px}
+  #game :is(.left-panel,.right-panel,.tool-tray){border-radius:15px}
+  #game .detail-list b{max-width:60%}
+  #game .population-status{display:none}
+  #game .stat .population-value{font-size:18px}
+  .hub-grid{grid-template-columns:1fr}.hub-tile{min-height:66px}
+  dialog h2{font-size:23px}
+}
+@media(prefers-reduced-motion:reduce){button{transition:none!important}}
 
-#game .action.primary { color: #fff; background: #147d68; border-color: #147d68; }
-#game #placementPreview.placement-error { color: #a74f38; }
+.catalog-empty{padding:16px;color:var(--muted);font-size:13px;line-height:1.6}
+.photo-controls{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:10px;padding:12px 16px;border:1px solid #dce5eb;border-radius:16px;background:#f8fafc;box-shadow:0 8px 24px #16354722;color:#203746}
+.photo-controls>span{display:flex;align-items:center;gap:7px;font-size:13px}
+body[data-photo="true"] #game>:not(canvas):not(.photo-controls):not(#toast){visibility:hidden!important;pointer-events:none!important}
+@media(max-width:600px){.build-favorite{min-width:44px!important;min-height:44px!important}.build-item .build-option{padding-right:48px}.photo-controls{width:calc(100% - 20px);flex-wrap:wrap;justify-content:center;bottom:10px}}
 
-/* Clear hierarchy and comfortable spacing; one compact tool rail leaves the city visible. */
-#game :is(.topbar,.left-panel,.right-panel,.tool-tray,.city-clock,.minimap,.save-status) { border-radius: 16px; }
-#game .topbar { border-top-width: 2px; padding-inline: 18px; }
-#game .brand { letter-spacing: -.7px; }
-#game .city-identity input { font-weight: 700; letter-spacing: -.35px; }
-#game .stat>span { font-size: 10px; font-weight: 650; letter-spacing: 1.2px; }
-#game .stat strong { font-variant-numeric: tabular-nums; letter-spacing: -.7px; }
-#game .panel-title { font-size: 11px; letter-spacing: 1.4px; }
-#game :is(.left-panel,.right-panel,.tool-tray) { scrollbar-width: thin; scrollbar-color: #a9bcac #f0f5ee; }
-#game .tool-tray { padding: 16px; }
-#game .build-heading { padding-bottom: 12px; border-bottom: 1px solid var(--line); }
-#game .build-option { border-radius: 13px; min-height: 110px; padding: 12px; column-gap: 12px; grid-template-columns: 64px minmax(0,1fr); }
-#game .build-option .building-preview { background: #eef4e9; border-radius: 10px; width: 64px; }
-#game .build-option strong { font-weight: 700; }
-#game .build-option b { color: #27694e; font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
-#game .bottom-bar { border-radius: 18px; padding: 8px 12px; }
-#game .tool-btn { border-radius: 12px; }
-#game .tool-btn span:last-child { font-size: 12px; }
-#game .tool-btn.active { box-shadow: inset 0 1px #ffffff20; }
-#game .detail-list div { padding-block: 10px; }
-#game .detail-list b { font-variant-numeric: tabular-nums; }
-#game .right-panel .art-thumbnail { width: 155px; height: 130px; }
-#game .news-title { font-weight: 750; letter-spacing: -.6px; }
-#game .news-card { border-color: var(--line); }
-#game :is(.service-card,.mission-card) { border-radius: 12px; }
-#game .tool-info { border-radius: 12px; }
-#game .map-btn.active { color: #12624f; background: #dfefdf; border-color: #20876f; }
-#game .minimap canvas { border-radius: 9px; }
-dialog:not(.auth-layout) :is(.geo-stats b,.geo-source summary) { color: var(--text); }
-@media(max-width:600px) {
-  #game .topbar { padding-inline: 10px; border-radius: 13px; }
-  #game .build-option { min-height: 98px; }
-  #game .bottom-bar { padding: 6px; border-radius: 14px; }
-}
+.mission-card-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.mission-card-heading>span{white-space:nowrap;color:var(--mint);font-size:12px;font-weight:700}.mission-conditions{list-style:none;margin:10px 0;padding:0}.mission-conditions li{font-size:12px;line-height:1.6;margin:4px 0}.mission-conditions b{white-space:nowrap}.mission-filters{display:grid;grid-template-columns:1fr 180px;gap:12px}.mission-pagination{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px;padding:16px 0}.mission-pagination>span{font-size:12px;color:var(--muted)}#missionCatalogueRows{max-height:52vh;overflow:auto;padding-right:8px}#missionCatalogueRows .mission-card{margin:10px 0;padding:16px;border:1px solid var(--line);border-radius:12px;background:#fff}@media(max-width:600px){.mission-filters{grid-template-columns:1fr}.mission-card-heading{flex-wrap:wrap}}
+
+/* Campaign conditions are nested because alternative routes require one branch. */
+.condition-group{padding:8px 0;margin:4px 0}.condition-group.any{border-left:3px solid var(--mint);padding-left:10px;background:rgba(8,126,128,.04)}.condition-group>small{display:block;font-weight:650;margin:0 0 8px}.mission-objective{display:grid;grid-template-columns:1fr auto;gap:6px;margin:8px 0;font-size:12px}.mission-objective progress{grid-column:1/-1;width:100%;height:5px;accent-color:var(--mint)}.mission-objective small{grid-column:1/-1;color:#8d542f}.mission-rewards{font-weight:700;color:var(--orange);margin:12px 0}.mission-actions{display:flex;flex-wrap:wrap;gap:6px}.mission-actions .action{min-height:44px}.mission-card-heading span{white-space:nowrap}

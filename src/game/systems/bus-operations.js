@@ -1,3 +1,4 @@
+import {remainingRouteValid} from './road-network.js';
 import {weatherState} from './weather.js';
 import {calendar} from './clock.js';
 import {route} from './roads.js';import {mobilityPath} from './mobility-path.js';import {busDock} from './bus-planning.js';
@@ -9,9 +10,9 @@ export function releaseBusPassengers(s,v){
  }v.passengers=[];
 }
 function tripTo(s,v,line,index){
- const stop=line.stops[index],origin=v.goal,roads=route(s,origin,stop);if(!roads.length)return false;
+ const stop=line.stops[index],origin=v.goal,roads=route(s,origin,stop,'bus');if(!roads.length)return false;
  const dock=busDock(s,line,index);if(!dock)return false;
- const path=mobilityPath(s,origin,stop,roads,s.mapSize,'car',v.position);path[path.length-1]={...dock.position};
+ const path=mobilityPath(s,origin,stop,roads,s.mapSize,'bus',v.position);path[path.length-1]={...dock.position};
  if(distanceMeters(path.at(-2),path.at(-1))<.001)path.pop();
  v.trip={id:`bus-trip-${v.id}-${s.clock.step}`,origin,destination:stop,path,mode:'car',segment:0,distance:0,speed:25/3.6,actualSpeed:0,graphVersion:s.graphVersion,laneVersion:1};
  v.goal=stop;v.targetStop=index;v.busPhase='driving';v.state='travelling';v.doors=false;return true;
@@ -39,7 +40,7 @@ export function updateBuses(s){
     const c=waiting[0];if(c){const h=s.households.find(h=>h.id===c.household),receipt=`fare-${c.busPlan.tripId}`;
      if(h.savings>=.7&&!s.ledger.receipts.includes(receipt)){h.savings-=.7;recordCash(s,receipt,'bus-fare',.7,v.id);}
      else if(h.savings<.7){c.busPlan=null;c.goal=v.goal;c.state='home';startJourney(s,c,c.home,route,s.mapSize,false);continue;}
-     c.busPlan.stage='riding';c.busPlan.vehicleId=v.id;c.state='on-bus';c.waitReason='';c.journey=null;c.position={...v.position};v.passengers.push(c.id);v.boardedTotal++;v.boardedToday++;v.stopUntil=Math.max(v.stopUntil,s.clock.seconds+3);emit(s,'bus-boarded',c.id,{vehicle:v.id,stop:v.goal});
+     if(c.missionTrip)c.missionTrip.mode='bus';c.busPlan.stage='riding';c.busPlan.vehicleId=v.id;c.state='on-bus';c.waitReason='';c.journey=null;c.position={...v.position};v.passengers.push(c.id);v.boardedTotal++;v.boardedToday++;v.stopUntil=Math.max(v.stopUntil,s.clock.seconds+3);emit(s,'bus-boarded',c.id,{vehicle:v.id,stop:v.goal});
     }
    }
    for(const id of v.passengers){const c=people.get(id);if(c)c.position={...v.position};}
@@ -47,7 +48,7 @@ export function updateBuses(s){
    continue;
   }
   const j=v.trip;if(!j)continue;
-  if(j.graphVersion!==s.graphVersion){j.graphVersion=s.graphVersion;if(j.path.slice(j.segment).some(p=>p.road!=null&&!s.network.connected.has(p.road))){v.state='blocked';v.speed=0;v.blockedGraph=s.graphVersion;v.waitReason='Đường của tuyến bị ngắt';continue;}}
+  if(j.graphVersion!==s.graphVersion){j.graphVersion=s.graphVersion;if(!remainingRouteValid(s,j.path.slice(Math.max(0,j.segment-1)),'bus')){v.state='blocked';v.speed=0;v.blockedGraph=s.graphVersion;v.waitReason='Đường của tuyến bị ngắt';continue;}}
   const controlled=control({id:v.id,kind:v.kind,position:v.position,journey:j});j.actualSpeed=controlled.speed*weatherState(s).roadSpeedFactor;v.speed=j.actualSpeed;v.waitReason=controlled.reason;
   let remaining=j.actualSpeed;
   while(remaining>0&&j.segment<j.path.length-1){const a=j.path[j.segment],b=j.path[j.segment+1],length=distanceMeters(a,b),travelled=Math.min(remaining,Math.max(0,length-j.distance));j.distance+=travelled;v.travelled+=travelled;remaining-=travelled;const t=length?Math.min(1,j.distance/length):1;v.position={x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t,z:a.z+(b.z-a.z)*t};if(j.distance>=length-1e-8){j.segment++;j.distance=0;}}

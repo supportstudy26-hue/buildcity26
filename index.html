@@ -19,7 +19,7 @@
     <button id="homeBtn" class="brand" aria-label="Về trang chủ"><span class="brand-mark" data-icon="city"></span><div>BUILD CITY <b>26</b><small>THÀNH PHỐ CỦA BẠN</small></div></button>
     <div class="city-identity"><input id="cityName" value="Thành phố Bình Minh" maxlength="36" aria-label="Tên thành phố"><span id="level">Đang tải thành phố</span></div>
     <div class="stat treasury"><span>NGÂN SÁCH</span><strong id="money">—</strong><small id="net">+0 ₫ / tháng</small></div>
-    <div class="stat"><span>DÂN SỐ</span><strong id="population">0</strong><small id="popChange">Chào cư dân mới</small></div>
+    <div class="stat"><span>DÂN SỐ</span><button id="population" class="population-value" title="Điều kiện đón dân và hành trình cư dân" aria-label="Xem điều kiện đón dân">0</button><button id="popChange" class="population-status" title="Điều kiện đón dân và hành trình cư dân">Chào cư dân mới</button></div>
     <div class="stat happy-stat"><span>HẠNH PHÚC</span><strong id="happiness">—</strong><small id="happyLabel">Đang tính toán</small></div>
     <button id="accountBtn" class="account-btn">Đăng nhập</button>
     <button id="newsBtn" class="icon-btn" title="Bản tin thành phố" aria-label="Bản tin thành phố" data-icon="bell"></button>
@@ -38,7 +38,7 @@
       <div class="service-summary"><span>Nước thải <b id="sewageText">0 / 0</b></span><span>Rác tích tụ <b id="garbageText">0 đơn vị</b></span></div><div class="info-grid"><div><span>Việc làm</span><b id="jobs">0</b></div><div><span>Thất nghiệp</span><b id="unemployment">0%</b></div><div><span>Giao thông</span><b id="traffic">100%</b></div><div><span>Môi trường</span><b id="environment">100%</b></div></div>
       <button class="outline-btn" id="budgetBtn">Quản lý ngân sách</button>
 
-      </div><div id="overview-services" hidden><div id="serviceReport"></div><button id="transitReportBtn" class="outline-btn">Quản lý xe buýt</button></div><div id="overview-goals" hidden>      <div class="mission"><div class="section-label">NHIỆM VỤ THÀNH PHỐ <span id="questCount">0/14</span></div><h3 id="questTitle">Phát triển qua từng cấp</h3><div class="progress"><i id="questProgress"></i></div><small id="questHint">Hoàn thành các bước để nhận ngân sách phát triển.</small><div id="quests"></div></div></div>
+      </div><div id="overview-services" hidden><div id="serviceReport"></div><button id="transitReportBtn" class="outline-btn">Quản lý xe buýt</button></div><div id="overview-goals" hidden>      <div class="mission"><div class="section-label">NHIỆM VỤ THÀNH PHỐ <span id="questCount">0/300</span></div><h3 id="questTitle">Phát triển qua từng cấp</h3><div class="progress"><i id="questProgress"></i></div><small id="questHint">Hoàn thành các bước để nhận ngân sách phát triển.</small><div id="quests"></div></div></div>
     </div>
   </aside>
 

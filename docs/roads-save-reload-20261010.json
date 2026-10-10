@@ -1,0 +1,24 @@
+{
+  "before": {
+    "money": 526800,
+    "population": 260,
+    "seconds": 63386,
+    "playback": {
+      "rule": "casual-time5-v1",
+      "multiplier": 8,
+      "paused": true,
+      "observe": false
+    }
+  },
+  "after": {
+    "money": 526800,
+    "population": 260,
+    "seconds": 63386,
+    "playback": {
+      "rule": "casual-time5-v1",
+      "multiplier": 8,
+      "paused": true,
+      "observe": false
+    }
+  }
+}

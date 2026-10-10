@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createCity,executeCommand,serialize,validateSave,index,stepSimulation} from '../src/game/core.js';
-import {updateProgression,missionViews} from '../src/game/systems/progression.js';
-import {levelFromXp,xpForLevel,LEVEL_GRANT_BC} from '../src/config/progression.js';
+import {updateProgression,legacyMissionViews as missionViews} from '../src/game/systems/progression.js';
+import {legacyLevelFromXp as levelFromXp,legacyXpForLevel as xpForLevel,LEVEL_GRANT_BC} from '../src/config/legacy-progression.js';
 import {cashBalance} from '../src/game/systems/economy.js';
 const command=(s,type,payload)=>executeCommand(s,{id:`command-${s.commandSequence+1}`,sequence:s.commandSequence+1,type,payload});
 function time(s,seconds){s.clock={step:seconds,seconds};s.day=Math.floor(seconds/86400);}

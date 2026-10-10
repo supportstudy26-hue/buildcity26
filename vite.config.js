@@ -3,6 +3,7 @@ import {resolve} from 'node:path';
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 function localAccounts(){return {name:'bc26-local-server-api',configureServer(server){
+  server.middlewares.use('/api/missions',async(req,res)=>{const env={...loadEnv('development',process.cwd(),''),...process.env,NODE_ENV:'development'};res.status=n=>{res.statusCode=n;return res;};res.json=value=>{res.setHeader('Content-Type','application/json');res.end(JSON.stringify(value));};try{let size=0,chunks=[];for await(const chunk of req){size+=chunk.length;if(size>2048){res.status(413).json({error:'Yêu cầu quá lớn.'});return;}chunks.push(chunk);}req.body=Buffer.concat(chunks).toString('utf8');const {missionHandler}=await import('./server/missions.js');await missionHandler({env})(req,res);}catch{res.status(503).json({error:'Máy chủ nhiệm vụ tạm thời không đáp ứng.'});}});
   server.middlewares.use('/api/account',async(req,res)=>{
     const env={...loadEnv('development',process.cwd(),''),...process.env,NODE_ENV:'development'};
     res.status=n=>{res.statusCode=n;return res;};res.json=value=>{res.setHeader('Content-Type','application/json');res.end(JSON.stringify(value));};

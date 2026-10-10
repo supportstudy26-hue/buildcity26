@@ -1,5 +1,11 @@
+import {ICONS} from './ui/refresh/icons.generated.js';
 // Original inline SVG artwork. No icon font, image downloads or runtime library.
 const drawings={
+  camera:'<rect x="2" y="6" width="20" height="15" rx="3"/><path d="m7 6 2-3h6l2 3"/><circle cx="12" cy="13" r="4"/>',
+  sound:'<path d="M3 9h4l5-5v16l-5-5H3Zm13-2a7 7 0 0 1 0 10m3-13a11 11 0 0 1 0 16"/>',
+  star:'<path d="m12 2 3 6 6.6 1-4.8 4.7 1.1 6.6-5.9-3.1-5.9 3.1 1.1-6.6L2.4 9 9 8Z"/>',
+  download:'<path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/>',
+  upload:'<path d="M12 16V4m-5 5 5-5 5 5M4 17v4h16v-4"/>',
   city:'<path fill="currentColor" fill-opacity=".12" d="M3 21V10l6-3v14m6 0V3l6 3v15"/><path d="M3 21V10l6-3v14m6 0V3l6 3v15M1 21h22M5.5 12v1m0 3v1M17.5 7v1m0 3v1m0 3v1M9 14l6-3"/>',
   inspect:'<path d="M9 3H5a2 2 0 0 0-2 2v4m12-6h4a2 2 0 0 1 2 2v4M3 15v4a2 2 0 0 0 2 2h4m6 0h4a2 2 0 0 0 2-2v-4"/><circle cx="12" cy="12" r="4"/>',
   roads:'<path fill="currentColor" fill-opacity=".1" d="M8 2 3 22h18L16 2Z"/><path d="M8 2 3 22m13-20 5 20M12 3v3m0 4v4m0 4v3"/>',
@@ -36,6 +42,6 @@ const drawings={
   bell:'<path fill="currentColor" fill-opacity=".12" d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5Z"/><path d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5ZM10 21h4M12 2v2"/>',
   chart:'<path d="M3 3v18h19M7 16v-5m5 5V7m5 9V4"/>',
 };
-const families={smallPower:'power',smallWater:'water',smallSewage:'sewage',waterPump:'water',treatmentPlant:'sewage',wasteCenter:'waste',secondarySchool:'school',university:'school',hospital:'clinic',fireCenter:'fire',policeCenter:'police',plaza:'park',sportsPark:'park'};
-export function icon(name,size=24){return `<svg class="ui-icon" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${drawings[name]||drawings[families[name]]||drawings.city}</svg>`;}
+const families={city:'residential',inspect:'search',roads:'road',avenue:'road',zones:'residential',power:'electricity',smallPower:'electricity',smallWater:'water',smallSewage:'sewage',waterPump:'water',treatmentPlant:'sewage',wasteCenter:'waste',secondarySchool:'education',university:'education',school:'education',hospital:'health',clinic:'health',services:'health',fireCenter:'fire',policeCenter:'police',plaza:'park',sportsPark:'park',parks:'park',bus:'transport',busStop:'transport',account:'citizen',bell:'alert',chart:'budget',menu:'settings',eye:'search',download:'save',upload:'save',star:'level'};
+export function icon(name,size=24){const drawing=ICONS[name]||ICONS[families[name]]||drawings[name]||ICONS.residential;return `<svg class="ui-icon" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${drawing}</svg>`;}
 export function applyIcons(root=document){root.querySelectorAll('[data-icon]').forEach(el=>el.innerHTML=icon(el.dataset.icon));}

@@ -1,3 +1,4 @@
+import {roadProfile} from '../../config/road-profiles.js';
 import { ROADS } from '../../config/catalog.js';
 export const SIZE=64;
 import { CELL_METERS } from '../../config/simulation.js';
@@ -9,7 +10,7 @@ export function initializeWorld(s, size) {
   for (let i=0;i<s.tiles.length;i++) {
     const t=s.tiles[i]; t.id ??= `plot-${i}`;
     if(t.kind) t.assetId ??= `initial-asset-${i}`;
-    t.footprint = {width:t.kind==='road'?12:t.kind==='avenue'?18:t.kind?14:20,depth:20};
+    t.footprint = {width:roadProfile(t)?.width|| (t.kind?14:20),depth:20};
   }
 }
 export const index = (x,y) => y*SIZE+x;

@@ -1,3 +1,6 @@
+import {roadProfile} from '../../config/road-profiles.js';
+import {isJunction} from '../systems/junctions.js';
+import {signalGlows} from './junction-parts.js';
 import {cityFocus} from './city-focus.js';
 import {actorBudget,nearestActors} from './actor-budget.js';
 import {vehicleArtId} from '../../config/mobility-art.js';
@@ -18,14 +21,15 @@ export class ThreeCityRenderer{
     this.canvas=input;this.view=view;this.mini=mini;this.mc=mini.getContext('2d');this.getCity=getCity;
     this.mode='3d';this.tool='inspect';this.layer='normal';this.night=false;this.follow=null;this.selected=null;this.hover=null;this.lastPaths=-1;this.renderAlpha=0;this.dragMode='pan';this.dead=false;
     this.gpu=new T.WebGLRenderer({canvas:view,antialias:false,powerPreference:'low-power'});this.gpu.outputColorSpace=T.SRGBColorSpace;
-    this.scene=new T.Scene();this.scene.background=new T.Color('#dce8ec');this.scene.fog=new T.Fog('#dce8ec',1100,2400);
+    this.scene=new T.Scene();this.scene.background=new T.Color('#e3edf2');this.scene.fog=new T.Fog('#e3edf2',1100,2400);
     this.camera=new T.PerspectiveCamera(43,1,.3,4000);this.target=vec(310,2,370);this.distance=410;this.yaw=Math.PI/4;this.polar=.86;
     this.sun=new T.DirectionalLight('#fff4df',2.1);this.sun.position.set(-300,900,180);this.sun.castShadow=true;this.sun.shadow.camera.left=-700;this.sun.shadow.camera.right=700;this.sun.shadow.camera.top=700;this.sun.shadow.camera.bottom=-700;this.sun.shadow.camera.near=1;this.sun.shadow.camera.far=1800;this.sun.shadow.bias=-.0004;this.scene.add(this.sun);
-    this.ambient=new T.HemisphereLight('#e9f3ff','#5b735e',1.15);this.scene.add(this.ambient);this.scene.add(this.sun.target);
+    this.ambient=new T.HemisphereLight('#eaf4ff','#547361',1.15);this.scene.add(this.ambient);this.scene.add(this.sun.target);
     this.geometries={rounded:new RoundedBoxGeometry(1,1,1,1,.10),sphere:new T.SphereGeometry(.5,8,6),gable:createGableGeometry(T),box:new T.BoxGeometry(1,1,1),window:new T.BoxGeometry(1,1,1),cone:new T.ConeGeometry(.5,1,7),cylinder:new T.CylinderGeometry(.5,.5,1,10),ico:new T.IcosahedronGeometry(.5,0)};
-    this.material=new T.MeshLambertMaterial();this.windowMaterial=new T.MeshBasicMaterial({color:'#ffffff'});
-    this.groundMaterial=new T.MeshLambertMaterial({vertexColors:true});this.waterMaterial=new T.MeshLambertMaterial({color:'#388caf',transparent:true,opacity:.94});
+    this.material=new T.MeshLambertMaterial();this.windowMaterial=new T.MeshStandardMaterial({roughness:.28,metalness:.12,emissive:'#ffca81',emissiveIntensity:0});this.tileMaterial=new T.MeshLambertMaterial();this.metalMaterial=new T.MeshStandardMaterial({roughness:.58,metalness:.3});this.lampMaterial=new T.MeshBasicMaterial({color:'#fff5d4'});
+    this.groundMaterial=new T.MeshLambertMaterial({vertexColors:true});this.waterMaterial=new T.MeshLambertMaterial({color:'#379bbc',transparent:true,opacity:.94});
     this.ghostGroup=new T.Group();this.scene.add(this.ghostGroup);this.ghostMaterial=new T.MeshBasicMaterial({transparent:true,opacity:.36,depthWrite:false});this.pickables=[];this.regions=new Map();this.actorGroup=new T.Group();this.scene.add(this.actorGroup);this.actorMeshes=new Map();
+    this.signalMeshes=new Map();for(const [name,color] of [['red','#ff584b'],['amber','#ffca5b'],['green','#55eba0']]){const material=new T.MeshBasicMaterial({color}),mesh=new T.InstancedMesh(this.geometries.sphere,material,256);mesh.count=0;mesh.visible=false;this.signalMeshes.set(name,mesh);this.scene.add(mesh);}
     this.ray=new T.Raycaster();this.ndc=new T.Vector2();this.object=new T.Object3D();this.frustum=new T.Frustum();this.matrix=new T.Matrix4();
     this.selection=new T.Mesh(new T.BoxGeometry(20,.08,20),new T.MeshBasicMaterial({color:'#ffdaa4',transparent:true,opacity:.3,depthWrite:false}));this.selection.visible=false;this.scene.add(this.selection);
     this.autoQuality=new AutoQuality(innerWidth<600);this.qualityPreference='auto';this.setQuality('auto');this.resize();this.center();this.frame=this.frame.bind(this);this.raf=requestAnimationFrame(this.frame);
@@ -44,8 +48,8 @@ export class ThreeCityRenderer{
   tileAt(px,py){this.setRay(px,py);this.scene.updateMatrixWorld(true);const hit=this.ray.intersectObjects(this.pickables,false)[0];if(!hit)return null;const tile=hit.object.userData.tiles?.[hit.instanceId];let i=tile??Math.floor(hit.point.z/20)*SIZE+Math.floor(hit.point.x/20);return Number.isInteger(i)&&i>=0&&i<SIZE*SIZE?{i,x:i%SIZE,y:Math.floor(i/SIZE)}:null;}
   actorAt(px,py){this.setRay(px,py);this.scene.updateMatrixWorld(true);const hit=this.ray.intersectObjects([...this.actorMeshes.values()],false)[0];return hit?.object.userData.actors?.[hit.instanceId]||null;}
   batches(parts,parent,ghost=false){
-    const sets=new Map();for(const p of parts){const key=p.shape+(p.detail?'-detail':'');if(!sets.has(key))sets.set(key,[]);sets.get(key).push(p);}
-    for(const [key,list] of sets){const shape=list[0].shape,m=new T.InstancedMesh(this.geometries[shape],ghost?this.ghostMaterial:shape==='window'?this.windowMaterial:this.material,list.length);m.userData.tiles=list.map(p=>p.tile);m.userData.detail=key.endsWith('-detail');m.castShadow=!ghost&&shape!=='window';m.receiveShadow=!ghost;
+    const sets=new Map();for(const p of parts){const key=p.shape+'-'+(p.material||'concrete')+(p.detail?'-detail':'');if(!sets.has(key))sets.set(key,[]);sets.get(key).push(p);}
+    for(const [key,list] of sets){const shape=list[0].shape,m=new T.InstancedMesh(this.geometries[shape],ghost?this.ghostMaterial:list[0].material==='glow'?this.lampMaterial:shape==='window'?this.windowMaterial:list[0].material==='metal'?this.metalMaterial:list[0].material==='tile'?this.tileMaterial:this.material,list.length);m.userData.tiles=list.map(p=>p.tile);m.userData.detail=key.endsWith('-detail');m.castShadow=!ghost&&shape!=='window';m.receiveShadow=!ghost;
       for(let i=0;i<list.length;i++){const p=list[i];this.object.position.fromArray(p.position);this.object.scale.fromArray(p.scale);this.object.rotation.set(0,p.rotation?.yaw||0,p.rotation?.pitch||0,'YXZ');this.object.updateMatrix();m.setMatrixAt(i,this.object.matrix);m.setColorAt(i,new T.Color(p.color));}updateBounds(m);parent.add(m);if(!ghost)this.pickables.push(m);
     }
   }
@@ -96,20 +100,35 @@ export class ThreeCityRenderer{
       for(let i=0;i<list.length;i++){const p=list[i];this.object.position.fromArray(p.position);this.object.scale.fromArray(p.scale);this.object.rotation.set(p.rotation?.pitch||0,p.rotation?.yaw||0,p.rotation?.roll||0,'YXZ');this.object.updateMatrix();mesh.setMatrixAt(i,this.object.matrix);mesh.setColorAt(i,new T.Color(p.color));}if(list.length)updateBounds(mesh);
     }
   }
+  signals(s,ms){
+    if(this.signalGraph===s.graphVersion&&this.signalSecond===Math.floor(s.clock.seconds)&&ms-(this.lastSignals||0)<250)return;
+    this.signalGraph=s.graphVersion;this.signalSecond=Math.floor(s.clock.seconds);this.lastSignals=ms;
+    const junctions=s.tiles.flatMap((t,i)=>isJunction(s,i)?[{i,d:Math.hypot((i%SIZE+.5)*20-this.target.x,(Math.floor(i/SIZE)+.5)*20-this.target.z)}]:[]).filter(v=>v.d<350).sort((a,b)=>a.d-b.d).slice(0,32);
+    const counts={red:0,amber:0,green:0};
+    for(const {i} of junctions)for(const p of signalGlows(s,i,surfaceHeight(s,i,SIZE),roadProfile(s.tiles[i]).width)){const mesh=this.signalMeshes.get(p.light),n=counts[p.light]++;this.object.position.fromArray(p.position);this.object.scale.fromArray(p.scale);this.object.rotation.set(0,0,0);this.object.updateMatrix();mesh.setMatrixAt(n,this.object.matrix);}
+    for(const [light,mesh] of this.signalMeshes){mesh.count=counts[light];mesh.visible=mesh.count>0;if(mesh.count)updateBounds(mesh);}
+    this.visibleSignals=junctions.length;
+  }
   minimap(){const s=this.getCity(),c=this.mc,w=this.mini.width,h=this.mini.height;for(let i=0;i<s.tiles.length;i++){const t=s.tiles[i];c.fillStyle=t.terrain==='water'?'#4c9eb7':isRoad(t)?'#4c6a70':CATALOG[t.kind||t.zone]?.color||'#7ba583';c.fillRect(i%SIZE*w/SIZE,Math.floor(i/SIZE)*h/SIZE,w/SIZE+.2,h/SIZE+.2);}c.strokeStyle='#fff';c.strokeRect(this.target.x/(SIZE*20)*w-10,this.target.z/(SIZE*20)*h-7,20,14);}
   frame(ms){if(this.dead)return;this.raf=requestAnimationFrame(this.frame);if(document.hidden||document.body?.dataset.screen==='home'||!frameDue(ms,this.lastDraw,PROFILES[this.quality].fps))return;this.lastDraw=ms;const s=this.getCity();if(this.follow){const c=s.citizens.find(c=>c.id===this.follow)||s.vehicles.find(v=>v.id===this.follow);if(c){const p=this.actorPosition(c);this.target.x=p.x;this.target.z=p.y;}}
     this.updateCamera();if(ms-(this.lastCheck||0)>250||this.lastPaths<0){this.rebuild(s);this.lastCheck=ms;this.lastPaths=s.day;}
-    const night=this.night;this.scene.background.set(night?'#182e3b':'#dce8ec');this.scene.fog.color.copy(this.scene.background);this.sun.intensity=night?.3:2.1;this.ambient.intensity=night?.75:1.15;this.windowMaterial.color.set(night?'#ffe1a3':'#ffffff');
+    const night=this.night;this.scene.background.set(night?'#182e3b':'#e3edf2');this.scene.fog.color.copy(this.scene.background);this.sun.intensity=night?.3:2.1;this.ambient.intensity=night?.75:1.15;this.windowMaterial.emissiveIntensity=night?.8:0;this.windowMaterial.color.set(night?'#ffe1a3':'#c4e6ef');
     this.matrix.multiplyMatrices(this.camera.projectionMatrix,this.camera.matrixWorldInverse);this.frustum.setFromProjectionMatrix(this.matrix);for(const r of this.regions.values()){const distance=r.center.distanceTo(this.target),limit=PROFILES[this.quality].details+this.distance*.35,selected=this.selected&&this.selected.x>=r.x&&this.selected.x<r.x+REGION&&this.selected.y>=r.y&&this.selected.y<r.y+REGION;r.detailed=detailVisible(r.detailed,distance,limit,selected);for(const m of r.assets.children){if(m.userData.detail)m.visible=r.detailed;m.castShadow=this.quality==='high'&&distance<600&&!m.userData.detail;}}
-    this.updateGhost(s);this.drawActors(s);const select=this.selected||this.hover;this.selection.visible=!!select;if(select)this.selection.position.set((select.x+.5)*20,surfaceHeight(s,select.i,SIZE)+.12,(select.y+.5)*20);this.gpu.render(this.scene,this.camera);this.onRender?.(ms);if(this.qualityPreference==='auto'){const value=this.autoQuality.sample(ms-(this.previousDraw||ms),ms);if(value)this.applyQuality(value);}this.fps=1000/(ms-(this.previousDraw||ms-33));this.previousDraw=ms;
+    this.updateGhost(s);this.drawActors(s);const select=this.selected||this.hover;this.selection.visible=!!select;if(select)this.selection.position.set((select.x+.5)*20,surfaceHeight(s,select.i,SIZE)+.12,(select.y+.5)*20);this.signals(s,ms);this.gpu.render(this.scene,this.camera);this.onRender?.(ms);if(this.qualityPreference==='auto'){const value=this.autoQuality.sample(ms-(this.previousDraw||ms),ms);if(value)this.applyQuality(value);}this.fps=1000/(ms-(this.previousDraw||ms-33));this.previousDraw=ms;
   }
   updateGhost(s){
-    const ghost=placementGhost(s,this.hover,this.tool);this.ghostGroup.visible=!!ghost;
+    const ghost=placementGhost(s,this.hover,this.tool,this.blueprint);this.ghostGroup.visible=!!ghost;
     if(!ghost||ghost.key===this.ghostKey)return;
     for(const m of [...this.ghostGroup.children]){this.ghostGroup.remove(m);m.dispose();}
     this.batches(ghost.parts,this.ghostGroup,true);this.ghostKey=ghost.key;
   }
   reset(){this.lastPaths=-1;this.selected=null;this.center();}
-  stats(){return{mode:this.mode,quality:this.quality,qualityPreference:this.qualityPreference,pixelRatio:this.gpu.getPixelRatio(),triangles:this.gpu.info.render.triangles,regions:this.regions.size,drawCalls:this.gpu.info.render.calls,geometries:this.gpu.info.memory.geometries,textures:this.gpu.info.memory.textures,fps:Math.round(this.fps||0),citizens:this.getCity().citizens.length,sharedMaterials:6,activeActors:this.getCity().citizens.filter(c=>c.journey||c.state==='waiting-bus').length+this.getCity().vehicles.filter(v=>v.kind==='bus'&&v.busPhase!=='depot').length,visibleActors:this.visibleActors||0,renderedActors:this.renderedActors||0,actorBudget:actorBudget(this.getCity().citizens.length,this.quality,this.width<600)};}
-  dispose(){this.dead=true;cancelAnimationFrame(this.raf);this.view.removeEventListener('webglcontextlost',this.contextLost);for(const r of this.regions.values()){this.removeRegion(r);r.ground.geometry.dispose();r.water.geometry.dispose();}for(const m of this.actorMeshes.values())m.dispose();Object.values(this.geometries).forEach(g=>g.dispose());for(const m of [this.material,this.groundMaterial,this.windowMaterial,this.waterMaterial,this.selection.material])m.dispose();this.selection.geometry.dispose();for(const m of this.ghostGroup.children)m.dispose();this.ghostMaterial.dispose();this.gpu.dispose();this.gpu.forceContextLoss();}
+  capturePNG(){
+    // Capture immediately after rendering; no persistent drawing buffer or extra loop.
+    const selected=this.selection.visible,ghost=this.ghostGroup.visible;
+    try{this.selection.visible=false;this.ghostGroup.visible=false;this.gpu.render(this.scene,this.camera);return new Promise((resolve,reject)=>this.view.toBlob(blob=>blob?resolve(blob):reject(new Error('Không chụp được ảnh bản đồ.')),'image/png'));}
+    finally{this.selection.visible=selected;this.ghostGroup.visible=ghost;}
+  }
+  stats(){return{mode:this.mode,quality:this.quality,qualityPreference:this.qualityPreference,pixelRatio:this.gpu.getPixelRatio(),triangles:this.gpu.info.render.triangles,regions:this.regions.size,drawCalls:this.gpu.info.render.calls,geometries:this.gpu.info.memory.geometries,textures:this.gpu.info.memory.textures,fps:Math.round(this.fps||0),citizens:this.getCity().citizens.length,sharedMaterials:12,camera:{target:this.target.toArray(),distance:this.distance,yaw:this.yaw,polar:this.polar},night:this.night,activeActors:this.getCity().citizens.filter(c=>c.journey||c.state==='waiting-bus').length+this.getCity().vehicles.filter(v=>v.kind==='bus'&&v.busPhase!=='depot').length,visibleActors:this.visibleActors||0,renderedActors:this.renderedActors||0,visibleSignals:this.visibleSignals||0,actorBudget:actorBudget(this.getCity().citizens.length,this.quality,this.width<600)};}
+  dispose(){this.dead=true;cancelAnimationFrame(this.raf);this.view.removeEventListener('webglcontextlost',this.contextLost);for(const r of this.regions.values()){this.removeRegion(r);r.ground.geometry.dispose();r.water.geometry.dispose();}for(const m of this.actorMeshes.values())m.dispose();for(const m of this.signalMeshes.values()){m.dispose();m.material.dispose();}Object.values(this.geometries).forEach(g=>g.dispose());for(const m of [this.material,this.tileMaterial,this.metalMaterial,this.lampMaterial,this.groundMaterial,this.windowMaterial,this.waterMaterial,this.selection.material])m.dispose();this.selection.geometry.dispose();for(const m of this.ghostGroup.children)m.dispose();this.ghostMaterial.dispose();this.gpu.dispose();this.gpu.forceContextLoss();}
 }

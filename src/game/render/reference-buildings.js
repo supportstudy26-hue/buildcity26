@@ -1,25 +1,29 @@
 // Original solid geometry reconstructed from the supplied front/side references.
 // All parts are instanced shared primitives; no PNG planes and no extra WebGL loop.
 export function referenceBuildingParts(design,t,cx,cz,base,overlay,tile){
- const parts=[],cream=overlay||'#eadcc0',teal=overlay||'#4a9494',roof='#ba6546',dark='#496d73';
- const add=(shape,x,y,z,w,h,d,color,detail=false,role=null)=>parts.push({shape,position:[cx+x,base+y,cz+z],scale:[w,h,d],color:overlay||color,detail,role,tile});
+ const parts=[],cream=overlay||design.wall||'#eadcc0',teal=overlay||design.accent||'#4a9494',roof=design.roofColor||'#ba6546',dark='#496d73';
+ const add=(shape,x,y,z,w,h,d,color,detail=false,role=null)=>parts.push({shape,position:[cx+x,base+y,cz+z],scale:[w,h,d],color:overlay||color,detail,role,material:role?.includes('roof')?'tile':role?.includes('tank')||role==='equipment'||role?.includes('rail')?'metal':shape==='window'?'glass':role==='foliage'?'leaf':'concrete',tile});
  const box=(x,y,z,w,h,d,color=cream,detail=false,role=null)=>add('box',x,y,z,w,h,d,color,detail,role);
- const window=(x,y,z,w,h,d)=>{box(x,y,z,w+.25,h+.25,d+.08,cream,true,'window-frame');add('window',x,y,z+.05,w,h,d,'#91c6c4',true,'window');};
+ const window=(x,y,z,w,h,d)=>{box(x,y,z,w+.25,h+.25,d+.08,cream,true,'window-frame');add('window',x+(d>w?Math.sign(x)*.06:0),y,z+(w>d?Math.sign(z)*.06:0),w,h,d,'#91c6c4',true,'window');};
  const planter=(x,z,w=1.5,y=.7)=>{box(x,y,z,w,.6,.65,'#b89067',true,'planter');add('ico',x,y+.6,z,w,.9,.9,'#77965b',true,'foliage');};
  const tank=(x,y,z)=>{add('cylinder',x,y,z,1.5,1.8,1.5,'#9daeb0',false,'roof-tank');add('cylinder',x,y+.97,z,1.5,.14,1.5,'#ced2c3',true);};
  const awning=(x,y,z,w,d,color=teal)=>{box(x,y,z,w,.22,d,color,false,'awning');for(let j=0;j<5;j++)box(x-w/2+(j+.5)*w/5,y+.14,z,w/10,.08,d,'#f4e3b8',true,'awning-stripe');box(x,y-.25,z+d/2,w,.55,.12,color,true);};
- box(0,.1,0,18,.2,18,'#c9c4b1',false,'plinth');
+ box(0,.1,0,18,.2,18,'#c8cec0',false,'plinth');
+ // A continuous public-facing entry strip makes each footprint read as a lot,
+ // not a box floating on grass. Fine edge trim disappears with the normal LOD.
+ box(0,.24,8.35,18,.08,1.3,'#e4dfce',false,'entry-paving');
+ box(0,.33,8.9,18,.12,.18,'#f1e9d8',true,'entry-edge');
  if(design.id==='townhouse'){
   const floors=t.development?.version===1?3+(t.level-1):t.level===1?3:t.level===2?4:6,h=floors*3;
   for(let j=0;j<3;j++){
-   const x=(j-1)*4.8,col=overlay||['#e9d19c','#b5d5d4','#e6d5bd'][j];
-   box(x,h/2+.2,-.8,4.6,h,11.4,col,false,'row-house');
+   const x=(j-1)*4.8,col=overlay||[cream,'#b5d5d4','#e6d5bd'][j];
+   box(x,h/2+.2,-.8,4.6,h,11.4,col,false,'row-house');box(x+.75,1.55,5.1,1.25,2.65,.18,'#55756f',false,'entry-door');
    box(x,h+.42,-.8,4.85,.4,11.7,col,false,'cornice');
    // Three separate tiled roof pitches and usable roof terraces are visible when orbiting.
    add('gable',x,h+1.15,1.3,4.4,1.7,6.3,roof,false,'tile-roof');
    box(x,h+.75,-4.3,4.6,1.1,.22,col,false,'parapet');tank(x+.6,h+1.3,-3.8);
    for(let f=1;f<floors;f++){
-    const y=f*3+1.55;window(x,y,4.97,2.9,1.8,.16);
+    const y=f*3+1.55;window(x,y,4.97,2.9,1.8,.16);window(x,y,-6.55,2.5,1.5,.16);
     box(x,f*3+.17,5.55,4.4,.22,1.3,col,false,'balcony-slab');
     box(x,f*3+.78,6.18,4.1,.18,.12,dark,true,'balcony-rail');
     for(const side of [-1,1])box(x+side*1.9,f*3+.65,5.75,.12,1,1.1,dark,true,'balcony-rail');
@@ -66,7 +70,7 @@ export function referenceBuildingParts(design,t,cx,cz,base,overlay,tile){
   }else{
    box(villa?-1:0,h/2+.2,-.8,villa?10:12.5,h,10.4,cream,false,'house');
    add('gable',villa?-1:0,h+1.25,-.8,villa?10.8:13.3,2.5,11.2,roof,false,'tile-roof');
-   window(villa?-1:0,2.4,4.48,7.4,2.7,.16);awning(villa?-1:0,3.7,5.65,10.6,2.1,'#8b9f82');
+   window(villa?-1:0,2.4,4.48,7.4,2.7,.16);box(villa?-2.2:-1.7,1.7,4.67,1.4,2.85,.18,'#55796f',false,'entry-door');window(villa?-1:0,2.4,-6.08,5,1.7,.16);window(villa?-6.08:-6.33,2.4,-1,.16,1.7,5);awning(villa?-1:0,3.7,5.65,10.6,2.1,'#8b9f82');
    for(const x of [-4.8,4.1])box(x,1.9,6.1,.3,3.8,.3,cream,false,'porch-column');
    if(villa){box(4,2.7,-2.6,6,5.4,6.8,'#e8c7a4',false,'villa-wing');add('gable',4,6.4,-2.6,6.6,2,7.4,roof);window(4,2.7,.88,4.5,2.6,.15);box(-5,.35,6.8,5,.4,2.2,'#839a71',false,'garden');}
    else{box(-5.1,h+1.6,-3.5,.6,3.6,.6,cream,false,'chimney');planter(-6.9,5.5,1.6);}
@@ -76,15 +80,16 @@ export function referenceBuildingParts(design,t,cx,cz,base,overlay,tile){
   return parts;
  }
  if(['terraced-apartment','twin-apartment','balcony-apartment'].includes(design.id)){
-  const floors=Math.max(4,t.level+1),h=floors*3.1;
+  const floors=(design.id==='twin-apartment'?8:design.id==='balcony-apartment'?6:4)+Math.max(0,t.level-1),h=floors*3.1;
   box(0,1.6,0,14,3.2,13,cream,false,'apartment-podium');
   const wings=design.id==='twin-apartment'?[[-3.7,0,5.5,h,10],[3.7,0,5.5,h*.85,10]]:design.id==='terraced-apartment'?[[0,0,13,h*.65,12],[-1,-1,9,h,9]]:[[0,0,11.5,h,12.5]];
   for(const [x,z,w,wh,d] of wings){box(x,wh/2+3,z,w,wh,d,cream,false,'apartment-wing');box(x,wh+3.25,z,w+.5,.5,d+.5,'#82aaa2',false,'roof-terrace');tank(x-1.2,wh+4.5,z-2);
-   for(let f=0;f<Math.floor(wh/3.1);f++){const y=4.7+f*3.1;window(x,y,z+d/2+.07,w*.72,1.7,.16);window(x+w/2+.07,y,z,.16,1.7,d*.7);
-    box(x,y-.9,z+d/2+.7,w*.92,.24,1.4,cream,false,'balcony');box(x,y-.4,z+d/2+1.33,w*.9,.6,.12,'#649b99',true,'balcony-rail');planter(x-w*.3,z+d/2+1.1,1.1,y-.7);
+   add('window',x,wh/2+3,z-d/2-.08,w*.7,wh-1,.16,'#91c6c4',true,'rear-window');add('window',x-w/2-.08,wh/2+3,z,.16,wh-1,d*.7,'#91c6c4',true,'side-window');
+   for(let f=0;f<Math.floor(wh/3.1);f++){const y=4.7+f*3.1;window(x,y,z+d/2+.07,w*.72,1.7,.16);add('window',x+w/2+.08,y,z,.16,1.7,d*.7,'#91c6c4',true,'window');
+    box(x,y-.9,z+d/2+.7,w*.92,.24,1.4,cream,false,'balcony');box(x,y-.4,z+d/2+1.33,w*.9,.6,.12,'#649b99',true,'balcony-rail');if(f%2===0)planter(x-w*.3,z+d/2+1.1,1.1,y-.7);
    }
   }
-  window(0,1.7,6.57,8,2.6,.16);awning(0,3,7.2,9,1.8);for(const x of [-7.8,7.8])planter(x,7,1.5);return parts;
+  window(0,1.7,6.57,8,2.6,.16);box(0,1.5,6.78,1.8,2.7,.16,'#426b6c',false,'lobby-door');awning(0,3,7.2,9,1.8);for(const x of [-7.8,7.8])planter(x,7,1.5);return parts;
  }
  if(design.id==='market-hall'){
   box(0,2.3,-.5,14,4.6,12,cream,false,'market-hall');for(const x of [-3.6,3.6])add('gable',x,5.7,-.5,7.5,2.2,12.8,roof,false,'market-roof');
@@ -93,7 +98,7 @@ export function referenceBuildingParts(design,t,cx,cz,base,overlay,tile){
  }
  if(design.id==='glass-office'){
   const h=13+(t.level-1)*3;box(0,h/2+.2,-.5,11,h,11,'#d6d6bb',false,'office-core');
-  window(0,h/2,5.09,9.8,h-1,.2);window(5.59,h/2,-.5,.2,h-1,9.8);
+  window(0,h/2,5.09,9.8,h-1,.2);window(5.59,h/2,-.5,.2,h-1,9.8);window(0,h/2,-6.08,8.6,h-2,.18);window(-5.59,h/2,-.5,.18,h-2,8.6);box(0,1.65,5.38,2.6,3,.2,'#456f74',false,'office-entry');
   for(let f=1;f<h/3;f++){box(0,f*3,5.25,11,.2,.25,cream,false,'floor-band');box(5.75,f*3,-.5,.25,.2,11,cream,false,'floor-band');}
   for(const x of [-5,-1.7,1.7,5])box(x,h/2,5.27,.19,h,.25,cream,true,'facade-mullion');
   box(0,h+.4,-.5,11.5,.5,11.5,cream);box(-1,h+1.4,-1,6,1.5,6,'#92a59e');awning(0,3.3,6.5,7,2.3,teal);for(const x of [-6.8,6.8])planter(x,6,2);return parts;

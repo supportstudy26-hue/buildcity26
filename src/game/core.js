@@ -1,3 +1,7 @@
+import {LANDMARKS} from '../config/landmarks.js';
+import {ROAD_PROFILES,DIRECTION_VECTORS} from '../config/road-profiles.js';
+import {isJunction} from './systems/junctions.js';
+import {decodeCity} from '../services/city-codec.js';
 import {placementQuote} from './systems/placement.js';
 import {weatherState,setWeatherMode,WEATHER_MODES} from './systems/weather.js';
 import {PRIVATE_DESIGNS,privateBuildPrice,residentCapacity,jobsCapacity,MAINTENANCE_FACTORS,capacityFactor} from '../config/building-economy.js';
@@ -54,12 +58,14 @@ export function analyze(s){
   let happySum=0,pollutionSum=0,occupied=0;
   const workforce=Math.floor(pop*.55);const employment=workforce?Math.min(1,jobs/workforce):1;
   const roadCount=s.tiles.filter(isRoad).length;
+  const landscape=s.tiles.flatMap((a,n)=>LANDMARKS[a.kind]&&a.active?[{n,range:LANDMARKS[a.kind].range,amenity:LANDMARKS[a.kind].amenity}]:[]);
   s.network={connected,services,roadAt};
   s.network.busLines=(s.busLines||[]).map(line=>({...line,...busRoute(s,line.stops)}));
   const traffic=analyzeTraffic(s);
   s.tiles.forEach((t,i)=>{
     if(t.kind==='residential'){
-      const h=clamp(72+Math.min(18,t.services.filter(k=>!['bus','waste','sewage'].includes(k)).length*5)+ (t.services.includes('waste')?4:-5)-t.pollution*.4-(t.garbage||0)*.1-(t.crime||0)*.15-(t.fire||0)*.3-(100-(t.health??100))*.12-(1-employment)*22-(100-traffic)*.1-Math.max(0,s.taxes.residential-10)*2-(!t.connected?28:0)-(!t.power?25:0)-(!t.water?25:0),0,100);
+      t.landscapeBonus=Math.min(6,Math.max(0,...landscape.filter(a=>distance(i,a.n)<=a.range).map(a=>a.amenity)));
+      const h=clamp(72+t.landscapeBonus+Math.min(18,t.services.filter(k=>!['bus','waste','sewage'].includes(k)).length*5)+ (t.services.includes('waste')?4:-5)-t.pollution*.4-(t.garbage||0)*.1-(t.crime||0)*.15-(t.fire||0)*.3-(100-(t.health??100))*.12-(1-employment)*22-(100-traffic)*.1-Math.max(0,s.taxes.residential-10)*2-(!t.connected?28:0)-(!t.power?25:0)-(!t.water?25:0),0,100);
       t.happiness=Math.round(h);happySum+=h*t.residents;pollutionSum+=t.pollution*t.residents;occupied+=t.residents;
     }
   });
@@ -90,19 +96,19 @@ export function place(s,x,y,kind,designId=null){
   const t=s.tiles[index(x,y)],quote=placementQuote(s,index(x,y),kind);if(!quote.ok)return quote;
   if(kind==='bulldoze'){
     const u=t.upgrade;if(u?.status==='building'){const released=Math.floor(u.price*(1-u.work/u.required))+u.reserve;if(u.payer==='city')recordCash(s,u.id+'-cancel','upgrade-cancel-refund',released,t.assetId);else{s.privateInvestment.available+=released;s.privateInvestment.projects.find(p=>p.id===u.id).price-=released;}}
-    const refund=Math.floor((t.historicalCost||0)*.25);recordCash(s,`demolish-${s.nextEntityId++}`,'salvage',refund,t.assetId);Object.assign(t,{kind:null,zone:null,level:0,residents:0,age:0,garbage:0,hazard:0,fire:0,crime:0,health:100,education:0,assetId:null,historicalCost:0,development:null,upgrade:null,blueprint:null});s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);return {ok:true,cost:-refund};
+    const refund=Math.floor((t.historicalCost||0)*.25);recordCash(s,`demolish-${s.nextEntityId++}`,'salvage',refund,t.assetId);Object.assign(t,{kind:null,zone:null,level:0,residents:0,age:0,garbage:0,hazard:0,fire:0,crime:0,health:100,education:0,assetId:null,historicalCost:0,development:null,upgrade:null,blueprint:null,roadDirection:null,junctionControl:null});s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);return {ok:true,cost:-refund};
   }
   if(t.kind||t.zone){
-    if(t.kind==='road'&&kind==='avenue'){
+    if(ROADS.includes(t.kind)&&ROADS.includes(kind)&&t.kind!==kind){
       const cost=quote.cost;
-      recordCash(s,`upgrade-${s.nextEntityId++}`,'road-upgrade',-cost,t.assetId);t.historicalCost=(t.historicalCost||0)+cost;t.kind='avenue';s.graphVersion++;analyze(s);return {ok:true,cost};
+      recordCash(s,`upgrade-${s.nextEntityId++}`,'road-upgrade',-cost,t.assetId);t.historicalCost=(t.historicalCost||0)+cost;t.kind=kind;t.footprint={width:ROAD_PROFILES[kind].width,depth:20};if(ROAD_PROFILES[kind].oneWay)t.roadDirection??='east';else delete t.roadDirection;s.graphVersion++;analyze(s);return {ok:true,cost};
     }
     return {ok:false,message:'Ô này đã có công trình. Dùng phá dỡ để thay đổi.'};
   }
   if(ZONES.includes(kind)&&(s.privateInvestment?.available??20000000)<privateBuildPrice(kind,designId))return {ok:false,message:'Chủ đầu tư không đủ vốn cho mẫu nhà này.'};
   const cost=quote.cost;
   recordCash(s,`place-${s.nextEntityId++}`,'construction-instant',-cost);t.historicalCost=cost;
-  if(ZONES.includes(kind)){t.zone=kind;t.age=0;if(designId)t.blueprint=designId;materializeBuilding(s,index(x,y));}else{t.kind=kind;t.level=1;t.assetId=entityId(s,'asset');}
+  if(ZONES.includes(kind)){t.zone=kind;t.age=0;if(designId)t.blueprint=designId;materializeBuilding(s,index(x,y));}else{t.kind=kind;t.level=1;t.assetId=entityId(s,'asset');t.footprint={width:ROAD_PROFILES[kind]?.width||14,depth:20};if(ROAD_PROFILES[kind]?.oneWay)t.roadDirection='east';}
   s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);return {ok:true,cost};
 }
 export function tick(s){
@@ -113,12 +119,13 @@ function dailyUpdate(s){
   const m=s.metrics;
   updateLegacyServices(s);
   analyze(s);
-  reconcileSociety(s,SIZE,random);
+  reconcileSociety(s,SIZE,random,{arriving:true});
   updateProgression(s,true);
   return s.metrics;
 }
-export function serialize(s){return {...foundationSnapshot(s),schemaVersion:SAVE_VERSION,mapSize:SIZE,name:s.name,money:s.money,day:s.day,taxes:{...s.taxes},seed:s.seed,milestones:[...s.milestones],loanBalance:s.loanBalance||0,budgets:{...s.budgets},busLines:(s.busLines||[]).map(l=>({id:l.id,name:l.name,stops:[...l.stops],vehicles:l.vehicles})),tiles:s.tiles.map(t=>({terrain:t.terrain,kind:t.kind,zone:t.zone,level:t.level,residents:t.residents,age:t.age,garbage:t.garbage||0,hazard:t.hazard||0,fire:t.fire||0,crime:t.crime||0,health:t.health??100,education:t.education||0,id:t.id,assetId:t.assetId??null,historicalCost:t.historicalCost||0,...(t.blueprint?{blueprint:t.blueprint}:{}),...(t.development?{development:structuredClone(t.development)}:{}),...(t.upgrade?{upgrade:structuredClone(t.upgrade)}:{}),footprint:{...t.footprint}}))};}
+export function serialize(s){return {...foundationSnapshot(s),schemaVersion:SAVE_VERSION,mapSize:SIZE,name:s.name,money:s.money,day:s.day,taxes:{...s.taxes},seed:s.seed,milestones:[...s.milestones],loanBalance:s.loanBalance||0,budgets:{...s.budgets},busLines:(s.busLines||[]).map(l=>({id:l.id,name:l.name,stops:[...l.stops],vehicles:l.vehicles})),tiles:s.tiles.map(t=>({terrain:t.terrain,kind:t.kind,zone:t.zone,level:t.level,residents:t.residents,age:t.age,garbage:t.garbage||0,hazard:t.hazard||0,fire:t.fire||0,crime:t.crime||0,health:t.health??100,education:t.education||0,id:t.id,assetId:t.assetId??null,historicalCost:t.historicalCost||0,...(t.roadDirection?{roadDirection:t.roadDirection}:{}),...(t.junctionControl?{junctionControl:t.junctionControl}:{}),...(t.blueprint?{blueprint:t.blueprint}:{}),...(t.development?{development:structuredClone(t.development)}:{}),...(t.upgrade?{upgrade:structuredClone(t.upgrade)}:{}),footprint:{...t.footprint}}))};}
 export function validateSave(raw){
+  raw=decodeCity(raw);
   if(!raw||typeof raw!=='object'||![1,2,3,4,5,SAVE_VERSION].includes(raw.schemaVersion))throw new Error('Bản lưu không tương thích với Build City 26.');
   const sourceSize=raw.schemaVersion===1?38:raw.mapSize;
   if(![38,48,SIZE].includes(sourceSize)||!Array.isArray(raw.tiles)||raw.tiles.length!==sourceSize*sourceSize)throw new Error('Bản đồ trong bản lưu không hợp lệ.');
@@ -140,8 +147,10 @@ export function validateSave(raw){
     if(Object.values(condition).some(n=>!Number.isFinite(n)||n<0||n>100))throw new Error('Tình trạng dịch vụ hoặc sự cố không hợp lệ.');
     if(t.historicalCost!=null&&(!Number.isFinite(t.historicalCost)||t.historicalCost<0))throw new Error('Nguyên giá tài sản không hợp lệ.');
     if(t.blueprint!=null&&PRIVATE_DESIGNS[t.blueprint]?.kind!==t.zone)throw new Error('Mẫu thiết kế ô đất không hợp lệ.');
+    if(t.roadDirection!=null&&(!ROAD_PROFILES[t.kind]?.oneWay||!DIRECTION_VECTORS[t.roadDirection]))throw new Error('Hướng đường một chiều không hợp lệ.');
+    if(t.junctionControl!=null&&(!ROADS.includes(t.kind)||!['signal','yield','off'].includes(t.junctionControl)))throw new Error('Điều khiển giao lộ không hợp lệ.');
     const development=validateDevelopment(t.development,t.zone),upgrade=validateUpgrade(t.upgrade,t.level);
-    return {...(development?{development}:{}),...(upgrade?{upgrade}:{}),terrain:t.terrain,kind:t.kind,zone:t.zone,level:t.level,residents:t.residents,age:t.age,garbage,...condition,id:t.id,assetId:t.assetId??null,historicalCost:t.historicalCost||0,...(t.blueprint?{blueprint:t.blueprint}:{}),...(t.development?{development:structuredClone(t.development)}:{}),...(t.upgrade?{upgrade:structuredClone(t.upgrade)}:{}),footprint:t.footprint||{width:20,depth:20}};
+    return {...(development?{development}:{}),...(upgrade?{upgrade}:{}),terrain:t.terrain,kind:t.kind,zone:t.zone,level:t.level,residents:t.residents,age:t.age,garbage,...condition,id:t.id,assetId:t.assetId??null,historicalCost:t.historicalCost||0,...(t.roadDirection?{roadDirection:t.roadDirection}:{}),...(t.junctionControl?{junctionControl:t.junctionControl}:{}),...(t.blueprint?{blueprint:t.blueprint}:{}),...(t.development?{development:structuredClone(t.development)}:{}),...(t.upgrade?{upgrade:structuredClone(t.upgrade)}:{}),footprint:t.footprint||{width:20,depth:20}};
   });
   validatePrivateInvestment(raw.privateInvestment,sourceTiles);if(raw.weatherMode!=null&&!WEATHER_MODES.includes(raw.weatherMode))throw new Error('Chế độ thời tiết không hợp lệ.');
   const loanBalance=raw.loanBalance??0,budgets=raw.budgets??{};
@@ -163,7 +172,7 @@ export function stepSimulation(s){
   const previous=s.day,weatherWindow=weatherState(s).window,c=clockStep(s);if(weatherState(s).window!==weatherWindow)analyze(s);
   if(c.day!==previous)dailyUpdate(s);
   if(updateConstruction(s)){s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);updateProgression(s,true);}
-  if([updateDevelopment(s),updateUpgrades(s)].some(Boolean)){s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);updateProgression(s,true);}
+  if([updateDevelopment(s),updateUpgrades(s)].some(Boolean)){s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random,{arriving:true});updateProgression(s,true);}
   updateCitizens(s,c,route,SIZE);updateVehicles(s);updateProgression(s);
   return s.clock.seconds;
 }
@@ -175,6 +184,8 @@ export function executeCommand(s,command){
   switch(command.type){
     case 'playback':result=setPlayback(s,p);break;
     case 'place':result=place(s,p.x,p.y,p.kind,p.designId);break;
+    case 'road-direction':{const t=s.tiles[p.tile];result=Number.isInteger(p.tile)&&ROAD_PROFILES[t?.kind]?.oneWay&&DIRECTION_VECTORS[p.direction]?(t.roadDirection=p.direction,s.graphVersion++,analyze(s),{ok:true}):{ok:false,message:'Chọn đoạn đường một chiều và hướng hợp lệ.'};break;}
+    case 'junction-control':result=Number.isInteger(p.tile)&&isJunction(s,p.tile)&&['signal','yield','off'].includes(p.mode)?(s.tiles[p.tile].junctionControl=p.mode,s.graphVersion++,analyze(s),{ok:true}):{ok:false,message:'Chọn giao lộ đường bộ có ít nhất ba nhánh.'};break;
     case 'weather':result=setWeatherMode(s,p.mode);if(result.ok)analyze(s);break;
     case 'upgrade-building':result=Number.isInteger(p.tile)&&p.tile>=0&&p.tile<s.tiles.length?startUpgrade(s,p.tile,p.payer):{ok:false,message:'Ô đất không hợp lệ.'};break;
     case 'construct':{const check=inside(p.x,p.y)?geographyBuildRule(s,index(p.x,p.y),p.kind):{ok:false,message:'Ô đất nằm ngoài bản đồ.'};if(!check.ok){result=check;break;}result=CATALOG[p.kind]?.group==='parks'&&inside(p.x,p.y)&&!s.tiles[index(p.x,p.y)].kind&&!s.tiles[index(p.x,p.y)].zone&&s.tiles[index(p.x,p.y)].terrain!=='water'?startConstruction(s,index(p.x,p.y),p.kind,Math.ceil(CATALOG[p.kind].cost*check.factor),900/DAY_SECONDS,true):{ok:false,message:'Chọn công viên trên ô đất trống.'};if(result.ok){s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);updateProgression(s,true);}break;}

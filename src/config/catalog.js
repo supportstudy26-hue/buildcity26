@@ -1,3 +1,5 @@
+import {LANDMARKS,landmarkDescription} from './landmarks.js';
+import {ROAD_PROFILES,ROAD_KINDS,profilePrice,roadDescription} from './road-profiles.js';
 import { LEGACY_BC_FACTOR } from './simulation.js';
 import {ZONE_PERMIT_BC,roadPrice} from './building-economy.js';
 export const CATALOG = {
@@ -43,7 +45,9 @@ for(const kind of ['road','avenue'])CATALOG[kind].cost=roadPrice(kind);
 CATALOG.residential.description='Phí cấp phép 2 BC/m² đất, không phải giá mua nhà. Mẫu nhà 3D xuất hiện ngay khi đặt, vốn xây do chủ đầu tư trả. Cần đường, điện, nước và nước thải để hoạt động.';
 CATALOG.commercial.description='Phí cấp phép đất; mỗi mẫu cửa hàng có giá xây theo diện tích sàn riêng do chủ đầu tư trả. Xuất hiện ngay khi đặt; cần đường, điện, nước và nước thải để hoạt động.';
 CATALOG.industrial.description='Phí cấp phép đất; giá xưởng gồm diện tích sàn và thiết bị, do chủ đầu tư trả. Xuất hiện ngay khi đặt; cần tiện ích để hoạt động; gây ô nhiễm nên đặt xa nhà ở.';
+for(const [kind,p] of Object.entries(ROAD_PROFILES))CATALOG[kind]={...CATALOG[kind],name:p.name,cost:profilePrice(kind),upkeep:p.upkeep,color:'#536a6c',group:'roads',description:roadDescription(kind)};
+for(const [kind,d] of Object.entries(LANDMARKS))CATALOG[kind]={...d,color:'#9bba8e',group:'parks',description:landmarkDescription(kind),decorative:true};
 export const serviceKind=kind=>CATALOG[kind]?.service||kind;
 export const BUILDINGS = Object.keys(CATALOG).filter(k=>['utilities','services','parks','transport'].includes(CATALOG[k].group));
 export const ZONES = ['residential','commercial','industrial'];
-export const ROADS = ['road','avenue'];
+export const ROADS = ROAD_KINDS;

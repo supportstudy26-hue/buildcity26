@@ -1,0 +1,330 @@
+{
+  "metrics": {
+    "map_selected": {
+      "nameVi": "Đã chọn tọa độ gốc khu chơi",
+      "unit": "cờ 0/1",
+      "scope": "snapshot"
+    },
+    "road_length_m": {
+      "nameVi": "Chiều dài đường hợp lệ, nối mạng",
+      "unit": "m",
+      "scope": "snapshot"
+    },
+    "completed_buildings": {
+      "nameVi": "Công trình xây xong, chưa bắt buộc vận hành",
+      "unit": "công trình",
+      "scope": "snapshot"
+    },
+    "active_buildings": {
+      "nameVi": "Công trình đủ điều kiện và đang hoạt động",
+      "unit": "công trình",
+      "scope": "snapshot"
+    },
+    "population": {
+      "nameVi": "Cư dân thực đang cư trú",
+      "unit": "người",
+      "scope": "snapshot"
+    },
+    "power_coverage_pct": {
+      "nameVi": "Công trình có nhu cầu được cấp điện đủ",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "water_coverage_pct": {
+      "nameVi": "Công trình có nhu cầu được cấp nước đủ",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "sewage_treated_pct": {
+      "nameVi": "Lượng nước thải phát sinh được xử lý",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "waste_collected_pct": {
+      "nameVi": "Lượng rác phát sinh được thu gom",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "recycling_pct": {
+      "nameVi": "Lượng rác thu gom được tái chế",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "happiness_pct": {
+      "nameVi": "Mức hài lòng cư dân, bình quân có trọng số",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "employment_pct": {
+      "nameVi": "Lao động muốn làm việc đã có việc",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "school_access_pct": {
+      "nameVi": "Học sinh đủ tuổi có chỗ học và đường tới trường",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "health_access_pct": {
+      "nameVi": "Dân có khả năng tiếp cận cơ sở y tế còn công suất",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "fire_access_pct": {
+      "nameVi": "Công trình có khả năng được cứu hỏa tiếp cận",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "security_access_pct": {
+      "nameVi": "Dân được dịch vụ an ninh đủ công suất phục vụ",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "telecom_coverage_pct": {
+      "nameVi": "Công trình có kết nối viễn thông đáp ứng nhu cầu",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "mail_access_pct": {
+      "nameVi": "Dân có dịch vụ bưu chính tiếp cận được",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "social_access_pct": {
+      "nameVi": "Hộ đủ điều kiện được tiếp cận phúc lợi",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "eldercare_access_pct": {
+      "nameVi": "Người cao tuổi có nhu cầu được chăm sóc",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "connected_buildings_pct": {
+      "nameVi": "Công trình cần đường có tuyến vào hợp lệ",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "traffic_flow_pct": {
+      "nameVi": "Điểm lưu thông theo công thức công bố, càng cao càng tốt",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "walkable_housing_pct": {
+      "nameVi": "Hộ có tuyến đi bộ hợp lệ tới ít nhất một tiện ích",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "public_transit_share_pct": {
+      "nameVi": "Tỷ lệ chuyến cư dân hoàn thành bằng phương tiện công cộng",
+      "unit": "%",
+      "scope": "window"
+    },
+    "congestion_minutes": {
+      "nameVi": "Thời gian trễ bình quân mỗi chuyến trong cửa sổ",
+      "unit": "phút game",
+      "scope": "window"
+    },
+    "commute_minutes": {
+      "nameVi": "Thời gian đi làm bình quân mỗi chuyến hoàn thành",
+      "unit": "phút game",
+      "scope": "window"
+    },
+    "operating_profit_per_game_minute": {
+      "nameVi": "Thu vận hành trừ chi vận hành, không tính thưởng/bán tài sản",
+      "unit": "tiền game/phút game",
+      "scope": "window"
+    },
+    "treasury": {
+      "nameVi": "Tiền khả dụng của thành phố",
+      "unit": "tiền game",
+      "scope": "snapshot"
+    },
+    "debt": {
+      "nameVi": "Dư nợ thành phố",
+      "unit": "tiền game",
+      "scope": "snapshot"
+    },
+    "district_count": {
+      "nameVi": "Quận/khu đã đặt tên, có diện tích và công trình cư trú",
+      "unit": "quận",
+      "scope": "snapshot"
+    },
+    "active_routes": {
+      "nameVi": "Tuyến có mạng hợp lệ, phương tiện và điểm dừng hoạt động",
+      "unit": "tuyến",
+      "scope": "snapshot"
+    },
+    "parking_capacity": {
+      "nameVi": "Chỗ đỗ xe hợp lệ đang phục vụ",
+      "unit": "chỗ",
+      "scope": "snapshot"
+    },
+    "healthy_trees": {
+      "nameVi": "Cây sống trên vị trí hợp lệ, không nằm trong đường/nhà",
+      "unit": "cây",
+      "scope": "snapshot"
+    },
+    "max_air_pollution_pct": {
+      "nameVi": "Chỉ số ô nhiễm không khí cao nhất tại ô có dân cư",
+      "unit": "% chuẩn hóa",
+      "scope": "snapshot"
+    },
+    "max_noise_pct": {
+      "nameVi": "Chỉ số tiếng ồn cao nhất tại ô có dân cư",
+      "unit": "% chuẩn hóa",
+      "scope": "snapshot"
+    },
+    "power_reserve_pct": {
+      "nameVi": "Công suất điện khả dụng vượt tải, tính theo tải",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "water_reserve_pct": {
+      "nameVi": "Công suất nước khả dụng vượt nhu cầu, tính theo nhu cầu",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "renewable_share_pct": {
+      "nameVi": "Tỷ lệ điện thực phát từ nguồn tái tạo",
+      "unit": "%",
+      "scope": "window"
+    },
+    "emergency_response_minutes": {
+      "nameVi": "Thời gian đáp ứng bình quân job cứu hộ hoàn thành",
+      "unit": "phút game",
+      "scope": "window"
+    },
+    "education_completion_pct": {
+      "nameVi": "Học sinh trong kỳ mô phỏng đủ điều kiện hoàn tất chương trình",
+      "unit": "%",
+      "scope": "window"
+    },
+    "supply_fulfillment_pct": {
+      "nameVi": "Đơn hàng đến hạn được giao đủ trong cửa sổ",
+      "unit": "%",
+      "scope": "window"
+    },
+    "tourism_occupancy_pct": {
+      "nameVi": "Phòng lưu trú đang được khách thật sử dụng",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "retention_capacity": {
+      "nameVi": "Dung tích hồ điều hòa được kết nối hợp lệ",
+      "unit": "m³",
+      "scope": "snapshot"
+    },
+    "drainage_capacity": {
+      "nameVi": "Công suất thoát nước hợp lệ",
+      "unit": "m³/phút game",
+      "scope": "snapshot"
+    },
+    "flood_risk_housing_pct": {
+      "nameVi": "Hộ thuộc vùng nguy cơ ngập theo mô hình đã công bố",
+      "unit": "%",
+      "scope": "snapshot"
+    },
+    "completed_jobs": {
+      "nameVi": "Job phục vụ/vận chuyển hoàn thành và áp dụng kết quả thành công",
+      "unit": "job",
+      "scope": "counter_since_stage_activation"
+    },
+    "passenger_trips": {
+      "nameVi": "Chuyến hành khách hoàn thành có nguồn/đích và hành khách thật",
+      "unit": "chuyến",
+      "scope": "counter_since_stage_activation"
+    },
+    "delivered_units": {
+      "nameVi": "Hàng giao đủ và được bên nhận chấp nhận",
+      "unit": "đơn vị hàng",
+      "scope": "counter_since_stage_activation"
+    },
+    "upgrades_completed": {
+      "nameVi": "Nâng cấp hoàn tất, giữ công trình/tier hợp lệ",
+      "unit": "lần",
+      "scope": "counter_since_stage_activation"
+    },
+    "visitors_served": {
+      "nameVi": "Lượt khách thật đã sử dụng cơ sở/điểm đến",
+      "unit": "lượt",
+      "scope": "counter_since_stage_activation"
+    },
+    "verified_save_count": {
+      "nameVi": "Lần lưu được backend chấp nhận theo revision của chủ thành phố",
+      "unit": "lần",
+      "scope": "counter_since_stage_activation"
+    },
+    "transit_transfer_trips": {
+      "nameVi": "Chuyến hoàn thành có chuyển ít nhất hai tuyến/phương thức công cộng",
+      "unit": "chuyến",
+      "scope": "counter_since_stage_activation"
+    },
+    "research_completed": {
+      "nameVi": "Dự án nghiên cứu hoàn tất, đã chi đủ ngân sách và thời gian",
+      "unit": "dự án",
+      "scope": "counter_since_stage_activation"
+    },
+    "eligible_social_households": {
+      "nameVi": "Số hộ hiện đủ điều kiện nhận phúc lợi",
+      "unit": "hộ",
+      "scope": "snapshot"
+    }
+  },
+  "buildingKinds": {
+    "house": "nhà ở",
+    "shop": "cửa hàng",
+    "power_source": "nguồn điện",
+    "pump": "trạm cấp nước",
+    "waste_depot": "điểm thu gom rác",
+    "sewer_outlet": "hạ tầng thoát nước thải",
+    "primary_school": "trường tiểu học",
+    "clinic": "phòng khám",
+    "fire_station": "trạm cứu hỏa",
+    "police_station": "trạm an ninh",
+    "park": "công viên",
+    "bus_depot": "bến/đề-pô bus",
+    "bus_stop": "điểm dừng bus",
+    "warehouse": "kho hàng",
+    "farm": "nông trại",
+    "food_factory": "nhà máy thực phẩm",
+    "power_substation": "trạm biến áp",
+    "water_treatment": "nhà máy xử lý nước",
+    "hospital": "bệnh viện",
+    "secondary_school": "trường trung học",
+    "vocational_school": "trường nghề",
+    "office": "văn phòng",
+    "tram_depot": "đề-pô tram",
+    "tram_stop": "điểm dừng tram",
+    "library": "thư viện",
+    "cultural_center": "trung tâm văn hóa",
+    "sports_center": "trung tâm thể thao",
+    "industrial_plant": "nhà máy công nghiệp",
+    "telecom_hub": "trạm viễn thông",
+    "post_office": "bưu cục",
+    "mail_sorting_center": "trung tâm phân loại thư",
+    "social_center": "trung tâm phúc lợi",
+    "elderly_care": "cơ sở chăm sóc cao tuổi",
+    "cemetery": "cơ sở hậu sự",
+    "clean_power": "nguồn điện tái tạo",
+    "retention_basin": "hồ điều hòa",
+    "drainage_pump": "trạm thoát nước",
+    "tourism_attraction": "điểm du lịch",
+    "hotel": "cơ sở lưu trú",
+    "passenger_station": "ga hành khách",
+    "freight_station": "ga hàng hóa",
+    "metro_station": "ga metro",
+    "metro_depot": "đề-pô metro",
+    "intermodal_hub": "đầu mối chuyển tuyến",
+    "harbor": "cảng biển",
+    "dry_port": "cảng cạn",
+    "airport": "sân bay",
+    "heliport": "bãi đáp trực thăng",
+    "cargo_terminal": "nhà ga hàng hóa",
+    "university": "đại học",
+    "research_center": "trung tâm nghiên cứu",
+    "monument": "công trình biểu tượng",
+    "recycling_center": "trung tâm tái chế",
+    "parking": "bãi đỗ xe"
+  }
+}

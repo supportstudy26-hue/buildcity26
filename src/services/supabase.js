@@ -1,3 +1,4 @@
+import {encodeCity,decodeCity} from './city-codec.js';
 import { createClient } from '@supabase/supabase-js';
 import { publicKey, projectURL } from './auth.js';
 const url=projectURL(import.meta.env.VITE_SUPABASE_URL?.trim());
@@ -18,8 +19,8 @@ export function authMessage(error){
   return 'Không hoàn tất được thao tác. '+m;
 }
 export async function listCities(){const {data,error}=await supabase.from('cities').select('id,name,revision,updated_at').order('updated_at',{ascending:false});if(error)throw error;return data;}
-export async function loadCity(id){const {data,error}=await supabase.from('cities').select('*').eq('id',id).single();if(error)throw error;return data;}
+export async function loadCity(id){const {data,error}=await supabase.from('cities').select('*').eq('id',id).single();if(error)throw error;return {...data,state:decodeCity(data.state)};}
 export async function saveCity({id,name,state,revision=0,requestId}){
-  const {data,error}=await supabase.rpc('save_city_v2',{p_city_id:id,p_name:name,p_state:state,p_expected_revision:revision,p_request_id:requestId});if(error)throw error;const row=Array.isArray(data)?data[0]:data;if(!row)throw new Error('Không nhận được bản lưu từ máy chủ.');return row;
+  const {data,error}=await supabase.rpc('save_city_v2',{p_city_id:id,p_name:name,p_state:encodeCity(state),p_expected_revision:revision,p_request_id:requestId});if(error)throw error;const row=Array.isArray(data)?data[0]:data;if(!row)throw new Error('Không nhận được bản lưu từ máy chủ.');return row;
 }
 export async function deleteCity(id,revision){const {error}=await supabase.rpc('delete_city_v2',{p_city_id:id,p_expected_revision:revision});if(error)throw error;}
