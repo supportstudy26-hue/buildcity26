@@ -38,3 +38,5 @@ Pack quốc gia **không có DEM, độ sâu biển, đường/sông hay land ma
 Nhãn hành chính Hoàng Sa/Trường Sa theo hệ thống Việt Nam tại mốc 2025; chủ quyền có tranh chấp quốc tế. Không mô tả kiểm soát thực địa, không vẽ EEZ/lãnh hải từ bbox. Thiếu dữ liệu cần bổ sung theo pipeline, không cần API key chỉ để xem bản đồ.
 
 Tình trạng GitHub/Vercel phải dựa vào commit/push và deployment Ready thực tế; không lấy `npm run build` làm chứng nhận deployment.
+
+Sau khi rebuild localhost trong lúc tab cũ còn mở, gặp lỗi dynamic import trỏ chunk đã đổi tên. Đã bổ sung thông báo và nút **Lưu tiến trình & tải lại game**, chỉ reload khi lưu local thành công. Bản build mới được kiểm lại sau tải lại; không âm thầm xóa save. Service worker hiện cache khu DEM cũ; dữ liệu quốc gia mới chưa có cache offline. Bản lưu đã mở vẫn giữ raster địa hình để chơi offline.
