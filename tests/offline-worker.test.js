@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFile} from 'node:fs/promises';
 const template=await readFile(new URL('../scripts/offline-worker.template.js',import.meta.url),'utf8');
-function harness(){
+function harness(payload){
   const listeners={},stores=new Map();let offline=false;
   const url=r=>new URL(typeof r==='string'?r:r.url,'https://game.test').href;
   const caches={keys:async()=>[...stores.keys()],delete:async key=>stores.delete(key),open:async name=>{
@@ -12,7 +12,7 @@ function harness(){
   }};
   vm.runInNewContext(template.replace('__BUILD_ID__','"test-build"').replace('__ASSET_PATHS__','["/index.html","/benchmark.html","/assets/game-123.js"]'),{
     self:{location:{origin:'https://game.test'},clients:{claim:async()=>{}},addEventListener:(name,fn)=>listeners[name]=fn},caches,URL,Response,
-    fetch:async r=>{if(offline)throw new TypeError('network lost');return new Response('PUBLIC_DATA:'+url(r));}
+    fetch:async r=>{if(offline)throw new TypeError('network lost');return new Response(payload?payload(url(r)):'PUBLIC_DATA:'+url(r));}
   });
   async function lifecycle(name){const waits=[];listeners[name]({waitUntil:p=>waits.push(p)});await Promise.all(waits);}
   async function request(path,options={}){const waits=[];let response;const req=new Request(new URL(path,'https://game.test'),options);listeners.fetch({request:req,respondWith:p=>response=p,waitUntil:p=>waits.push(p)});if(!response)return null;const result=await response;await Promise.all(waits);return result;}
@@ -29,6 +29,17 @@ test('public cache opens downloaded geography offline and refuses uncached regio
   assert.equal(await h.request('/assets/game-123.js?token=private'),null);
   assert.equal(await h.request(path,{method:'POST',body:'private'}),null);
   assert.equal(await(await h.request('/assets/game-123.js')).text(),'GAME_CODE');
+});
+test('national light data is cached after use; full GIS, private and oversized responses are excluded',async()=>{
+ const h=harness();const base='/geodata/vn-map-20250701-v1/';
+ h.setOffline(true);assert.equal((await h.request(base+'vietnam-34-light.geojson')).status,503);h.setOffline(false);
+ for(const f of ['manifest.json','provinces.json','islands.json','old-63-to-new-34.csv','vietnam-34-light.geojson'])assert.equal((await h.request(base+f)).status,200);
+ assert.equal(h.stores.get('bc26-public-vnmap-20250701-v1').size,5);
+ h.setOffline(true);for(const f of ['manifest.json','provinces.json','islands.json','old-63-to-new-34.csv','vietnam-34-light.geojson'])assert.match(await(await h.request(base+f)).text(),/PUBLIC_DATA/);
+ assert.equal(await h.request(base+'vietnam-34-full.geojson'),null);
+ assert.equal(await h.request(base+'provinces.json?token=secret'),null);
+ assert.equal(await h.request(base+'provinces.json',{headers:{authorization:'Bearer private'}}),null);
+ const huge=harness(()=> 'x'.repeat(2_000_001));await huge.request(base+'vietnam-34-light.geojson');huge.setOffline(true);assert.equal((await huge.request(base+'vietnam-34-light.geojson')).status,503);
 });
 test('disk geography cache retains metadata and evicts older downloaded regions after four packages',async()=>{
   const h=harness();await h.lifecycle('install');

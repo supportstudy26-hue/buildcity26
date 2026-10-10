@@ -6,6 +6,9 @@ const GEO_CACHE = 'bc26-public-geodata-v1';
 const GEO_LIMIT = 4;
 const GEO_BUDGET = 6_000_000;
 const META_PATHS = ['manifest.json', 'catalog.json', 'boundaries.geojson', 'archipelagos.json'];
+const NATIONAL_BASE = '/geodata/vn-map-20250701-v1/';
+const NATIONAL_CACHE = 'bc26-public-vnmap-20250701-v1';
+const NATIONAL_FILES = {'manifest.json':100_000,'provinces.json':100_000,'islands.json':500_000,'old-63-to-new-34.csv':100_000,'vietnam-34-light.geojson':2_000_000};
 let cacheQueue = Promise.resolve();
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(APP_CACHE).then(cache => cache.addAll(ASSETS)));
@@ -34,9 +37,30 @@ async function retainGeo(request, response, file) {
     const key = regions.shift(); total -= (await (await cache.match(key)).arrayBuffer()).byteLength; await cache.delete(key);
   }
 }
+async function retainNational(request, response, file) {
+  const limit=NATIONAL_FILES[file];
+  if(Number(response.headers.get('content-length'))>limit)return;
+  const reader=response.body.getReader(),chunks=[];let size=0;
+  try{for(;;){const {done,value}=await reader.read();if(done)break;size+=value.length;if(size>limit){reader.cancel().catch(()=>{});return;}chunks.push(value);}}finally{reader.releaseLock();}
+  const payload=new Uint8Array(size);let offset=0;for(const chunk of chunks){payload.set(chunk,offset);offset+=chunk.length;}
+  const cache=await caches.open(NATIONAL_CACHE);
+  await cache.put(request,new Response(payload,{status:200,headers:response.headers}));
+}
 self.addEventListener('fetch', event => {
   const request = event.request, url = new URL(request.url);
   if (request.method !== 'GET' || url.origin !== self.location.origin || request.headers.has('authorization') || url.search) return;
+  const national=url.pathname.startsWith(NATIONAL_BASE)?url.pathname.slice(NATIONAL_BASE.length):null;
+  if(Object.hasOwn(NATIONAL_FILES,national)){
+    event.respondWith((async()=>{
+      try{
+        const response=await fetch(request);
+        if(response.ok){const copy=response.clone();cacheQueue=cacheQueue.catch(()=>{}).then(()=>retainNational(request,copy,national));event.waitUntil(cacheQueue);return response;}
+        return await(await caches.open(NATIONAL_CACHE)).match(request)||response;
+      }catch{
+        return await(await caches.open(NATIONAL_CACHE)).match(request)||new Response('Bản đồ quốc gia chưa tải để dùng offline.',{status:503});
+      }
+    })());return;
+  }
   const file = geoFile(url);
   if (file) {
     event.respondWith((async () => {

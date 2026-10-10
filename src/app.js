@@ -254,7 +254,7 @@ function authDialog(mode='login',notice='',draft=null){
       const fields=new FormData($('accountForm'));
       // Keep names and locality in memory; a password is cleared when switching screens.
       const next={...draft,cityName:String(fields.get('cityName')||''),username:String(fields.get('username')||'')};
-      const {showVietnamChooser}=await import('./game/geography/chooser.js');
+      let showVietnamChooser;try{({showVietnamChooser}=await import('./game/geography/chooser.js'));}catch{toast('Chưa tải được bản đồ. Thông tin đăng ký vẫn được giữ; kiểm tra kết nối hoặc mở lại game nếu vừa cập nhật.');return;}
       const restore=choice=>setTimeout(()=>authDialog('register','Đã trở lại đăng ký. Nhập mật khẩu để tiếp tục.',choice),0);
       showVietnamChooser({showModal,closeModal,onError:toast,selectionOnly:true,onCancel:()=>restore(next),onStart:pkg=>{restore({...next,regionId:pkg.region.id,placeName:pkg.region.name+' · '+pkg.region.provinceName});return true;}});
     };

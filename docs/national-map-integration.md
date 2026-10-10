@@ -39,4 +39,11 @@ Nhãn hành chính Hoàng Sa/Trường Sa theo hệ thống Việt Nam tại m�
 
 Tình trạng GitHub/Vercel phải dựa vào commit/push và deployment Ready thực tế; không lấy `npm run build` làm chứng nhận deployment.
 
-Sau khi rebuild localhost trong lúc tab cũ còn mở, gặp lỗi dynamic import trỏ chunk đã đổi tên. Đã bổ sung thông báo và nút **Lưu tiến trình & tải lại game**, chỉ reload khi lưu local thành công. Bản build mới được kiểm lại sau tải lại; không âm thầm xóa save. Service worker hiện cache khu DEM cũ; dữ liệu quốc gia mới chưa có cache offline. Bản lưu đã mở vẫn giữ raster địa hình để chơi offline.
+Sau khi rebuild localhost trong lúc tab cũ còn mở, gặp lỗi dynamic import trỏ chunk đã đổi tên. Đã bổ sung thông báo và nút **Lưu tiến trình & tải lại game**, chỉ reload khi lưu local thành công. Bản build mới được kiểm lại sau tải lại; không âm thầm xóa save. Bản online16adcf9 cache khu DEM cũ; cache quốc gia được bổ sung ở commit tiếp theo. Bản lưu đã mở vẫn giữ raster địa hình để chơi offline.
+
+## Bổ sung sau kiểm tra production
+
+- Vercel xác nhận **Ready**, commit **16adcf9**, build22s; domain `https://buildcity26.vercel.app/` mở được. Browser production đọc đủ34 vùng/1.608 component, tìm bac giang ra Bắc Ninh, Côn Đảo→TP.HCM, Hoàng Sa→Đà Nẵng, Trường Sa→Khánh Hòa; panel ghi đúng giới hạn/cấm xây. Ảnh `national-map-production.png`.
+- `scripts/offline-worker.template.js`: cache riêng5 file nhẹ/metadata/alias quốc gia sau khi người chơi yêu cầu; whitelist và giới hạn stream tối đa2,8MB tổng. Không precache GIS ở khởi động, không cache full14,1MB, auth/API, request có Authorization/query. Mất mạng chỉ dùng bản đã tải; chưa có trả503. Checksum vẫn kiểm khi chooser đọc. `tests/offline-worker.test.js`:3/3 đạt, gồm mất mạng, private/full/oversize không cache. Chưa giả lập network-offline qua trình duyệt vật lý.
+- Import chooser lỗi lúc chọn địa phương đăng ký trả thông báo và giữ form; không tạo tài khoản hay xóa tiến trình.
+- **Phân biệt bản phát hành:**16adcf9 đã push/Ready. Bản sửa tải chunk0b72ff1 và phần offline mới chỉ local; push bổ sung đã bị automatic approval review từ chối vì hết usage limit xét duyệt. Không dùng đường khác để bỏ qua approval và không tuyên bố các sửa này đã online.

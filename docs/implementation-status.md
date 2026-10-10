@@ -175,3 +175,9 @@ Push HTTPS thực thất bại vì credential helper trỏ GitHub CLI đã bị 
 - **Kiểm tra:** full 133/133 không skip; build đạt. Không có script lint/typecheck. Giữ auth/Supabase/API/RLS hiện có; chưa lấy regression tests làm bằng chứng live A/B mới. BXH/server-authoritative và các Lệnh 0–28 còn thiếu vẫn theo các mục trước, không tự đổi thành hoàn thành.
 
 - **Kiểm tra cuối bản đồ:** 4/4 national-map đạt sau chỉnh tìm kiếm/pointer cancel; build9,63s đạt, Three556,75KB còn cảnh báo chunk. Browser lưu/reload người đang đi xe buýt giữ1/60 khách và146m. Benchmark5.000 dân trung bình40,5FPS, p95frame48,8ms; render220/1.988active. Local gzip hoạt động nhưng giới hạn Supabase2MB chưa được giải quyết cho thành phố đông dân.
+
+## Tiếp tục10/10 — xác nhận bản online và cache quốc gia
+
+Commit16adcf9 đã push GitHub, Vercel Ready22s; QA domain thật đủ34 vùng/1.608 polygon, tra Bắc Giang→Bắc Ninh, ba quick-focus đảo đúng hành chính và cấm xây. Ảnhnational-map-production.png. Giữ bản lưu/tài khoản người dùng, không reset thành phố production.
+
+Đã bổ sung local cache riêng cho5 file quốc gia nhẹ, ngân sách tối đa2,8MB; full14,1MB và private requests không cache. Offline tests3/3 đạt; suite133/133 trước đó vẫn là bằng chứng regression, chưa gọi số134 là full-suite đã chạy. Bổ sung bắt lỗi dynamic import trong form đăng ký giữ các ô đã nhập. Commit0b72ff1 và bổ sung này chưa push vì auto-review hết usage limit; production chỉ xác nhận16adcf9.
