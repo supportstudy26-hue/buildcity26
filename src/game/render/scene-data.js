@@ -26,20 +26,20 @@ export function roadParts(s,x,y,kind=s.tiles[y*SIZE+x].kind,layer='normal',overl
  const parts=[],i=y*SIZE+x,t=s.tiles[i],cx=(x+.5)*CELL_METERS,cz=(y+.5)*CELL_METERS,base=surfaceHeight(s,i,SIZE,kind);
  const box=(px,py,pz,w,h,d,color,detail=false,rotation=null,tile=null)=>parts.push({shape:'box',position:[px,py,pz],scale:[w,h,d],color:overlay||color,detail,rotation,tile});
 
-      const width=kind==='avenue'?18:12,road=overlay||overlayColor({...t,kind},layer)||'#526b70';
-      box(cx,base-.4,cz,width+.8,.5,width+.8,'#c7cabb',false,null,i);
+      const width=kind==='avenue'?18:12,road=overlay||overlayColor({...t,kind},layer)||'#485b62';
+      box(cx,base-.4,cz,width+.8,.5,width+.8,'#cbd3c7',false,null,i);
       box(cx,base-.1,cz,width,.2,width,road,false,null,i);
       const links=neighbors(i).filter(ni=>isRoad(s.tiles[ni]));
       if(links.length===1||(links.length===2&&links[0]+links[1]===i*2)){
         const ni=links[0],dx=(ni%SIZE-x)*CELL_METERS,dz=(Math.floor(ni/SIZE)-y)*CELL_METERS;
-        box(cx,base+.035,cz,3.8,.07,.18,'#e4d4a0',true,{yaw:Math.atan2(-dz,dx)},i);
+        box(cx,base+.035,cz,3.8,.07,.18,'#efe3be',true,{yaw:Math.atan2(-dz,dx)},i);
       }
       for(const ni of links)if(ni>i){
         const nx=(ni%SIZE+.5)*CELL_METERS,nz=(Math.floor(ni/SIZE)+.5)*CELL_METERS,nh=surfaceHeight(s,ni,SIZE),dx=nx-cx,dz=nz-cz,dy=nh-base,nextWidth=s.tiles[ni].kind==='avenue'?18:12;
         // Join node edges: coplanar centre-to-centre slabs cause flickering stripes.
         const start=width/(2*CELL_METERS),end=1-nextWidth/(2*CELL_METERS),mid=(start+end)/2,length=Math.hypot(dx,dz,dy)*(end-start),yaw=Math.atan2(-dz,dx),pitch=Math.atan2(dy,CELL_METERS);
         box(cx+dx*mid,base+dy*mid-.14,cz+dz*mid,length,.28,Math.min(width,nextWidth),road,false,{yaw,pitch},i);
-        box(cx+dx*mid,base+dy*mid+.035,cz+dz*mid,Math.min(3.8,length-.2),.07,.18,'#e4d4a0',true,{yaw,pitch},i);
+        box(cx+dx*mid,base+dy*mid+.035,cz+dz*mid,Math.min(3.8,length-.2),.07,.18,'#efe3be',true,{yaw,pitch},i);
       }
       if(t.terrain==='water'){
         const bed=terrainHeight(s.world,cx,cz);
@@ -54,7 +54,7 @@ export function chunkParts(s,x0,y0,layer='normal'){
   const parts=[];
   function part(shape,x,y,z,w,h,d,color,detail=false,rotation=null,tile=null){parts.push({shape,position:[x,y,z],scale:[w,h,d],color,detail,rotation,tile});}
   const box=(x,y,z,w,h,d,color,detail=false,rotation=null,tile=null)=>part('box',x,y,z,w,h,d,color,detail,rotation,tile);
-  function tree(x,z,h,size,tile){box(x,h+size*2,z,.6,size*4,.6,'#7f775b',false,null,tile);part('cone',x,h+size*6,z,size*5,size*8,size*5,'#39735a',false,null,tile);part('cone',x,h+size*8,z,size*3.6,size*5,size*3.6,'#639269',false,null,tile);}
+  function tree(x,z,h,size,tile){const variant=tile%3;box(x,h+size*2,z,.6,size*4,.6,'#786448',false,null,tile);part(variant?'ico':'cone',x,h+size*5.5,z,size*(variant?6:5),size*(variant?6:8),size*(variant?5.5:5),['#39735a','#427b54','#4b7e5c'][variant],false,{yaw:noise(x,z)*Math.PI},tile);part(variant?'ico':'cone',x+size*.25,h+size*7.5,z,size*(variant?4.7:3.6),size*4.5,size*(variant?4.4:3.6),'#6c9c6e',false,null,tile);}
   for(let y=y0;y<y0+REGION;y++)for(let x=x0;x<x0+REGION;x++){
     const i=y*SIZE+x,t=s.tiles[i],cx=(x+.5)*CELL_METERS,cz=(y+.5)*CELL_METERS,base=surfaceHeight(s,i,SIZE),n=noise(x,y);
     if(isRoad(t)){parts.push(...roadParts(s,x,y,t.kind,layer));continue;}
@@ -64,7 +64,7 @@ export function chunkParts(s,x0,y0,layer='normal'){
       continue;
     }
     // A foundation pad encloses the sloping ground below the footprint.
-    const low=Math.min(...cellHeights(s.world,i,SIZE));box(cx,(base+low)/2,cz,16,Math.max(.15,base-low),16,'#c9c9b5',false,null,i);
+    const low=Math.min(...cellHeights(s.world,i,SIZE));box(cx,(base+low)/2,cz,16,Math.max(.15,base-low),16,'#abbba5',false,null,i);
     parts.push(...buildingParts(t,x,y,cx,cz,base,overlayColor(t,layer),i));
   }
   for(const c of s.contracts)if(c.status==='building'&&c.tile%SIZE>=x0&&c.tile%SIZE<x0+REGION&&Math.floor(c.tile/SIZE)>=y0&&Math.floor(c.tile/SIZE)<y0+REGION){const x=(c.tile%SIZE+.5)*20,z=(Math.floor(c.tile/SIZE)+.5)*20,h=surfaceHeight(s,c.tile,SIZE);box(x,h+.1,z,18,.2,18,'#d4b387',false,null,c.tile);box(x,h+2,z,4,4,4,'#bca27a',false,null,c.tile);}

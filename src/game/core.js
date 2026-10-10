@@ -1,5 +1,6 @@
+import {placementQuote} from './systems/placement.js';
 import {weatherState,setWeatherMode,WEATHER_MODES} from './systems/weather.js';
-import {PRIVATE_DESIGNS,placementPrice,residentCapacity,jobsCapacity,MAINTENANCE_FACTORS,capacityFactor} from '../config/building-economy.js';
+import {PRIVATE_DESIGNS,residentCapacity,jobsCapacity,MAINTENANCE_FACTORS,capacityFactor} from '../config/building-economy.js';
 import {updateDevelopment,validateDevelopment,validatePrivateInvestment} from './systems/development.js';
 import {startUpgrade,updateUpgrades,validateUpgrade} from './systems/upgrades.js';
 import {geographyBuildRule} from './geography/city.js';
@@ -86,23 +87,19 @@ export function repay(s,amount){if(!Number.isFinite(amount)||amount<=0||amount>(
 export function place(s,x,y,kind,designId=null){
   if(!inside(x,y)||!CATALOG[kind]||kind==='inspect')return {ok:false,message:'Chọn một ô trong bản đồ.'};
   if(designId!=null&&PRIVATE_DESIGNS[designId]?.kind!==kind)return {ok:false,message:'Mẫu thiết kế không thuộc phân khu đã chọn.'};
-  const t=s.tiles[index(x,y)],georule=geographyBuildRule(s,index(x,y),kind);if(!georule.ok)return georule;
+  const t=s.tiles[index(x,y)],quote=placementQuote(s,index(x,y),kind);if(!quote.ok)return quote;
   if(kind==='bulldoze'){
-    if(!t.kind&&!t.zone)return {ok:false,message:'Ô này chưa có công trình.'};
     const u=t.upgrade;if(u?.status==='building'){const released=Math.floor(u.price*(1-u.work/u.required))+u.reserve;if(u.payer==='city')recordCash(s,u.id+'-cancel','upgrade-cancel-refund',released,t.assetId);else{s.privateInvestment.available+=released;s.privateInvestment.projects.find(p=>p.id===u.id).price-=released;}}
     const refund=Math.floor((t.historicalCost||0)*.25);recordCash(s,`demolish-${s.nextEntityId++}`,'salvage',refund,t.assetId);Object.assign(t,{kind:null,zone:null,level:0,residents:0,age:0,garbage:0,hazard:0,fire:0,crime:0,health:100,education:0,assetId:null,historicalCost:0,development:null,upgrade:null,blueprint:null});s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);return {ok:true,cost:-refund};
   }
-  if(t.terrain==='water'&&!ROADS.includes(kind))return {ok:false,message:'Chỉ có thể xây cầu đường trên sông.'};
   if(t.kind||t.zone){
     if(t.kind==='road'&&kind==='avenue'){
-      const cost=placementPrice(kind,t,georule.factor,CATALOG);
-      if(s.money<cost)return {ok:false,message:'Không đủ ngân sách để nâng cấp.'};
+      const cost=quote.cost;
       recordCash(s,`upgrade-${s.nextEntityId++}`,'road-upgrade',-cost,t.assetId);t.historicalCost=(t.historicalCost||0)+cost;t.kind='avenue';s.graphVersion++;analyze(s);return {ok:true,cost};
     }
     return {ok:false,message:'Ô này đã có công trình. Dùng phá dỡ để thay đổi.'};
   }
-  const cost=placementPrice(kind,t,georule.factor,CATALOG);
-  if(s.money<cost)return {ok:false,message:'Không đủ ngân sách. Kiểm tra thuế và chi phí vận hành.'};
+  const cost=quote.cost;
   recordCash(s,`place-${s.nextEntityId++}`,'construction-instant',-cost);t.historicalCost=cost;
   if(ZONES.includes(kind)){t.zone=kind;t.age=0;if(designId)t.blueprint=designId;}else{t.kind=kind;t.level=1;t.assetId=entityId(s,'asset');}
   s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);return {ok:true,cost};

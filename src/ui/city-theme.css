@@ -79,3 +79,41 @@ dialog:not(.auth-layout) :is(.market-clock small,.mobility-card small,.art-capti
 dialog:not(.auth-layout) :is(.news-kicker,.market-prizes b) { color: var(--orange); }
 dialog:not(.auth-layout) :is(.ticket-list>div,.lottery-result) { border-color: var(--line); }
 #game button:focus-visible, dialog:not(.auth-layout) :is(button,input,select):focus-visible { outline-color: #147d68; }
+
+#game .action.primary { color: #fff; background: #147d68; border-color: #147d68; }
+#game #placementPreview.placement-error { color: #a74f38; }
+
+/* Clear hierarchy and comfortable spacing; one compact tool rail leaves the city visible. */
+#game :is(.topbar,.left-panel,.right-panel,.tool-tray,.city-clock,.minimap,.save-status) { border-radius: 16px; }
+#game .topbar { border-top-width: 2px; padding-inline: 18px; }
+#game .brand { letter-spacing: -.7px; }
+#game .city-identity input { font-weight: 700; letter-spacing: -.35px; }
+#game .stat>span { font-size: 10px; font-weight: 650; letter-spacing: 1.2px; }
+#game .stat strong { font-variant-numeric: tabular-nums; letter-spacing: -.7px; }
+#game .panel-title { font-size: 11px; letter-spacing: 1.4px; }
+#game :is(.left-panel,.right-panel,.tool-tray) { scrollbar-width: thin; scrollbar-color: #a9bcac #f0f5ee; }
+#game .tool-tray { padding: 16px; }
+#game .build-heading { padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+#game .build-option { border-radius: 13px; min-height: 110px; padding: 12px; column-gap: 12px; grid-template-columns: 64px minmax(0,1fr); }
+#game .build-option .building-preview { background: #eef4e9; border-radius: 10px; width: 64px; }
+#game .build-option strong { font-weight: 700; }
+#game .build-option b { color: #27694e; font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+#game .bottom-bar { border-radius: 18px; padding: 8px 12px; }
+#game .tool-btn { border-radius: 12px; }
+#game .tool-btn span:last-child { font-size: 12px; }
+#game .tool-btn.active { box-shadow: inset 0 1px #ffffff20; }
+#game .detail-list div { padding-block: 10px; }
+#game .detail-list b { font-variant-numeric: tabular-nums; }
+#game .right-panel .art-thumbnail { width: 155px; height: 130px; }
+#game .news-title { font-weight: 750; letter-spacing: -.6px; }
+#game .news-card { border-color: var(--line); }
+#game :is(.service-card,.mission-card) { border-radius: 12px; }
+#game .tool-info { border-radius: 12px; }
+#game .map-btn.active { color: #12624f; background: #dfefdf; border-color: #20876f; }
+#game .minimap canvas { border-radius: 9px; }
+dialog:not(.auth-layout) :is(.geo-stats b,.geo-source summary) { color: var(--text); }
+@media(max-width:600px) {
+  #game .topbar { padding-inline: 10px; border-radius: 13px; }
+  #game .build-option { min-height: 98px; }
+  #game .bottom-bar { padding: 6px; border-radius: 14px; }
+}

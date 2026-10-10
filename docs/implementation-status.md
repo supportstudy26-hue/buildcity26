@@ -1,3 +1,12 @@
+## 10/10 — Giao diện sáng, khối 3D rõ hơn và báo giá xây thống nhất
+
+- HUD trắng ngà/xanh rừng; chữ, thẻ công trình, inspector, nút và trạng thái lỗi được chỉnh độ tương phản/khoảng cách. Menu chọn xong vẫn tự đóng. Giá quy hoạch và vốn xây tư nhân tiếp tục ghi riêng.
+- Camera khởi đầu/nút Về trung tâm tìm khu có công trình thật; thành phố trống dùng cổng vào. Cây dùng ba biến thể với geometry instancing có sẵn; chỉnh ánh sáng ngày, kính, mặt đường và nền móng. Không thêm texture, post-processing hoặc tăng giới hạn người/xe (50 tổng, low/mobile 30). Canvas đồng bộ bảng màu.
+- Sửa lỗi giá hover Canvas dùng công thức cũ; lệnh xây, HUD và ghost 3D dùng chung placementQuote. Có kiểm ngân sách, cầu, nâng đường, nước, dốc, ngoài địa phương và ô đã chiếm. Phá dỡ hiển thị cả vốn nâng cấp công chưa sử dụng được hoàn trả, không tính vốn chủ đầu tư vào tiền thành phố.
+- Kiểm tra: 156/156 npm test PASS (109,99 giây); build cuối PASS (4,75 giây), git diff --check sạch. Không có script lint/typecheck trong package. Browser localhost 1280×720: 3D → Canvas → 3D giữ 57 dân/1,8 triệu/clock; bấm xây đường thiếu tiền hiện Cần 14 triệu, Thiếu 12,2 triệu và không trừ tiền. Reload giữ bản lưu. Ảnh interface-3d-forest-refined-20261010.png, interface-build-catalog-refined-20261010.png, canvas-placement-budget-20261010.png.
+- Chỉ số tại cảnh QA nhỏ, đang dừng: auto/low, DPR1, khoảng 30 FPS, 16 draw calls/8.564 triangles, 10 geometries, 0 textures; không phải benchmark thành phố đông dân. Chưa đo lại 5.000 dân sau chỉnh cây, chưa kiểm điện thoại vật lý. Bộ model chi tiết đầy đủ và các hệ thống còn thiếu ở mục dưới chưa hoàn tất.
+- Tài khoản, Supabase/RLS, save schema và mô phỏng giữ nguyên; không migration. Chặng này chưa xác nhận deploy tại thời điểm ghi mục này; sẽ cập nhật sau Ready.
+
 ## 10/10/2026 — Vốn khởi đầu mới 10 tỷ đồng
 
 Đổi NEW_CITY_CASH_BC thành 10.000.000 BC = 10 tỷ ₫. Server đăng ký, thành phố thường/địa phương và bắt đầu lại dùng cùng hằng số; trang chủ/form/thông báo hiển thị từ hằng số. Không cộng lại khi đăng nhập, không sửa số dư/ledger của bản lưu cũ; thưởng lên cấp vẫn 100 triệu. Không thay schema hay cần SQL.

@@ -1,3 +1,4 @@
+import {placementQuote} from './game/systems/placement.js';
 import {FinanceQueue,financeError} from './services/finance-queue.js';
 import {weatherState} from './game/systems/weather.js';
 import {privateBuildPrice,privatePlan,PRIVATE_DESIGNS,PRIVATE_PLANS,placementPrice,residentCapacity,jobsCapacity,capacityFactor,MAINTENANCE_FACTORS} from './config/building-economy.js';
@@ -51,7 +52,7 @@ focusEmptyStart();
 const modal=$('modal');
 const groups=[['inspect','⌖','Khám phá'],['roads','╋','Đường'],['zones','▥','Phân khu'],['utilities','ϟ','Điện nước'],['services','✚','Dịch vụ'],['parks','♧','Công viên'],['transport','▣','Vận tải'],['bulldoze','⌫','Phá dỡ']];
 function toast(msg){clearTimeout(toastTimer);$('toast').textContent=msg;$('toast').hidden=false;toastTimer=setTimeout(()=>$('toast').hidden=true,4500);}
-function changed(){changeId++;sync.changed();renderSaveStatus();update();updatePlacementPreview();}
+function changed(){changeId++;sync.changed();renderSaveStatus();update();}
 function renderSaveStatus(){
   const labels={local:'Lưu trên thiết bị',pending:'Chờ đồng bộ',saving:'Đang đồng bộ…',synced:'Đã lưu đám mây',offline:'Mất mạng · lưu trên máy',error:'Lỗi đồng bộ · thử lại',conflict:'Xung đột · cần xử lý','storage-error':'Chưa lưu trên thiết bị'};
   const text=financeBusy?'Đang xác nhận giao dịch…':financePending()?'Giao dịch chờ đối soát':storageWarning?'Chưa lưu được · xuất JSON':localCollision?'Bản local đổi ở tab khác':user?labels[sync.status]:'Lưu trên thiết bị';
@@ -102,20 +103,19 @@ function updatePlacementPreview(){
   if(tool==='inspect')return;
   let el=$('placementPreview');if(!el){el=document.createElement('small');el.id='placementPreview';$('toolInfo').append(el);}
   const hit=renderer.hover,i=typeof hit==='number'?hit:hit?.i;if(i==null){el.textContent='';return;}
-  const rule=geographyBuildRule(city,i,tool),t=city.tiles[i];
-  if(!rule.ok){el.textContent=rule.message;return;}
-  const upgrading=t.kind==='road'&&tool==='avenue';
-  if(t.kind||t.zone){el.textContent=tool==='bulldoze'?`Thu hồi ${money(Math.floor((t.historicalCost||0)*.25))}`:upgrading?`Nâng cấp: ${money(placementPrice('avenue',t,rule.factor,CATALOG))}`:'Ô này đã có công trình.';return;}
-  el.textContent=tool==='bulldoze'?'Ô đất trống.':`Giá tại ô này: ${money(placementPrice(tool,t,rule.factor,CATALOG))}${city.world.geography?` · Dốc ${slopeAt(city.world,i,SIZE).toFixed(1)}%`:''}`;
+  const quote=placementQuote(city,i,tool);
+  el.classList.toggle('placement-error',!quote.ok);
+  if(!quote.ok){el.textContent=quote.shortfall?`Cần ${money(quote.cost)} · Thiếu ${money(quote.shortfall)}`:quote.message;return;}
+  el.textContent=tool==='bulldoze'?`Thu hồi ${money(quote.refund)}${quote.cancellation?' · gồm vốn nâng cấp chưa sử dụng':''}`:`${quote.upgrading?'Nâng cấp':'Giá tại ô này'}: ${money(quote.cost)}${city.world.geography?` · Dốc ${slopeAt(city.world,i,SIZE).toFixed(1)}%`:''}`;
 }
 selectTool('inspect');
 document.querySelector('.left-panel').hidden=true;$('restoreOverview').hidden=false;
 
 function date(){return calendar(city.clock.seconds).date.toLocaleString('vi-VN',{timeZone:'UTC',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});}
 function level(){return `Cấp thành phố ${levelFromXp(city.progression.xp)} · ${city.progression.xp} XP`;}
-function update(){const m=city.metrics||analyze(city);$('money').textContent=money(city.money);$('net').textContent=(m.net>=0?'+':'')+money(m.net)+' / tháng';$('net').style.color=m.net>=0?'var(--mint)':'#f2a595';$('population').textContent=m.population.toLocaleString('vi-VN');$('popChange').textContent=m.homes-m.population+' chỗ ở còn trống';$('happiness').textContent=m.population?m.happiness+'%':'—';$('happyLabel').textContent=!m.population?'Chưa có cư dân':m.happiness>=75?'Cuộc sống tốt':m.happiness>=50?'Cần cải thiện':'Cư dân lo lắng';$('happyLabel').style.color=m.happiness>=65?'var(--mint)':'var(--orange)';$('level').textContent=level();$('cityName').value=city.name;$('date').textContent=date();
+function update(){const m=city.metrics||analyze(city);$('money').textContent=money(city.money);$('net').textContent=(m.net>=0?'+':'')+money(m.net)+' / tháng';$('net').style.color=m.net>=0?'var(--mint)':'#a74f38';$('population').textContent=m.population.toLocaleString('vi-VN');$('popChange').textContent=m.homes-m.population+' chỗ ở còn trống';$('happiness').textContent=m.population?m.happiness+'%':'—';$('happyLabel').textContent=!m.population?'Chưa có cư dân':m.happiness>=75?'Cuộc sống tốt':m.happiness>=50?'Cần cải thiện':'Cư dân lo lắng';$('happyLabel').style.color=m.happiness>=65?'var(--mint)':'var(--orange)';$('level').textContent=level();$('cityName').value=city.name;$('date').textContent=date();
   for(const [id,n] of [['demandR','residential'],['demandC','commercial'],['demandI','industrial']])$(id).style.height=m.demand[n]*.45+'px';
-  for(const [p,label] of [['power','power'],['water','water']]){$(p+'Text').textContent=m[p+'Need'].toLocaleString('vi-VN',{maximumFractionDigits:1})+' / '+m[p]+(p==='power'?' kW':' m³/ngày');$(p+'Bar').style.width=Math.min(100,m[p]?m[p+'Need']/m[p]*100:m[p+'Need']?100:0)+'%';$(p+'Bar').style.background=m[p+'Need']>m[p]?'#f09781':p==='power'?'var(--yellow)':'var(--blue)';}
+  for(const [p,label] of [['power','power'],['water','water']]){$(p+'Text').textContent=m[p+'Need'].toLocaleString('vi-VN',{maximumFractionDigits:1})+' / '+m[p]+(p==='power'?' kW':' m³/ngày');$(p+'Bar').style.width=Math.min(100,m[p]?m[p+'Need']/m[p]*100:m[p+'Need']?100:0)+'%';$(p+'Bar').style.background=m[p+'Need']>m[p]?'#a74f38':p==='power'?'var(--yellow)':'var(--blue)';}
   $('sewageText').textContent=m.sewageNeed.toLocaleString('vi-VN',{maximumFractionDigits:1})+' / '+m.sewage+' m³/ngày';$('garbageText').textContent=m.garbage+' đơn vị';$('mapSizeText').textContent=city.world?.geography?city.world.geography.provinceName+' · '+((city.world.widthMeters||SIZE*20)/1000).toLocaleString('vi-VN')+' KM':SIZE+' × '+SIZE+' · '+(SIZE*20/1000).toLocaleString('vi-VN')+' KM';updateMapSource();updateWeatherControl();
   renderServices();$('jobs').textContent=m.jobs;$('unemployment').textContent=m.unemployment+'%';$('traffic').textContent=m.traffic+'%';$('environment').textContent=m.environment+'%';
   const unserved=city.tiles.filter(t=>t.kind==='residential'&&(!t.active)).length;
@@ -126,7 +126,7 @@ function update(){const m=city.metrics||analyze(city);$('money').textContent=mon
   $('quests').querySelectorAll('[data-mission-tool]').forEach(b=>b.onclick=()=>{selectTool(b.dataset.missionTool);hideOverviewOnPhone();});
   $('questProgress').style.width=(city.progression.xp-xpForLevel(lv))/needed*100+'%';$('questHint').textContent=`${city.progression.xp-xpForLevel(lv)} / ${needed} XP đến cấp ${lv+1} · Thưởng mỗi lần lên cấp: 100 triệu ₫. Cấp thành phố chơi thường; chưa phải cấp tài khoản/BXH.`;
   if(tracked)inspectCitizen(tracked);else if(selected)inspect(selected);else if(!modal.open)news();
-  restorePlayback();if(accumulator>=STEP_SECONDS*120)$('timeScale').textContent+=' · Đang xử lý thời gian còn lại';
+  updatePlacementPreview();restorePlayback();if(accumulator>=STEP_SECONDS*120)$('timeScale').textContent+=' · Đang xử lý thời gian còn lại';
 }
 function renderServices(){
   const m=city.metrics,pop=m.population||1;
