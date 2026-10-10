@@ -1,3 +1,11 @@
+## 10/10/2026 — Vốn khởi đầu mới 10 tỷ đồng
+
+Đổi NEW_CITY_CASH_BC thành 10.000.000 BC = 10 tỷ ₫. Server đăng ký, thành phố thường/địa phương và bắt đầu lại dùng cùng hằng số; trang chủ/form/thông báo hiển thị từ hằng số. Không cộng lại khi đăng nhập, không sửa số dư/ledger của bản lưu cũ; thưởng lên cấp vẫn 100 triệu. Không thay schema hay cần SQL.
+
+Giao diện game dùng bảng trắng ngà/xanh rừng, chữ số đậm, trạng thái chọn rõ; menu tài chính cùng bảng màu. Nền đất giảm sắc vàng và độ tương phản ô, cây xanh đậm, nước xanh lam và ánh sáng trung tính; không tăng geometry, texture hoặc hiệu ứng GPU. Tài khoản vẫn dùng luồng/form thật, không đổi RLS/save/clock hay cap chung 50 người+xe (low/mobile30).
+
+Kiểm tra: 27/27 account server/địa phương/vốn/nâng cấp đạt, rồi toàn suite149/149 đạt (192,957 giây), build đạt (27,90 giây), diff check đạt. Browser desktop1280×720: màu HUD/menu/market, form đúng3ô/10tỷ; save thử cũ57dân/1,8triệu/clock02:13:39 giữ nguyên sau lưu và tải lại. Ảnh interface-forest-paper-20261010.png. Chưa kiểm màu trên điện thoại thật; không benchmark lại vì chỉ đổi màu/vật liệu và CSS, không tuyên bố FPS tăng. Deployment đang xác minh.
+
 ## 2026-10-10 — Kiến trúc, giá xây/nâng cấp, thời tiết và thị trường server
 
 - 13 bản thiết kế nhà/thương mại/công nghiệp chọn và xây thật, mesh 3D khác hình dáng theo ảnh tham chiếu. Menu tự đóng sau chọn; phí quy hoạch 800 nghìn/400m² tách giá xây 81–633,6 triệu từ diện tích sàn/đơn giá. 24 dịch vụ giữ factory riêng; sửa giá công trình/đường/cầu theo bảng/công thức và giữ nguyên giá lịch sử bản cũ. Bỏ nâng miễn phí theo ngày; hợp đồng nâng 15 phút game có escrow/dự phòng, tiện ích mất thì dừng, sức chứa/điện nước/vận hành tăng theo cấp. Cấp 4–5 khóa rõ vì chưa có viễn thông/an sinh/dự phòng đủ F.

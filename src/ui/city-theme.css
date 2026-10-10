@@ -1,0 +1,81 @@
+/* Warm paper panels, forest accents, neutral numbers. No filters or extra GPU effects. */
+#game, dialog:not(.auth-layout) {
+  --panel: #fafcf8;
+  --line: #dbe4db;
+  --text: #233b36;
+  --muted: #60756e;
+  --mint: #147d68;
+  --orange: #a56c20;
+  --yellow: #bd882c;
+  --blue: #327fa4;
+  color: var(--text);
+}
+#game :is(.topbar,.left-panel,.right-panel,.tool-tray,.tool-info,.city-clock,.floating,.minimap,.save-status),
+dialog:not(.auth-layout) {
+  background: var(--panel);
+  border-color: var(--line);
+  box-shadow: 0 4px 18px #23493616;
+  backdrop-filter: none;
+}
+#game .topbar { border-top: 3px solid #20876f; }
+#game .brand { color: #223e36; font-weight: 850; }
+#game :is(.brand b,.city-identity>span) { color: var(--mint); }
+#game .city-identity input { color: var(--text); }
+#game :is(.stat strong,.treasury strong) { color: #233b36; font-weight: 750; }
+#game .stat small { color: var(--mint); }
+#game :is(.panel-title,.build-heading strong,.build-option strong,.news-card strong) { color: var(--text); }
+#game :is(.service-summary b,.info-grid b) { color: var(--text); }
+#game .mission-card { background: #f0f5eb; border-color: var(--line); }
+#game .mission-card strong small { color: var(--orange); }
+#game :is(.section-label span,.demand-bars span,.utility-row div>span,.time-block>span,.minimap span,.news-text) { color: var(--muted); }
+#game :is(.account-btn,.outline-btn,.news-action,.icon-btn,.map-btn,.weather-control,#restoreOverview),
+dialog:not(.auth-layout) :is(.action,.field input,.field select,.resident-row,.mobility-card) {
+  color: var(--text);
+  background: #f0f5ee;
+  border-color: #d5e0d5;
+}
+#game .account-btn { color: var(--mint); border-color: #a6cdbc; background: #eaf5ed; }
+#game :is(.icon-btn,.map-btn,#restoreOverview):hover { background: #e1eee3; }
+#game :is(.overview-tabs,.budget-tabs) { background: #eaf0e7; }
+#game .overview-tabs button { color: var(--muted); }
+#game .overview-tabs button.active { color: #12624f; background: #fff; box-shadow: 0 1px 4px #23493615; }
+#game :is(.meter,.progress) { background: #e0e8dc; }
+#game .utility-icon { background: #f6ebd4; color: #996c1e; }
+#game .water-icon { background: #e2f0f5; color: #327fa4; }
+#game .city-clock .time-controls button { background: #edf2e9; border-color: #d7e1d2; color: var(--muted); }
+#game .city-clock .time-controls button.active { background: #147d68; border-color: #147d68; color: #fff; }
+#game .city-clock #timeScale { color: var(--muted); }
+#game :is(.tool-info strong,.news-kicker,.build-option b) { color: var(--orange); }
+#game :is(.build-heading>div>span,.build-heading strong small,.build-option small,.build-option .facility-summary) { color: var(--muted); }
+#game .build-option { background: #fff; border-color: #dce5d8; color: var(--text); box-shadow: none; }
+#game .build-option:hover { background: #f2f7ee; border-color: #a1c3ad; }
+#game .build-option.active { background: #e9f4e9; border-color: #20876f; box-shadow: inset 3px 0 #20876f; }
+#game .build-option.active strong { color: #176a53; }
+#game .build-search input { color: var(--text); background: #fff; border-color: #d5e0d5; }
+#game .build-search input::placeholder { color: #718277; }
+#game .map-hint { background: #fafcf8ed; color: #405e50; }
+#game .map-source-info { background: #f7fbf0ed; color: #4c675a; }
+#game .badge.warn, dialog:not(.auth-layout) :is(.badge.warn,.warn,#marketError) { color: #9c522a; }
+#game #toast { color: #234438; background: #fbfff8; border-color: #a6cdbc; }
+#game .bottom-bar { background: #203e35; color: #edf4e9; border-color: #365b4c; box-shadow: 0 5px 20px #1d3b3526; }
+#game .tool-btn { color: #b4c9bd; }
+#game .tool-btn .glyph { color: #d6e6d9; }
+#game .tool-btn[data-group=utilities] .glyph { color: #edc77c; }
+#game .tool-btn[data-group=services] .glyph { color: #eda696; }
+#game .tool-btn[data-group=parks] .glyph { color: #9fd2a3; }
+#game .tool-btn[data-group=transport] .glyph { color: #a0cedc; }
+#game .tool-btn:hover { background: #335346; color: #fff; }
+#game .tool-btn.active { color: #fff; background: #39785f; border-color: #619e7f; }
+#game .tool-btn.active .glyph { color: #d8f3d8; }
+dialog:not(.auth-layout) :is(.action.primary,.lottery-grid button.active) { background: #147d68; color: #fff; border-color: #147d68; }
+dialog:not(.auth-layout) .action.danger { color: #a74f38; }
+dialog:not(.auth-layout) .form-error { color: #a74f38 !important; }
+dialog:not(.auth-layout) :is(.field input,.field select) { background: #fff; }
+dialog:not(.auth-layout) :is(.market-clock,.market-summary,.market-prizes span,.stock-order svg,.budget-table,.mobility-card) { background: #edf3e9; border-color: #d4e0d0; }
+dialog:not(.auth-layout) :is(.stock-row,.lottery-grid button) { color: var(--text); background: #fff; border-color: #d4e0d0; }
+dialog:not(.auth-layout) .stock-row.active { background: #e5f2e7; border-color: #20876f; }
+dialog:not(.auth-layout) :is(.market-clock b,.stock-order svg,.link-button) { color: var(--mint); }
+dialog:not(.auth-layout) :is(.market-clock small,.mobility-card small,.art-caption,.guide-list,.credit) { color: var(--muted); }
+dialog:not(.auth-layout) :is(.news-kicker,.market-prizes b) { color: var(--orange); }
+dialog:not(.auth-layout) :is(.ticket-list>div,.lottery-result) { border-color: var(--line); }
+#game button:focus-visible, dialog:not(.auth-layout) :is(button,input,select):focus-visible { outline-color: #147d68; }

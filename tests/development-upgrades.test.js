@@ -10,8 +10,8 @@ import {startJourney} from '../src/game/systems/citizens.js';
 import {cashBalance} from '../src/game/systems/economy.js';
 function starter(){const s=createEmptyCity();for(let x=0;x<3;x++)assert.ok(place(s,x,18,'road').ok);for(const [x,y,k] of [[0,17,'smallPower'],[1,17,'smallWater'],[2,17,'smallSewage'],[0,19,'residential'],[1,19,'commercial'],[2,19,'industrial']])assert.ok(place(s,x,y,k).ok);return s;}
 const steps=(s,n)=>{for(let i=0;i<n;i++)stepSimulation(s);};
-test('100-million real start builds all three zoned types in minutes; private capital is debited once and saves mid-development',()=>{
- let s=starter();const cash=s.money;assert.equal(cash,16600);steps(s,450);const t=s.tiles[index(0,19)];assert.equal(t.kind,null);assert.equal(t.development.work,450);
+test('10-billion real start builds all three zoned types in minutes; private capital is debited once and saves mid-development',()=>{
+ let s=starter();const cash=s.money;assert.equal(cash,9916600);steps(s,450);const t=s.tiles[index(0,19)];assert.equal(t.kind,null);assert.equal(t.development.work,450);
  assert.equal(s.privateInvestment.available,20000000-432000-144000-356800);assert.equal(s.money,cash);
  const raw=JSON.parse(JSON.stringify(serialize(s)));s=validateSave(raw);assert.deepEqual(JSON.parse(JSON.stringify(serialize(s))),raw);steps(s,450);
  for(const k of ['residential','commercial','industrial'])assert.ok(s.tiles.some(t=>t.kind===k));assert.equal(s.metrics.population,0);steps(s,120);assert.equal(s.metrics.population,2);assert.equal(s.citizens.length,2);assert.equal(s.privateInvestment.projects.length,3);assert.equal(s.money,cash);assert.equal(cashBalance(s),cash);

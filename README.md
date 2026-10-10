@@ -4,7 +4,7 @@ Game web xây dựng thành phố tiếng Việt, đồ họa Three.js 3D/SVG ri
 
 Map 64×64, 20 m/ô (1.280×1.280 m), đường/đại lộ/cầu, RCI, điện/nước/nước thải/rác và dịch vụ; ngân sách/thuế/vay, cảnh báo và bản đồ lớp. Lệnh 1 bổ sung fixed timestep/đồng hồ chung/lịch tháng thật, cư dân/hộ/firm/xe có ID, lịch đi làm/về và route/vị trí thực; có chọn/theo dõi cư dân và Quan sát. Công viên có hợp đồng 10 ngày và escrow; ledger/command receipts chống trả hai lần. Growth, lưu lượng, dịch vụ, thuế và bus còn mô phỏng tổng hợp; chưa phải lifecycle/logistics/lane traffic đầy đủ.
 
-Thành phố mới và tài khoản mới có **100 triệu ₫**, khởi đầu từ đất trống. Có 24 công trình trong catalog, ba trạm điện/nước/nước thải nhỏ để bắt đầu; menu xây ghi giá, phí và công suất/phạm vi. Bắt đầu lại tạo bản dự phòng trước khi thay thành phố; bản cloud và tiền trong save cũ được giữ.
+Thành phố mới và tài khoản mới có **10 tỷ ₫**, khởi đầu từ đất trống. Có 24 công trình trong catalog, ba trạm điện/nước/nước thải nhỏ để bắt đầu; menu xây ghi giá, phí và công suất/phạm vi. Bắt đầu lại tạo bản dự phòng trước khi thay thành phố; bản cloud và tiền trong save cũ được giữ.
 
 Bản 0.4 thêm địa hình cao thấp, camera 3D, chất lượng nhẹ/vừa/cao và 14 nhiệm vụ theo cấp. Nhiệm vụ giữ điều kiện đủ một ngày, XP cấp một lần; mỗi lần lên cấp nhận 100 triệu ₫ game. Lưu/mở lại giữ receipt chống thưởng trùng. Đây là cấp thành phố casual; account/BXH server chưa triển khai.
 

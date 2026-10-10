@@ -26,7 +26,8 @@ test('real mountain, plateau, delta, coast and island packages have contrasting 
 test('terrain build restrictions are enforced through commands; paid ground costs and bridges survive offline JSON save/load',async()=>{
   const s=createVietnamCity(await json('22-start.json'),manifest);
   const sea=s.world.geography.waterMask.findIndex((v,i)=>v===1&&s.world.geography.insideProvince[i]&&slopeAt(s.world,i,SIZE)<=20);
-  assert.ok(sea>=0);const before=serialize(s),blocked=cmd(s,'residential',sea);assert.equal(blocked.ok,false);assert.equal(s.money,before.money);assert.equal(s.tiles[sea].zone,null);
+  assert.ok(sea>=0);s.money=100000;s.ledger.openingCash=100000; // Preserve insufficient-funds bridge coverage independently of the default grant.
+  const before=serialize(s),blocked=cmd(s,'residential',sea);assert.equal(blocked.ok,false);assert.equal(s.money,before.money);assert.equal(s.tiles[sea].zone,null);
   assert.equal(cmd(s,'road',sea).ok,false);const loan={id:'qa-bridge-loan',sequence:s.commandSequence+1,type:'borrow',payload:{amount:500000}};assert.equal(executeCommand(s,loan).ok,true);const bridge=cmd(s,'road',sea);assert.equal(bridge.ok,true);assert.equal(bridge.cost,134000);assert.equal(s.tiles[sea].kind,'road');
   const land=s.tiles.findIndex((t,i)=>!t.kind&&t.terrain!=='water'&&s.world.geography.insideProvince[i]&&slopeAt(s.world,i,SIZE)<=15&&Math.min(...cellHeights(s.world,i,SIZE))>=0);assert.ok(land>=0);
   const balance=s.money,rule=geographyBuildRule(s,land,'residential'),r=cmd(s,'residential',land);assert.ok(r.ok);assert.equal(balance-s.money,Math.ceil(CATALOG.residential.cost*rule.factor));

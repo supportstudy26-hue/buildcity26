@@ -54,7 +54,7 @@ export function chunkParts(s,x0,y0,layer='normal'){
   const parts=[];
   function part(shape,x,y,z,w,h,d,color,detail=false,rotation=null,tile=null){parts.push({shape,position:[x,y,z],scale:[w,h,d],color,detail,rotation,tile});}
   const box=(x,y,z,w,h,d,color,detail=false,rotation=null,tile=null)=>part('box',x,y,z,w,h,d,color,detail,rotation,tile);
-  function tree(x,z,h,size,tile){box(x,h+size*2,z,.6,size*4,.6,'#7f775b',false,null,tile);part('cone',x,h+size*6,z,size*5,size*8,size*5,'#618b69',false,null,tile);part('cone',x,h+size*8,z,size*3.6,size*5,size*3.6,'#85aa79',false,null,tile);}
+  function tree(x,z,h,size,tile){box(x,h+size*2,z,.6,size*4,.6,'#7f775b',false,null,tile);part('cone',x,h+size*6,z,size*5,size*8,size*5,'#39735a',false,null,tile);part('cone',x,h+size*8,z,size*3.6,size*5,size*3.6,'#639269',false,null,tile);}
   for(let y=y0;y<y0+REGION;y++)for(let x=x0;x<x0+REGION;x++){
     const i=y*SIZE+x,t=s.tiles[i],cx=(x+.5)*CELL_METERS,cz=(y+.5)*CELL_METERS,base=surfaceHeight(s,i,SIZE),n=noise(x,y);
     if(isRoad(t)){parts.push(...roadParts(s,x,y,t.kind,layer));continue;}
@@ -75,9 +75,9 @@ export function terrainArrays(s,x0,y0){
   for(let y=y0;y<y0+REGION;y++)for(let x=x0;x<x0+REGION;x++){
     const i=y*SIZE+x,t=s.tiles[i],h=cellHeights(s.world,i,SIZE),p=[[x*20,h[0],y*20],[(x+1)*20,h[1],y*20],[x*20,h[2],(y+1)*20],[(x+1)*20,h[3],(y+1)*20]];
     for(const k of [0,2,1,1,2,3]){
-      const [px,py,pz]=p[k],v=noise(Math.floor(px/80),Math.floor(pz/80))*.025;
+      const [px,py,pz]=p[k],v=noise(Math.floor(px/80),Math.floor(pz/80))*.012;
       const coast=h.some(height=>height<s.world.waterHeight+.6);
-      const color=t.terrain==='water'?[.33,.44,.42]:t.terrain==='sand'?[.77+v,.74+v,.57+v]:coast?[.59+v,.65+v,.46+v]:[.51+v,.64+v,.44+v];
+      const color=t.terrain==='water'?[.14,.27,.32]:t.terrain==='sand'?[.57+v,.52+v,.37+v]:coast?[.34+v,.43+v,.28+v]:[.27+v,.40+v,.28+v];
       positions.push(px,py,pz);colors.push(...color);
     }
   }

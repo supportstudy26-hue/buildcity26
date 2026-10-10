@@ -33,7 +33,7 @@ test('server commits first city once, authenticates adopted orphan, returns only
   const h=harness({orphan:true}),input={action:'register',username:'mayor',password:' Secret Spaces ',cityName:'Đà Nẵng',requestId};
   const r=await h.invoke(input);assert.equal(r.code,201);assert.equal(r.data.recoveryCode.length,48);assert.equal(r.data.firstCity,requestId);assert.equal(r.data.identity_email,undefined);assert.equal(r.headers['Cache-Control'],'no-store, private');
   const auth=h.calls.find(c=>c.name==='signInWithPassword');assert.equal(auth.args.password,' Secret Spaces ');
-  const finish=h.calls.find(c=>c.name==='bc26_account_finish');assert.equal(finish.args.p_state.name,'Đà Nẵng');assert.equal(finish.args.p_code_hash.length,64);assert.notEqual(finish.args.p_code_hash,r.data.recoveryCode);
+  const finish=h.calls.find(c=>c.name==='bc26_account_finish');assert.equal(finish.args.p_state.name,'Đà Nẵng');assert.equal(finish.args.p_state.money,10000000);assert.equal(finish.args.p_state.ledger.openingCash,10000000);assert.equal(finish.args.p_code_hash.length,64);assert.notEqual(finish.args.p_code_hash,r.data.recoveryCode);
   const retry=await h.invoke(input);assert.equal(retry.data.recoveryCode,r.data.recoveryCode);assert.equal(h.stored.user_id,'qa-user');
 });
 test('origin, method, oversized input and shared rate limits reject requests before user creation',async()=>{

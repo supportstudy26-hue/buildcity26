@@ -9,7 +9,7 @@ test('empty start has no prebuilt assets, agents, debt or XP and retains the old
  assert.equal(empty.metrics.population,0);assert.equal(empty.metrics.roadCount,0);assert.equal(empty.metrics.homes,0);
  assert.ok(empty.tiles.every(t=>!t.kind&&!t.zone&&!t.historicalCost));
  for(const list of ['citizens','households','firms','vehicles','contracts'])assert.equal(empty[list].length,0);
- assert.equal(empty.money,100000);assert.equal(empty.progression.xp,0);assert.equal(empty.loanBalance,0);
+ assert.equal(empty.money,10000000);assert.equal(empty.progression.xp,0);assert.equal(empty.loanBalance,0);
  assert.deepEqual(empty.world,old.world);assert.notEqual(empty.world,old.world);
  assert.deepEqual(serialize(old),before);assert.equal(old.metrics.population,176);
  assert.deepEqual(serialize(validateSave(JSON.parse(JSON.stringify(serialize(empty))))),serialize(empty));
@@ -56,18 +56,19 @@ test('all 24 facilities survive saves and have light geometry; old saves remain 
  assert.equal(validateSave(serialize(createCity())).metrics.population,176);
 });
 
-test('100-million start can afford utilities, homes and employment without changing legacy saves',()=>{
- const s=createEmptyCity();assert.equal(s.money,100000);
+test('10-billion start can afford utilities, homes and employment without changing legacy saves',()=>{
+ const s=createEmptyCity();assert.equal(s.money,10000000);
  for(let x=0;x<3;x++)assert.ok(place(s,x,18,'road').ok);
  for(const [x,y,kind] of [[0,17,'smallPower'],[1,17,'smallWater'],[2,17,'smallSewage'],[0,19,'residential'],[1,19,'commercial']])assert.ok(place(s,x,y,kind).ok);
- assert.equal(s.money,17400);assert.equal(s.metrics.power,100);assert.equal(s.metrics.water,15);assert.equal(s.metrics.sewage,15);
+ assert.equal(s.money,9917400);assert.equal(s.metrics.power,100);assert.equal(s.metrics.water,15);assert.equal(s.metrics.sewage,15);
  for(let second=0;second<1140;second++)stepSimulation(s);
  assert.ok(s.metrics.population>0);assert.ok(s.metrics.jobs>0);assert.ok(s.money>0);
  const copy=validateSave(JSON.parse(JSON.stringify(serialize(s))));assert.equal(copy.money,s.money);
  assert.equal(validateSave(serialize(createCity())).money,12000000);
+ const old=serialize(createEmptyCity({startingCash:100000}));assert.equal(validateSave(old).money,100000);assert.deepEqual(serialize(validateSave(old)),old);
 });
 
-test('account server creates an empty 100 million city for default and selected geography',async()=>{
+test('account server creates an empty 10 billion city for default and selected geography',async()=>{
  const {createRegistrationCity}=await import('../server/start-city.js');
- for(const region of [null,'31-start']){const city=await createRegistrationCity(region);assert.equal(city.money,100000);assert.equal(city.ledger.openingCash,100000);assert.equal(city.citizens.length,0);const loaded=validateSave(serialize(city));assert.equal(loaded.money,100000);}
+ for(const region of [null,'31-start']){const city=await createRegistrationCity(region);assert.equal(city.money,10000000);assert.equal(city.ledger.openingCash,10000000);assert.equal(city.citizens.length,0);const loaded=validateSave(serialize(city));assert.equal(loaded.money,10000000);}
 });
