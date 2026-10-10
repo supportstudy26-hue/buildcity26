@@ -5,7 +5,7 @@
 - Sửa lỗi giá hover Canvas dùng công thức cũ; lệnh xây, HUD và ghost 3D dùng chung placementQuote. Có kiểm ngân sách, cầu, nâng đường, nước, dốc, ngoài địa phương và ô đã chiếm. Phá dỡ hiển thị cả vốn nâng cấp công chưa sử dụng được hoàn trả, không tính vốn chủ đầu tư vào tiền thành phố.
 - Kiểm tra: 156/156 npm test PASS (109,99 giây); build cuối PASS (4,75 giây), git diff --check sạch. Không có script lint/typecheck trong package. Browser localhost 1280×720: 3D → Canvas → 3D giữ 57 dân/1,8 triệu/clock; bấm xây đường thiếu tiền hiện Cần 14 triệu, Thiếu 12,2 triệu và không trừ tiền. Reload giữ bản lưu. Ảnh interface-3d-forest-refined-20261010.png, interface-build-catalog-refined-20261010.png, canvas-placement-budget-20261010.png.
 - Chỉ số tại cảnh QA nhỏ, đang dừng: auto/low, DPR1, khoảng 30 FPS, 16 draw calls/8.564 triangles, 10 geometries, 0 textures; không phải benchmark thành phố đông dân. Chưa đo lại 5.000 dân sau chỉnh cây, chưa kiểm điện thoại vật lý. Bộ model chi tiết đầy đủ và các hệ thống còn thiếu ở mục dưới chưa hoàn tất.
-- Tài khoản, Supabase/RLS, save schema và mô phỏng giữ nguyên; không migration. Chặng này chưa xác nhận deploy tại thời điểm ghi mục này; sẽ cập nhật sau Ready.
+- Tài khoản, Supabase/RLS, save schema và mô phỏng giữ nguyên; không migration. Đã push commit a7ec11b80e1e0fb8889dac7048f456897ae6898f lên main. Vercel deployment 3wc2TSzAD4wY6FMXcpJdK8nBe2kq Ready, 26 giây, Production Current với domain https://buildcity26.vercel.app/ (xác nhận dashboard lúc 16:17 ngày 10/10).
 
 ## 10/10/2026 — Vốn khởi đầu mới 10 tỷ đồng
 
