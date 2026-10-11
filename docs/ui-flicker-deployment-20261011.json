@@ -1,0 +1,66 @@
+{
+  "commit": "b443c30ab04c19e34b26c238444fa4bc629f6e95",
+  "deployment": {
+    "state": "success",
+    "statuses": [
+      {
+        "context": "Vercel",
+        "state": "success",
+        "target_url": "https://vercel.com/build-city26/buildcity26/zgFEiSHtziEvSeJWqegapSHxzexY",
+        "description": "Deployment has completed"
+      }
+    ]
+  },
+  "checks": [
+    {
+      "name": "validate",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/supportstudy26-hue/buildcity26/actions/runs/38129803877/job/114441589955"
+    }
+  ],
+  "assets": [
+    {
+      "path": "index.html",
+      "http": 200,
+      "bytes": 8848,
+      "match": true,
+      "sha256": "d6b97fdf5eb4f8c984f294c39beabef2521d9ca0b6b272d6602dae48df97b28d"
+    },
+    {
+      "path": "/assets/game-CDKC_s5t.js",
+      "http": 200,
+      "bytes": 22113,
+      "match": true,
+      "sha256": "b85a804e07b18054ca2943585a4ac5423a85cc77238312d2abd9f7a5bd3e6fa8"
+    },
+    {
+      "path": "/assets/simulation-PQvaYsvy.js",
+      "http": 200,
+      "bytes": 887,
+      "match": true,
+      "sha256": "f4e06257362630a97996dc9bb59317c176f4f1aa666d2a70e257004093146643"
+    },
+    {
+      "path": "/assets/simulation-bN5BDzud.css",
+      "http": 200,
+      "bytes": 44654,
+      "match": true,
+      "sha256": "9a3584bc31d54662898e3ed03dcbc935987ef4c731acbd5d473927b3c26ebc9a"
+    },
+    {
+      "path": "/assets/game-D-QO0qA6.css",
+      "http": 200,
+      "bytes": 52172,
+      "match": true,
+      "sha256": "17afa16875ad300144aba2e4de30b3dbf15485bbe62c121a691667615119cc59"
+    },
+    {
+      "path": "/assets/app-CZSl4btS.js",
+      "http": 200,
+      "bytes": 411948,
+      "match": true,
+      "sha256": "922385299c6c29c5c93cfc12453011b25c7f518e4de1b5c6d3d577f1c68c6d8e"
+    }
+  ]
+}

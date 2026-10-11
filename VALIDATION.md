@@ -5,7 +5,7 @@
 - Game thật 1280×720 và iframe 390×844: các mẫu 5s inspector/cư dân/dân số có 0 frame ảnh trống, 0 ảnh tháo khỏi DOM, giữ controls/focus/scroll và 0px dịch chuyển bảng. Sửa thêm lỗi mất inspector khi đổi bảng và bấm theo dõi. Ảnh/JSON `docs/ui-*-20261011.*`.
 - Cổng Hà Nội thật ô12,23: xác nhận đường nối4 đoạn/84 triệu, tiện ích và cửa hàng cho 25 dân/16 việc làm/67% hài lòng; reload giữ tiền/dân/clock/đường. Cao Bằng DEM55%: xây/nâng đường, 4 làn/90 năng lực và reload giữ. Unit route/save trên địa hình và ranh giới cũng đạt.
 - Bài đo khu nhỏ trước sửa bảng: 39,8FPS mean, p95 frame50,2ms, 48 draw calls, heap27MB; không phải benchmark 5.000 dân hay điện thoại vật lý. Chưa có mô hình đường dốc kỹ thuật đầy đủ.
-- Chưa xác nhận deployment bản mới tại lúc ghi kiểm này. Xem trạng thái mới nhất trong implementation-status; các phần bên dưới là lịch sử.
+- Code b443c30 đã push; GitHub CI validate success, Vercel zgFEiSHtziEvSeJWqegapSHxzexY completed/success. Domain chính HTTP200/assets khớp build; inspector5,02s/301frames không ảnh trống/tách DOM/node removals/layout shift, đổi bảng/mở lại được. Giữ bản QA176 dân/12triệuBC/clock28.273giây/paused=true. Nút đến cổng hiện nhãn tại đúng ô1,19 của legacy save, tự đóng modal và chọn công cụ đường. Bằng chứng docs/ui-flicker-deployment-20261011.json, docs/ui-production-stability-20261011.json, docs/entry-production-20261011.png. Các phần bên dưới là lịch sử.
 
 ## Giáo dục 11/10/2026
 
