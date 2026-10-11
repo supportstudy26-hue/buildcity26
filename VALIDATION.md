@@ -5,6 +5,7 @@
 - Sau sửa load bản cũ đang tạm dừng: education/campaign/mission-audit 25/25 PASS, gồm9 test giáo dục, 24,35 s. Build cuối PASS15,46 s. Full224 trước sửa adapter này.
 - Build trước PASS 8,49 s, giữ cảnh báo hai chunk lazy >500 kB. Không có lint/typecheck. Performance measured 176 và 5.000 dân trong `docs/education-performance-*-20261011.json`; dense 42 FPS trung bình, 50 actors render, còn 4 long tasks tới 858 ms.
 - Supabase live riêng PASS: school journey/lesson lossless qua hai thiết bị, 42 attendance, retry, không đếm trùng và stale PT409. `docs/education-cloud-20261011.json`; chưa claim nhóm 6 live.
+- Production bản cuối c1d6373/VercelGBzyBnwkLbYQUuZBKWbKRcxBFLdH + CI success; assets khớp build; paused legacy giữ176 dân/12triệuBC/28.273giây và hiện đúng trường120 chỗ/6 giáo viên/19 học sinh được phân.
 - Không có SQL migration mới; dữ liệu trường là additive JSON schema 6. Audit 110 provider/190 thiếu, 19 reachable tĩnh, barrier 007-b/007-c. Chưa chứng minh full 300 hoặc vận tải chưa tích hợp.
 
 # Kiểm tra chặng màu/dự phòng/một thành phố — 11/10/2026

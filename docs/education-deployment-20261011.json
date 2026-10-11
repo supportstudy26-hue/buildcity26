@@ -1,15 +1,16 @@
 {
   "url": "https://buildcity26.vercel.app",
   "http": 200,
-  "deployment": "CEmiFfQNovAuazVHsd6bcSH2m6gB",
-  "commit": "ab923b8bd777e197f4d51873f1540f5f7a5e5a8b",
+  "deployment": "GBzyBnwkLbYQUuZBKWbKRcxBFLdH",
+  "commit": "c1d6373e4841632387208b519ba7cfa918fb232a",
+  "githubCi": "success",
   "assets": [
     {
-      "asset": "/assets/game-NPYeIA39.js",
+      "asset": "/assets/game-CLrPCKS0.js",
       "matchesLocalBuild": true
     },
     {
-      "asset": "/assets/app-D8sAr8xa.js",
+      "asset": "/assets/app-Cx6ObsBd.js",
       "matchesLocalBuild": true,
       "educationUiPresent": true
     },
