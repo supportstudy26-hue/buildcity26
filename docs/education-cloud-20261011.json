@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "testUser": "qa_education_ad95365f47",
+  "schoolTripCloudRoundTrip": true,
+  "secondDevice": true,
+  "attendance": 42,
+  "learningProgressCloudRoundTrip": true,
+  "retryOnce": true,
+  "noDuplicateAttendance": true,
+  "staleRejected": true,
+  "cityCount": 1
+}

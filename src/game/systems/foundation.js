@@ -8,6 +8,7 @@ import { initializeWorld } from './world.js';
 import { reconcileHouseholds } from './households.js';
 import { reconcileFirms } from './firms.js';
 import { reconcileVehicles, updateVehicles } from './vehicles.js';
+import {reconcileEducation} from './education.js';
 export function initializeFoundation(s,size,rng) {
   s.mobilityVersion??=1;s.playback??=createPlayback();s.progression??=createProgression();s.ruleVersion=RULE_VERSION;s.clock??=createClock(s.day);s.graphVersion??=0;
   s.initialSeed??=s.seed;s.societySeed??=(s.initialSeed^0x26bc1234)>>>0;
@@ -21,7 +22,7 @@ export function reconcileSociety(s,size,rng,{arriving=false}={}) {
   initializeWorld(s,size);
   const source={seed:s.societySeed};
   const added=reconcileHouseholds(s,size,()=>rng(source));s.societySeed=source.seed;
-  reconcileFirms(s);reconcileVehicles(s);
+  reconcileFirms(s);s.educationVersion=1;reconcileEducation(s,{force:true});reconcileVehicles(s);
   if(arriving){const entry=s.world?.geography?.entryTile??index(0,18);for(const c of added){if(!s.tiles[c.home].connected)continue;c.goal=entry;c.position=position(entry,size,s);startJourney(s,c,c.home,route,size,false);if(c.journey){c.journey.purpose='move-in';if(c.missionTrip)c.missionTrip.purpose='move-in';}}}
   updateVehicles(s);
 }

@@ -1,9 +1,11 @@
 # Tiếp tục Build City 26
 
-Đọc toàn bộ đặc tả root và docs/feature-coverage.md, implementation-status.md, CODEX_HANDOFF.md. Yêu cầu mới hơn: vốn tài khoản/thành phố mới 100 triệu ₫ (100.000 BC); giữ tiền save cũ. Không dùng API AI hoặc tài nguyên game khác.
+Giữ repo hiện tại, dữ liệu người chơi, tên công trình/ID và clock mặc định 1 giây thực = 5 giây game. Yêu cầu mới nhất: tài khoản/thành phố mới khởi đầu **10 tỷ ₫ game = 10.000.000 BC**, không reset tiền bản lưu đang có. Công trình hiện ngay khi đặt; giữ mô phỏng điều kiện hoạt động/cư dân. Không dùng API AI hoặc tài nguyên sao chép.
 
-Repo supportstudy26-hue/buildcity26 đã push; Vercel production https://buildcity26.vercel.app/ hoạt động, secret chỉ server; Supabase schema 6 và migration 008 đã chạy. Không xin lại quyền push/triển khai đã có.
+GitHub supportstudy26-hue/buildcity26 → Vercel https://buildcity26.vercel.app/; đã có quyền push/deploy, không xin lại. Secret chỉ server. Supabase migration mới nhất đã chạy `202610110001_one_active_city.sql`; tạo mới phải review/xác nhận thay cũ, backup rồi RPC atomic/CAS. RLS/login/recovery/two device/receipt QA live đã có bằng chứng trong implementation-status. Không dùng tài khoản người chơi để thử phá/xóa thành phố.
 
-Chặng mới có 24 công trình, menu vector nhẹ, đất trống và backup, bộ tiện ích giá nhỏ. Đây là mở rộng nền, không phải toàn I3. Tiếp tục theo dependencies: worker/graph/world streaming, dịch vụ có năng lực/nhân sự/hàng đợi/trip, chi phí/thi công, nâng cấp F, 300 nhiệm vụ E, các hệ thống I còn thiếu. Không tạo nút giả, không đánh dấu nhóm hoàn tất chỉ vì có catalog/mesh.
+Đọc docs/implementation-status.md, VALIDATION.md và docs/mission-audit-300.md/.json mới trước khi làm. Chặng giáo dục tiểu học/trung học có chỗ học theo tuổi, giáo viên tuyển từ dân, hành trình, học có thời lượng, công suất/nâng cấp/mất điện và giữ lịch sử. Additive JSON schema6, không SQL mới. Bộ tests/education.test.js cuối 8 PASS; full trước thêm 2 test là224 PASS. Supabase giáo dục live PASS; số đo game5000 dân giữ50 actors,42 FPS trung bình/10s nhưng có long tasks tới858ms. Không gọi mượt mọi thiết bị.
 
-Auth live A/B đăng ký/RLS/hai phiên đã qua, CAS stale/recovery QA chưa đạt. Script chỉ dùng public key và JWT QA, không dùng admin key để chứng minh RLS. Tập trung lấy mã lỗi stale trước khi sửa. Luồng email thật và mobile mới chưa kiểm chứng.
+Audit hiện **110 có provider /190 thiếu;19 reachable tĩnh /91 có provider bị prerequisite chặn**. Nhóm006 đã có mục tiêu thật và test unlock007. Barrier đầu **007-b/007-c**: khám điều trị/công suất y tế. Ưu tiên tiếp theo bệnh nhân, hàng chờ/nhân sự, hành trình, hoàn tất điều trị và metric y tế thật. Không giảm mục tiêu hoặc dựng counter giả để mở nhiệm vụ. Dạy nghề/đại học/tốt nghiệp chưa xong.
+
+Các module rail/aviation/engineered-roads untracked giữ local, chưa nối game/catalogue/mission/release; không stage tự động hoặc báo hoàn tất. Worker/world streaming, logistics, dispatch dịch vụ, tier4–5 và phần còn thiếu theo audit vẫn phải làm từng chặng, test trong game rồi cập nhật docs. Không coi đủ300 menu hay model đứng yên là chức năng hoàn chỉnh.

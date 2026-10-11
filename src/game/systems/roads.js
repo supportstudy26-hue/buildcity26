@@ -1,12 +1,13 @@
 import {roadProfile} from '../../config/road-profiles.js';
 import {roadNeighbors,roadForAccess} from './road-network.js';
 import {jobsCapacity} from '../../config/building-economy.js';
+import {schoolPosts} from './education.js';
 import { SIZE, index, distance, neighbors } from './world.js';
 // Paths belong to one city and one analyzed graph. Bound the cache and copy
 // returned arrays so journey consumers cannot corrupt a later route request.
 const routeCaches=new WeakMap();
 export function analyzeTraffic(s){
-  const homes=[],work=[];s.tiles.forEach((t,i)=>{t.trafficLoad=0;t.trafficCapacity=roadProfile(t)?.capacity||0;if(t.kind==='residential'&&t.active&&t.residents)homes.push(i);if(['commercial','industrial'].includes(t.kind)&&t.active)work.push({i,remaining:jobsCapacity(t)});});
+  const homes=[],work=[];s.tiles.forEach((t,i)=>{t.trafficLoad=0;t.trafficCapacity=roadProfile(t)?.capacity||0;if(t.kind==='residential'&&t.active&&t.residents)homes.push(i);if(['commercial','industrial'].includes(t.kind)&&t.active)work.push({i,remaining:jobsCapacity(t)});else if(t.active&&schoolPosts(t))work.push({i,remaining:schoolPosts(t)});});
   const trips=[];
   const lines=(s.network.busLines||[]).filter(l=>l.ok).map(l=>({...l,remaining:l.vehicles*30*(s.budgets?.bus??100)/100}));
   // One route tree per home; job destinations share the same connected graph.

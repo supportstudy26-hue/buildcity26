@@ -22,6 +22,7 @@ import { dailyFinance, recordCash } from './systems/economy.js';
 import { calendar, clockStep, createClock, setPlayback } from './systems/clock.js';
 import { updateCitizens } from './systems/citizens.js';
 import { updateVehicles } from './systems/vehicles.js';
+import {updateEducation,reconcileEducation} from './systems/education.js';
 import { startConstruction, updateConstruction, cancelConstruction } from './systems/construction.js';
 import { entityId, emit } from './systems/events.js';
 // Pure game logic. No browser, auth or rendering dependencies.
@@ -169,11 +170,12 @@ export function validateSave(raw){
 
 // Stable simulation step. Renderer never mutates the world.
 export function stepSimulation(s){
+  if(s.educationVersion!==1)reconcileSociety(s,SIZE,random);
   const previous=s.day,weatherWindow=weatherState(s).window,c=clockStep(s);if(weatherState(s).window!==weatherWindow)analyze(s);
   if(c.day!==previous)dailyUpdate(s);
   if(updateConstruction(s)){s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);updateProgression(s,true);}
   if([updateDevelopment(s),updateUpgrades(s)].some(Boolean)){s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random,{arriving:true});updateProgression(s,true);}
-  updateCitizens(s,c,route,SIZE);updateVehicles(s);updateProgression(s);
+  reconcileEducation(s);updateCitizens(s,c,route,SIZE);updateVehicles(s);updateEducation(s,emit);updateProgression(s);
   return s.clock.seconds;
 }
 function initializeWorldCompatibility(s){initializeWorld(s,SIZE);}

@@ -1,3 +1,11 @@
+## Giáo dục 11/10/2026
+
+- Full suite 224/224 PASS (73,52 s); education cuối 8/8 PASS (9,41 s), gồm cấp 6 mở cấp 7, claim duplicate, mất điện/nâng cấp, phá trường, tuổi/chỗ/giáo viên, clock/cuối tuần, tuyến thật, save mid-trip/mid-lesson, legacy migration và server replay chống counter giả.
+- Browser actual app: học sinh ID cụ thể đi trên đường; 42/42 được phân chỗ, 18 giáo viên thật tới hai trường; bài học lưu/mở lại giữ. Mobile 390×844 không tràn ngang, phân trang/đóng/theo dõi được. Bằng chứng `docs/education-*.png`.
+- Build PASS 8,49 s, giữ cảnh báo hai chunk lazy >500 kB. Không có lint/typecheck. Performance measured 176 và 5.000 dân trong `docs/education-performance-*-20261011.json`; dense 42 FPS trung bình, 50 actors render, còn 4 long tasks tới 858 ms.
+- Supabase live riêng PASS: school journey/lesson lossless qua hai thiết bị, 42 attendance, retry, không đếm trùng và stale PT409. `docs/education-cloud-20261011.json`; chưa claim nhóm 6 live.
+- Không có SQL migration mới; dữ liệu trường là additive JSON schema 6. Audit 110 provider/190 thiếu, 19 reachable tĩnh, barrier 007-b/007-c. Chưa chứng minh full 300 hoặc vận tải chưa tích hợp.
+
 # Kiểm tra chặng màu/dự phòng/một thành phố — 11/10/2026
 
 Full suite 217/217 PASS, không skip, 222,36 s; sau sửa xung đột review thêm một test, chạy backup/city-replacement/cloud-sync 19/19 PASS. SQL migration một thành phố chạy PGlite và Supabase thật. Live 2 tài khoản kiểm A/B RLS/atomic replacement/CAS/retry/save-load PASS. Live nhiệm vụ chống trùng/khôi phục/xuyên owner và codec 5.000 dân PASS.

@@ -2,6 +2,7 @@ import {MISSIONS,MISSION_CATALOGUE_VERSION,CAP_XP,MAX_CITY_LEVEL,levelFromXp,xpF
 import {legacyLevelFromXp,legacyXpForLevel} from '../../config/legacy-progression.js';
 import {metricKey,leaves,metricContext,metricNeedsContext,snapshotMetric,metricSupport,metricLabel,KIND_TOOLS,kindMatches} from './mission-metrics.js';
 import {recordCash} from './economy.js';
+import {ATTENDANCE_SECONDS} from '../../config/education.js';
 export function migratedLegacyXp(xp){const l=Math.min(100,legacyLevelFromXp(xp));if(l===100)return CAP_XP;return xpForLevel(l)+Math.floor((xp-legacyXpForLevel(l))/(legacyXpForLevel(l+1)-legacyXpForLevel(l))*(xpForLevel(l+1)-xpForLevel(l)));}
 export function createCampaign(){return {version:MISSION_CATALOGUE_VERSION,claims:[],levelGrants:[],baselines:{},holds:{},earned:{},counters:{},lastEvent:0,lastTick:null,windows:{},tripBins:[],waste:{at:0,generated:0,collected:0}};}
 export function campaign(s){return s.progression.campaign??=createCampaign();}
@@ -24,6 +25,11 @@ export function recordMissionEvent(s,e){
   for(const n of counterNodes)if(n.metric==='upgrades_completed'&&kindMatches(t,n.filters.kind)&&t.level>=n.filters.minTier)c.counters[metricKey(n)]=(c.counters[metricKey(n)]||0)+1;
  }
  if(e.type==='waste-collected'&&e.amount>0&&e.applied===true&&s.tiles[e.tile]?.connected){const key=metricKey({metric:'completed_jobs',filters:{service:'waste_collection'}});c.counters[key]=(c.counters[key]||0)+1;}
+ if(e.type==='school-attendance-completed'){
+  const person=s.citizens.find(p=>p.id===e.entity),u=person?.study,t=s.tiles[e.school];
+  if(e.applied!==true||!u||person.state!=='at-school'||person.journey||person.goal!==e.school||u.tile!==e.school||u.assetId!==e.asset||t?.assetId!==e.asset||!t.active||!t.sewage||u.sessionSeconds<ATTENDANCE_SECONDS||u.lastAttendanceDay!==e.day||u.lastAttendanceSequence!==e.sequence||e.day!==Math.floor(s.clock.seconds/86400)||e.job!==`school-attendance-${person.id}-${e.day}`)return;
+  const key=metricKey({metric:'completed_jobs',filters:{service:'school_attendance'}});c.counters[key]=(c.counters[key]||0)+1;
+ }
 }
 export function readMetric(s,n,stage,ctx){
  const c=campaign(s),key=metricKey(n);

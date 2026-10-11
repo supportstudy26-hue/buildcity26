@@ -2,6 +2,8 @@ import contract from '../../config/missions/metric-contract.json' with {type:'js
 import {CATALOG,serviceKind} from '../../config/catalog.js';
 import {isRoad} from './world.js';
 import {capacityFactor} from '../../config/building-economy.js';
+import {SCHOOL_PROFILES} from '../../config/education.js';
+import {educationSnapshot,schoolSnapshot} from './education.js';
 // Only map a kind when the corresponding game system actually operates.
 export const KIND_TOOLS=Object.freeze({house:['residential'],shop:['commercial'],office:['commercial'],power_source:['smallPower','power'],pump:['smallWater','water','waterPump'],sewer_outlet:['smallSewage','sewage','treatmentPlant'],waste_depot:['waste','wasteCenter'],primary_school:['school'],secondary_school:['secondarySchool'],clinic:['clinic'],hospital:['hospital'],fire_station:['fire','fireCenter'],police_station:['police','policeCenter'],park:['park','plaza'],bus_depot:['bus'],bus_stop:['busStop'],university:['university']});
 export const metricKey=n=>JSON.stringify([n.metric,Object.entries(n.filters||{}).sort(([a],[b])=>a.localeCompare(b))]);
@@ -21,7 +23,7 @@ export function snapshotMetric(s,n,ctx){
   if(!KIND_TOOLS[kind])return absent(`Chưa có hệ thống ${contract.buildingKinds?.[kind]||kind}`);
   if(Object.keys(f).some(k=>!['kind','minTier'].includes(k)))return absent('Bộ lọc chưa hỗ trợ');
   if(f.minTier>3)return absent('Nâng cấp bậc 4–5 chưa có đủ tiện ích');
-  return good(ctx.buildings.filter(t=>kindMatches(t,kind)&&t.level>=(f.minTier||1)&&t.development?.status!=='building'&&(n.metric==='completed_buildings'||operating(t))).length);
+  return good(ctx.buildings.filter(t=>kindMatches(t,kind)&&t.level>=(f.minTier||1)&&t.development?.status!=='building'&&(n.metric==='completed_buildings'||operating(t)&&(!SCHOOL_PROFILES[t.kind]||(schoolSnapshot(s,s.tiles.indexOf(t))?.capacity||0)>0))).length);
  }
  if(n.metric==='active_routes'){
   if(f.mode!=='bus'||Object.keys(f).length!==1)return absent('Phương thức vận tải này chưa vận hành');
@@ -30,6 +32,7 @@ export function snapshotMetric(s,n,ctx){
  if(Object.keys(f).length)return absent('Bộ lọc chưa hỗ trợ');
  const ratio=(items,test)=>items.length?good(items.filter(test).length/items.length*100):absent('Chưa có nhu cầu để tính tỷ lệ');
  switch(n.metric){
+  case 'school_access_pct':{const e=educationSnapshot(s);return e.eligible?good(e.accessPct):absent('Chưa có học sinh 6–17 tuổi để tính chỗ học');}
   case 'map_selected':{const g=s.world?.geography;return good(g?.mode==='vietnam'&&/^vn-/.test(g.provinceId||'')&&g.anchor?.length===2&&g.anchor.every(Number.isFinite)&&g.crs&&g.utmOrigin?.every(Number.isFinite)?1:0);}
   case 'road_length_m':return good(s.tiles.filter(t=>isRoad(t)&&t.connected).length*20);
   case 'population':return good(s.citizens.length);
@@ -54,7 +57,8 @@ export function metricSupport(n){
  if(n.metric==='active_routes')return n.filters?.mode==='bus';
  if(n.metric==='passenger_trips')return (!n.filters?.mode||['walk','car','bus','public_transit'].includes(n.filters.mode))&&(!n.filters?.purpose||['work','home','move-in'].includes(n.filters.purpose));
  if(n.metric==='upgrades_completed')return !!KIND_TOOLS[n.filters?.kind]&&!(n.filters?.minTier>3);
- if(n.metric==='verified_save_count'||n.metric==='waste_collected_pct'||n.metric==='completed_jobs'&&n.filters?.service==='waste_collection')return true;
+ if(n.metric==='school_access_pct')return !Object.keys(n.filters||{}).length;
+ if(n.metric==='verified_save_count'||n.metric==='waste_collected_pct'||n.metric==='completed_jobs'&&['waste_collection','school_attendance'].includes(n.filters?.service)&&Object.keys(n.filters).length===1)return true;
  return ['map_selected','road_length_m','population','connected_buildings_pct','power_coverage_pct','water_coverage_pct','sewage_treated_pct','happiness_pct','employment_pct','traffic_flow_pct','treasury','debt','power_reserve_pct','water_reserve_pct','commute_minutes','public_transit_share_pct','operating_profit_per_game_minute'].includes(n.metric);
 }
 export const metricLabel=n=>`${contract.metrics[n.metric]?.nameVi||n.metric}${n.filters?.kind?' · '+(contract.buildingKinds[n.filters.kind]||n.filters.kind):''}${n.filters?.minTier?' · bậc '+n.filters.minTier:''}${n.filters?.mode?' · '+({walk:'đi bộ',bus:'xe buýt',public_transit:'giao thông công cộng'}[n.filters.mode]||n.filters.mode):''}${n.filters?.purpose?' · '+({work:'đi làm',home:'về nhà','move-in':'chuyển đến'}[n.filters.purpose]||n.filters.purpose):''}`;

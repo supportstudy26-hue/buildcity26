@@ -4,6 +4,7 @@ import {residentCapacity,jobsCapacity,capacityFactor,MAINTENANCE_FACTORS} from '
 import { CATALOG, BUILDINGS, ZONES, serviceKind } from '../../config/catalog.js';
 import { isRoad, index, neighbors, distance, clamp } from './world.js';
 import { WATER_PER_PERSON } from '../../config/simulation.js';
+import {schoolPosts} from './education.js';
 export function analyzeUtilities(s){
   const weather=weatherState(s);
   const connected=new Set(), q=[];const entry=s.world?.geography?.entryTile??index(0,18);
@@ -50,6 +51,7 @@ export function analyzeUtilities(s){
     t.serviceStrengths=Object.fromEntries(t.services.map(kind=>[kind,Math.max(0,...services[kind].filter(n=>distance(i,n)<=CATALOG[s.tiles[n].kind].range*Math.sqrt(capacityFactor(s.tiles[n])*(s.budgets?.[kind]??100)/100)).map(n=>capacityFactor(s.tiles[n])))]));
     if(t.active&&t.kind==='commercial')jobs+=jobsCapacity(t);
     if(t.active&&t.kind==='industrial')jobs+=jobsCapacity(t);
+    if(t.active&&schoolPosts(t))jobs+=schoolPosts(t);
   });
   return {connected,services,roadAt,pop,jobs,homes,upkeep,powerNeed,waterNeed,power,water,sewage};
 }

@@ -1,0 +1,61 @@
+{
+  "elapsedSeconds": 10,
+  "frames": 499,
+  "medianFps": 59.5,
+  "p95FrameMs": 32.69999999999709,
+  "cpuTickMedianMs": 0.5,
+  "cpuTickP95Ms": 1,
+  "longTasks": 0,
+  "longTaskMaxMs": 0,
+  "workerTickMs": null,
+  "mode": "3d",
+  "quality": "medium",
+  "qualityPreference": "auto",
+  "pixelRatio": 1,
+  "triangles": 59638,
+  "regions": 16,
+  "drawCalls": 93,
+  "geometries": 19,
+  "textures": 1,
+  "fps": 58,
+  "citizens": 176,
+  "sharedMaterials": 12,
+  "camera": {
+    "target": [
+      300,
+      1.8,
+      370
+    ],
+    "distance": 651,
+    "yaw": 0.7853981633974483,
+    "polar": 0.92
+  },
+  "night": false,
+  "activeActors": 5,
+  "visibleActors": 5,
+  "renderedActors": 5,
+  "visibleSignals": 6,
+  "actorBudget": 50,
+  "population": 176,
+  "buildings": 33,
+  "roads": 76,
+  "simulationSeconds": 29481,
+  "playback": {
+    "rule": "casual-time5-v1",
+    "multiplier": 1,
+    "paused": false,
+    "observe": false
+  },
+  "viewport": [
+    1280,
+    720
+  ],
+  "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+  "platform": "MacIntel",
+  "logicalCores": 2,
+  "deviceMemoryGB": 8,
+  "heapBytes": 31003599,
+  "scenario": "Game đang chơi + HUD thật",
+  "averageFps": 49.9,
+  "verification": "Local browser QA using actual app, renderer and simulation, isolated fixture, not a physical phone measurement."
+}

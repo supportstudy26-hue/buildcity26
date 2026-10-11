@@ -4,7 +4,9 @@ import {createProgression,validateProgression} from './progression.js';
 import { STEP_SECONDS, DAY_SECONDS, RULE_VERSION, CELL_METERS } from '../../config/simulation.js';
 import {createTerrain,validateTerrain} from './terrain.js';
 import { cashBalance } from './economy.js';
-const fields=['weatherMode','privateInvestment','mobilityVersion','playback','progression','world','ruleVersion','currency','currencyMigration','initialSeed','societySeed','clock','nextEntityId','nextEventId','graphVersion','households','citizens','firms','vehicles','contracts','commandSequence','commandReceipts','events','ledger'];
+import {SCHOOL_PROFILES} from '../../config/education.js';
+import {validateStudy} from './education.js';
+const fields=['weatherMode','privateInvestment','educationVersion','mobilityVersion','playback','progression','world','ruleVersion','currency','currencyMigration','initialSeed','societySeed','clock','nextEntityId','nextEventId','graphVersion','households','citizens','firms','vehicles','contracts','commandSequence','commandReceipts','events','ledger'];
 export function foundationSnapshot(s) { return structuredClone(Object.fromEntries(fields.filter(k=>s[k]!==undefined).map(k=>[k,s[k]]))); }
 export function loadFoundation(s,raw,size) {
   if(raw.schemaVersion===3&&raw.ruleVersion==='foundation-3')raw={...raw,world:createTerrain(size,{flat:true}),progression:createProgression()};
@@ -15,6 +17,7 @@ export function loadFoundation(s,raw,size) {
     raw={...raw,ruleVersion:RULE_VERSION,clock:{step:raw.clock.seconds,seconds:raw.clock.seconds},playback:createPlayback()};
   }
   if(raw.mobilityVersion!=null&&raw.mobilityVersion!==1)throw new Error('Phiên bản cư dân/phương tiện chưa được hỗ trợ.');
+  if(raw.educationVersion!=null&&raw.educationVersion!==1)throw new Error('Phiên bản giáo dục chưa được hỗ trợ.');
   raw={...raw,mobilityVersion:raw.mobilityVersion??1};
   validatePlayback(raw.playback);
   validateTerrain(raw.world,size);
@@ -30,18 +33,19 @@ export function loadFoundation(s,raw,size) {
   const occupancy=new Map();
   for(const h of raw.households)if(!inMap(h.home)||!Array.isArray(h.members)||h.members.length<1||h.members.length>4||new Set(h.members).size!==h.members.length||!Number.isFinite(h.savings)||h.savings<0||h.members.some(id=>citizens.get(id)?.household!==h.id))throw new Error('Quan hệ hộ gia đình không hợp lệ.');
   for(const c of raw.citizens) {
-    if(!inMap(c.home)||s.tiles[c.home].kind!=='residential'||!households.get(c.household)?.members.includes(c.id)||households.get(c.household).home!==c.home||!pos(c.position)||!inMap(c.goal)||!['home','sleeping','walking','in-vehicle','at-work','blocked','waiting-bus','on-bus'].includes(c.state)||typeof c.name!=='string'||c.name.length>80||!Number.isFinite(c.walkSpeed)||c.walkSpeed<.8||c.walkSpeed>1.8||!Number.isInteger(c.attendance)||c.attendance<0||!c.schedule||![c.schedule.depart,c.schedule.return].every(v=>Number.isInteger(v)&&v>=0&&v<DAY_SECONDS))throw new Error('Dữ liệu cư dân không hợp lệ.');
+    if(!inMap(c.home)||s.tiles[c.home].kind!=='residential'||!households.get(c.household)?.members.includes(c.id)||households.get(c.household).home!==c.home||!pos(c.position)||!inMap(c.goal)||!['home','sleeping','walking','in-vehicle','at-work','at-school','blocked','waiting-bus','on-bus'].includes(c.state)||typeof c.name!=='string'||c.name.length>80||!Number.isFinite(c.walkSpeed)||c.walkSpeed<.8||c.walkSpeed>1.8||!Number.isInteger(c.attendance)||c.attendance<0||!c.schedule||![c.schedule.depart,c.schedule.return].every(v=>Number.isInteger(v)&&v>=0&&v<DAY_SECONDS))throw new Error('Dữ liệu cư dân không hợp lệ.');
+    validateStudy(c.study,c,raw,size,s.tiles);
     if(c.artId!=null&&MobilityArtRegistry[c.artId]?.kind!=='person'||c.travelled!=null&&(!Number.isFinite(c.travelled)||c.travelled<0))throw new Error('Mỹ thuật / quãng đường cư dân không hợp lệ.');
     if(c.busPlan){const p=c.busPlan;if(!s.busLines.some(l=>l.id===p.line)||![p.board,p.alight,p.destination].every(inMap)||p.board===p.alight||!['walk-to-stop','waiting','riding','walk-from-stop'].includes(p.stage)||typeof p.tripId!=='string'||p.tripId.length>100)throw new Error('Kế hoạch xe buýt không hợp lệ.');}
     if(c.state==='waiting-bus'&&c.busPlan?.stage!=='waiting'||c.state==='on-bus'&&(c.busPlan?.stage!=='riding'||c.journey))throw new Error('Trạng thái hành khách không khớp.');
     occupancy.set(c.home,(occupancy.get(c.home)||0)+1);
-    const mt=c.missionTrip;if(mt!=null&&(!mt||typeof mt.id!=='string'||mt.id.length>100||!inMap(mt.origin)||!inMap(mt.destination)||!Number.isInteger(mt.startedAt)||mt.startedAt<0||mt.startedAt>raw.clock.seconds||!['walk','car','bus'].includes(mt.mode)||!['home','work','move-in'].includes(mt.purpose)))throw new Error('Chuyến nhiệm vụ không hợp lệ.');
+    const mt=c.missionTrip;if(mt!=null&&(!mt||typeof mt.id!=='string'||mt.id.length>100||!inMap(mt.origin)||!inMap(mt.destination)||!Number.isInteger(mt.startedAt)||mt.startedAt<0||mt.startedAt>raw.clock.seconds||!['walk','car','bus'].includes(mt.mode)||!['home','work','move-in','school'].includes(mt.purpose)))throw new Error('Chuyến nhiệm vụ không hợp lệ.');
     const j=c.journey;
     if(j&&(!['walk','car'].includes(j.mode)||!Array.isArray(j.path)||j.path.length<2||j.path.length>size*size+2||j.path.some(p=>!pos(p)||p.road!=null&&!inMap(p.road))||!Number.isInteger(j.segment)||j.segment<0||j.segment>=j.path.length-1||!Number.isFinite(j.distance)||j.distance<0||!Number.isFinite(j.speed)||j.speed<=0||j.speed>40||j.actualSpeed!=null&&(!Number.isFinite(j.actualSpeed)||j.actualSpeed<0||j.actualSpeed>j.speed)||!inMap(j.origin)||!inMap(j.destination)))throw new Error('Hành trình cư dân không hợp lệ.');
     if((c.state==='walking'||c.state==='in-vehicle')&&!j)throw new Error('Cư dân di chuyển thiếu hành trình.');
   }
   for(let i=0;i<s.tiles.length;i++)if((occupancy.get(i)||0)!==s.tiles[i].residents)throw new Error('Dân số không khớp danh sách cư dân.');
-  for(const f of raw.firms)if(!inMap(f.home)||!['commercial','industrial'].includes(s.tiles[f.home].kind)||!Array.isArray(f.employees)||new Set(f.employees).size!==f.employees.length||f.employees.length>f.capacity||f.employees.some(id=>citizens.get(id)?.work!==f.id))throw new Error('Quan hệ công việc không hợp lệ.');
+  for(const f of raw.firms)if(!inMap(f.home)||!['commercial','industrial',...Object.keys(SCHOOL_PROFILES)].includes(s.tiles[f.home].kind)||!Number.isSafeInteger(f.capacity)||f.capacity<0||!Array.isArray(f.employees)||new Set(f.employees).size!==f.employees.length||f.employees.length>f.capacity||f.employees.some(id=>citizens.get(id)?.work!==f.id)||SCHOOL_PROFILES[s.tiles[f.home].kind]&&!f.school)throw new Error('Quan hệ công việc không hợp lệ.');
   const firms=new Set(raw.firms.map(f=>f.id)),vehicles=new Map(raw.vehicles.map(v=>[v.id,v]));
   for(const c of raw.citizens)if(c.work!=null&&!firms.has(c.work)||c.vehicle!=null&&vehicles.get(c.vehicle)?.owner!==c.id)throw new Error('Cư dân tham chiếu thực thể không tồn tại.');
   for(const v of raw.vehicles)if(!pos(v.position)||!['car','bus'].includes(v.kind)||(v.kind==='car'?!citizens.has(v.owner):!s.busLines.some(l=>l.id===v.operator))||!Array.isArray(v.passengers)||v.passengers.length>(v.kind==='bus'?60:4)||v.passengers.some(id=>!citizens.has(id))||!['parked','travelling','blocked'].includes(v.state))throw new Error('Dữ liệu xe không hợp lệ.');

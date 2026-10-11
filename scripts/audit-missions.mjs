@@ -25,6 +25,7 @@ function ref(file,symbol){
 const refs=(...pairs)=>pairs.map(([file,symbol])=>ref(file,symbol));
 const commonRefs=()=>refs(['src/game/systems/mission-metrics.js','export function metricSupport'],['src/game/systems/campaign.js','export function readMetric'],['src/game/systems/campaign.js','export function evaluateCondition']);
 const providers={
+ school_access_pct:[['src/game/systems/education.js','export function educationSnapshot'],['src/game/systems/education.js','export function reconcileEducation']],
  map_selected:[['src/game/systems/mission-metrics.js',"case 'map_selected'"],['src/game/geography/city.js','createVietnamCity']],
  road_length_m:[['src/game/systems/mission-metrics.js',"case 'road_length_m'"],['src/game/systems/utilities.js','export function analyzeUtilities']],
  completed_buildings:[['src/game/systems/mission-metrics.js','export function kindMatches'],['src/game/systems/development.js','export function materializeBuilding']],
@@ -45,7 +46,7 @@ const providers={
  active_routes:[['src/game/systems/mission-metrics.js',"if(n.metric==='active_routes')"],['src/game/systems/roads.js','export function busRoute'],['src/game/systems/bus-operations.js','export function updateBuses']],
  passenger_trips:[['src/game/systems/citizens.js','export function updateCitizens'],['src/game/systems/bus-operations.js','export function updateBuses'],['src/game/systems/campaign.js','export function recordMissionEvent']],
  upgrades_completed:[['src/game/systems/upgrades.js','export function startUpgrade'],['src/game/systems/upgrades.js','export function updateUpgrades'],['src/game/systems/campaign.js','export function recordMissionEvent']],
- completed_jobs:[['src/game/systems/services.js','export function updateLegacyServices'],['src/game/systems/campaign.js',"if(e.type==='waste-collected'"]],
+ completed_jobs:[['src/game/systems/services.js','export function updateLegacyServices'],['src/game/systems/education.js','export function updateEducation'],['src/game/systems/campaign.js','export function recordMissionEvent']],
  verified_save_count:[['server/missions.js','export function verifyMissionCheckpoint'],['supabase/migrations/202610100003_mission_campaign.sql','bc26_mission_commit']],
  commute_minutes:[['src/game/systems/campaign.js','function sampleWindows'],['src/game/systems/campaign.js',"if(e.type==='trip-arrived')"]],
  public_transit_share_pct:[['src/game/systems/campaign.js','function sampleWindows'],['src/game/systems/campaign.js',"if(e.type==='trip-arrived')"]],
@@ -98,7 +99,7 @@ function systemFor(n){
 }
 const missingRequirements={
  foundation:'Phải có nguồn nhu cầu thật, điều kiện vận hành, đường hợp lệ, công suất, chi phí và nhân lực; sau đó nối bộ đọc metric.',
- education:'Thiếu phân chỗ theo trẻ đủ tuổi, đường tới trường, job đến trường/ghi danh và chu kỳ hoàn tất học có thời lượng.',
+ education:'Tiểu học/trung học đã có chỗ học, giáo viên, hành trình và lượt học. Còn thiếu ghi danh nghề/đại học và chu kỳ đào tạo/tốt nghiệp.',
  health:'Thiếu bệnh nhân/giường/công suất, đường tiếp cận, hoàn tất khám điều trị và vận chuyển cấp cứu áp dụng kết quả.',
  emergency:'Thiếu job kiểm tra/patrol có cooldown và kết quả thật, công suất tiếp cận và thời gian đáp ứng.',
  amenities:'Thiếu người sử dụng cơ sở thật/cooldown/công suất hoặc cây sống, vị trí hợp lệ và tuyến đi bộ tới tiện ích.',
@@ -169,6 +170,7 @@ function evidenceFor(n){
  if(['employment_pct','population','passenger_trips'].includes(n.metric))tests.add('tests/foundation.test.js');
  if(['active_routes','passenger_trips','public_transit_share_pct','commute_minutes'].includes(n.metric))tests.add('tests/bus-operations.test.js');
  if(['waste_collected_pct','completed_jobs','happiness_pct','operating_profit_per_game_minute','debt','treasury'].includes(n.metric))tests.add('tests/economy-services.test.js');
+ if(n.metric==='school_access_pct'||n.filters?.service==='school_attendance'||['primary_school','secondary_school'].includes(n.filters?.kind))tests.add('tests/education.test.js');
  if(n.metric==='verified_save_count')tests.add('tests/campaign-database.test.js');
  return [...tests].filter(f=>existsSync(resolve(root,f)));
 }
@@ -189,7 +191,8 @@ function notesFor(n){
  if(n.metric==='waste_collected_pct')notes.push('Tỷ lệ chu kỳ thu gom có thể gồm backlog đã thu; tổng collected không chỉ theo cohort rác vừa phát sinh.');
  if(n.metric==='operating_profit_per_game_minute')notes.push('Cửa sổ lọc ledger categories legacy-tax-estimate, maintenance-and-interest, bus-fare; doanh thu vẫn có phần legacy ước tính theo mô phỏng.');
  if(n.metric==='employment_pct')notes.push('Mẫu số hiện lấy mọi cư dân 18–64; không có trạng thái muốn làm việc riêng.');
- if(n.filters?.kind==='university'||n.filters?.kind==='secondary_school'||n.filters?.kind==='hospital')notes.push('Có công trình và tác động coverage; catalogue thừa nhận chưa có chỗ học/ghi danh/bằng cấp hoặc giường bệnh/hàng đợi riêng.');
+ if(n.metric==='school_access_pct'||n.filters?.service==='school_attendance'||['primary_school','secondary_school'].includes(n.filters?.kind))notes.push('Chỗ học giới hạn theo tuổi, đường, phạm vi, ngân sách và giáo viên tuyển thật. Lượt học cần học sinh và giáo viên tới trường, học 60 giây game; đây là lượt học/ngày, chưa phải tốt nghiệp.');
+ if(n.filters?.kind==='university'||n.filters?.kind==='hospital')notes.push('Có công trình và tác động coverage; catalogue thừa nhận chưa có chỗ học/ghi danh/bằng cấp hoặc giường bệnh/hàng đợi riêng.');
  return notes;
 }
 
@@ -240,7 +243,7 @@ export function renderMarkdown(a){
 }
 
 function runChecks(){
- const files=['tests/mission-audit.test.js','tests/campaign.test.js','tests/campaign-database.test.js','tests/time-scale.test.js','tests/development-upgrades.test.js','tests/economy-services.test.js','tests/foundation.test.js','tests/bus-operations.test.js'];
+ const files=['tests/mission-audit.test.js','tests/education.test.js','tests/campaign.test.js','tests/campaign-database.test.js','tests/time-scale.test.js','tests/development-upgrades.test.js','tests/economy-services.test.js','tests/foundation.test.js','tests/bus-operations.test.js'];
  // One process per suite records attribution and failures without claiming that
  // a generic campaign assertion is a full per-mission gameplay test.
  return files.map(file=>{const timeoutMs=file==='tests/foundation.test.js'?300000:60000,r=spawnSync(process.execPath,['--test','--test-reporter=tap',file],{cwd:root,encoding:'utf8',timeout:timeoutMs,maxBuffer:2_000_000}),out=r.stdout||'',counts=Object.fromEntries([...out.matchAll(/# (tests|pass|fail|cancelled|skipped|todo) (\d+)/g)].map(x=>[x[1],Number(x[2])]));return {name:file,passed:r.status===0&&!r.error,exitCode:r.status,timedOut:r.error?.code==='ETIMEDOUT',timeoutMs,counts,scope:'Suite cục bộ, fixture/test logic; không chứng nhận playthrough 300 mục tiêu hoặc tài khoản live',...(r.status!==0?{failure:(r.error?.message||out+r.stderr).slice(-5000)}:{})};});
