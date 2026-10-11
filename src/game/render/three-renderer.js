@@ -2,6 +2,8 @@ import {roadProfile} from '../../config/road-profiles.js';
 import {isJunction} from '../systems/junctions.js';
 import {signalGlows} from './junction-parts.js';
 import {cityFocus} from './city-focus.js';
+import {cityEntry} from '../systems/city-entry.js';
+import {drawEntryMini} from './entry-marker.js';
 import {actorBudget,nearestActors} from './actor-budget.js';
 import {vehicleArtId} from '../../config/mobility-art.js';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
@@ -12,7 +14,7 @@ import * as T from 'three';
 import {STEP_SECONDS} from '../../config/simulation.js';
 import {SIZE,isRoad,CATALOG} from '../core.js';
 import {surfaceHeight,terrainHeight,waterHeightAt} from '../systems/terrain.js';
-import {REGION,chunkParts,chunkSignature,terrainArrays} from './scene-data.js';
+import {REGION,chunkParts,chunkSignature,terrainArrays,roadParts} from './scene-data.js';
 import {PROFILES,AutoQuality,detailVisible,frameDue} from './quality.js';
 const vec=(x,y,z)=>new T.Vector3(x,y,z);
 export function updateBounds(mesh){mesh.instanceMatrix.needsUpdate=true;if(mesh.instanceColor)mesh.instanceColor.needsUpdate=true;mesh.computeBoundingBox();mesh.computeBoundingSphere();}
@@ -28,7 +30,7 @@ export class ThreeCityRenderer{
     this.geometries={rounded:new RoundedBoxGeometry(1,1,1,1,.10),sphere:new T.SphereGeometry(.5,8,6),gable:createGableGeometry(T),box:new T.BoxGeometry(1,1,1),window:new T.BoxGeometry(1,1,1),cone:new T.ConeGeometry(.5,1,7),cylinder:new T.CylinderGeometry(.5,.5,1,10),ico:new T.IcosahedronGeometry(.5,0)};
     this.material=new T.MeshLambertMaterial();this.windowMaterial=new T.MeshStandardMaterial({roughness:.28,metalness:.12,emissive:'#ffca81',emissiveIntensity:0});this.tileMaterial=new T.MeshLambertMaterial();this.metalMaterial=new T.MeshStandardMaterial({roughness:.58,metalness:.3});this.lampMaterial=new T.MeshBasicMaterial({color:'#fff5d4'});
     this.groundMaterial=new T.MeshLambertMaterial({vertexColors:true});this.waterMaterial=new T.MeshLambertMaterial({color:'#379bbc',transparent:true,opacity:.94});
-    this.ghostGroup=new T.Group();this.scene.add(this.ghostGroup);this.ghostMaterial=new T.MeshBasicMaterial({transparent:true,opacity:.36,depthWrite:false});this.pickables=[];this.regions=new Map();this.actorGroup=new T.Group();this.scene.add(this.actorGroup);this.actorMeshes=new Map();
+    this.ghostGroup=new T.Group();this.scene.add(this.ghostGroup);this.connectionGroup=new T.Group();this.scene.add(this.connectionGroup);this.ghostMaterial=new T.MeshBasicMaterial({transparent:true,opacity:.36,depthWrite:false});this.pickables=[];this.regions=new Map();this.actorGroup=new T.Group();this.scene.add(this.actorGroup);this.actorMeshes=new Map();
     this.signalMeshes=new Map();for(const [name,color] of [['red','#ff584b'],['amber','#ffca5b'],['green','#55eba0']]){const material=new T.MeshBasicMaterial({color}),mesh=new T.InstancedMesh(this.geometries.sphere,material,256);mesh.count=0;mesh.visible=false;this.signalMeshes.set(name,mesh);this.scene.add(mesh);}
     this.ray=new T.Raycaster();this.ndc=new T.Vector2();this.object=new T.Object3D();this.frustum=new T.Frustum();this.matrix=new T.Matrix4();
     this.selection=new T.Mesh(new T.BoxGeometry(20,.08,20),new T.MeshBasicMaterial({color:'#ffdaa4',transparent:true,opacity:.3,depthWrite:false}));this.selection.visible=false;this.scene.add(this.selection);
@@ -41,6 +43,7 @@ export class ThreeCityRenderer{
   updateCamera(){this.target.x=T.MathUtils.clamp(this.target.x,0,SIZE*20);this.target.z=T.MathUtils.clamp(this.target.z,0,SIZE*20);this.target.y=terrainHeight(this.getCity().world,this.target.x,this.target.z);this.camera.position.set(this.target.x+this.distance*Math.sin(this.polar)*Math.sin(this.yaw),this.target.y+this.distance*Math.cos(this.polar),this.target.z+this.distance*Math.sin(this.polar)*Math.cos(this.yaw));this.camera.lookAt(this.target);this.camera.updateMatrixWorld();this.sun.target.position.copy(this.target);this.sun.position.set(this.target.x-300,this.target.y+900,this.target.z+180);}
   center(){const f=cityFocus(this.getCity(),this.width);this.target.set((f.x+.5)*20,2,(f.y+.5)*20);this.distance=f.distance;this.polar=.92;this.yaw=Math.PI/4;this.follow=null;this.updateCamera();}
   focusTile(x,y){this.follow=null;this.target.x=(x+.5)*20;this.target.z=(y+.5)*20;this.updateCamera();}
+  entryScreenPosition(){const s=this.getCity(),i=cityEntry(s),p=vec((i%SIZE+.5)*20,surfaceHeight(s,i,SIZE)+9,(Math.floor(i/SIZE)+.5)*20).project(this.camera);return {x:(p.x+1)*this.width/2,y:(1-p.y)*this.height/2,visible:p.z>=-1&&p.z<=1&&Math.abs(p.x)<.95&&Math.abs(p.y)<.95};}
   panBy(dx,dy){this.follow=null;if(this.dragMode==='orbit'){this.yaw-=dx*.007;this.polar=T.MathUtils.clamp(this.polar+dy*.005,.25,1.35);}else{const unit=2*this.distance*Math.tan(T.MathUtils.degToRad(43/2))/this.height;this.target.x+=(-dx*Math.cos(this.yaw)-dy*Math.sin(this.yaw)/Math.max(.2,Math.cos(this.polar)))*unit;this.target.z+=(dx*Math.sin(this.yaw)-dy*Math.cos(this.yaw)/Math.max(.2,Math.cos(this.polar)))*unit;}this.updateCamera();}
   topView(){this.polar=this.polar<.1?.86:.02;this.updateCamera();}
   zoomAt(factor,px=this.width/2,py=this.height/2){const plane=new T.Plane(vec(0,1,0),-this.target.y),before=vec(0,0,0),after=vec(0,0,0);this.setRay(px,py);const a=this.ray.ray.intersectPlane(plane,before);this.distance=T.MathUtils.clamp(this.distance/factor,20,1600);this.updateCamera();this.setRay(px,py);if(a&&this.ray.ray.intersectPlane(plane,after)){this.target.add(before.sub(after));this.updateCamera();}}
@@ -109,7 +112,7 @@ export class ThreeCityRenderer{
     for(const [light,mesh] of this.signalMeshes){mesh.count=counts[light];mesh.visible=mesh.count>0;if(mesh.count)updateBounds(mesh);}
     this.visibleSignals=junctions.length;
   }
-  minimap(){const s=this.getCity(),c=this.mc,w=this.mini.width,h=this.mini.height;for(let i=0;i<s.tiles.length;i++){const t=s.tiles[i];c.fillStyle=t.terrain==='water'?'#4c9eb7':isRoad(t)?'#4c6a70':CATALOG[t.kind||t.zone]?.color||'#7ba583';c.fillRect(i%SIZE*w/SIZE,Math.floor(i/SIZE)*h/SIZE,w/SIZE+.2,h/SIZE+.2);}c.strokeStyle='#fff';c.strokeRect(this.target.x/(SIZE*20)*w-10,this.target.z/(SIZE*20)*h-7,20,14);}
+  minimap(){const s=this.getCity(),c=this.mc,w=this.mini.width,h=this.mini.height;for(let i=0;i<s.tiles.length;i++){const t=s.tiles[i];c.fillStyle=t.terrain==='water'?'#4c9eb7':isRoad(t)?'#4c6a70':CATALOG[t.kind||t.zone]?.color||'#7ba583';c.fillRect(i%SIZE*w/SIZE,Math.floor(i/SIZE)*h/SIZE,w/SIZE+.2,h/SIZE+.2);}drawEntryMini(c,s,w,h);c.strokeStyle='#fff';c.strokeRect(this.target.x/(SIZE*20)*w-10,this.target.z/(SIZE*20)*h-7,20,14);}
   frame(ms){if(this.dead)return;this.raf=requestAnimationFrame(this.frame);if(document.hidden||document.body?.dataset.screen==='home'||!frameDue(ms,this.lastDraw,PROFILES[this.quality].fps))return;this.lastDraw=ms;const s=this.getCity();if(this.follow){const c=s.citizens.find(c=>c.id===this.follow)||s.vehicles.find(v=>v.id===this.follow);if(c){const p=this.actorPosition(c);this.target.x=p.x;this.target.z=p.y;}}
     this.updateCamera();if(ms-(this.lastCheck||0)>250||this.lastPaths<0){this.rebuild(s);this.lastCheck=ms;this.lastPaths=s.day;}
     const night=this.night;this.scene.background.set(night?'#182e3b':'#e3edf2');this.scene.fog.color.copy(this.scene.background);this.sun.intensity=night?.3:2.1;this.ambient.intensity=night?.75:1.15;this.windowMaterial.emissiveIntensity=night?.8:0;this.windowMaterial.color.set(night?'#ffe1a3':'#c4e6ef');
@@ -117,6 +120,11 @@ export class ThreeCityRenderer{
     this.updateGhost(s);this.drawActors(s);const select=this.selected||this.hover;this.selection.visible=!!select;if(select)this.selection.position.set((select.x+.5)*20,surfaceHeight(s,select.i,SIZE)+.12,(select.y+.5)*20);this.signals(s,ms);this.gpu.render(this.scene,this.camera);this.onRender?.(ms);if(this.qualityPreference==='auto'){const value=this.autoQuality.sample(ms-(this.previousDraw||ms),ms);if(value)this.applyQuality(value);}this.fps=1000/(ms-(this.previousDraw||ms-33));this.previousDraw=ms;
   }
   updateGhost(s){
+    if(this.connectionGuide!==this.entryGuide){
+      for(const m of [...this.connectionGroup.children]){this.connectionGroup.remove(m);m.dispose();}
+      if(this.entryGuide?.length)this.batches(this.entryGuide.flatMap(i=>roadParts(s,i%SIZE,Math.floor(i/SIZE),'road','normal','#ffd080').filter(p=>!p.detail)),this.connectionGroup,true);
+      this.connectionGuide=this.entryGuide;
+    }
     const ghost=placementGhost(s,this.hover,this.tool,this.blueprint);this.ghostGroup.visible=!!ghost;
     if(!ghost||ghost.key===this.ghostKey)return;
     for(const m of [...this.ghostGroup.children]){this.ghostGroup.remove(m);m.dispose();}
@@ -130,5 +138,5 @@ export class ThreeCityRenderer{
     finally{this.selection.visible=selected;this.ghostGroup.visible=ghost;}
   }
   stats(){return{mode:this.mode,quality:this.quality,qualityPreference:this.qualityPreference,pixelRatio:this.gpu.getPixelRatio(),triangles:this.gpu.info.render.triangles,regions:this.regions.size,drawCalls:this.gpu.info.render.calls,geometries:this.gpu.info.memory.geometries,textures:this.gpu.info.memory.textures,fps:Math.round(this.fps||0),citizens:this.getCity().citizens.length,sharedMaterials:12,camera:{target:this.target.toArray(),distance:this.distance,yaw:this.yaw,polar:this.polar},night:this.night,activeActors:this.getCity().citizens.filter(c=>c.journey||c.state==='waiting-bus').length+this.getCity().vehicles.filter(v=>v.kind==='bus'&&v.busPhase!=='depot').length,visibleActors:this.visibleActors||0,renderedActors:this.renderedActors||0,visibleSignals:this.visibleSignals||0,actorBudget:actorBudget(this.getCity().citizens.length,this.quality,this.width<600)};}
-  dispose(){this.dead=true;cancelAnimationFrame(this.raf);this.view.removeEventListener('webglcontextlost',this.contextLost);for(const r of this.regions.values()){this.removeRegion(r);r.ground.geometry.dispose();r.water.geometry.dispose();}for(const m of this.actorMeshes.values())m.dispose();for(const m of this.signalMeshes.values()){m.dispose();m.material.dispose();}Object.values(this.geometries).forEach(g=>g.dispose());for(const m of [this.material,this.tileMaterial,this.metalMaterial,this.lampMaterial,this.groundMaterial,this.windowMaterial,this.waterMaterial,this.selection.material])m.dispose();this.selection.geometry.dispose();for(const m of this.ghostGroup.children)m.dispose();this.ghostMaterial.dispose();this.gpu.dispose();this.gpu.forceContextLoss();}
+  dispose(){this.dead=true;cancelAnimationFrame(this.raf);this.view.removeEventListener('webglcontextlost',this.contextLost);for(const r of this.regions.values()){this.removeRegion(r);r.ground.geometry.dispose();r.water.geometry.dispose();}for(const m of this.actorMeshes.values())m.dispose();for(const m of this.signalMeshes.values()){m.dispose();m.material.dispose();}Object.values(this.geometries).forEach(g=>g.dispose());for(const m of [this.material,this.tileMaterial,this.metalMaterial,this.lampMaterial,this.groundMaterial,this.windowMaterial,this.waterMaterial,this.selection.material])m.dispose();this.selection.geometry.dispose();for(const m of [...this.ghostGroup.children,...this.connectionGroup.children])m.dispose();this.ghostMaterial.dispose();this.gpu.dispose();this.gpu.forceContextLoss();}
 }

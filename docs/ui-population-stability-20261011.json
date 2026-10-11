@@ -1,0 +1,20 @@
+{
+  "durationMs": 5053,
+  "frames": 241,
+  "images": 0,
+  "controls": 1,
+  "childRemovals": 0,
+  "textChanges": 0,
+  "blankImageFrames": 0,
+  "detachedImageFrames": 0,
+  "maxLayoutShiftPx": 0,
+  "imagesRetained": true,
+  "controlsRetained": true,
+  "scrollBefore": 0,
+  "scrollAfter": 0,
+  "focusRetained": true,
+  "viewport": {
+    "width": 390,
+    "height": 844
+  }
+}

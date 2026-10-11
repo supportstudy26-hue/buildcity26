@@ -15,5 +15,6 @@ export function populationStatus(s){
  if(!open.length)return {label:'Nhà đã đầy · xây thêm nhà',conditions:[],ready:0};
  const best=open.reduce((a,b)=>arrivalConditions(a).filter(c=>!c.ok).length<=arrivalConditions(b).filter(c=>!c.ok).length?a:b);
  const conditions=arrivalConditions(best),missing=conditions.find(c=>!c.ok);
- return {label:'Chờ dân: '+missing.short,tile:s.tiles.indexOf(best),conditions,ready:0};
+ const needsJobs=missing.tool==='commercial'&&s.metrics?.workforce>0&&s.metrics.jobs<s.metrics.workforce;
+ return {label:'Chờ dân: '+(needsJobs?'thiếu việc làm':missing.short),tile:s.tiles.indexOf(best),conditions,ready:0,...(needsJobs?{needsJobs:true,detail:`Có ${s.metrics.workforce} người cần việc, mới có ${s.metrics.jobs} chỗ làm. Đặt cửa hàng hoặc xưởng cạnh đường, trong phạm vi điện và nước để cư dân tiếp tục chuyển đến.`}:{})};
 }

@@ -6,6 +6,8 @@ import {SIZE,isRoad,neighbors,CATALOG} from '../core.js';
 import {serviceKind} from '../../config/catalog.js';
 import {CELL_METERS} from '../../config/simulation.js';
 import {surfaceHeight,terrainHeight,cellHeights} from '../systems/terrain.js';
+import {entryParts} from './entry-marker.js';
+import {cityEntry} from '../systems/city-entry.js';
 export const REGION=16;
 export const noise=(x,y)=>{const n=Math.sin(x*127.1+y*311.7)*43758.5453;return n-Math.floor(n);};
 const palettes={residential:['#e9d3ac','#bad5c5','#e5bfa1','#c8d9df'],commercial:['#8cb8c4','#a8c8bc','#d9b087'],industrial:['#d3c29e','#b5bec1'],school:['#f1c893'],clinic:['#f0ded8'],fire:['#d3947a'],police:['#9bb9ce'],power:['#bcc7b3'],water:['#88b4bd'],sewage:['#8db7ae'],waste:['#b7bc9e'],bus:['#d8bb8d']};
@@ -31,6 +33,9 @@ export function roadParts(s,x,y,kind=s.tiles[y*SIZE+x].kind,layer='normal',overl
 
       const profile=roadProfile(kind),width=profile.width,road=overlay||overlayColor({...t,kind},layer)||(kind==='pedestrian'?'#c7c6b2':kind==='bicycle'?'#507f74':'#435761');
       const sidewalk=profile.sidewalk,curb='#d6dcd2',paving='#c0cdc1';
+      // Support the level node on sloping land instead of leaving a floating slab.
+      const low=Math.min(...cellHeights(s.world,i,SIZE));
+      if(t.terrain!=='water'&&base-low>.6)box(cx,(base-.4+low)/2,cz,width+.8,Math.max(.2,base-.4-low),width+.8,'#899b91',false,null,i);
       box(cx,base-.4,cz,width+.8,.5,width+.8,curb,false,null,i);
       box(cx,base-.1,cz,width,.2,width,road,false,null,i);
       const links=neighbors(i).filter(ni=>isRoad(s.tiles[ni]));
@@ -53,14 +58,14 @@ export function roadParts(s,x,y,kind=s.tiles[y*SIZE+x].kind,layer='normal',overl
       for(const ni of links)if(ni>i){
         const nx=(ni%SIZE+.5)*CELL_METERS,nz=(Math.floor(ni/SIZE)+.5)*CELL_METERS,nh=surfaceHeight(s,ni,SIZE),dx=nx-cx,dz=nz-cz,dy=nh-base,nextWidth=roadProfile(s.tiles[ni]).width;
         // Join node edges: coplanar centre-to-centre slabs cause flickering stripes.
-        const start=width/(2*CELL_METERS),end=1-nextWidth/(2*CELL_METERS),mid=(start+end)/2,length=Math.hypot(dx,dz,dy)*(end-start),yaw=Math.atan2(-dz,dx),pitch=Math.atan2(dy,CELL_METERS);
-        box(cx+dx*mid,base+dy*mid-.14,cz+dz*mid,length,.28,Math.min(width,nextWidth),road,false,{yaw,pitch},i);
-        box(cx+dx*mid,base+dy*mid+.035,cz+dz*mid,Math.min(3.8,length-.2),.07,.18,'#efe3be',true,{yaw,pitch},i);
+        const start=width/(2*CELL_METERS),end=1-nextWidth/(2*CELL_METERS),mid=(start+end)/2,run=CELL_METERS*(end-start),length=Math.hypot(run,dy),yaw=Math.atan2(-dz,dx),pitch=Math.atan2(dy,run),height=(base+nh)/2;
+        box(cx+dx*mid,height-.14,cz+dz*mid,length,.28,Math.min(width,nextWidth),road,false,{yaw,pitch},i);
+        box(cx+dx*mid,height+.035,cz+dz*mid,Math.min(3.8,length-.2),.07,.18,'#efe3be',true,{yaw,pitch},i);
         if(sidewalk>0&&roadProfile(s.tiles[ni]).sidewalk>0&&t.terrain!=='water'&&s.tiles[ni].terrain!=='water')for(const side of [-1,1]){
           const offset=side*(Math.min(width,nextWidth)/2+sidewalk/2),px=-dz/CELL_METERS*offset,pz=dx/CELL_METERS*offset;
-          box(cx+dx*mid+px,base+dy*mid+.08,cz+dz*mid+pz,length,.16,sidewalk,paving,false,{yaw,pitch},i);
+          box(cx+dx*mid+px,height+.08,cz+dz*mid+pz,length,.16,sidewalk,paving,false,{yaw,pitch},i);
           const edge=side*(Math.min(width,nextWidth)/2+.08);
-          box(cx+dx*mid-dz/CELL_METERS*edge,base+dy*mid+.16,cz+dz*mid+dx/CELL_METERS*edge,length,.18,.16,curb,true,{yaw,pitch},i);
+          box(cx+dx*mid-dz/CELL_METERS*edge,height+.16,cz+dz*mid+dx/CELL_METERS*edge,length,.18,.16,curb,true,{yaw,pitch},i);
         }
       }
       // Markings are nearby detail, so a distant dense grid stays inexpensive.
@@ -83,6 +88,7 @@ export function roadParts(s,x,y,kind=s.tiles[y*SIZE+x].kind,layer='normal',overl
 // Descriptors are original procedural components in metres, independent of GPU.
 export function chunkParts(s,x0,y0,layer='normal'){
   const parts=[];
+  const entry=cityEntry(s);if(entry%SIZE>=x0&&entry%SIZE<x0+REGION&&Math.floor(entry/SIZE)>=y0&&Math.floor(entry/SIZE)<y0+REGION)parts.push(...entryParts(s));
   function part(shape,x,y,z,w,h,d,color,detail=false,rotation=null,tile=null){parts.push({shape,position:[x,y,z],scale:[w,h,d],color,detail,rotation,tile});}
   const box=(x,y,z,w,h,d,color,detail=false,rotation=null,tile=null)=>part('box',x,y,z,w,h,d,color,detail,rotation,tile);
   function tree(x,z,h,size,tile){const variant=tile%3;box(x,h+size*2,z,.6,size*4,.6,'#786448',false,null,tile);part(variant?'ico':'cone',x,h+size*5.5,z,size*(variant?6:5),size*(variant?6:8),size*(variant?5.5:5),['#39735a','#427b54','#4b7e5c'][variant],false,{yaw:noise(x,z)*Math.PI},tile);part(variant?'ico':'cone',x+size*.25,h+size*7.5,z,size*(variant?4.7:3.6),size*4.5,size*(variant?4.4:3.6),'#6c9c6e',false,null,tile);}

@@ -196,3 +196,9 @@ body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog) .hub-arrow{
 #game .bc26-drawer #detailBody .action.primary{background:#7ad6b0;color:#102f28;border-color:#7ad6b0}
 #game .bc26-drawer #detailBody .action.danger{background:#7b3435;color:#ffdfd8;border-color:#ffb3a2}
 #game .bc26-drawer .inspect-icon{background:#28463e;color:#88e6bd}
+.city-entry-marker{position:absolute;z-index:8;pointer-events:none;transform:translate(-50%,-100%);background:#203746;color:#ffcb80;border:1px solid #e5b166;border-radius:8px;padding:5px 9px;font:700 11px/1.3 system-ui;white-space:nowrap;box-shadow:0 2px 8px #10232c33}
+.city-entry-marker::after{content:'';position:absolute;left:50%;top:100%;width:2px;height:12px;background:#ffcb80}
+.city-entry-marker.connected{color:#b0f1d4;border-color:#72d8b0}
+.city-entry-marker.connected::after{background:#72d8b0}
+.city-entry-marker[hidden]{display:none}
+@media(max-width:600px){.city-entry-marker{font-size:10px;padding:4px 6px}}

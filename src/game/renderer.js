@@ -1,4 +1,6 @@
 import {cityFocus} from './render/city-focus.js';
+import {cityEntry} from './systems/city-entry.js';
+import {drawEntryMini} from './render/entry-marker.js';
 import {actorBudget,nearestActors} from './render/actor-budget.js';
 import {actorArt,citizenMotion,worldMobilityParts} from './render/mobility-models.js';
 import {vehicleArtId} from '../config/mobility-art.js';
@@ -16,6 +18,7 @@ export class CityRenderer {
   }
   panBy(dx,dy){this.follow=null;this.pan.x+=dx;this.pan.y+=dy;}
   focusTile(x,y){this.follow=null;this.pan.x=-(x-y)*22*this.zoom;this.pan.y=-(x+y)*11*this.zoom;}
+  entryScreenPosition(){const i=cityEntry(this.getCity()),p=this.project(i%SIZE,Math.floor(i/SIZE),24);return {...p,visible:p.x>10&&p.x<this.width-10&&p.y>10&&p.y<this.height-10};}
   topView(){}
   dispose(){cancelAnimationFrame(this.raf);this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);}
   resize(){const dpr=Math.min(window.devicePixelRatio||1,2);this.width=this.canvas.clientWidth;this.height=this.canvas.clientHeight;this.canvas.width=this.width*dpr;this.canvas.height=this.height*dpr;this.ctx.setTransform(dpr,0,0,dpr,0,0);}
@@ -119,7 +122,7 @@ export class CityRenderer {
     }
     for(const i of this.sorted){const x=i%SIZE,y=Math.floor(i/SIZE),t=s.tiles[i],p=this.project(x,y);if(p.x<-60||p.x>this.width+60||p.y<-20||p.y>this.height+150)continue;if(t.kind&&!isRoad(t))this.building(t,x,y);else if(!t.kind&&!t.zone&&t.terrain==='grass'&&noise(x,y)>.88)this.tree(x,y,.7+noise(y,x)*.6);else if(isRoad(t)&&noise(x,y)>.87){const base=this.project(x-.37,y+.37),lamp=this.project(x-.37,y+.37,13);c.strokeStyle='#7a8f83';c.lineWidth=1.3*this.zoom;c.beginPath();c.moveTo(base.x,base.y);c.lineTo(lamp.x,lamp.y);c.stroke();c.fillStyle=this.night?'#ffe6a7':'#e8dcc0';c.fillRect(lamp.x-2*this.zoom,lamp.y-2*this.zoom,4*this.zoom,2*this.zoom);}}
     for(const contract of s.contracts||[])if(contract.status==='building'){const x=contract.tile%SIZE,y=Math.floor(contract.tile/SIZE);this.diamond(x,y,.45,'#e9c99488','#c29057');this.box(x,y,.18,.18,3+contract.progress*8,'#d8b17b');const p=this.project(x,y,20);c.fillStyle='#253c40';c.font='10px system-ui';c.textAlign='center';c.fillText(Math.round(contract.progress*100)+'%',p.x,p.y);}
-    this.drawCars(s);
+    for(const i of this.entryGuide||[])this.diamond(i%SIZE,Math.floor(i/SIZE),.42,'#ffd08088','#ffdc93');this.drawCars(s);
     if(this.selected){const {x,y}=this.selected;this.diamond(x,y,.51,'#ffffff25','#fff');const k=s.tiles[index(x,y)].kind;if(CATALOG[k]?.range){const a=this.project(x,y),r=CATALOG[k].range;c.beginPath();c.ellipse(a.x,a.y,r*31*this.zoom,r*15.5*this.zoom,0,0,Math.PI*2);c.strokeStyle='#fff9';c.lineWidth=1;c.setLineDash([4,4]);c.stroke();c.setLineDash([]);}}
     if(this.hover){
       const {x,y,i}=this.hover,quote=placementQuote(s,i,this.tool),valid=this.tool==='inspect'||quote.ok;
@@ -132,7 +135,7 @@ export class CityRenderer {
     }
     if(this.night){c.fillStyle='#16364c50';c.fillRect(0,0,this.width,this.height);}
   }
-  minimap(){const s=this.getCity(),c=this.mc,w=this.mini.width,h=this.mini.height;c.fillStyle='#7ba583';c.fillRect(0,0,w,h);const sx=w/SIZE,sy=h/SIZE;s.tiles.forEach((t,i)=>{c.fillStyle=t.terrain==='water'?'#4c9eb7':isRoad(t)?'#496469':CATALOG[t.kind||t.zone]?.color||'#7ba583';c.fillRect(i%SIZE*sx,Math.floor(i/SIZE)*sy,sx+.3,sy+.3);});const mid=this.tileAt(this.width/2,this.height/2);if(mid){c.strokeStyle='#fff';c.lineWidth=1;c.strokeRect(mid.x*sx-12,mid.y*sy-8,24,16);}}
+  minimap(){const s=this.getCity(),c=this.mc,w=this.mini.width,h=this.mini.height;c.fillStyle='#7ba583';c.fillRect(0,0,w,h);const sx=w/SIZE,sy=h/SIZE;s.tiles.forEach((t,i)=>{c.fillStyle=t.terrain==='water'?'#4c9eb7':isRoad(t)?'#496469':CATALOG[t.kind||t.zone]?.color||'#7ba583';c.fillRect(i%SIZE*sx,Math.floor(i/SIZE)*sy,sx+.3,sy+.3);});drawEntryMini(c,s,w,h);const mid=this.tileAt(this.width/2,this.height/2);if(mid){c.strokeStyle='#fff';c.lineWidth=1;c.strokeRect(mid.x*sx-12,mid.y*sy-8,24,16);}}
   frame(ms){const dt=this.lastFrame===undefined?0:Math.min(1,(ms-this.lastFrame)/1000);this.lastFrame=ms;const s=this.getCity();this.time=(s?.clock?.seconds||0)/20;if(this.follow){const actor=s?.citizens.find(c=>c.id===this.follow)||s?.vehicles.find(v=>v.id===this.follow);if(actor){const x=actor.position.x/20-.5,y=actor.position.y/20-.5;this.pan.x=-(x-y)*22*this.zoom;this.pan.y=-(x+y)*11*this.zoom;}}if(s&&this.lastPaths!==s.day){this.lastPaths=s.day;this.refreshCars(s);this.minimap();}if(!document.hidden&&document.body?.dataset.screen!=='home'&&(this.width>=600||ms-(this.lastDraw||0)>=33)){this.draw();this.lastDraw=ms;}this.raf=requestAnimationFrame(this.frame);}
   reset(){this.lastPaths=-1;this.selected=null;this.center();}
   destroy(){cancelAnimationFrame(this.raf);}

@@ -1,0 +1,60 @@
+{
+  "name": "QA · Đường núi Cao Bằng",
+  "day": 0,
+  "seconds": 365,
+  "playback": {
+    "rule": "casual-time5-v1",
+    "multiplier": 1,
+    "paused": false,
+    "observe": false
+  },
+  "money": 9754248,
+  "population": 0,
+  "jobs": 0,
+  "workforce": 0,
+  "homes": 0,
+  "happiness": 65,
+  "unemployment": 0,
+  "traffic": 100,
+  "environment": 100,
+  "power": 0,
+  "powerNeed": 0,
+  "water": 0,
+  "waterNeed": 0,
+  "sewage": 0,
+  "sewageNeed": 0,
+  "garbage": 0,
+  "busForecast": 0,
+  "fires": 0,
+  "highCrime": 0,
+  "busPassengers": 0,
+  "transitCost": 0,
+  "busLines": 0,
+  "congestedRoads": 0,
+  "taxIncome": 0,
+  "transitIncome": 0,
+  "loanInterest": 0,
+  "income": 0,
+  "expenses": 150,
+  "net": -150,
+  "roadCount": 5,
+  "demand": {
+    "residential": 20,
+    "commercial": 35,
+    "industrial": 30
+  },
+  "geography": {
+    "mode": "vietnam",
+    "province": "Cao Bằng",
+    "region": "04-start",
+    "version": "vn-20261008",
+    "anchor": [
+      106.2588307,
+      22.6657612
+    ],
+    "entryTile": 1163,
+    "widthMeters": 1280,
+    "cellMeters": 20,
+    "osmDate": "2023-05-07"
+  }
+}

@@ -1,3 +1,12 @@
+# Kiểm tra bảng thông tin/cổng/đường đồi núi — 11/10/2026
+
+- Full cục bộ cuối 233/233 PASS, không skip, 194,41s; gồm 20 test module rail/aviation untracked chưa phát hành. Focus cổng/placement/HUD 13/13 PASS (3,39s). Build cuối PASS 6,37s; còn hai chunk lazy >500kB; không lint/typecheck script.
+- DOM trình duyệt thật 13/13 PASS: giữ ảnh/focus/input/scroll qua 200 cập nhật, đúng ảnh khi đổi ID và handler, cập nhật HUD, giữ inspector khi chuyển bảng rồi mở lại. Chạy bằng `scripts/verify-ui-refresh.html` tại Vite; không thay dữ liệu người chơi.
+- Game thật 1280×720 và iframe 390×844: các mẫu 5s inspector/cư dân/dân số có 0 frame ảnh trống, 0 ảnh tháo khỏi DOM, giữ controls/focus/scroll và 0px dịch chuyển bảng. Sửa thêm lỗi mất inspector khi đổi bảng và bấm theo dõi. Ảnh/JSON `docs/ui-*-20261011.*`.
+- Cổng Hà Nội thật ô12,23: xác nhận đường nối4 đoạn/84 triệu, tiện ích và cửa hàng cho 25 dân/16 việc làm/67% hài lòng; reload giữ tiền/dân/clock/đường. Cao Bằng DEM55%: xây/nâng đường, 4 làn/90 năng lực và reload giữ. Unit route/save trên địa hình và ranh giới cũng đạt.
+- Bài đo khu nhỏ trước sửa bảng: 39,8FPS mean, p95 frame50,2ms, 48 draw calls, heap27MB; không phải benchmark 5.000 dân hay điện thoại vật lý. Chưa có mô hình đường dốc kỹ thuật đầy đủ.
+- Chưa xác nhận deployment bản mới tại lúc ghi kiểm này. Xem trạng thái mới nhất trong implementation-status; các phần bên dưới là lịch sử.
+
 ## Giáo dục 11/10/2026
 
 - Full suite 224/224 PASS (73,52 s); education cuối 8/8 PASS (9,41 s), gồm cấp 6 mở cấp 7, claim duplicate, mất điện/nâng cấp, phá trường, tuổi/chỗ/giáo viên, clock/cuối tuần, tuyến thật, save mid-trip/mid-lesson, legacy migration và server replay chống counter giả.

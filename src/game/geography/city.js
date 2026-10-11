@@ -24,7 +24,9 @@ export function geographyBuildRule(s,tile,kind){
   const slope=slopeAt(s.world,tile,SIZE),road=ROAD_KINDS.includes(kind);
   if(s.tiles[tile].terrain==='water'&&!road)return {ok:false,message:'Không xây công trình trên biển, hồ hoặc sông. Chưa có công trình hỗ trợ mặt nước.'};
   if(!s.tiles[tile].terrain.startsWith('water')&&Math.min(...cellHeights(s.world,tile,SIZE))<0)return {ok:false,message:'Đất thấp hơn mực biển. Chưa có hệ thống đê/bảo vệ ngập.'};
-  if(slope>(road?20:15))return {ok:false,message:`Dốc ${slope.toFixed(1)}% vượt giới hạn ${road?20:15}%. Chọn đất ít dốc hơn; san nền/hầm chưa có.`};
+  // Roads use supported terraces and ramps on hills. Keep the building limit:
+  // allowing a mountain road must not unlock buildings on unsafe slopes.
+  if(!road&&slope>15)return {ok:false,message:`Dốc ${slope.toFixed(1)}% vượt giới hạn 15% của công trình. Chọn đất ít dốc hơn.`};
   // Explicit starter rule; Appendix A full civil-engineering prices remain separate work.
   return {ok:true,factor:s.tiles[tile].terrain==='water'?1:1+slope/20,slope};
 }

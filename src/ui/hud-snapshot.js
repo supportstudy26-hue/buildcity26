@@ -27,9 +27,9 @@ export function objectiveProgress(condition){
  return condition.ok?1:condition.operator==='lte'?0:condition.target>0?Math.max(0,Math.min(1,condition.value/condition.target)):0;
 }
 export function utilitySnapshot(s,kind,ctx=metricContext(s)){
- const consumers=ctx.buildings.filter(t=>(!LANDMARKS[t.kind]||LANDMARKS[t.kind][kind]>0)&&!['power','water','busStop'].includes(serviceKind(t.kind))&&(t.kind!=='residential'||t.residents>0));
+ const consumers=ctx.buildings.filter(t=>(!LANDMARKS[t.kind]||LANDMARKS[t.kind][kind]>0)&&!['power','water','busStop'].includes(serviceKind(t.kind)));
  const served=consumers.filter(t=>t[kind]).length;
- return {coveragePct:consumers.length?served/consumers.length*100:undefined,served,denominator:consumers.length,definition:'Công trình có nhu cầu được cấp đủ tải trong phạm vi và nối đường. Không tính nguồn điện/nước, điểm dừng và nhà chưa có dân.',capacity:s.metrics[kind],demand:s.metrics[kind+'Need'],unit:kind==='power'?'kW':'m³/ngày',activeBuildings:ctx.buildings.filter(t=>serviceKind(t.kind)===kind&&operating(t)).length};
+ return {coveragePct:consumers.length?served/consumers.length*100:undefined,served,denominator:consumers.length,definition:'Công trình được cấp đủ tải trong phạm vi và nối đường, gồm nhà trống đang chờ dân. Không tính nguồn điện/nước và điểm dừng. Nhu cầu tiêu thụ tăng khi dân chuyển đến.',capacity:s.metrics[kind],demand:s.metrics[kind+'Need'],unit:kind==='power'?'kW':'m³/ngày',activeBuildings:ctx.buildings.filter(t=>serviceKind(t.kind)===kind&&operating(t)).length};
 }
 function cityAlerts(s){
  const alerts=[];

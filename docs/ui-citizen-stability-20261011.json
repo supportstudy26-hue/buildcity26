@@ -1,0 +1,162 @@
+{
+  "desktop": {
+    "durationMs": 5018,
+    "frames": 301,
+    "images": 1,
+    "controls": 2,
+    "childRemovals": 0,
+    "textChanges": 0,
+    "blankImageFrames": 0,
+    "detachedImageFrames": 0,
+    "maxLayoutShiftPx": 0,
+    "imagesRetained": true,
+    "controlsRetained": true,
+    "scrollBefore": 0,
+    "scrollAfter": 0,
+    "focusRetained": true,
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "mobile": {
+    "durationMs": 5017,
+    "frames": 274,
+    "images": 1,
+    "controls": 2,
+    "childRemovals": 0,
+    "textChanges": 0,
+    "blankImageFrames": 0,
+    "detachedImageFrames": 0,
+    "maxLayoutShiftPx": 0,
+    "imagesRetained": true,
+    "controlsRetained": true,
+    "scrollBefore": 0,
+    "scrollAfter": 0,
+    "focusRetained": true,
+    "viewport": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  "phoneBefore": {
+    "name": "QA · Nối cổng Hà Nội",
+    "day": 0,
+    "seconds": 2241,
+    "playback": {
+      "rule": "casual-time5-v1",
+      "multiplier": 1,
+      "paused": false,
+      "observe": false
+    },
+    "money": 9732100,
+    "population": 83,
+    "jobs": 16,
+    "workforce": 45,
+    "homes": 120,
+    "happiness": 39,
+    "unemployment": 64,
+    "traffic": 100,
+    "environment": 88,
+    "power": 100,
+    "powerNeed": 109,
+    "water": 15,
+    "waterNeed": 15.45,
+    "sewage": 15,
+    "sewageNeed": 15.45,
+    "garbage": 0,
+    "busForecast": 0,
+    "fires": 0,
+    "highCrime": 0,
+    "busPassengers": 0,
+    "transitCost": 0,
+    "busLines": 0,
+    "congestedRoads": 0,
+    "taxIncome": 9840,
+    "transitIncome": 0,
+    "loanInterest": 0,
+    "income": 9840,
+    "expenses": 1027,
+    "net": 8813,
+    "roadCount": 11,
+    "demand": {
+      "residential": 5,
+      "commercial": 53,
+      "industrial": 59
+    },
+    "geography": {
+      "mode": "vietnam",
+      "province": "Hà Nội",
+      "region": "01-start",
+      "version": "vn-20261008",
+      "anchor": [
+        105.67557499591751,
+        20.97485415
+      ],
+      "entryTile": 1419,
+      "widthMeters": 1280,
+      "cellMeters": 20,
+      "osmDate": "2023-05-07"
+    }
+  },
+  "phoneAfter": {
+    "name": "QA · Nối cổng Hà Nội",
+    "day": 0,
+    "seconds": 2320,
+    "playback": {
+      "rule": "casual-time5-v1",
+      "multiplier": 1,
+      "paused": false,
+      "observe": false
+    },
+    "money": 9732100,
+    "population": 83,
+    "jobs": 16,
+    "workforce": 45,
+    "homes": 120,
+    "happiness": 39,
+    "unemployment": 64,
+    "traffic": 100,
+    "environment": 88,
+    "power": 100,
+    "powerNeed": 109,
+    "water": 15,
+    "waterNeed": 15.45,
+    "sewage": 15,
+    "sewageNeed": 15.45,
+    "garbage": 0,
+    "busForecast": 0,
+    "fires": 0,
+    "highCrime": 0,
+    "busPassengers": 0,
+    "transitCost": 0,
+    "busLines": 0,
+    "congestedRoads": 0,
+    "taxIncome": 9840,
+    "transitIncome": 0,
+    "loanInterest": 0,
+    "income": 9840,
+    "expenses": 1027,
+    "net": 8813,
+    "roadCount": 11,
+    "demand": {
+      "residential": 5,
+      "commercial": 53,
+      "industrial": 59
+    },
+    "geography": {
+      "mode": "vietnam",
+      "province": "Hà Nội",
+      "region": "01-start",
+      "version": "vn-20261008",
+      "anchor": [
+        105.67557499591751,
+        20.97485415
+      ],
+      "entryTile": 1419,
+      "widthMeters": 1280,
+      "cellMeters": 20,
+      "osmDate": "2023-05-07"
+    }
+  }
+}

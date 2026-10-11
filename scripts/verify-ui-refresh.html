@@ -1,0 +1,37 @@
+<!doctype html><html lang="vi"><meta charset="utf-8"><title>Build City 26 · Kiểm thử cập nhật bảng</title>
+<link rel="stylesheet" href="/src/ui/refresh/bc26-ui.css"><style>body{background:#d8e1dc;font:16px system-ui}#test{height:160px;overflow:auto;width:250px}#hud{height:400px}</style>
+<h1>Kiểm thử DOM thật · không sửa bản lưu</h1><button id="run">Chạy kiểm thử</button><pre id="result"></pre><div id="test"></div><div id="hud"></div>
+<script type="module">
+import {patchView} from '/src/ui/patch-view.js';
+import {createCityHud} from '/src/ui/refresh/bc26-hud.js';
+const result=document.querySelector('#result'),live=document.querySelector('#test');
+document.querySelector('#run').onclick=async()=>{
+ const passed=[];const check=(condition,name)=>{if(!condition)throw Error(name);passed.push(name);};
+ try{
+  const view=(value,asset='one')=>{const n=document.createElement('div');n.innerHTML=`<img data-art-id="${asset}" width="8" height="8"><p>${value}</p><input value="${value}"><button>Đổi</button><div style="height:500px">Cuộn</div>`;n.querySelector('button').onclick=()=>result.dataset.clicked=value;return n;};
+  patchView(live,view(0));const im=live.querySelector('img'),btn=live.querySelector('button'),input=live.querySelector('input');im.src='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"><rect width="8" height="8" fill="green"/></svg>';await im.decode();
+  input.focus();input.value='Tên đang nhập';live.scrollTop=90;
+  for(let i=1;i<=200;i++)patchView(live,view(i));
+  check(live.querySelector('img')===im&&im.complete&&im.naturalWidth===8,'200 cập nhật giữ ảnh đã giải mã');
+  check(live.querySelector('button')===btn,'Giữ node nút');
+  check(document.activeElement===input&&input.value==='Tên đang nhập','Giữ focus và nội dung đang nhập');
+  check(live.scrollTop===90,'Giữ vị trí cuộn');btn.click();check(result.dataset.clicked==='200','Nút sử dụng handler mới nhất');
+  input.blur();patchView(live,view(201));check(input.value==='201','Cập nhật input khi đã thôi nhập');
+  patchView(live,view(202,'two'));check(live.querySelector('img')!==im&&!live.querySelector('img').hasAttribute('src'),'Chọn mẫu khác thay ảnh đúng ID');
+  const blank=document.createElement('div');patchView(live,blank);check(live.childNodes.length===0,'Đóng dữ liệu cũ sạch');
+  let actions=[];const hud=createCityHud(document.querySelector('#hud'),{money:100,population:1,jobs:3,level:1},event=>actions.push(event));
+  hud.element.querySelector('[aria-label="Xem dân số"]').click();const people=hud.element.querySelector('[data-drawer-content] button');people.focus();
+  for(let i=2;i<=100;i++)hud.update({money:i,population:i,jobs:3,level:1});
+  check(hud.element.querySelector('[data-drawer-content] button')===people&&document.activeElement===people,'HUD cập nhật số dân giữ nút và focus');
+  people.click();check(actions.some(x=>x.type==='residents'),'Nút HUD vẫn mở cư dân');
+  const details=document.createElement('div');details.textContent='Inspector thật';hud.update({selectedBuilding:{id:'one',name:'Nhà phố',detailsElement:details}});hud.showBuilding();
+  for(let i=0;i<100;i++)hud.update({selectedBuilding:{id:'one',name:'Tên '+i,detailsElement:details}});
+  check(details.parentNode===hud.element.querySelector('[data-drawer-content]'),'HUD giữ inspector gắn trong bảng khi tiêu đề đổi');
+  hud.close();hud.element.querySelector('[aria-label="Xem dân số"]').click();
+  check(details.textContent==='Inspector thật'&&!details.isConnected,'Đổi sang số liệu giữ nguyên inspector đã tách');
+  hud.close();hud.update({selectedBuilding:{id:'one',name:'Nhà phố',detailsElement:details}});hud.showBuilding();
+  check(details.parentNode===hud.element.querySelector('[data-drawer-content]')&&details.textContent==='Inspector thật','Mở lại inspector sau bảng số liệu');hud.destroy();
+  result.textContent=JSON.stringify({status:'PASS',cases:passed.length,passed},null,2);
+ }catch(error){result.textContent=JSON.stringify({status:'FAIL',passed,error:error.message},null,2);}
+};
+</script></html>

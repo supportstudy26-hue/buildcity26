@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "cases": 13,
+  "passed": [
+    "200 cập nhật giữ ảnh đã giải mã",
+    "Giữ node nút",
+    "Giữ focus và nội dung đang nhập",
+    "Giữ vị trí cuộn",
+    "Nút sử dụng handler mới nhất",
+    "Cập nhật input khi đã thôi nhập",
+    "Chọn mẫu khác thay ảnh đúng ID",
+    "Đóng dữ liệu cũ sạch",
+    "HUD cập nhật số dân giữ nút và focus",
+    "Nút HUD vẫn mở cư dân",
+    "HUD giữ inspector gắn trong bảng khi tiêu đề đổi",
+    "Đổi sang số liệu giữ nguyên inspector đã tách",
+    "Mở lại inspector sau bảng số liệu"
+  ]
+}

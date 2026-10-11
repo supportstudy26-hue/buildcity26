@@ -33,7 +33,8 @@ test('geographic slope, outside-province and terrain-adjusted prices share the s
  const root=new URL('../public/geodata/vn-20261008/',import.meta.url),load=async f=>JSON.parse(await readFile(new URL(f,root)));
  const s=createVietnamCity(await load('22-start.json'),await load('manifest.json'));
  const steep=s.tiles.findIndex((t,i)=>!t.kind&&s.world.geography.insideProvince[i]&&slopeAt(s.world,i,SIZE)>20);
- assert.ok(steep>=0);assert.equal(placementQuote(s,steep,'road').ok,false);assert.equal(placementGhost(s,hover(steep),'road').valid,false);
+ assert.ok(steep>=0);assert.equal(placementQuote(s,steep,'road').ok,true);assert.equal(placementGhost(s,hover(steep),'road').valid,true);
+ assert.equal(placementQuote(s,steep,'residential').ok,false);
  // This coastal package is entirely inside the province; exercise a boundary-mask cell explicitly.
  const outside=0,original=s.world.geography.insideProvince[outside];s.world.geography.insideProvince[outside]=0;
  assert.equal(execute(s,outside,'road').message,placementQuote(s,outside,'road').message);assert.equal(placementGhost(s,hover(outside),'road').valid,false);s.world.geography.insideProvince[outside]=original;
