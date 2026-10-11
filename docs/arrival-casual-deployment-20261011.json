@@ -1,0 +1,262 @@
+{
+  "codeCommit": "63a38910cb32189ba213ad69480b581bbfeb9533",
+  "domain": "https://buildcity26.vercel.app/",
+  "vercel": {
+    "state": "success",
+    "description": "Deployment has completed",
+    "url": "https://vercel.com/build-city26/buildcity26/7ierCwT5ZHiYoAFm9FqaH1Wm4Q34"
+  },
+  "githubCI": {
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/supportstudy26-hue/buildcity26/actions/runs/38134089617/job/114454277989"
+  },
+  "assets": [
+    {
+      "path": "index.html",
+      "httpStatus": 200,
+      "bytes": 8848,
+      "sha256": "5e46951cbb57e37c4eaede2ff5e4f3d98bf37ab593946c9d722bb0a493e8d094",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "assets/app-BIuey39T.js",
+      "httpStatus": 200,
+      "bytes": 413204,
+      "sha256": "c3596707385feb40409635bc43139c3225f58ed68ac702b8f281be448ca5e709",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "assets/benchmark-DWaBaftc.js",
+      "httpStatus": 200,
+      "bytes": 6888,
+      "sha256": "6f688f93555e512a85d21ef72b60220be1bc885e6532a4735eda1562ee8af393",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "assets/building-designs-JNIrhGTP.js",
+      "httpStatus": 200,
+      "bytes": 588236,
+      "sha256": "7be45ef95d1c5a38ab9c4c19c9366d445dc889cd7a9f0cf3a98f106dbb31a3ae",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "assets/chooser-Br40Yveg.js",
+      "httpStatus": 200,
+      "bytes": 19210,
+      "sha256": "650ddfc8800266fe36259fd1b9c02c1c118a38d108fb36685ef9532b16ecb823",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "assets/financial-market-Cjo_8YKS.js",
+      "httpStatus": 200,
+      "bytes": 9540,
+      "sha256": "06293d5da15adbd8f8237aa4916503b549ac66bf14daa25f9f2ac96a670108f8",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "assets/game-FWXgA9qS.js",
+      "httpStatus": 200,
+      "bytes": 22113,
+      "sha256": "37803498e76d31ad501911f886db1b7166f9b346d24324c21ea853c2b4bc380c",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "assets/simulation-PQvaYsvy.js",
+      "httpStatus": 200,
+      "bytes": 887,
+      "sha256": "f4e06257362630a97996dc9bb59317c176f4f1aa666d2a70e257004093146643",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "assets/three-renderer-IJ622oNw.js",
+      "httpStatus": 200,
+      "bytes": 567241,
+      "sha256": "0f5753f734e3677a30d6a0826e8de74d2bf814c4097aadbc0ebed7f4565b1b65",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "assets/app-myHsfHLD.css",
+      "httpStatus": 200,
+      "bytes": 30831,
+      "sha256": "3dd1e96246d04a654cfedd341a805c8122d248d5b5d44bc7866f6698c12ab9d2",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "assets/game-D-QO0qA6.css",
+      "httpStatus": 200,
+      "bytes": 52172,
+      "sha256": "17afa16875ad300144aba2e4de30b3dbf15485bbe62c121a691667615119cc59",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "assets/simulation-bN5BDzud.css",
+      "httpStatus": 200,
+      "bytes": 44654,
+      "sha256": "9a3584bc31d54662898e3ed03dcbc935987ef4c731acbd5d473927b3c26ebc9a",
+      "matchesLocalBuild": true
+    }
+  ],
+  "browser": {
+    "before": {
+      "name": "Thành phố Bình Minh",
+      "day": 0,
+      "seconds": 28273,
+      "playback": {
+        "rule": "casual-time5-v1",
+        "multiplier": 1,
+        "paused": true,
+        "observe": false
+      },
+      "money": 12000000,
+      "population": 176,
+      "jobs": 182,
+      "workforce": 96,
+      "homes": 384,
+      "happiness": 85,
+      "unemployment": 0,
+      "traffic": 86,
+      "environment": 96,
+      "power": 500,
+      "powerNeed": 368,
+      "water": 75,
+      "waterNeed": 48.6,
+      "sewage": 90,
+      "sewageNeed": 48.6,
+      "garbage": 0,
+      "busForecast": 0,
+      "fires": 0,
+      "highCrime": 0,
+      "busPassengers": 0,
+      "transitCost": 0,
+      "busLines": 0,
+      "congestedRoads": 5,
+      "taxIncome": 32080,
+      "transitIncome": 0,
+      "loanInterest": 0,
+      "income": 32080,
+      "expenses": 15504,
+      "net": 16576,
+      "roadCount": 76,
+      "demand": {
+        "residential": 94,
+        "commercial": 52,
+        "industrial": 5
+      },
+      "geography": null
+    },
+    "after": {
+      "name": "Thành phố Bình Minh",
+      "day": 0,
+      "seconds": 28273,
+      "playback": {
+        "rule": "casual-time5-v1",
+        "multiplier": 1,
+        "paused": true,
+        "observe": false
+      },
+      "money": 12000000,
+      "population": 176,
+      "jobs": 182,
+      "workforce": 96,
+      "homes": 384,
+      "happiness": 85,
+      "unemployment": 0,
+      "traffic": 86,
+      "environment": 96,
+      "power": 500,
+      "powerNeed": 368,
+      "water": 75,
+      "waterNeed": 48.6,
+      "sewage": 90,
+      "sewageNeed": 48.6,
+      "garbage": 0,
+      "busForecast": 0,
+      "fires": 0,
+      "highCrime": 0,
+      "busPassengers": 0,
+      "transitCost": 0,
+      "busLines": 0,
+      "congestedRoads": 5,
+      "taxIncome": 32080,
+      "transitIncome": 0,
+      "loanInterest": 0,
+      "income": 32080,
+      "expenses": 15504,
+      "net": 16576,
+      "roadCount": 76,
+      "demand": {
+        "residential": 94,
+        "commercial": 52,
+        "industrial": 5
+      },
+      "residentArrival": {
+        "label": "Sẵn sàng đón dân · đang tạm dừng",
+        "tile": 844,
+        "conditions": [
+          {
+            "name": "Nối đường từ nhà về cổng vùng",
+            "title": "Nối đường",
+            "short": "nối đường về cổng",
+            "ok": true,
+            "tool": "road",
+            "required": true
+          },
+          {
+            "name": "Nước sạch được cấp tới nhà",
+            "title": "Cấp nước sạch",
+            "short": "thiếu nước sạch",
+            "ok": true,
+            "tool": "smallWater",
+            "required": true
+          },
+          {
+            "name": "Nhà không bị cháy lớn",
+            "title": "Nhà an toàn",
+            "short": "nhà đang cháy lớn",
+            "ok": true,
+            "tool": "fire",
+            "required": true
+          },
+          {
+            "name": "Điện giúp dân chuyển đến nhanh hơn",
+            "title": "Cấp điện",
+            "short": "thiếu điện",
+            "ok": true,
+            "tool": "smallPower",
+            "required": false
+          },
+          {
+            "name": "Nước thải giúp môi trường và tốc độ đón dân tốt hơn",
+            "title": "Xử lý nước thải",
+            "short": "chưa xử lý nước thải",
+            "ok": true,
+            "tool": "smallSewage",
+            "required": false
+          },
+          {
+            "name": "Hài lòng từ 55% giúp đón dân nhanh hơn",
+            "title": "Chất lượng sống",
+            "short": "hài lòng thấp",
+            "ok": true,
+            "tool": "park",
+            "required": false
+          }
+        ],
+        "ready": 16,
+        "waiting": 0,
+        "pace": {
+          "starter": false,
+          "rate": 1,
+          "interval": 60,
+          "remaining": 60,
+          "realSeconds": 12,
+          "needsJobs": false
+        }
+      },
+      "geography": null
+    },
+    "savePreserved": true,
+    "modalThreeRequiredConditions": true
+  }
+}

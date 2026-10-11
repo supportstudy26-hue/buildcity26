@@ -3,7 +3,7 @@
 - Full cục bộ235/235 PASS, skip0,297,53s; gồm20 test rail/aviation chưa phát hành (bộ phát hành215). Focus cuối arrival/city-entry12/12 PASS,5,28s. Build cuối PASS5,06s; hai lazy chunks>500kB còn có, không lint/typecheck.
 - Test hard blockers đường/nước/cháy, tốc độ với điện/nước thải/hài lòng, mốc100, thiếu việc làm vẫn tăng, pause/đầy, fractional progress, clock, save hành trình/tiền/receipts. Không reset save hoặc SQL mới.
 - Browser QA riêng4nhà/1trạm nước/11ô đường:0→35dân,0điện/0nước thải/0việc làm; save/reload giữ35dân/9.830.800BC/clock761/pause. Citizen-82 move-in trên tuyến cổng→nhà. Game iframe390×844 không tràn ngang (358px client/scroll), nút đóng44px; chọn tiện ích đóng bảng/chọn tool thật. Bằng chứng docs/arrival-casual-* và arrival-guide-casual-20261011.png.
-- Khu nhỏ auto-low30FPS:25,9FPS mean/10s,p95frame50,1ms,CPUtickp95 0,7ms,28calls/13.632tam giác,heap29,1MB. Không đo lại5.000dân hoặc điện thoại vật lý. Không chạy cloud live nhập cư mới; live các chặng trước ghi riêng. Deployment cập nhật sau khi xác nhận. Các mục sau là lịch sử.
+- Khu nhỏ auto-low30FPS:25,9FPS mean/10s,p95frame50,1ms,CPUtickp95 0,7ms,28calls/13.632tam giác,heap29,1MB. Không đo lại5.000dân hoặc điện thoại vật lý. Không chạy cloud live nhập cư mới; live các chặng trước ghi riêng. Code63a3891: CI success, Vercel7ierCwT5ZHiYoAFm9FqaH1Wm4Q34 completed/success; domain chính HTTP200/HTML-JS-CSS khớp build. Browser production ba điều kiện đúng và save legacy176dân/12triệuBC/clock28.273/pause giữ nguyên. Bằng chứng docs/arrival-casual-deployment-20261011.json và arrival-casual-production-20261011.png. Các mục sau là lịch sử.
 
 # Kiểm tra bảng thông tin/cổng/đường đồi núi — 11/10/2026
 
