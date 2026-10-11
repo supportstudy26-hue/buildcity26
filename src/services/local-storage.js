@@ -3,10 +3,25 @@ import { serialize, validateSave, SIZE, SAVE_VERSION } from '../game/core.js';
 const PREFIX = 'bc26:v1:';
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export const localKey = (owner = 'guest') => PREFIX + owner;
+export function localEnvelope(city, cloud = null, sync = {}) {
+  return { city: serialize(city), cloud, ...sync, modifiedAt: Date.now() };
+}
+// Lossless compaction frees the shared origin quota without deleting any save.
+// Only run after a quota failure; normal autosaves do not scan other drafts.
+export function compactLocal(storage = localStorage) {
+  const keys = Array.from({length: storage.length}, (_, i) => storage.key(i)).filter(k => k?.startsWith(PREFIX));
+  for (const key of keys) {
+    const raw = storage.getItem(key);
+    try {
+      const packed = packArchive(unpackArchive(raw));
+      if (packed.length < raw.length && storage.getItem(key) === raw) storage.setItem(key, packed);
+    } catch { /* Preserve unreadable or unwritable records exactly. */ }
+  }
+}
 export function saveLocal(city, owner = 'guest', cloud = null, sync = {}, storage = localStorage) {
-  const data = { city: serialize(city), cloud, ...sync, modifiedAt: Date.now() };
+  const data = localEnvelope(city, cloud, sync);
   const raw=JSON.stringify(data);
-  try{storage.setItem(localKey(owner),raw);}catch(error){if(!/quota/i.test(error.name+' '+error.message))throw error;try{storage.setItem(localKey(owner),packArchive(raw));}catch{throw error;}}return data;
+  try{storage.setItem(localKey(owner),raw);}catch(error){if(!/quota/i.test(error.name+' '+error.message))throw error;compactLocal(storage);try{storage.setItem(localKey(owner),packArchive(raw));}catch{throw error;}}return data;
 }
 export function loadLocal(owner = 'guest', storage = localStorage) {
   const raw = storage.getItem(localKey(owner)); if (!raw) return null;

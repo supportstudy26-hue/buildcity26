@@ -63,3 +63,7 @@ Trong menu **Cổ phiếu & xổ số** hoặc màn ngân sách: 6 cổ phiếu 
 Dự án hiện tại đã chạy migration 202610100001_financial_game và 202610100002_conflict_http. Cài mới dùng schema.sql; dự án có sẵn chạy hai migration theo thứ tự, giữ seed và dữ liệu. Không cần cron/trình duyệt mở để xác định kỳ đã đóng. Không đưa secret seed hoặc service-role ra frontend. Kiểm tra thật bằng `QA_BASE_URL=https://buildcity26.vercel.app QA_ALLOW_CREATE=1 npm run test:finance:live` (tạo hai user QA riêng, không dùng admin key). Script tài khoản riêng kiểm recovery/RLS không đụng tài khoản người chơi.
 
 Đồ họa giữ toàn bộ dân số/mô phỏng nhưng chỉ render người/xe gần camera: tối đa 50 đối tượng đang đi lại tính cả người và xe, ở mọi quy mô dân số; máy yếu/điện thoại tối đa 30. Chất lượng cao cũng không vượt cap. Giới hạn cloud snapshot vẫn 2 MB; chưa gọi city 5.000 dân lưu cloud hoàn chỉnh. Xem docs/implementation-status.md và các JSON hiệu năng.
+
+### Cập nhật 11/10: màu bảng và một thành phố
+
+Các bảng trong game dùng nền tối/chữ sáng đồng bộ, gồm thuế, dịch vụ, khoản vay, nhiệm vụ, catalogue, inspector, bản lưu và thị trường. Dự phòng chuyển sang IndexedDB, giữ bản cũ và nén lossless khi localStorage đầy. Tạo/import/khôi phục thành phố phải xác nhận thay thành phố hiện tại; server giới hạn một thành phố, CAS và biên nhận retry. Cài mới chạy schema nền rồi migration nhiệm vụ `202610100003` và một thành phố `202610110001`; xem `docs/SUPABASE_SETUP.md`. Bằng chứng và giới hạn chặng tại `docs/implementation-status.md`.

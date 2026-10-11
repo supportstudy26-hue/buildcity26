@@ -156,3 +156,43 @@ body[data-photo=true] #game :is(.bc26-ui,.map-controls,.minimap,.floating){displ
  #game #layerOptions{grid-template-columns:repeat(4,minmax(0,1fr))}
  #game .bc26-toast{top:calc(var(--hud-top) + 94px)}
 }
+
+/* Use one dark, high-contrast surface for real gameplay tables and inputs.
+   The old light theme otherwise leaves pale text on white cards. */
+:is(body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog),#game .bc26-drawer) :is(.budget-table,.range-row,.detail-list,.mission-card,.saved-city,.hub-tile,.field input,.field select,.field textarea,.starting-place,.mission-filters input,.mission-filters select){background:#1c3040;color:#f0f5fa;border-color:#486273}
+:is(body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog),#game .bc26-drawer) :is(.budget-table,.range-row,.detail-list) :is(span,label,b){color:#f0f5fa}
+:is(body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog),#game .bc26-drawer) :is(.budget-table,.range-row,.detail-list,.mission-card,.saved-city,.hub-tile) :is(small,p){color:#c4d3df}
+:is(body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog),#game .bc26-drawer) .budget-table :is(.good,.positive){color:#88e6bd}
+:is(body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog),#game .bc26-drawer) .budget-table :is(.warn,.negative){color:#ffb3a2}
+body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog) .budget-tabs{background:#1c3040;border:1px solid #486273;border-radius:12px;padding:4px}
+body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog) .budget-tabs button{color:#c4d3df;min-height:44px;border-radius:8px}
+body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog) .budget-tabs button.active{background:#2a594e;color:#d7ffed}
+:is(body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog),#game .bc26-drawer) .range-row{border:1px solid #486273;border-radius:12px;padding:14px;margin-block:12px}
+:is(body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog),#game .bc26-drawer) .range-row label{font-size:14px;font-weight:600}
+:is(body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog),#game .bc26-drawer) input[type=range]{accent-color:#7ad6b0;width:100%;min-height:30px}
+:is(body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog),#game .bc26-drawer) input::placeholder{color:#b1c5d5;opacity:1}
+body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog) :is(.form-error,.mission-objective small){color:#ffb3a2}
+body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog) .action.danger{background:#7b3435;color:#fff;border:1px solid #ffb3a2}
+/* Legacy cards also appear in markets, transport, geography and the inspector. */
+:is(body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog),#game .bc26-drawer) :is(.market-clock,.market-summary,.market-prizes span,.stock-row,.lottery-grid button,.stock-order svg,.geo-stats,.geo-province,.geo-region,.geo-inset,.hub-summary,.hub-tabs,.mobility-card,.resident-row,.service-card,.info-grid>div,.upgrade-details,.development-details){background:#1c3040;color:#f0f5fa;border-color:#486273}
+:is(body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog),#game .bc26-drawer) :is(.geo-stats,.geo-province,.geo-region,.geo-inset,.market-summary,.hub-summary,.service-card,.info-grid) :is(b,strong){color:#f0f5fa}
+:is(body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog),#game .bc26-drawer) :is(.geo-inset,.geo-province,.geo-region,.market-clock,.mobility-card,.service-card,.hub-summary) :is(small,p,em){color:#c4d3df}
+body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog) :is(.hub-tabs button,.link-button){color:#88e6bd;min-height:44px}
+body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog) :is(.hub-tabs button.active,.stock-row.active,.lottery-grid button.active,.geo-province.active,.geo-region.active){background:#2a594e;color:#d7ffed;border-color:#88e6bd}
+body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog) :is(.geo-province.active,.geo-region.active) :is(b,strong,small){color:#d7ffed}
+body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog) :is(.hub-icon,.inspect-icon){background:#28463e;color:#88e6bd}
+body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog) :is(.form-error,.action.danger){color:#ffb3a2!important}
+body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog) .delete-save{color:#ffb3a2;background:#482c33;border:1px solid #9d5c62}
+body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog) a{color:#a5d6ff}
+:is(body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog),#game .bc26-drawer) :is(.warn,.negative,#marketError,.mission-objective.warn span,.mission-objective.warn b){color:#ffb3a2}
+:is(body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog),#game .bc26-drawer) :is(.good,.positive,.mission-objective.good span,.mission-objective.good b){color:#88e6bd}
+body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog) .hub-arrow{color:#c4d3df}
+:is(body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog),#game .bc26-drawer) .badge{background:#28463e;color:#d7ffed;border-color:#638c7e}
+:is(body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog),#game .bc26-drawer) .badge.warn{background:#483b29;color:#ffcf9e;border-color:#9f7950}
+.auth-layout .auth-card .field input::placeholder{color:#617785;opacity:1}
+#modal.auth-layout .modal-close{background:#eaf1f5;color:#294958;width:44px;height:44px}
+#modal.auth-layout .auth-home{color:#3d5f70}
+#game .bc26-drawer #detailBody :is(.action,.link-button){background:#243f51;color:#f0f5fa;border:1px solid #638196;min-height:44px}
+#game .bc26-drawer #detailBody .action.primary{background:#7ad6b0;color:#102f28;border-color:#7ad6b0}
+#game .bc26-drawer #detailBody .action.danger{background:#7b3435;color:#ffdfd8;border-color:#ffb3a2}
+#game .bc26-drawer .inspect-icon{background:#28463e;color:#88e6bd}

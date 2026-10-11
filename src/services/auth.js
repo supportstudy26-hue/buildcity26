@@ -29,12 +29,12 @@ export function observeSession(client, handle, onError, defer = fn => setTimeout
   let events = 0, disposed = false;
   const { data } = client.auth.onAuthStateChange((event, session) => {
     events++;
-    defer(() => { if (!disposed) handle(session, event); });
+    defer(() => { if (!disposed) { try { void Promise.resolve(handle(session, event)).catch(onError); } catch (error) { onError(error); } } });
   });
   const initial = events;
   void client.auth.getSession().then(({ data: sessionData, error }) => {
     if (disposed || events !== initial) return;
-    if (error) onError(error); else handle(sessionData.session, 'INITIAL_SESSION');
+    if (error) onError(error); else return handle(sessionData.session, 'INITIAL_SESSION');
   }).catch(onError);
   return () => { disposed = true; data.subscription.unsubscribe(); };
 }

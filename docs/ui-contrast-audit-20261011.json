@@ -1,0 +1,124 @@
+{
+  "date": "2026-10-11",
+  "source": "Computed DOM styles on actual Build City 26; ancestor alpha compositing; text-bearing HTML only",
+  "minimum": 4.5,
+  "disabledExcluded": true,
+  "panels": [
+    {
+      "panel": "Catalogue dịch vụ",
+      "textSamples": 66,
+      "activeSamples": 57,
+      "minimumActiveContrast": 7.45,
+      "belowTarget": []
+    },
+    {
+      "panel": "300 nhiệm vụ",
+      "textSamples": 33,
+      "activeSamples": 30,
+      "minimumActiveContrast": 5.53,
+      "belowTarget": []
+    },
+    {
+      "panel": "Cài đặt",
+      "textSamples": 29,
+      "activeSamples": 29,
+      "minimumActiveContrast": 5.53,
+      "belowTarget": []
+    },
+    {
+      "panel": "Điều hành",
+      "textSamples": 32,
+      "activeSamples": 32,
+      "minimumActiveContrast": 5.53,
+      "belowTarget": []
+    },
+    {
+      "panel": "Thuế",
+      "textSamples": 24,
+      "activeSamples": 24,
+      "minimumActiveContrast": 5.53,
+      "belowTarget": []
+    },
+    {
+      "panel": "Chi dịch vụ",
+      "textSamples": 36,
+      "activeSamples": 36,
+      "minimumActiveContrast": 5.53,
+      "belowTarget": []
+    },
+    {
+      "panel": "Khoản vay",
+      "textSamples": 28,
+      "activeSamples": 27,
+      "minimumActiveContrast": 5.53,
+      "belowTarget": []
+    },
+    {
+      "panel": "Tuyến xe buýt",
+      "textSamples": 13,
+      "activeSamples": 13,
+      "minimumActiveContrast": 5.53,
+      "belowTarget": []
+    },
+    {
+      "panel": "Catalogue nhà ở",
+      "textSamples": 66,
+      "activeSamples": 66,
+      "minimumActiveContrast": 7.45,
+      "belowTarget": []
+    },
+    {
+      "panel": "Điều kiện cư dân",
+      "textSamples": 106,
+      "activeSamples": 106,
+      "minimumActiveContrast": 5.53,
+      "belowTarget": []
+    },
+    {
+      "panel": "Đăng nhập",
+      "textSamples": 20,
+      "activeSamples": 20,
+      "minimumActiveContrast": 4.68,
+      "belowTarget": []
+    },
+    {
+      "panel": "Inspector cư dân",
+      "textSamples": 28,
+      "activeSamples": 28,
+      "minimumActiveContrast": 8.53,
+      "belowTarget": []
+    },
+    {
+      "panel": "Cổ phiếu",
+      "textSamples": 49,
+      "activeSamples": 47,
+      "minimumActiveContrast": 5.35,
+      "belowTarget": []
+    },
+    {
+      "panel": "Xổ số",
+      "textSamples": 86,
+      "activeSamples": 84,
+      "minimumActiveContrast": 5.53,
+      "belowTarget": []
+    }
+  ],
+  "backups": {
+    "count": 6,
+    "colors": {
+      "background": "rgb(28, 48, 64)",
+      "text": "rgb(196, 211, 223)",
+      "title": "rgb(240, 245, 250)"
+    }
+  },
+  "mobile": {
+    "viewport": [
+      390,
+      844
+    ],
+    "modalWidth": 360,
+    "horizontalOverflow": false,
+    "device": "Codex browser same-origin iframe; not a physical phone"
+  },
+  "limitations": "No certification of image/SVG artwork, every hover/focus state or future screens."
+}

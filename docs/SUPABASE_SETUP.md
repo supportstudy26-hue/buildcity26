@@ -6,7 +6,7 @@ Project URL đã cung cấp: `https://adnmfknbskbagiahstim.supabase.co`. SDK dù
 
 Trong dashboard Supabase của project → **SQL Editor → New query**:
 
-- Project mới: sao chép toàn bộ `supabase/schema.sql`, bấm Run. File đã bao gồm migration mới.
+- Project mới: chạy toàn bộ `supabase/schema.sql`, sau đó `supabase/migrations/202610100003_mission_campaign.sql` và `supabase/migrations/202610110001_one_active_city.sql`. Schema nền đã gồm tài khoản/địa phương/tài chính; hai migration này bổ sung biên nhận nhiệm vụ và giới hạn một thành phố.
 - Project đã dùng v0.1: chạy 202610070001_reliable_saves.sql, rồi 202610080002_simulation_foundation.sql. Migration không xóa hàng cũ.
 - Chạy `supabase/tests/rls.sql` sau đó. Kết quả mong đợi `PASS: RLS A/B, owner spoof, guest, retry, revision conflict and delete`. Script tạo hai danh tính tạm trong transaction và rollback tất cả; không cần mật khẩu, không xóa dữ liệu đang có.
 
@@ -61,9 +61,9 @@ Sau đó kiểm tra bằng giao diện:
 1. Đăng ký → email xác nhận → đăng nhập → gửi lại email khi cần.
 2. A lưu và mở thành phố; đăng nhập A trên thiết bị thứ hai để tiếp tục. B phải có danh sách riêng.
 3. Quên mật khẩu → mở email cùng trình duyệt → đặt mật khẩu mới → đăng nhập lại. Chỉ người dùng nhập mật khẩu mới.
-4. Hai thiết bị cùng mở một revision: thiết bị 1 lưu, thiết bị 2 phải báo xung đột. Thiết bị 2 xuất JSON hoặc lưu bản mới rồi mở bản cloud.
+4. Hai thiết bị cùng mở một revision: thiết bị 1 lưu, thiết bị 2 phải báo xung đột. Thiết bị 2 giữ bản dự phòng rồi mở bản cloud; không tạo thêm thành phố để né xung đột.
 5. Mất mạng: lưu trên thiết bị và hàng đợi; có mạng lại phải gửi cùng request. Với server 5xx/timeout, giữ pending và thử lại; không báo đã đồng bộ khi chưa nhận xác nhận.
-6. Tạo/mở/import thành phố khác: kiểm tra Bản dự phòng trên máy. Đăng xuất chỉ thiết bị hiện tại, không làm mất các thành phố cloud.
+6. Tạo/import/khôi phục thành phố: người chơi phải xác nhận xóa thành phố cũ. Server thay thế trong một transaction; mỗi tài khoản chỉ có một thành phố hiện hành. Hủy hoặc lỗi giữ bản cũ, timeout thử lại cùng biên nhận. Bản cũ có thể khôi phục từ Dự phòng trên thiết bị. Đăng xuất không xóa thành phố cloud.
 
 ## Trạng thái kiểm chứng hiện tại
 
@@ -76,3 +76,9 @@ Database thật đã kiểm tra quyền bằng metadata query: private/profile R
 ### Địa phương khi đăng ký
 
 Migration `202610090008_registration_geography.sql` đã chạy trên project thật ngày 09/10/2026. Bổ sung lựa chọn địa phương đầu tiên bất biến khi đăng ký lại cùng request; không chuyển địa hình các thành phố cũ. Function `/api/account` cần đóng kèm `public/geodata/vn-20261008/*.json` (đã có `includeFiles` trong vercel.json). Đăng ký không chọn địa phương dùng bản đồ Bình Minh. Client chỉ gửi mã region đã chọn; server kiểm catalog, kích thước/checksum và dựng save schema 6. Cần kiểm lại function trên deployment thật trước khi xác nhận đăng ký production đạt.
+
+## Một thành phố mỗi tài khoản — 11/10/2026
+
+`202610110001_one_active_city.sql` đã chạy Success trên project thật. Không tự xóa dữ liệu legacy có nhiều thành phố: chỉ sau khi chủ tài khoản xác nhận thay thế, server kiểm đúng toàn bộ ID/revision rồi xóa cũ và tạo mới trong cùng transaction. INSERT thứ hai bị chặn ở DB, kể cả gửi trực tiếp qua publishable client. Retry cùng request không cấp thêm vốn hoặc nhân đôi thành phố. Biên nhận nhiệm vụ đã trả được giữ riêng khi thay thế; khôi phục bản cũ không nhận lại thưởng.
+
+`QA_BASE_URL=https://buildcity26.vercel.app QA_ALLOW_CREATE=1 npm run test:replacement:live` dùng hai tài khoản QA riêng; kiểm vốn 10 tỷ, login, A/B RLS, giới hạn server, conflict, atomic replacement, retry và save/load. Live PASS ngày 11/10; không dùng hoặc in secret. Bài `test:missions:live` đã cập nhật để thay thành phố QA theo quy tắc mới, PASS: thưởng một lần, bản dự phòng không nhận lại, owner giả bị từ chối và save/load 5.000 dân lossless. Bài email legacy `test:live` chỉ dùng tài khoản QA trống; tài khoản đã có thành phố sẽ bị giới hạn đúng thiết kế.

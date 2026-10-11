@@ -1,3 +1,11 @@
+# Kiểm tra chặng màu/dự phòng/một thành phố — 11/10/2026
+
+Full suite 217/217 PASS, không skip, 222,36 s; sau sửa xung đột review thêm một test, chạy backup/city-replacement/cloud-sync 19/19 PASS. SQL migration một thành phố chạy PGlite và Supabase thật. Live 2 tài khoản kiểm A/B RLS/atomic replacement/CAS/retry/save-load PASS. Live nhiệm vụ chống trùng/khôi phục/xuyên owner và codec 5.000 dân PASS.
+
+Browser: kiểm các ô ngân sách/nhiệm vụ/cư dân/inspector/cài đặt/catalogue/thị trường/bản đồ. Kết quả đo màu ở `docs/ui-contrast-audit-20261011.json`; disabled không tính. Ngân sách game thật 390×844 không tràn ngang; không điện thoại phần cứng. Tình huống localStorage plaintext bị chặn: tháo dỡ, backup, login và mở cloud PASS; thay thành phố hủy giữ cũ, xác nhận chỉ còn một, cũ còn backup. Không dùng ảnh minh họa làm bằng chứng game.
+
+Build cuối PASS **12,26 s**;  Không có lint/typecheck script; cảnh báo chunk Three/building-designs >500 kB còn có. Các phần sau là lịch sử kiểm chứng, trạng thái mới nhất lấy `docs/implementation-status.md`.
+
 # Kiểm chứng — 08/10/2026
 
 Baseline trước Lệnh 1: npm ci thành công, npm test 56/56, npm run build thành công (JS 313,13 kB/gzip 90,16 kB). Bản nền ban đầu 0.1 có 10 tests và QA Supabase giả lập; đó là bằng chứng lịch sử, không phải production mới.

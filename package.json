@@ -9,6 +9,7 @@
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
     "test": "node --test tests/*.test.js",
+    "test:replacement:live": "node --env-file-if-exists=.env.local scripts/verify-city-replacement.mjs",
     "test:live": "node --env-file-if-exists=.env.local --env-file-if-exists=.env.test.local scripts/verify-supabase.mjs",
     "test:accounts:live": "node --env-file-if-exists=.env.local scripts/verify-accounts.mjs",
     "test:finance:live": "node --env-file-if-exists=.env.local scripts/verify-finance.mjs"

@@ -33,9 +33,11 @@ import { consumeSteps, calendar, simulationDelta } from './game/systems/clock.js
 import { createCity, createEmptyCity, analyze, stepSimulation, executeCommand, place, serialize, validateSave, CATALOG, SIZE, index, isRoad, addBusLine, borrow, repay } from './game/core.js';
 import { createRenderer } from './game/render/renderer-host.js';
 import {surfaceHeight,slopeAt} from './game/systems/terrain.js';
-import { saveLocal, loadLocal, archiveLocal, listLocalBackups, readLocalBackup, removeLocalBackup, localKey } from './services/local-storage.js';
-import { supabase, configured, authMessage, listCities, loadCity, saveCity, deleteCity } from './services/supabase.js';
+import { saveLocal, loadLocal, localEnvelope, localKey } from './services/local-storage.js';
+import { supabase, configured, authMessage, listCities, loadCity, saveCity, deleteCity, replaceCloudCity } from './services/supabase.js';
 
+import {CityReplacement} from './services/city-replacement.js';
+import {BackupStore} from './services/backup-store.js';
 import {buildingPreview,buildingSummary} from './ui/build-card.js';
 import {serviceKind} from './config/catalog.js';
 import { icon, applyIcons } from './icons.js';
@@ -57,15 +59,18 @@ const crosshair='<svg width="21" height="21" viewBox="0 0 24 24" fill="none" str
 let city=createEmptyCity(),user=null,changeId=0,cityEpoch=0,storageWarning=false,storageBlocked=false,recoveryMode=false,libraryBusy=false,localCollision=false,financeBusy=false,missionBusy=false;
 const financeQueue=new FinanceQueue({storage:localStorage,send:async request=>{const {data,error}=await supabase.rpc('bc26_finance_order',{p_city_id:request.city,p_revision:request.revision,p_request_id:request.requestId,p_order:request.order,p_round:request.round});if(error)throw error;return data;}});
 function financePending(){try{return user&&sync.cloud?financeQueue.pending(user.id,sync.cloud.id):null;}catch{return {corrupt:true};}}
+const backupStore=new BackupStore();
+let checkpointBusy=false,replacementReview=false;
+const cityReplacement=new CityReplacement({send:replaceCloudCity});
 const sync=new CloudSync({snapshot:()=>serialize(city),send:saveCity,persist:()=>persist(),notify:()=>renderSaveStatus(),online:()=>navigator.onLine});
 const missionQueue=new MissionQueue({storage:localStorage,send:request=>missionRequest(supabase,request)});
 function missionPending(){try{return user&&sync.cloud?missionQueue.pending(user.id,sync.cloud.id):null;}catch{return {corrupt:true};}}
 let observe=false,tracked=null,watchDeparture=null,firstEntry=true;
-function command(type,payload){if(missionBusy||missionPending())return {ok:false,message:'Nhiệm vụ đang chờ đối soát. Mở Nhiệm vụ để thử lại.'};if(financeBusy||financePending())return {ok:false,message:'Sổ tiền đang chờ đối soát. Mở Cổ phiếu & xổ số để thử lại.'};const seq=city.commandSequence+1;return executeCommand(city,{id:`command-${seq}`,sequence:seq,type,payload});}
+function command(type,payload){if(checkpointBusy||replacementReview)return {ok:false,message:'Đang giữ tiến trình. Chờ một chút.'};if(missionBusy||missionPending())return {ok:false,message:'Nhiệm vụ đang chờ đối soát. Mở Nhiệm vụ để thử lại.'};if(financeBusy||financePending())return {ok:false,message:'Sổ tiền đang chờ đối soát. Mở Cổ phiếu & xổ số để thử lại.'};const seq=city.commandSequence+1;return executeCommand(city,{id:`command-${seq}`,sequence:seq,type,payload});}
 let speed=1,lastMs=performance.now(),accumulator=0,tool='inspect',group='inspect',selected=null,blueprint=null;
 let toastTimer,hud=null;
 let storageError='';
-try{const saved=loadLocal();if(saved){city=saved.city;if(saved.migrated){try{archiveLocal();}catch(e){storageBlocked=true;storageWarning=true;storageError='Đã mở bản cũ nhưng bộ nhớ đầy, chưa tạo được dự phòng. Xuất JSON hoặc quản lý bản dự phòng trước khi lưu.';}}}}catch(e){try{archiveLocal();}catch{storageBlocked=true;}storageWarning=true;storageError='Không mở được bản lưu: '+e.message;}
+try{const saved=loadLocal();if(saved){city=saved.city;if(saved.migrated){try{await backupStore.archiveLocal('guest');}catch(e){storageBlocked=true;storageWarning=true;storageError='Đã mở bản cũ nhưng bộ nhớ đầy, chưa tạo được dự phòng. Xuất JSON hoặc quản lý bản dự phòng trước khi lưu.';}}}}catch(e){try{await backupStore.archiveLocal('guest');}catch{storageBlocked=true;}storageWarning=true;storageError='Không mở được bản lưu: '+e.message;}
 speed=city.playback.paused?0:city.playback.multiplier;observe=city.playback.observe;
 const renderer=await createRenderer($('world'),$('mini'),()=>city);
 function focusEmptyStart(){if(city.metrics.roadCount!==0)return;const entry=city.world.geography?.entryTile??index(0,18);renderer.focusTile(Math.min(SIZE-1,entry%SIZE+4),Math.floor(entry/SIZE));$('detailPanel').hidden=false;}
@@ -78,15 +83,27 @@ function toast(msg){if(hud){hud.notify(msg);return;}clearTimeout(toastTimer);$('
 function changed(){changeId++;sync.changed();renderSaveStatus();update();}
 function renderSaveStatus(){
   const labels={local:'Lưu trên thiết bị',pending:'Chờ đồng bộ',saving:'Đang đồng bộ…',synced:'Đã lưu đám mây',offline:'Mất mạng · lưu trên máy',error:'Lỗi đồng bộ · thử lại',conflict:'Xung đột · cần xử lý','storage-error':'Chưa lưu trên thiết bị'};
-  const text=financeBusy?'Đang xác nhận giao dịch…':financePending()?'Giao dịch chờ đối soát':storageWarning?'Chưa lưu được · xuất JSON':localCollision?'Bản local đổi ở tab khác':user?labels[sync.status]:'Lưu trên thiết bị';
+  const text=financeBusy?'Đang xác nhận giao dịch…':financePending()?'Giao dịch chờ đối soát':storageWarning?'Chưa lưu được · thử lại':localCollision?'Bản local đổi ở tab khác':user?labels[sync.status]:'Lưu trên thiết bị';
   $('saveText').textContent=text;$('saveText').dataset.state=storageWarning?'error':sync.status;
   $('saveText').title=storageError|| (sync.error?authMessage(sync.error):text);hud?.setSaveLabel(text);
 }
-function persist(){if(localCollision||storageBlocked)return false;try{saveLocal(city,user?.id||'guest',sync.cloud,sync.metadata);storageWarning=false;renderSaveStatus();return true;}catch{storageWarning=true;renderSaveStatus();return false;}}
-function checkpoint(){
-  if(localCollision){toast('Tab khác đã thay đổi bản local. Hãy xuất JSON trước khi tiếp tục.');return false;}
-  if(!persist())return false;
-  try{archiveLocal(user?.id||'guest');return true;}catch{storageWarning=true;renderSaveStatus();toast('Không tạo được bản dự phòng. Hãy xuất JSON trước khi mở thành phố khác.');return false;}
+function persist(){if(localCollision||storageBlocked)return false;try{saveLocal(city,user?.id||'guest',sync.cloud,sync.metadata);storageWarning=false;storageError='';renderSaveStatus();return true;}catch{storageWarning=true;renderSaveStatus();return false;}}
+async function checkpoint(){
+  if(checkpointBusy){toast('Đang giữ tiến trình. Chờ một chút.');return false;}
+  if(localCollision){toast('Thành phố đã thay đổi ở tab khác. Đóng tab cũ rồi tải lại để tiếp tục.');return false;}
+  const owner=user?.id||'guest',epoch=cityEpoch;checkpointBusy=true;
+  try{
+    // Move old backups only after committed, verified copies; never evict a city.
+    if(!persist()){
+      await backupStore.migrateLocal();
+      if(owner!==(user?.id||'guest')||epoch!==cityEpoch)return false;
+      if(storageBlocked){await backupStore.archiveLocal(owner);storageBlocked=false;}
+      if(!persist())throw new Error('Thiết bị chưa cho phép lưu tiến trình. Bật bộ nhớ trình duyệt hoặc mở Bản dự phòng để quản lý dung lượng.');
+    }
+    await backupStore.archive(owner,JSON.stringify(localEnvelope(city,sync.cloud,sync.metadata)));
+    return owner===(user?.id||'guest')&&epoch===cityEpoch&&!localCollision;
+  }catch(error){storageWarning=true;storageError=error.message;renderSaveStatus();toast(error.message);return false;}
+  finally{checkpointBusy=false;lastMs=performance.now();}
 }
 function showModal(html){hud?.close();modal.classList.remove('auth-layout','account-dialog');$('modalBody').innerHTML=html;if(!modal.open)modal.showModal();hydrateBuildingThumbnails($('modalBody'));hydrateMobilityThumbnails($('modalBody'));}
 modal.addEventListener('close',()=>{lastMs=performance.now();update();});
@@ -304,7 +321,7 @@ function confirmDemolition(tile){
  const t=city.tiles[tile.i],ref=t.assetId,kind=t.kind||t.zone,occupied=t.residents||0,jobs=['commercial','industrial'].includes(t.kind)?jobsCapacity(t):0;
  showModal(`<h2>Tháo dỡ ${escape(PRIVATE_DESIGNS[t.blueprint]?.name||CATALOG[kind]?.name||'ô đất')}</h2><p>Ô ${tile.x+1}, ${tile.y+1} · hoàn ${money(q.refund)}. Không có phí tháo dỡ riêng.</p><p>${occupied} cư dân cần chuyển đi; ${jobs} chỗ làm bị mất. Đường, tiện ích và tuyến buýt phụ thuộc ô này sẽ được tính lại. Vốn nhà tư nhân không được hoàn vào ngân quỹ.</p><div class="modal-actions"><button class="action" id="demolitionCancel">Giữ công trình</button><button class="action primary" id="demolitionConfirm">Xác nhận tháo dỡ</button></div>`);
  $('demolitionCancel').onclick=closeModal;
- $('demolitionConfirm').onclick=()=>{const now=placementQuote(city,tile.i,'bulldoze');if(!now.ok||city.tiles[tile.i].assetId!==ref||now.refund!==q.refund){toast('Công trình hoặc giá đã đổi. Chọn lại để xác nhận.');return;}if(!checkpoint()){toast('Chưa tạo được dự phòng trước tháo dỡ.');return;}const result=command('place',{x:tile.x,y:tile.y,kind:'bulldoze'});if(!result.ok){toast(result.message);return;}selected=null;renderer.selected=null;closeModal();changed();persist();renderer.lastPaths=-1;toast('Đã tháo dỡ · hoàn '+money(now.refund)+'. Bản trước thao tác nằm trong Dự phòng.');};
+ $('demolitionConfirm').onclick=async()=>{const now=placementQuote(city,tile.i,'bulldoze');if(!now.ok||city.tiles[tile.i].assetId!==ref||now.refund!==q.refund){toast('Công trình hoặc giá đã đổi. Chọn lại để xác nhận.');return;}if(!await checkpoint())return;const result=command('place',{x:tile.x,y:tile.y,kind:'bulldoze'});if(!result.ok){toast(result.message);return;}selected=null;renderer.selected=null;closeModal();changed();persist();renderer.lastPaths=-1;toast('Đã tháo dỡ · hoàn '+money(now.refund)+'. Bản trước thao tác nằm trong Dự phòng.');};
 }
 function paint(p){const t=renderer.tileAt(p.x,p.y);if(!t)return;if(lastPaint?.i===t.i)return;if(tool==='bulldoze'){lastPaint=t;confirmDemolition(t);return;}
   const tiles=[];if(lastPaint){let x=lastPaint.x,y=lastPaint.y;while(x!==t.x||y!==t.y){if(x!==t.x)x+=Math.sign(t.x-x);else y+=Math.sign(t.y-y);tiles.push({x,y,i:index(x,y)});}}else tiles.push(t);
@@ -364,12 +381,12 @@ function transit(){
 
 function exportSave(){const blob=new Blob([JSON.stringify(encodeCity(serialize(city)))],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='build-city-26-save.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('Đã xuất bản lưu thành phố.');}
 function replaceCity(s,cloudRef=null){accumulator=0;tracked=null;watchDeparture=null;renderer.follow=null;city=s;restorePlayback();cityEpoch++;sync.use(user?.id||null,{cloud:cloudRef,dirty:!cloudRef});changeId++;localCollision=false;selected=null;renderer.reset();$('detailPanel').hidden=true;focusEmptyStart();persist();update();}
-function backups(){
-  let rows;try{rows=listLocalBackups(user?.id||'guest');}catch(error){toast(error.message);return;}
-  showModal(`<span class="news-kicker">BẢN DỰ PHÒNG TRÊN THIẾT BỊ</span><h2>Tiến trình trước đây</h2><p>Bản dự phòng được giữ trước khi mở hoặc tạo thành phố khác. Khôi phục tạo một thành phố mới, không ghi đè bản đám mây.</p><div id="backupList">${rows.length?rows.map((r,i)=>`<div class="saved-city"><div><strong>${escape(r.name)}</strong><small>${new Date(r.modifiedAt).toLocaleString('vi-VN')}</small></div><button class="action" data-backup="${i}">Khôi phục</button><button class="action" data-export-backup="${i}">JSON</button><button class="delete-save" data-remove-backup="${i}" aria-label="Xóa bản dự phòng ${escape(r.name)}">×</button></div>`).join(''):'<p>Chưa có bản dự phòng.</p>'}</div>`);
-  $('backupList').querySelectorAll('[data-backup]').forEach(b=>b.onclick=()=>{try{const raw=readLocalBackup(rows[Number(b.dataset.backup)].key,user?.id||'guest');const restored=validateSave(JSON.parse(raw).city);if(sync.busy||libraryBusy){toast('Hãy chờ thao tác đang chạy.');return;}if(confirm('Khôi phục bản này thành thành phố mới?')&&checkpoint()){replaceCity(restored);closeModal();toast('Đã khôi phục bản dự phòng.');}}catch(error){toast(error.message);}});
-  $('backupList').querySelectorAll('[data-remove-backup]').forEach(b=>b.onclick=()=>{if(confirm('Xóa bản dự phòng trên thiết bị? Bản đám mây vẫn được giữ.')){try{removeLocalBackup(rows[Number(b.dataset.removeBackup)].key,user?.id||'guest');backups();}catch(error){toast(error.message);}}});
-  $('backupList').querySelectorAll('[data-export-backup]').forEach(b=>b.onclick=()=>{try{const raw=readLocalBackup(rows[Number(b.dataset.exportBackup)].key,user?.id||'guest');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([raw],{type:'application/json'}));a.download='build-city-26-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}catch(error){toast(error.message);}});
+async function backups(){
+  let rows;try{rows=await backupStore.list(user?.id||'guest');}catch(error){toast(error.message);return;}
+  showModal(`<span class="news-kicker">BẢN DỰ PHÒNG TRÊN THIẾT BỊ</span><h2>Tiến trình trước đây</h2><p>Bản dự phòng được giữ trước khi mở hoặc tạo thành phố khác. Khôi phục cần xác nhận thay thành phố hiện tại; mỗi tài khoản chỉ có một thành phố.</p><div id="backupList">${rows.length?rows.map((r,i)=>`<div class="saved-city"><div><strong>${escape(r.name)}</strong><small>${new Date(r.modifiedAt).toLocaleString('vi-VN')}</small></div><button class="action" data-backup="${i}">Khôi phục</button><button class="action" data-export-backup="${i}">JSON</button><button class="delete-save" data-remove-backup="${i}" aria-label="Xóa bản dự phòng ${escape(r.name)}">×</button></div>`).join(''):'<p>Chưa có bản dự phòng.</p>'}</div>`);
+  $('backupList').querySelectorAll('[data-backup]').forEach(b=>b.onclick=async()=>{try{const raw=await backupStore.read(rows[Number(b.dataset.backup)].key,user?.id||'guest');const restored=validateSave(JSON.parse(raw).city);if(sync.busy||libraryBusy){toast('Hãy chờ thao tác đang chạy.');return;}await requestNewCity(restored);}catch(error){toast(error.message);}});
+  $('backupList').querySelectorAll('[data-remove-backup]').forEach(b=>b.onclick=async()=>{if(confirm('Xóa bản dự phòng trên thiết bị? Bản đám mây vẫn được giữ.')){try{await backupStore.remove(rows[Number(b.dataset.removeBackup)].key,user?.id||'guest');backups();}catch(error){toast(error.message);}}});
+  $('backupList').querySelectorAll('[data-export-backup]').forEach(b=>b.onclick=async()=>{try{const raw=await backupStore.read(rows[Number(b.dataset.exportBackup)].key,user?.id||'guest');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([raw],{type:'application/json'}));a.download='build-city-26-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}catch(error){toast(error.message);}});
 }
 let runtimeSample=null,runtimeReport=null;
 async function measurePerformance(seconds=30){
@@ -379,11 +396,41 @@ async function measurePerformance(seconds=30){
  runtimeReport={...sample.report(),...renderer.stats(),population:city.citizens.length,buildings:city.tiles.filter(t=>t.kind&&!isRoad(t)).length,roads:city.metrics.roadCount,simulationSeconds:city.clock.seconds,playback:{...city.playback},viewport:[innerWidth,innerHeight],browser:navigator.userAgent,platform:navigator.platform,logicalCores:navigator.hardwareConcurrency,deviceMemoryGB:navigator.deviceMemory??null,heapBytes:performance.memory?.usedJSHeapSize??null,scenario:'Game đang chơi + HUD thật',workerTickMs:null};return runtimeReport;
 }
 function graphics(){showModal(`<span class="news-kicker">ĐỒ HỌA RIÊNG BUILD CITY 26</span><h2>Chọn theo thiết bị</h2><p>Chỉ vẽ tối đa 50 đối tượng đang đi lại, tính cả người và xe, ở mọi quy mô dân số. Chất lượng Thấp và điện thoại tối đa 30. Vẫn giữ toàn bộ dân số, việc làm và hành trình trong bản lưu.</p><label class="field">Renderer<select id="renderMode" aria-label="Renderer"><option value="3d" ${renderer.mode==='3d'?'selected':''}>3D · nhà và cư dân bằng mesh</option><option value="2d" ${renderer.mode==='2d'?'selected':''}>Canvas nhẹ · 2.5D</option></select></label><label class="field">Chất lượng 3D<select id="renderQuality" aria-label="Chất lượng 3D">${[['auto','Auto · điều chỉnh theo hiệu năng'],['low','Thấp · mục tiêu 30 FPS, tắt bóng'],['medium','Vừa · mục tiêu 60 FPS, nền nhẹ'],['high','Cao · mục tiêu 60 FPS, có bóng']].map(([v,label])=>`<option value="${v}" ${renderer.qualityPreference===v?'selected':''}>${label}</option>`).join('')}</select></label><p>Chuột/chạm kéo để di chuyển, cuộn/hai ngón để zoom. Bấm Xoay rồi kéo để đổi góc 3D; nút Nhìn trên chuyển góc từ trên xuống. Máy yếu chọn Thấp hoặc Canvas. Đổi renderer giữ nguyên thành phố và bản lưu.</p><button class="action primary full" id="graphicsApply">Áp dụng</button><button class="action full" id="graphicsMeasure">Đo hiệu năng game thật · 30 giây</button>`);$('graphicsApply').onclick=async()=>{const mode=$('renderMode').value,quality=$('renderQuality').value;$('graphicsApply').disabled=true;await renderer.setMode(mode);renderer.setQuality(quality);$('cameraView').hidden=renderer.mode!=='3d';$('cameraRotate').hidden=renderer.mode!=='3d';persist();closeModal();toast(renderer.notice||'Đã áp dụng đồ họa.');};$('graphicsMeasure').onclick=async()=>{closeModal();toast('Đang đo game + HUD trong 30 giây.');try{const r=await measurePerformance();showModal('<h2>Hiệu năng đo thực tế</h2><pre id="runtimePerformance" style="white-space:pre-wrap;font-size:12px"></pre><button class="action full" id="performanceDone">Đóng</button>');$('runtimePerformance').textContent=JSON.stringify(r,null,2);$('performanceDone').onclick=closeModal;}catch(error){toast(error.message);}};}
-function emptyStartReview(){
-  showModal(`<span class="news-kicker">KHỞI ĐẦU MỚI</span><h2>Xây từ một bãi đất trống</h2><p>Giữ tên ${escape(city.name)} và địa hình hiện tại. Vốn khởi đầu <strong>${money(NEW_CITY_CASH_BC)}</strong>, chưa có nhà hoặc cư dân.</p><p>Thành phố hiện tại được giữ trong <strong>Bản dự phòng trên máy</strong> trước khi bắt đầu. Bạn có thể khôi phục từ menu. Bản lưu đám mây cũ vẫn được giữ.</p><div class="modal-actions"><button id="emptyStartCancel" class="action">Quay lại</button><button id="emptyStartConfirm" class="action primary">Bắt đầu với ${money(NEW_CITY_CASH_BC)}</button></div><p id="emptyStartError" class="form-error" role="alert"></p>`);
-  $('emptyStartCancel').onclick=menu;
-  $('emptyStartConfirm').onclick=()=>{if(sync.busy||libraryBusy){$('emptyStartError').textContent='Hãy chờ thao tác đang chạy.';return;}if(!checkpoint()){$('emptyStartError').textContent='Chưa tạo được bản dự phòng. Xuất JSON trước khi bắt đầu lại.';return;}replaceCity(createEmptyCity({world:city.world,name:city.name}));selectTool('inspect');closeModal();toast(`Đã bắt đầu với ${money(NEW_CITY_CASH_BC)}. Thành phố cũ nằm trong Bản dự phòng trên máy.`);};
+async function requestNewCity(next){
+  if(replacementReview||sync.busy||libraryBusy||checkpointBusy||financeBusy||missionBusy||financePending()||missionPending()){toast('Hoàn tất thao tác đang chờ trước khi thay thành phố.');return false;}
+  replacementReview=true;
+  const owner=user?.id||'guest',epoch=cityEpoch;
+  let rows=[],pending;
+  try{if(user){rows=await listCities();pending=cityReplacement.pending(owner);}}
+  catch(error){replacementReview=false;toast(authMessage(error));return false;}
+  if(owner!==(user?.id||'guest')||epoch!==cityEpoch){replacementReview=false;return false;}
+  const names=rows.length?rows.map(row=>escape(row.name)).join(', '):escape(city.name);
+  showModal(`<span class="news-kicker">MỘT THÀNH PHỐ MỖI TÀI KHOẢN</span><h2>${pending?'Tiếp tục yêu cầu tạo mới':'Xóa thành phố cũ để tạo mới?'}</h2><p>Thành phố sẽ thay thế: <strong>${names}</strong>.</p><p>${pending?'Có yêu cầu đang chờ đối soát. Thử lại dùng cùng biên nhận, không tạo thêm thành phố.':'Khi xác nhận, bản chơi và bản đám mây cũ sẽ được xóa, thay bằng một thành phố mới. Nếu hủy, mọi thứ được giữ nguyên.'}</p><p>Thành phố mới: <strong>${escape(pending?.name||next.name)}</strong>, ngân quỹ <strong>${money(pending?.state?.money??next.money)}</strong>. Một bản dự phòng phục hồi được giữ trên thiết bị; bản này không tạo thêm thành phố trên server.</p><div class="modal-actions"><button id="newCityCancel" class="action">Giữ thành phố cũ</button><button id="newCityConfirm" class="action danger">${pending?'Thử lại yêu cầu tạo mới':'Xóa cũ và tạo mới'}</button></div><p id="newCityError" class="form-error" role="alert" hidden></p>`);
+  return new Promise(resolve=>{
+    let settled=false;
+    const finish=value=>{if(!settled){settled=true;replacementReview=false;modal.removeEventListener('close',cancel);resolve(value);}};
+    const cancel=()=>finish(false);modal.addEventListener('close',cancel);
+    $('newCityCancel').onclick=()=>{finish(false);closeModal();};
+    $('newCityConfirm').onclick=async()=>{
+      const button=$('newCityConfirm'),errorEl=$('newCityError');button.disabled=true;errorEl.hidden=true;
+      try{
+        if(owner!==(user?.id||'guest')||epoch!==cityEpoch)throw new Error('Thành phố hoặc tài khoản đã đổi. Mở lại yêu cầu tạo mới.');
+        if(!await checkpoint())throw new Error(storageError||'Chưa giữ được bản dự phòng. Thử lại.');
+        libraryBusy=true;
+        if(user){
+          if(!pending)for(const ref of rows){const row=await loadCity(ref.id);if(Number(row.revision)!==Number(ref.revision))throw new Error('Bản đám mây vừa thay đổi. Hủy và mở lại yêu cầu tạo mới.');await backupStore.archive(owner,JSON.stringify({city:row.state,modifiedAt:Date.parse(row.updated_at),cloud:{id:row.id,revision:Number(row.revision)}}));}
+          await cityReplacement.replace(owner,{oldCities:rows,state:serialize(next)},async row=>{
+            if(owner!==user?.id||epoch!==cityEpoch)throw new Error('Tài khoản đã đổi. Đăng nhập lại để mở thành phố mới.');
+            replaceCity(validateSave(row.state),{id:row.id,revision:Number(row.revision)});
+          });
+        }else replaceCity(next);
+        finish(true);selectTool('inspect');closeModal();document.dispatchEvent(new Event('bc26:play'));toast('Đã xóa thành phố cũ và tạo thành phố mới.');
+      }catch(error){if(errorEl.isConnected){errorEl.hidden=false;errorEl.textContent=authMessage(error);}pending=cityReplacement.pending(owner);}
+      finally{libraryBusy=false;if(button.isConnected)button.disabled=false;}
+    };
+  });
 }
+function emptyStartReview(){void requestNewCity(createEmptyCity({world:city.world,name:city.name}));}
 async function financialMarket(){
  if(financeBusy||sync.busy||libraryBusy){toast('Hãy chờ thao tác đang chạy.');return;}
  showModal('<h2>Cổ phiếu & xổ số</h2><p>Đang đồng bộ sổ tiền…</p>');
@@ -433,9 +480,9 @@ function photoMode(){
  $('photoVideo').onclick=async()=>{const b=$('photoVideo');b.disabled=true;let stream;try{const source=renderer.mode==='3d'?$('world3d'):$('world');if(!source.captureStream||typeof MediaRecorder==='undefined')throw new Error('Trình duyệt chưa hỗ trợ quay cảnh game.');stream=source.captureStream(24);const mime=['video/webm;codecs=vp8','video/mp4'].find(t=>MediaRecorder.isTypeSupported(t)),recorder=new MediaRecorder(stream,{...(mime?{mimeType:mime}:{}),videoBitsPerSecond:1800000}),chunks=[];recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data);};const stopped=new Promise(resolve=>recorder.onstop=resolve);recorder.start();b.textContent='Đang quay 12 giây…';await new Promise(resolve=>setTimeout(resolve,12000));recorder.stop();await stopped;const blob=new Blob(chunks,{type:recorder.mimeType}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='build-city-26-'+city.clock.step+(recorder.mimeType.includes('mp4')?'.mp4':'.webm');link.click();setTimeout(()=>URL.revokeObjectURL(url),10000);}catch(error){toast(error.message);}finally{stream?.getTracks().forEach(t=>t.stop());b.disabled=false;b.textContent='Quay cảnh game · 12 giây';}};
  $('photoDownload').onclick=async()=>{const button=$('photoDownload');button.disabled=true;try{const blob=renderer.capturePNG?await renderer.capturePNG():await new Promise((resolve,reject)=>$('world').toBlob(b=>b?resolve(b):reject(new Error('Không chụp được ảnh.')),'image/png'));const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='build-city-26-'+city.clock.step+'.png';link.click();setTimeout(()=>URL.revokeObjectURL(url),10000);}catch(error){toast(error.message);}finally{button.disabled=false;}};
 }
-async function vietnamMap(){if(sync.busy||libraryBusy){toast('Hãy chờ thao tác đang chạy.');return;}let showVietnamChooser;try{({showVietnamChooser}=await import('./game/geography/chooser.js'));}catch{showModal('<h2>Chưa tải được bản đồ</h2><p>Kết nối có thể bị gián đoạn hoặc game vừa có phiên bản mới. Tiến trình thành phố được giữ lại.</p><button class="action primary full" id="reloadMapBuild">Lưu tiến trình & tải lại game</button>');$('reloadMapBuild').onclick=()=>{if(persist())location.reload();else toast('Chưa lưu được tiến trình. Hãy xuất bản lưu trước khi tải lại.');};return;}showVietnamChooser({showModal,closeModal,onError:toast,onStart:(pkg,manifest,name)=>{if(sync.busy||libraryBusy){toast('Hãy chờ thao tác đang chạy.');return false;}const next=createVietnamCity(pkg,manifest);next.name=name;if(!checkpoint()){toast('Chưa tạo được bản dự phòng. Hãy xuất JSON trước khi đổi thành phố.');return false;}replaceCity(next);document.dispatchEvent(new Event('bc26:play'));toast('Đã tạo thành phố trên địa hình '+pkg.region.provinceName+'.');return true;}});}
+async function vietnamMap(){if(sync.busy||libraryBusy){toast('Hãy chờ thao tác đang chạy.');return;}let showVietnamChooser;try{({showVietnamChooser}=await import('./game/geography/chooser.js'));}catch{showModal('<h2>Chưa tải được bản đồ</h2><p>Kết nối có thể bị gián đoạn hoặc game vừa có phiên bản mới. Tiến trình thành phố được giữ lại.</p><button class="action primary full" id="reloadMapBuild">Lưu tiến trình & tải lại game</button>');$('reloadMapBuild').onclick=()=>{if(persist())location.reload();else toast('Chưa lưu được tiến trình. Hãy xuất bản lưu trước khi tải lại.');};return;}showVietnamChooser({showModal,closeModal,onError:toast,onStart:async(pkg,manifest,name)=>{if(sync.busy||libraryBusy){toast('Hãy chờ thao tác đang chạy.');return false;}const next=createVietnamCity(pkg,manifest);next.name=name;return requestNewCity(next);}});}
 $('menuBtn').onclick=menu;
-$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{if(f.size>16_000_000)throw new Error('Bản nhập vượt giới hạn giải nén 16 MB.');const raw=JSON.parse(await f.text());const s=validateSave(raw.city||raw);if(sync.busy||libraryBusy)throw new Error('Hãy chờ thao tác đang chạy.');if(confirm('Mở bản lưu này? Thành phố hiện tại sẽ được thay bằng bản nhập.')){if(!checkpoint())return;replaceCity(s);closeModal();toast('Đã nhập thành phố. Bản nhập được lưu như một thành phố mới.');}}catch(error){toast(error.message);}finally{e.target.value='';}};
+$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{if(f.size>16_000_000)throw new Error('Bản nhập vượt giới hạn giải nén 16 MB.');const raw=JSON.parse(await f.text());const s=validateSave(raw.city||raw);if(sync.busy||libraryBusy)throw new Error('Hãy chờ thao tác đang chạy.');await requestNewCity(s);}catch(error){toast(error.message);}finally{e.target.value='';}};
 function guide(){showModal(`<span class="news-kicker">CẨM NANG THỊ TRƯỞNG</span><h2>Bắt đầu xây thành phố</h2><div class="guide-art-row">${['residential','smallPower','smallWater','smallSewage'].map(k=>`<div>${buildingPreview(k)}<small>${CATALOG[k].name}</small></div>`).join('')}</div><ol class="guide-list"><li><b>Nối đường:</b> mở rộng từ mạng đường nối cổng phía tây. Kéo để xây từng đoạn. Cầu qua sông tính theo diện tích mặt cầu và trụ, có dự toán riêng.</li><li><b>Phân khu:</b> chọn nhà ở, thương mại hoặc công nghiệp rồi tô ô cạnh đường. Phí cấp phép đất tách khỏi giá xây. Nhà 3D xuất hiện ngay khi đặt. Cần đường, điện, nước và nước thải để hoạt động; cư dân đến theo mô phỏng.</li><li><b>Cấp điện và nước:</b> trạm phải cạnh đường kết nối. Trạm có giới hạn công suất và bán kính; xem bằng lớp bản đồ hoặc chọn công trình.</li><li><b>Chăm sóc dân cư:</b> xây công viên, trường học, y tế, rác thải và dịch vụ. Giữ nhà xưởng xa khu dân cư.</li><li><b>Cân đối ngân sách:</b> thuế tạo thu nhập, mỗi công trình có phí vận hành. Hạnh phúc và việc làm ảnh hưởng tăng dân số.</li><li><b>Lưu:</b> bản local tự lưu mỗi 15 giây. Với tài khoản đã mở một thành phố đám mây, game đồng bộ mỗi 60 giây. Nếu có xung đột, bản mới hơn được giữ.</li></ol><p>Chuột: kéo để di chuyển ở chế độ Khám phá, chuột phải để di chuyển khi xây, cuộn để phóng to. Điện thoại: một ngón kéo, hai ngón thu phóng. Phím 1–8 chọn công cụ, Space tạm dừng, Esc thoát xây dựng.</p><button id="guideDone" class="action primary full">Đóng cẩm nang</button>`);$('guideDone').onclick=closeModal;}
 
 function authDialog(mode='login',notice='',draft=null){
@@ -472,7 +519,7 @@ function authDialog(mode='login',notice='',draft=null){
     e.preventDefault();const form=e.currentTarget,fields=new FormData(form),button=$('accountSubmit'),errorEl=$('accountError');button.disabled=true;button.textContent='Đang xử lý…';errorEl.hidden=true;
     try{
       if(sync.busy||libraryBusy)throw new Error('Hãy chờ thao tác lưu đang chạy.');
-      if(['register','login'].includes(mode)&&!checkpoint())throw new Error('Hãy xuất bản lưu JSON để giữ tiến trình trước khi đổi tài khoản.');
+      if(['register','login'].includes(mode)&&!await checkpoint())throw new Error(storageError||'Chưa giữ được tiến trình. Thử đăng nhập lại.');
       const username=String(fields.get('username')||''),payload={username};
       if(mode!=='claim')payload.password=String(fields.get('password')||'');
       if(mode==='register'){payload.cityName=String(fields.get('cityName')||'');payload.requestId=registrationRequest(username);payload.regionId=draft?.regionId||null;}
@@ -480,9 +527,9 @@ function authDialog(mode='login',notice='',draft=null){
       let token=null;if(['claim','codes'].includes(mode)){const {data}=await supabase.auth.getSession();token=data.session?.access_token;}
       const data=await accountRequest(mode,payload,token);
       form.elements.password&&(form.elements.password.value='');
-      if(mode==='recover'){await supabase.auth.signOut({scope:'local'});handleSession(null,'SIGNED_OUT');showRecoveryCode(data.recoveryCode,()=>authDialog('login','Đã đổi mật khẩu. Hãy đăng nhập lại bằng mật khẩu mới.'));return;}
+      if(mode==='recover'){await supabase.auth.signOut({scope:'local'});await handleSession(null,'SIGNED_OUT');showRecoveryCode(data.recoveryCode,()=>authDialog('login','Đã đổi mật khẩu. Hãy đăng nhập lại bằng mật khẩu mới.'));return;}
       if(['claim','codes'].includes(mode)){showRecoveryCode(data.recoveryCode,()=>library(),token);return;}
-      const session=await acceptAccountSession(supabase,data);handleSession(session,'SIGNED_IN');
+      const session=await acceptAccountSession(supabase,data);await handleSession(session,'SIGNED_IN');
       if(mode==='register'){
         try{const row=await loadCity(data.firstCity);replaceCity(validateSave(row.state),{id:row.id,revision:Number(row.revision)});}catch{toast('Tài khoản đã tạo. Thành phố đầu tiên đã lưu; hãy mở trong thư viện.');}
         if(!data.recoveryCode){try{sessionStorage.removeItem('bc26-register-request');}catch{}}
@@ -513,12 +560,13 @@ function legacyAuthDialog(mode='login',notice=''){
     e.preventDefault();const form=e.currentTarget,fields=new FormData(form),submit=$('authSubmit'),errorEl=$('authError');
     submit.disabled=true;submit.textContent='Đang xử lý…';errorEl.hidden=true;
     try{
+      if(mode==='login'&&!await checkpoint())throw new Error(storageError||'Chưa giữ được tiến trình. Thử lại.');
       const data=await authenticate(supabase,mode,{email:String(fields.get('email')||'').trim(),password:String(fields.get('password')||''),confirmPassword:fields.get('confirmPassword'),displayName:String(fields.get('displayName')||'').trim()},location.origin+'/');
       if(!form.isConnected)return;
       if(mode==='signup'&&!data.session){legacyAuthDialog('login','Đã gửi email xác nhận. Mở email và bấm liên kết để hoàn tất đăng ký.');return;}
       if(emailOnly){legacyAuthDialog('login',mode==='reset'?'Nếu email có tài khoản, bạn sẽ nhận liên kết đặt lại mật khẩu.':'Nếu tài khoản cần xác nhận, bạn sẽ nhận được email mới.');return;}
       if(mode==='recovery'){recoveryMode=false;$('accountBtn').textContent='Tài khoản';closeModal();toast('Đã đổi mật khẩu.');return;}
-      handleSession(data.session,'SIGNED_IN');document.dispatchEvent(new Event('bc26:play'));closeModal();toast(mode==='signup'?'Đã tạo tài khoản.':'Đăng nhập thành công.');void library();
+      await handleSession(data.session,'SIGNED_IN');document.dispatchEvent(new Event('bc26:play'));closeModal();toast(mode==='signup'?'Đã tạo tài khoản.':'Đăng nhập thành công.');void library();
     }catch(error){if(errorEl.isConnected){errorEl.textContent=authMessage(error);errorEl.hidden=false;}}
     finally{if(submit.isConnected){submit.disabled=false;submit.textContent=title;}}
   };
@@ -526,9 +574,11 @@ function legacyAuthDialog(mode='login',notice=''){
 
 async function cloudSave(forceNew=false,quiet=false){
   if(!user||!supabase||localCollision)return false;
+  if(replacementReview||checkpointBusy){if(!quiet)toast('Đang giữ bản dự phòng hoặc xác nhận thay thành phố.');return false;}
   if(missionBusy||missionPending()){if(!quiet)toast('Mở Nhiệm vụ để đối soát yêu cầu đang chờ.');return false;}
   if(financeBusy||financePending()){if(!quiet)toast('Đối soát giao dịch trong Cổ phiếu & xổ số trước khi lưu.');return false;}
-  if(forceNew&&!checkpoint())return false;
+  if(forceNew){if(!quiet)toast('Mỗi tài khoản chỉ có một thành phố. Dùng Thành phố mới để xác nhận thay thế.');return false;}
+  if(!sync.cloud&&!sync.pending){try{const rows=await listCities();if(rows.length){if(!quiet)toast('Tài khoản đã có thành phố. Mở bản đã lưu hoặc chọn Thành phố mới để thay thế.');return false;}}catch(error){if(!quiet)toast(authMessage(error));return false;}}
   if(sync.busy||libraryBusy){if(!quiet)toast('Đang xử lý thành phố. Hãy chờ một chút.');return false;}
   const result=await sync.save({forceNew});
   if(!result&&!quiet)toast(sync.conflict?'Bản lưu đã thay đổi trên thiết bị khác. Mở Tài khoản để xử lý.':sync.error?authMessage(sync.error):navigator.onLine?'Chưa đồng bộ. Tiến trình được giữ trên máy.':'Đang mất mạng. Bản lưu sẽ gửi lại khi có mạng.');
@@ -540,21 +590,21 @@ $('accountBtn').onclick=()=>recoveryMode?authDialog('recovery'):user?library():a
 async function library(){
   if(!user){authDialog();return;}
   const owner=user.id,epoch=cityEpoch;
-  showModal(`<span class="news-kicker">TÀI KHOẢN BUILD CITY 26</span><h2>Thành phố đã lưu</h2>${sync.conflict?'<div class="conflict-panel"><strong>Bản đám mây đã thay đổi</strong><p>Giữ tiến trình này bằng JSON hoặc lưu thành bản mới. Chọn Mở để tải bản mới từ máy chủ.</p><button id="conflictExport" class="action">Xuất JSON</button></div>':''}<p id="libraryStatus" role="status">Đang tải danh sách…</p><div id="cityList"></div><div class="modal-actions"><button id="librarySave" class="action primary">Lưu thành phố hiện tại</button><button id="libraryCopy" class="action">Lưu thành bản mới</button><button id="libraryNew" class="action">Thành phố mới</button><button id="libraryBackups" class="action">Bản dự phòng trên máy</button><button id="libraryRefresh" class="action">Tải lại danh sách</button></div><button id="accountCodes" class="action" hidden>Tạo mã dự phòng mới</button><button id="claimUsername" class="link-button" hidden>Đặt tên tài khoản cho tài khoản email cũ</button><button id="signoutBtn" class="link-button">Đăng xuất trên thiết bị này</button>`);
+  showModal(`<span class="news-kicker">TÀI KHOẢN BUILD CITY 26</span><h2>Thành phố đã lưu</h2>${sync.conflict?'<div class="conflict-panel"><strong>Bản đám mây đã thay đổi</strong><p>Tiến trình trên máy được giữ lại. Chọn Mở để tạo bản dự phòng và tải bản mới từ máy chủ. Bạn cũng có thể xuất bản lưu để tự giữ riêng.</p><button id="conflictExport" class="action">Xuất JSON</button></div>':''}<p id="libraryStatus" role="status">Đang tải danh sách…</p><div id="cityList"></div><div class="modal-actions"><button id="librarySave" class="action primary">Lưu thành phố hiện tại</button><button id="libraryNew" class="action">Thành phố mới</button><button id="libraryBackups" class="action">Bản dự phòng trên máy</button><button id="libraryRefresh" class="action">Tải lại danh sách</button></div><button id="accountCodes" class="action" hidden>Tạo mã dự phòng mới</button><button id="claimUsername" class="link-button" hidden>Đặt tên tài khoản cho tài khoản email cũ</button><button id="signoutBtn" class="link-button">Đăng xuất trên thiết bị này</button>`);
   const status=$('libraryStatus'),list=$('cityList');
   const active=()=>user?.id===owner&&cityEpoch===epoch&&status.isConnected&&modal.open;
   if($('conflictExport'))$('conflictExport').onclick=exportSave;
   $('librarySave').disabled=sync.conflict;
   const save=async(forceNew,button)=>{button.disabled=true;if(await cloudSave(forceNew)){toast('Đã lưu thành phố.');if(active())void library();}else if(button.isConnected)button.disabled=sync.conflict&&!forceNew;};
-  $('librarySave').onclick=e=>save(false,e.currentTarget);$('libraryCopy').onclick=e=>save(true,e.currentTarget);
+  $('librarySave').onclick=e=>save(false,e.currentTarget);
   $('libraryBackups').onclick=backups;$('libraryRefresh').onclick=library;
-  $('libraryNew').onclick=()=>{if(sync.busy||libraryBusy){toast('Hãy chờ thao tác đang chạy.');return;}if(confirm('Tạo thành phố mới? Tiến trình hiện tại sẽ được giữ trong bản dự phòng.')&&checkpoint()){replaceCity(createEmptyCity());closeModal();}};
+  $('libraryNew').onclick=()=>requestNewCity(createEmptyCity());
   $('signoutBtn').onclick=async e=>{
     if(sync.busy||libraryBusy){toast('Hãy chờ thao tác đang chạy.');return;}if(!persist()){toast('Hãy xuất JSON để giữ tiến trình trước khi đăng xuất.');return;}
     const button=e.currentTarget;button.disabled=true;
     const {error}=await supabase.auth.signOut({scope:'local'});
     if(error){toast(authMessage(error));if(button.isConnected)button.disabled=false;return;}
-    handleSession(null,'SIGNED_OUT');closeModal();toast('Đã đăng xuất. Bản lưu đám mây vẫn được giữ.');
+    await handleSession(null,'SIGNED_OUT');closeModal();toast('Đã đăng xuất. Bản lưu đám mây vẫn được giữ.');
   };
   try{
     const rows=await listCities();if(!active())return;
@@ -565,7 +615,7 @@ async function library(){
     list.querySelectorAll('[data-load]').forEach(button=>button.onclick=async()=>{
       if(sync.busy||libraryBusy){toast('Hãy chờ thao tác đang chạy.');return;}
       if(sync.dirty&&!confirm('Mở bản đám mây? Tiến trình hiện tại sẽ được giữ trong bản dự phòng.'))return;
-      if(!checkpoint())return;
+      if(!await checkpoint())return;
       libraryBusy=true;button.disabled=true;
       try{const row=await loadCity(button.dataset.load);if(!active())return;const restored=validateSave(row.state);replaceCity(restored,{id:row.id,revision:Number(row.revision)});closeModal();toast('Đã mở '+restored.name);}
       catch(error){if(active())toast(authMessage(error));}finally{libraryBusy=false;if(button.isConnected)button.disabled=false;}
@@ -574,7 +624,7 @@ async function library(){
       if(sync.busy||libraryBusy){toast('Hãy chờ thao tác đang chạy.');return;}
       if(!confirm('Xóa vĩnh viễn bản lưu đám mây này?'))return;
       const ref=rows.find(row=>row.id===button.dataset.delete);
-      if(sync.cloud?.id===ref.id&&!checkpoint())return;
+      if(sync.cloud?.id===ref.id&&!await checkpoint())return;
       libraryBusy=true;button.disabled=true;
       try{await deleteCity(ref.id,Number(ref.revision));if(!active())return;if(sync.cloud?.id===ref.id){sync.use(owner);persist();}libraryBusy=false;void library();}
       catch(error){if(active()){toast(authMessage(error));if(button.isConnected)button.disabled=false;}}finally{libraryBusy=false;}
@@ -583,14 +633,14 @@ async function library(){
 }
 
 let authOwner=null;
-function handleSession(session,event){
+async function handleSession(session,event){
   const next=session?.user||null;
   if(event==='PASSWORD_RECOVERY')recoveryMode=true;
   if(!next)recoveryMode=false;
   if(authOwner!==(next?.id||null)){
     const guestCity=!user&&next?city:null;persist();authOwner=next?.id||null;user=next;
     let saved=null;storageBlocked=false;
-    try{saved=loadLocal(next?.id||'guest');city=saved?.city||guestCity||createEmptyCity();if(saved?.migrated){try{archiveLocal(next?.id||'guest');}catch{storageBlocked=true;storageWarning=true;storageError='Đã mở bản cũ; bộ nhớ đầy, hãy xuất JSON và quản lý bản dự phòng trước khi lưu.';}}}catch{try{archiveLocal(next?.id||'guest');}catch{storageBlocked=true;}city=guestCity||createEmptyCity();storageWarning=true;}
+    try{saved=loadLocal(next?.id||'guest');city=saved?.city||guestCity||createEmptyCity();if(saved?.migrated){try{await backupStore.archiveLocal(next?.id||'guest');}catch{storageBlocked=true;storageWarning=true;storageError='Đã mở bản cũ; bộ nhớ đầy, hãy xuất JSON và quản lý bản dự phòng trước khi lưu.';}}}catch{try{await backupStore.archiveLocal(next?.id||'guest');}catch{storageBlocked=true;}city=guestCity||createEmptyCity();storageWarning=true;}
     restorePlayback();sync.use(next?.id||null,saved||{});accumulator=0;tracked=null;renderer.follow=null;localCollision=false;cityEpoch++;changeId++;selected=null;renderer.reset();update();
     // Close an old account's library immediately on a cross-tab auth change.
     if(modal.open&&$('libraryStatus')&&!recoveryMode)closeModal();
@@ -607,7 +657,7 @@ window.addEventListener('storage',event=>{if(event.key===localKey(user?.id||'gue
 
 function loop(ms){
   const dt=Math.max(0,(ms-lastMs)/1000);lastMs=ms;
-  if(!document.hidden&&document.body.dataset.screen!=='home'&&!modal.open&&!financeBusy&&!financePending()&&!missionBusy&&!missionPending()&&speed){
+  if(!document.hidden&&document.body.dataset.screen!=='home'&&!modal.open&&!financeBusy&&!financePending()&&!missionBusy&&!missionPending()&&!checkpointBusy&&!replacementReview&&speed){
     accumulator+=simulationDelta(dt,city.playback);
     const before=city.day,beforeLevel=cityLevel(city);
     let stop=false;const batch=consumeSteps(accumulator,()=>{const tickStarted=performance.now();stepSimulation(city);runtimeSample?.tick(performance.now()-tickStarted);if(watchDeparture&&city.citizens.find(c=>c.id===watchDeparture)?.journey){watchDeparture=null;observe=true;setSpeed(1);$('observeBtn').classList.add('active');stop=true;toast('Chuyến đi bắt đầu — đã chuyển sang Quan sát.');return false;}},120);accumulator=stop?0:batch.remaining;

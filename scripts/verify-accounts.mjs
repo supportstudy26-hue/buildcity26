@@ -36,7 +36,7 @@ try{
  const hidden=await b.from('cities').select('id').eq('id',regA.data.firstCity);assert.ifError(hidden.error);assert.deepEqual(hidden.data,[]);
  const privateRpc=await a.rpc('bc26_account_lookup',{p_username:usernameB});assert.ok(privateRpc.error);
  const own=await a.from('cities').select('id').eq('id',regA.data.firstCity);assert.ifError(own.error);assert.equal(own.data.length,1);
- const id=randomUUID(),req=randomUUID();let row=await save(a,id,0,'BC26 QA A',req);assert.equal(row.revision,1);assert.equal((await save(a,id,0,'BC26 QA A',req)).revision,1);
+ const id=regA.data.firstCity,initialRevision=Number((await a.from('cities').select('revision').eq('id',id).single()).data.revision),req=randomUUID();let row=await save(a,id,initialRevision,'BC26 QA A',req);assert.equal(row.revision,initialRevision+1);assert.equal((await save(a,id,initialRevision,'BC26 QA A',req)).revision,row.revision);
  const upd=await b.from('cities').update({name:'Không được sửa'}).eq('id',id).select('id');assert.ifError(upd.error);assert.deepEqual(upd.data,[]);
  const spoof=await b.from('cities').insert({id:randomUUID(),owner_id:sa.user.id,name:'Owner giả',state:payload});assert.ok(spoof.error);
  const crossSave=await b.rpc('save_city_v2',{p_city_id:id,p_name:'Không được lưu',p_state:payload,p_expected_revision:1,p_request_id:randomUUID()});assert.ok(crossSave.error);
@@ -45,11 +45,11 @@ try{
  stage='second device and conflict';
  const secondLogin=await api('login',{username:usernameA,password});assert.equal(secondLogin.status,200);await session(other,secondLogin.data);
  stage='second-device save revision';
- row=await save(a,id,1,'BC26 QA A cập nhật');assert.equal(row.revision,2);
+ const oldRevision=Number(row.revision);row=await save(a,id,oldRevision,'BC26 QA A cập nhật');assert.equal(row.revision,oldRevision+1);
  stage='second-device load state';
- const load=await other.from('cities').select('revision,state').eq('id',id).single();assert.ifError(load.error);assert.equal(load.data.revision,2);assert.deepEqual(load.data.state,payload);
+ const load=await other.from('cities').select('revision,state').eq('id',id).single();assert.ifError(load.error);assert.equal(load.data.revision,row.revision);assert.deepEqual(load.data.state,payload);
  stage='second-device stale conflict';
- const stale=await other.rpc('save_city_v2',{p_city_id:id,p_name:'Thiết bị cũ',p_state:payload,p_expected_revision:1,p_request_id:randomUUID()});console.log('QA: stale save SQL code',stale.error?.code||'none','transport timeout',/timeout|abort|fetch/i.test(stale.error?.message||''));assert.equal(stale.error?.code,'PT409');
+ const stale=await other.rpc('save_city_v2',{p_city_id:id,p_name:'Thiết bị cũ',p_state:payload,p_expected_revision:oldRevision,p_request_id:randomUUID()});console.log('QA: stale save SQL code',stale.error?.code||'none','transport timeout',/timeout|abort|fetch/i.test(stale.error?.message||''));assert.equal(stale.error?.code,'PT409');
  assert.equal((await api('recover',{username:usernameA,password:newPassword,code:'F'.repeat(48)})).status,401);
  stage='recover and revoke';
  const recovered=await api('recover',{username:usernameA,password:newPassword,code:regA.data.recoveryCode});assert.equal(recovered.status,200);assert.equal(recovered.data.recoveryCode.length,48);assert.notEqual(recovered.data.recoveryCode,regA.data.recoveryCode);
@@ -61,8 +61,8 @@ try{
  const fresh=await api('login',{username:usernameA,password:newPassword});assert.equal(fresh.status,200);await session(a,fresh.data);
  const rotated=await api('codes',{username:usernameA,password:newPassword},fresh.data.session.access_token);assert.equal(rotated.status,200);assert.notEqual(rotated.data.recoveryCode,recovered.data.recoveryCode);
  assert.equal((await api('ack',{},fresh.data.session.access_token)).status,200);
- const reopened=await a.from('cities').select('revision').eq('id',id).single();assert.ifError(reopened.error);assert.equal(reopened.data.revision,2);
- const deleted=await a.rpc('delete_city_v2',{p_city_id:id,p_expected_revision:2});assert.ifError(deleted.error);
+ const reopened=await a.from('cities').select('revision').eq('id',id).single();assert.ifError(reopened.error);assert.equal(reopened.data.revision,row.revision);
+ const deleted=await a.rpc('delete_city_v2',{p_city_id:id,p_expected_revision:Number(row.revision)});assert.ifError(deleted.error);
  await a.auth.signOut({scope:'local'});await b.auth.signOut({scope:'local'});
  console.log('PASS: API username đăng ký/retry/login/recovery/rotate/logout; Supabase JWT A/B, profile/RLS, owner spoof, hai thiết bị, revision conflict và xóa bản QA.');
  console.log('Hai tài khoản QA riêng còn trong Auth:',usernameA,usernameB,'; không lưu/in mật khẩu, token hoặc mã dự phòng.');
