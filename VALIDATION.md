@@ -4,7 +4,7 @@ Full suite 217/217 PASS, không skip, 222,36 s; sau sửa xung đột review th�
 
 Browser: kiểm các ô ngân sách/nhiệm vụ/cư dân/inspector/cài đặt/catalogue/thị trường/bản đồ. Kết quả đo màu ở `docs/ui-contrast-audit-20261011.json`; disabled không tính. Ngân sách game thật 390×844 không tràn ngang; không điện thoại phần cứng. Tình huống localStorage plaintext bị chặn: tháo dỡ, backup, login và mở cloud PASS; thay thành phố hủy giữ cũ, xác nhận chỉ còn một, cũ còn backup. Không dùng ảnh minh họa làm bằng chứng game.
 
-Build cuối PASS **12,26 s**;  Không có lint/typecheck script; cảnh báo chunk Three/building-designs >500 kB còn có. Các phần sau là lịch sử kiểm chứng, trạng thái mới nhất lấy `docs/implementation-status.md`.
+Build cuối PASS **12,26 s**.  Không có lint/typecheck script; cảnh báo chunk Three/building-designs >500 kB còn có. GitHub/Vercel code `bf09f19` completed/success; browser domain chính kiểm ngân sách 24 mẫu chữ, min 5,53:1, giữ bản legacy 176 dân. Ảnh production trong docs. Các phần sau là lịch sử kiểm chứng, trạng thái mới nhất lấy `docs/implementation-status.md`.
 
 # Kiểm chứng — 08/10/2026
 
