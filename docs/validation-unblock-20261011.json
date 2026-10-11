@@ -124,5 +124,21 @@
     "layerSelectionCloses": true,
     "layerXCloses": true,
     "layerResetClosesAndRestoresNormal": true
+  },
+  "deployment": {
+    "codeCommit": "fd9413f74e47bb019905fb7644b02242d64f9521",
+    "push": "PASS",
+    "vercelDeployment": "836qe8J6Vcf8x1fB9zPv7QeKuxbi",
+    "status": "Ready",
+    "buildSeconds": 15,
+    "sourceCommitMatches": true,
+    "domain": "https://buildcity26.vercel.app/",
+    "productionObservations": [
+      "game opens",
+      "small dd/mm/yyyy label",
+      "legacy 176 population and 12 billion dong save retained",
+      "real compound mission progress readings"
+    ],
+    "mobileScreenshotsAre": "Local actual game iframe, same deployed code; not physical phone screenshots"
   }
 }
