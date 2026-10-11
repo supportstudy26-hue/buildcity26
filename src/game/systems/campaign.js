@@ -1,6 +1,6 @@
 import {MISSIONS,MISSION_CATALOGUE_VERSION,CAP_XP,MAX_CITY_LEVEL,levelFromXp,xpForLevel,LEVEL_GRANT_BC} from '../../config/progression.js';
 import {legacyLevelFromXp,legacyXpForLevel} from '../../config/legacy-progression.js';
-import {metricKey,leaves,metricContext,snapshotMetric,metricSupport,metricLabel,KIND_TOOLS,kindMatches} from './mission-metrics.js';
+import {metricKey,leaves,metricContext,metricNeedsContext,snapshotMetric,metricSupport,metricLabel,KIND_TOOLS,kindMatches} from './mission-metrics.js';
 import {recordCash} from './economy.js';
 export function migratedLegacyXp(xp){const l=Math.min(100,legacyLevelFromXp(xp));if(l===100)return CAP_XP;return xpForLevel(l)+Math.floor((xp-legacyXpForLevel(l))/(legacyXpForLevel(l+1)-legacyXpForLevel(l))*(xpForLevel(l+1)-xpForLevel(l)));}
 export function createCampaign(){return {version:MISSION_CATALOGUE_VERSION,claims:[],levelGrants:[],baselines:{},holds:{},earned:{},counters:{},lastEvent:0,lastTick:null,windows:{},tripBins:[],waste:{at:0,generated:0,collected:0}};}
@@ -9,6 +9,8 @@ export function progressionXp(s){return Math.min(CAP_XP,migratedLegacyXp(s.progr
 export function lifetimeXp(s){return (s.progression?.xp||0)+(s.progression?.campaign?.claims||[]).reduce((n,r)=>n+MISSIONS.find(m=>m.id===r.id).rewards.xp,0);}
 export function cityLevel(s){return levelFromXp(progressionXp(s));}
 const counterNodes=[...new Map(MISSIONS.flatMap(m=>leaves(m.condition)).filter(n=>n.scope==='counter_since_stage_activation'&&metricSupport(n)).map(n=>[metricKey(n),n])).values()];
+const windowNodes=new Map(MISSIONS.flatMap(m=>leaves(m.condition)).filter(n=>n.scope==='window'&&metricSupport(n)).map(n=>[metricKey(n),n]));
+const stageMissions=new Map(MISSIONS.map(m=>[m.campaignStage,MISSIONS.filter(n=>n.campaignStage===m.campaignStage)]));
 export function recordMissionEvent(s,e){
  if(!s.progression||!Number.isInteger(e.sequence)||e.sequence<=0)return;
  const c=campaign(s);if(e.sequence<=c.lastEvent)return;c.lastEvent=e.sequence;
@@ -23,7 +25,7 @@ export function recordMissionEvent(s,e){
  }
  if(e.type==='waste-collected'&&e.amount>0&&e.applied===true&&s.tiles[e.tile]?.connected){const key=metricKey({metric:'completed_jobs',filters:{service:'waste_collection'}});c.counters[key]=(c.counters[key]||0)+1;}
 }
-export function readMetric(s,n,stage,ctx=metricContext(s)){
+export function readMetric(s,n,stage,ctx){
  const c=campaign(s),key=metricKey(n);
  if(!metricSupport(n)&&!(n.metric==='completed_jobs'&&n.filters?.service==='waste_collection')&&n.metric!=='waste_collected_pct')return {valid:false,reason:`Chưa triển khai: ${metricLabel(n)}`};
  if(n.scope==='counter_since_stage_activation'){
@@ -52,8 +54,7 @@ export function missionViews(s){
 }
 function sampleWindows(s,c){
  const at=s.clock.seconds;
- const nodes=new Map(MISSIONS.flatMap(m=>leaves(m.condition)).filter(n=>n.scope==='window'&&metricSupport(n)).map(n=>[metricKey(n),n]));
- for(const [key,n] of nodes){let value;
+ for(const [key,n] of windowNodes){let value;
   const bins=c.tripBins.filter(b=>b.at>at-600&&b.at<=at),count=bins.reduce((n,b)=>n+b.count,0),work=bins.reduce((n,b)=>n+b.workCount,0);
   if(n.metric==='commute_minutes'&&work)value=bins.reduce((n,b)=>n+b.workSeconds,0)/work/60;
   if(n.metric==='public_transit_share_pct'&&count)value=bins.reduce((n,b)=>n+b.transit,0)/count*100;
@@ -72,13 +73,13 @@ export function updateCampaign(s,force=false){
  // Sampling follows ticks, never UI rendering. Hold checks run every simulation
  // second. Baselines are written once for the whole A/B/C group.
  if(now%10===0)sampleWindows(s,c);
- const ids=new Set(c.claims.map(r=>r.id)),lv=cityLevel(s),ctx=metricContext(s),previous=c.lastTick;c.lastTick=now;
+ const ids=new Set(c.claims.map(r=>r.id)),lv=cityLevel(s),previous=c.lastTick;let ctx;c.lastTick=now;
  for(const m of MISSIONS){
   if(ids.has(m.id)||lv<m.minCityLevel)continue;
-  const stageMissions=MISSIONS.slice((m.campaignStage-1)*3,m.campaignStage*3),opening=stageMissions[0].prerequisiteClaims.every(id=>ids.has(id));
+  const opening=stageMissions.get(m.campaignStage)[0].prerequisiteClaims.every(id=>ids.has(id));
   if(opening&&!c.baselines[m.counterBaselineKey])c.baselines[m.counterBaselineKey]={at:now,counters:{...c.counters}};
   if(!m.prerequisiteClaims.every(id=>ids.has(id))||c.earned[m.id])continue;
-  const condition=evaluateCondition(m.condition,n=>readMetric(s,n,m.counterBaselineKey,ctx));
+  const condition=evaluateCondition(m.condition,n=>readMetric(s,n,m.counterBaselineKey,metricNeedsContext(n)?ctx??=metricContext(s):undefined));
   if(!condition.ok){delete c.holds[m.id];continue;}
   const prior=c.holds[m.id],delta=prior&&previous===now-1?1:0;
   const held=Math.min(m.holdGameSeconds,(prior?.held||0)+delta);c.holds[m.id]={held,last:now};

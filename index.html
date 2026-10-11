@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#11242c"><meta name="description" content="Build City 26 — tự xây dựng và quản lý thành phố của bạn.">
   <title>Build City 26 · Thành phố của bạn</title>
   <link rel="icon" type="image/svg+xml" href="/brand.svg">
@@ -48,7 +48,7 @@
   </aside>
 
   <div class="map-controls"><button id="layersBtn" class="map-btn" title="Lớp thông tin"><i data-icon="layers"></i><span>Lớp bản đồ</span></button><button id="zoomIn" class="map-btn" title="Phóng to" aria-label="Phóng to" data-icon="plus"></button><button id="zoomOut" class="map-btn" title="Thu nhỏ" aria-label="Thu nhỏ" data-icon="minus"></button><button id="centerBtn" class="map-btn" title="Về trung tâm" aria-label="Về trung tâm">⌖</button><button id="cameraView" class="map-btn" title="Nhìn từ trên xuống">▱<span>Nhìn trên</span></button><button id="cameraRotate" class="map-btn" title="Kéo để xoay camera">↻<span>Xoay</span></button></div>
-  <div id="layersPanel" class="panel floating" hidden><div class="panel-title">LỚP BẢN ĐỒ</div><div id="layerOptions"></div></div>
+  <div id="layersPanel" class="panel floating" role="dialog" aria-label="Lớp bản đồ" hidden><div class="panel-title">LỚP BẢN ĐỒ<button id="layersClose" type="button" class="text-btn" aria-label="Đóng lớp bản đồ">×</button></div><div id="layerOptions"></div><button id="layersReset" type="button" class="action full">Tắt lớp màu · về tự nhiên</button></div>
   <div class="compass"><span>N</span><i>◇</i></div>
   <div class="minimap panel"><canvas id="mini" width="148" height="100" aria-label="Bản đồ thu nhỏ"></canvas><span id="mapSizeText">64 × 64 · BÌNH MINH</span></div>
   <div class="map-hint" id="mapHint">Kéo bằng chuột phải để di chuyển · Cuộn để thu phóng</div>

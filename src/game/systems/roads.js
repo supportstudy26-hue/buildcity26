@@ -2,6 +2,9 @@ import {roadProfile} from '../../config/road-profiles.js';
 import {roadNeighbors,roadForAccess} from './road-network.js';
 import {jobsCapacity} from '../../config/building-economy.js';
 import { SIZE, index, distance, neighbors } from './world.js';
+// Paths belong to one city and one analyzed graph. Bound the cache and copy
+// returned arrays so journey consumers cannot corrupt a later route request.
+const routeCaches=new WeakMap();
 export function analyzeTraffic(s){
   const homes=[],work=[];s.tiles.forEach((t,i)=>{t.trafficLoad=0;t.trafficCapacity=roadProfile(t)?.capacity||0;if(t.kind==='residential'&&t.active&&t.residents)homes.push(i);if(['commercial','industrial'].includes(t.kind)&&t.active)work.push({i,remaining:jobsCapacity(t)});});
   const trips=[];
@@ -38,9 +41,14 @@ export function busRoute(s,stops){
 }
 export function route(s,from,to,mode='car'){
   if(!s.network)return []; // Rebuilt by core analyze before route requests.
+  let cache=routeCaches.get(s);
+  if(!cache||cache.network!==s.network||cache.version!==s.graphVersion){cache={network:s.network,version:s.graphVersion,paths:new Map()};routeCaches.set(s,cache);}
+  const key=`${mode}:${from}:${to}`;
+  if(cache.paths.has(key))return cache.paths.get(key).slice();
+  const remember=path=>{if(cache.paths.size>=512)cache.paths.delete(cache.paths.keys().next().value);cache.paths.set(key,path);return path.slice();};
   const start=roadForAccess(s,from,mode), end=roadForAccess(s,to,mode);
-  if(start===undefined||end===undefined)return [];
+  if(start===undefined||end===undefined)return remember([]);
   const q=[start], prev=new Map([[start,null]]);
   for(let p=0;p<q.length&&!prev.has(end);p++)for(const n of roadNeighbors(s,q[p],mode))if(!prev.has(n)){prev.set(n,q[p]);q.push(n);}
-  if(!prev.has(end))return [];const path=[];for(let i=end;i!==null;i=prev.get(i))path.push(i);return path.reverse();
+  if(!prev.has(end))return remember([]);const path=[];for(let i=end;i!==null;i=prev.get(i))path.push(i);return remember(path.reverse());
 }

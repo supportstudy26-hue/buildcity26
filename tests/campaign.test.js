@@ -3,7 +3,7 @@ import {MISSIONS,LEVELS,CAP_XP,levelFromXp,xpForLevel} from '../src/config/progr
 import {LEGACY_MISSIONS,legacyXpForLevel,legacyLevelFromXp} from '../src/config/legacy-progression.js';
 import {createCity,createEmptyCity,serialize,validateSave,stepSimulation,executeCommand,index} from '../src/game/core.js';
 import {campaign,progressionXp,cityLevel,migratedLegacyXp,evaluateCondition,updateCampaign,missionViews,applyVerifiedClaim,recordMissionEvent} from '../src/game/systems/campaign.js';
-import {metricKey} from '../src/game/systems/mission-metrics.js';
+import {metricKey,leaves} from '../src/game/systems/mission-metrics.js';
 import {verifyMissionCheckpoint} from '../server/missions.js';
 import {encodeCity,decodeCity,cityBytes} from '../src/services/city-codec.js';
 import {benchmarkCity} from '../src/benchmark/scenario.js';
@@ -34,10 +34,15 @@ test('missing, NaN, stale windows and empty groups never satisfy <=; ANY needs o
 });
 test('first road mission is real connected geometry; claims are explicit and level money cannot double-pay',()=>{
  const s=createEmptyCity();for(let x=0;x<4;x++)assert.ok(cmd(s,'place',{x,y:18,kind:'road'}).ok);refresh(s);
- const m=missionViews(s).find(m=>m.id==='bc26-main-001-b');assert.equal(m.ready,true);assert.equal(m.condition.children[0].value,80);const cash=s.money;
+ const m=missionViews(s).find(m=>m.id==='bc26-main-001-b');assert.equal(m.ready,true);assert.equal(m.condition.children[0].value,80);assert.equal(m.conditions[0].value,80);assert.ok(m.conditions.every(n=>n.type==='metric'));const cash=s.money;
  assert.equal(applyVerifiedClaim(s,m.id,1),true);assert.equal(s.money-cash,7650);assert.equal(applyVerifiedClaim(s,m.id,1),false);assert.equal(cashBalance(s),s.money);assert.equal(progressionXp(s),60);assert.equal(missionViews(s).find(m=>m.id==='bc26-main-001-c').locked,true);
  assert.deepEqual(serialize(validateSave(serialize(s))),serialize(s));
  assert.throws(()=>applyVerifiedClaim(s,'bc26-main-002-a',1),/bằng chứng/);
+});
+test('nested ALL/ANY objectives retain individual readings and missing-provider explanations',()=>{
+ const tree={all:[{metric:'population',scope:'snapshot',operator:'gte',target:100},{any:[{metric:'school_access_pct',scope:'snapshot',operator:'gte',target:50},{metric:'debt',scope:'snapshot',operator:'lte',target:0}]}]};
+ const evaluated=evaluateCondition(tree,n=>n.metric==='school_access_pct'?{valid:false,reason:'Chưa có chỗ học'}:{valid:true,value:n.metric==='population'?25:0});
+ const readings=leaves(evaluated);assert.equal(readings.length,3);assert.equal(readings[0].value,25);assert.equal(readings[1].reason,'Chưa có chỗ học');assert.equal(readings[2].value,0);assert.equal(evaluated.ok,false);assert.equal(leaves(tree).length,3);assert.deepEqual(leaves(null),[]);
 });
 test('shared baseline survives load; real trip events count once and exclude events before opening',()=>{
  const s=createCity(),c=campaign(s),person=s.citizens[0],n={metric:'passenger_trips',filters:{mode:'walk'}};const key=metricKey(n);

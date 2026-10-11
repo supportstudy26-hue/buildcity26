@@ -11,9 +11,9 @@ export function arrivalReady(t){return t.kind==='residential'&&t.residents<resid
 export function populationStatus(s){
  const homes=s.tiles.filter(t=>t.kind==='residential'),open=homes.filter(t=>t.residents<residentCapacity(t)),ready=open.filter(arrivalReady);
  if(!homes.length)return {label:'Đặt nhà để đón cư dân',conditions:[],ready:0};
- if(ready.length){const remaining=Math.min(...ready.map(t=>Math.max(1,60-(t.development?.arrivals||0))));return {label:s.playback?.paused?'Đủ điều kiện · đang tạm dừng':'Đón dân · '+remaining+' giây game',conditions:arrivalConditions(ready[0]),ready:ready.length};}
+ if(ready.length){const remaining=Math.min(...ready.map(t=>Math.max(1,60-(t.development?.arrivals||0))));return {label:s.playback?.paused?'Đủ điều kiện · đang tạm dừng':'Đón dân · '+remaining+' giây game',tile:s.tiles.indexOf(ready[0]),conditions:arrivalConditions(ready[0]),ready:ready.length};}
  if(!open.length)return {label:'Nhà đã đầy · xây thêm nhà',conditions:[],ready:0};
  const best=open.reduce((a,b)=>arrivalConditions(a).filter(c=>!c.ok).length<=arrivalConditions(b).filter(c=>!c.ok).length?a:b);
  const conditions=arrivalConditions(best),missing=conditions.find(c=>!c.ok);
- return {label:'Chờ dân: '+missing.short,conditions,ready:0};
+ return {label:'Chờ dân: '+missing.short,tile:s.tiles.indexOf(best),conditions,ready:0};
 }

@@ -1,0 +1,128 @@
+{
+  "generatedAt": "2026-10-11T02:06:15.047Z",
+  "checks": [
+    {
+      "name": "npm test (all current suites, before final lazy-context/cache regression)",
+      "passed": true,
+      "counts": {
+        "tests": 208,
+        "pass": 208,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "scope": "Checks from actual execution logs; not a playthrough certification of each of the 300 missions.",
+      "log": "../../work/unblock-full-tests-20261011.log",
+      "sha256": "32defb3ee6e4a883e1036b2bab050514356b13294c91bc72a83a04fe2c6c8a3b",
+      "completedAt": "2026-10-11T02:02:13.816Z"
+    },
+    {
+      "name": "Final foundation/campaign/road regressions",
+      "passed": true,
+      "counts": {
+        "tests": 25,
+        "pass": 25,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "scope": "Checks from actual execution logs; not a playthrough certification of each of the 300 missions.",
+      "log": "../../work/unblock-simulation-tests-20261011.log",
+      "sha256": "6c5d227555ca53df4c263dd6418cf5cba3a1b7d953e2d66cc52e78403a4f6122",
+      "completedAt": "2026-10-11T02:04:23.261Z"
+    },
+    {
+      "name": "Resident arrivals, HUD and compound mission readings",
+      "passed": true,
+      "counts": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "scope": "Checks from actual execution logs; not a playthrough certification of each of the 300 missions.",
+      "log": "../../work/ui-unblock-tests-20261011.log",
+      "sha256": "6d0bc710fe71e316f42f738a2f01d88efde01841838096f70da10b472353c146",
+      "completedAt": "2026-10-11T01:48:40.434Z"
+    }
+  ],
+  "build": {
+    "status": "PASS",
+    "elapsedSeconds": 5.7,
+    "log": "../../work/mobile-unblock-build-20261011.log",
+    "sha256": "7c0fba6ddb05e32f9e8d5830ffb78d99f4847e334bae63350624c93019b47c08",
+    "warnings": "Two chunks exceed 500 kB"
+  },
+  "testFiles": [
+    "tests/account-database.test.js",
+    "tests/account-server.test.js",
+    "tests/actor-budget.test.js",
+    "tests/archipelagos.test.js",
+    "tests/auth.test.js",
+    "tests/aviation.test.js",
+    "tests/benchmark.test.js",
+    "tests/building-art.test.js",
+    "tests/building-designs.test.js",
+    "tests/bus-operations.test.js",
+    "tests/campaign-database.test.js",
+    "tests/campaign.test.js",
+    "tests/city-focus.test.js",
+    "tests/city-upgrade.test.js",
+    "tests/cloud-sync.test.js",
+    "tests/database.test.js",
+    "tests/development-upgrades.test.js",
+    "tests/economy-services.test.js",
+    "tests/expanded-city.test.js",
+    "tests/finance-queue.test.js",
+    "tests/financial-server.test.js",
+    "tests/foundation.test.js",
+    "tests/game.test.js",
+    "tests/geography-loading.test.js",
+    "tests/geography.test.js",
+    "tests/hud-snapshot.test.js",
+    "tests/local-storage.test.js",
+    "tests/mission-audit.test.js",
+    "tests/mobility-art.test.js",
+    "tests/national-map.test.js",
+    "tests/offline-worker.test.js",
+    "tests/placement.test.js",
+    "tests/progression.test.js",
+    "tests/rail.test.js",
+    "tests/render-quality.test.js",
+    "tests/resident-arrivals.test.js",
+    "tests/roads-network.test.js",
+    "tests/terrain-render.test.js",
+    "tests/time-scale.test.js"
+  ],
+  "live": {
+    "base": "https://buildcity26.vercel.app",
+    "verifiedCommit": "ea355d537abfb8dbc0c7b2c9fe22503f5f160f0c",
+    "accounts": "PASS: registration/login/recovery/revoke, owner/RLS A/B, two-device save and conflict PT409; own QA accounts only.",
+    "missions": {
+      "result": "PASS",
+      "claimOnce": true,
+      "copiedSaveCannotReclaim": true,
+      "crossOwnerCopyRejected": true,
+      "rlsTwoAccounts": true,
+      "forgedClaimRejected": true,
+      "population": 5000,
+      "rawBytes": 7268052,
+      "cloudBytes": 632627
+    },
+    "limitations": "Live checks apply to ea355d5. New UI/performance release still requires deployment verification."
+  },
+  "responsive": {
+    "method": "Actual game in resized browser iframe, not physical phones",
+    "proof": "docs/hud-unblock-responsive-20261011.json",
+    "viewportCount": 8,
+    "panelOverlaps": 0,
+    "panelsOutsideViewport": 0,
+    "layerSelectionCloses": true,
+    "layerXCloses": true,
+    "layerResetClosesAndRestoresNormal": true
+  }
+}

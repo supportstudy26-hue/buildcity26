@@ -1,0 +1,728 @@
+{
+  "date": "2026-10-11",
+  "method": "actual game in resized iframe, not physical phones",
+  "sizes": [
+    {
+      "viewport": [
+        320,
+        568
+      ],
+      "boxes": [
+        {
+          "name": "map-controls",
+          "rect": {
+            "bottom": 452,
+            "height": 140,
+            "left": 216,
+            "right": 308,
+            "top": 312,
+            "width": 92,
+            "x": 216,
+            "y": 312
+          }
+        },
+        {
+          "name": "bc26-top",
+          "rect": {
+            "bottom": 170,
+            "height": 158,
+            "left": 12,
+            "right": 308,
+            "top": 12,
+            "width": 296,
+            "x": 12,
+            "y": 12
+          }
+        },
+        {
+          "name": "bc26-right-tools bc26-panel",
+          "rect": {
+            "bottom": 226,
+            "height": 54,
+            "left": 66,
+            "right": 308,
+            "top": 172,
+            "width": 242,
+            "x": 66,
+            "y": 172
+          }
+        },
+        {
+          "name": "bc26-corner-date",
+          "rect": {
+            "bottom": 561,
+            "height": 22,
+            "left": 12,
+            "right": 83.65625,
+            "top": 539,
+            "width": 71.65625,
+            "x": 12,
+            "y": 539
+          }
+        },
+        {
+          "name": "bc26-bottom bc26-panel",
+          "rect": {
+            "bottom": 534,
+            "height": 66,
+            "left": 12,
+            "right": 308,
+            "top": 468,
+            "width": 296,
+            "x": 12,
+            "y": 468
+          }
+        }
+      ],
+      "overlaps": [],
+      "outside": []
+    },
+    {
+      "viewport": [
+        360,
+        640
+      ],
+      "boxes": [
+        {
+          "name": "map-controls",
+          "rect": {
+            "bottom": 524,
+            "height": 140,
+            "left": 256,
+            "right": 348,
+            "top": 384,
+            "width": 92,
+            "x": 256,
+            "y": 384
+          }
+        },
+        {
+          "name": "bc26-top",
+          "rect": {
+            "bottom": 170,
+            "height": 158,
+            "left": 12,
+            "right": 348,
+            "top": 12,
+            "width": 336,
+            "x": 12,
+            "y": 12
+          }
+        },
+        {
+          "name": "bc26-right-tools bc26-panel",
+          "rect": {
+            "bottom": 226,
+            "height": 54,
+            "left": 106,
+            "right": 348,
+            "top": 172,
+            "width": 242,
+            "x": 106,
+            "y": 172
+          }
+        },
+        {
+          "name": "bc26-corner-date",
+          "rect": {
+            "bottom": 633,
+            "height": 22,
+            "left": 12,
+            "right": 83.65625,
+            "top": 611,
+            "width": 71.65625,
+            "x": 12,
+            "y": 611
+          }
+        },
+        {
+          "name": "bc26-bottom bc26-panel",
+          "rect": {
+            "bottom": 606,
+            "height": 66,
+            "left": 12,
+            "right": 348,
+            "top": 540,
+            "width": 336,
+            "x": 12,
+            "y": 540
+          }
+        }
+      ],
+      "overlaps": [],
+      "outside": []
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "boxes": [
+        {
+          "name": "map-controls",
+          "rect": {
+            "bottom": 728,
+            "height": 140,
+            "left": 286,
+            "right": 378,
+            "top": 588,
+            "width": 92,
+            "x": 286,
+            "y": 588
+          }
+        },
+        {
+          "name": "bc26-top",
+          "rect": {
+            "bottom": 170,
+            "height": 158,
+            "left": 12,
+            "right": 378,
+            "top": 12,
+            "width": 366,
+            "x": 12,
+            "y": 12
+          }
+        },
+        {
+          "name": "bc26-right-tools bc26-panel",
+          "rect": {
+            "bottom": 226,
+            "height": 54,
+            "left": 136,
+            "right": 378,
+            "top": 172,
+            "width": 242,
+            "x": 136,
+            "y": 172
+          }
+        },
+        {
+          "name": "bc26-corner-date",
+          "rect": {
+            "bottom": 837,
+            "height": 22,
+            "left": 12,
+            "right": 83.65625,
+            "top": 815,
+            "width": 71.65625,
+            "x": 12,
+            "y": 815
+          }
+        },
+        {
+          "name": "bc26-bottom bc26-panel",
+          "rect": {
+            "bottom": 810,
+            "height": 66,
+            "left": 12,
+            "right": 378,
+            "top": 744,
+            "width": 366,
+            "x": 12,
+            "y": 744
+          }
+        }
+      ],
+      "overlaps": [],
+      "outside": []
+    },
+    {
+      "viewport": [
+        480,
+        854
+      ],
+      "boxes": [
+        {
+          "name": "map-controls",
+          "rect": {
+            "bottom": 738,
+            "height": 140,
+            "left": 376,
+            "right": 468,
+            "top": 598,
+            "width": 92,
+            "x": 376,
+            "y": 598
+          }
+        },
+        {
+          "name": "bc26-top",
+          "rect": {
+            "bottom": 170,
+            "height": 158,
+            "left": 12,
+            "right": 468,
+            "top": 12,
+            "width": 456,
+            "x": 12,
+            "y": 12
+          }
+        },
+        {
+          "name": "bc26-right-tools bc26-panel",
+          "rect": {
+            "bottom": 226,
+            "height": 54,
+            "left": 226,
+            "right": 468,
+            "top": 172,
+            "width": 242,
+            "x": 226,
+            "y": 172
+          }
+        },
+        {
+          "name": "bc26-corner-date",
+          "rect": {
+            "bottom": 847,
+            "height": 22,
+            "left": 12,
+            "right": 83.65625,
+            "top": 825,
+            "width": 71.65625,
+            "x": 12,
+            "y": 825
+          }
+        },
+        {
+          "name": "bc26-bottom bc26-panel",
+          "rect": {
+            "bottom": 820,
+            "height": 66,
+            "left": 12,
+            "right": 468,
+            "top": 754,
+            "width": 456,
+            "x": 12,
+            "y": 754
+          }
+        }
+      ],
+      "overlaps": [],
+      "outside": []
+    },
+    {
+      "viewport": [
+        768,
+        1024
+      ],
+      "boxes": [
+        {
+          "name": "map-controls",
+          "rect": {
+            "bottom": 898,
+            "height": 92,
+            "left": 604,
+            "right": 756,
+            "top": 806,
+            "width": 152,
+            "x": 604,
+            "y": 806
+          }
+        },
+        {
+          "name": "minimap panel",
+          "rect": {
+            "bottom": 876,
+            "height": 113,
+            "left": 12,
+            "right": 124,
+            "top": 763,
+            "width": 112,
+            "x": 12,
+            "y": 763
+          }
+        },
+        {
+          "name": "bc26-top",
+          "rect": {
+            "bottom": 134.78125,
+            "height": 122.78125,
+            "left": 12,
+            "right": 756,
+            "top": 12,
+            "width": 744,
+            "x": 12,
+            "y": 12
+          }
+        },
+        {
+          "name": "bc26-side",
+          "rect": {
+            "bottom": 481.0859375,
+            "height": 343.0859375,
+            "left": 12,
+            "right": 242,
+            "top": 138,
+            "width": 230,
+            "x": 12,
+            "y": 138
+          }
+        },
+        {
+          "name": "bc26-right-tools bc26-panel",
+          "rect": {
+            "bottom": 382,
+            "height": 244,
+            "left": 700,
+            "right": 756,
+            "top": 138,
+            "width": 56,
+            "x": 700,
+            "y": 138
+          }
+        },
+        {
+          "name": "bc26-corner-date",
+          "rect": {
+            "bottom": 1012,
+            "height": 26,
+            "left": 20,
+            "right": 105.78125,
+            "top": 986,
+            "width": 85.78125,
+            "x": 20,
+            "y": 986
+          }
+        },
+        {
+          "name": "bc26-tip",
+          "rect": {
+            "bottom": 898,
+            "height": 31.3984375,
+            "left": 138,
+            "right": 256.7109375,
+            "top": 866.6015625,
+            "width": 118.7109375,
+            "x": 138,
+            "y": 866.6015625
+          }
+        },
+        {
+          "name": "bc26-bottom bc26-panel",
+          "rect": {
+            "bottom": 982,
+            "height": 85,
+            "left": 33.74609375,
+            "right": 734.25390625,
+            "top": 897,
+            "width": 700.5078125,
+            "x": 33.74609375,
+            "y": 897
+          }
+        }
+      ],
+      "overlaps": [],
+      "outside": []
+    },
+    {
+      "viewport": [
+        1024,
+        768
+      ],
+      "boxes": [
+        {
+          "name": "map-controls",
+          "rect": {
+            "bottom": 652,
+            "height": 92,
+            "left": 852,
+            "right": 1004,
+            "top": 560,
+            "width": 152,
+            "x": 852,
+            "y": 560
+          }
+        },
+        {
+          "name": "minimap panel",
+          "rect": {
+            "bottom": 653,
+            "height": 121.5,
+            "left": 20,
+            "right": 178,
+            "top": 531.5,
+            "width": 158,
+            "x": 20,
+            "y": 531.5
+          }
+        },
+        {
+          "name": "bc26-top",
+          "rect": {
+            "bottom": 97,
+            "height": 77,
+            "left": 20,
+            "right": 1004,
+            "top": 20,
+            "width": 984,
+            "x": 20,
+            "y": 20
+          }
+        },
+        {
+          "name": "bc26-side",
+          "rect": {
+            "bottom": 478.0859375,
+            "height": 343.0859375,
+            "left": 20,
+            "right": 260,
+            "top": 135,
+            "width": 240,
+            "x": 20,
+            "y": 135
+          }
+        },
+        {
+          "name": "bc26-right-tools bc26-panel",
+          "rect": {
+            "bottom": 379,
+            "height": 244,
+            "left": 948,
+            "right": 1004,
+            "top": 135,
+            "width": 56,
+            "x": 948,
+            "y": 135
+          }
+        },
+        {
+          "name": "bc26-corner-date",
+          "rect": {
+            "bottom": 756,
+            "height": 26,
+            "left": 20,
+            "right": 105.78125,
+            "top": 730,
+            "width": 85.78125,
+            "x": 20,
+            "y": 730
+          }
+        },
+        {
+          "name": "bc26-tip",
+          "rect": {
+            "bottom": 661,
+            "height": 31.3984375,
+            "left": 190,
+            "right": 308.7109375,
+            "top": 629.6015625,
+            "width": 118.7109375,
+            "x": 190,
+            "y": 629.6015625
+          }
+        },
+        {
+          "name": "bc26-bottom bc26-panel",
+          "rect": {
+            "bottom": 748,
+            "height": 85,
+            "left": 161.74609375,
+            "right": 862.25390625,
+            "top": 663,
+            "width": 700.5078125,
+            "x": 161.74609375,
+            "y": 663
+          }
+        }
+      ],
+      "overlaps": [],
+      "outside": []
+    },
+    {
+      "viewport": [
+        1600,
+        1000
+      ],
+      "boxes": [
+        {
+          "name": "map-controls",
+          "rect": {
+            "bottom": 884,
+            "height": 92,
+            "left": 1428,
+            "right": 1580,
+            "top": 792,
+            "width": 152,
+            "x": 1428,
+            "y": 792
+          }
+        },
+        {
+          "name": "minimap panel",
+          "rect": {
+            "bottom": 885,
+            "height": 121.5,
+            "left": 20,
+            "right": 178,
+            "top": 763.5,
+            "width": 158,
+            "x": 20,
+            "y": 763.5
+          }
+        },
+        {
+          "name": "bc26-top",
+          "rect": {
+            "bottom": 103.1953125,
+            "height": 83.1953125,
+            "left": 20,
+            "right": 1580,
+            "top": 20,
+            "width": 1560,
+            "x": 20,
+            "y": 20
+          }
+        },
+        {
+          "name": "bc26-side",
+          "rect": {
+            "bottom": 438.2890625,
+            "height": 326.2890625,
+            "left": 20,
+            "right": 296,
+            "top": 112,
+            "width": 276,
+            "x": 20,
+            "y": 112
+          }
+        },
+        {
+          "name": "bc26-right-tools bc26-panel",
+          "rect": {
+            "bottom": 356,
+            "height": 244,
+            "left": 1524,
+            "right": 1580,
+            "top": 112,
+            "width": 56,
+            "x": 1524,
+            "y": 112
+          }
+        },
+        {
+          "name": "bc26-corner-date",
+          "rect": {
+            "bottom": 988,
+            "height": 26,
+            "left": 20,
+            "right": 105.78125,
+            "top": 962,
+            "width": 85.78125,
+            "x": 20,
+            "y": 962
+          }
+        },
+        {
+          "name": "bc26-tip",
+          "rect": {
+            "bottom": 893,
+            "height": 31.3984375,
+            "left": 190,
+            "right": 308.7109375,
+            "top": 861.6015625,
+            "width": 118.7109375,
+            "x": 190,
+            "y": 861.6015625
+          }
+        },
+        {
+          "name": "bc26-bottom bc26-panel",
+          "rect": {
+            "bottom": 980,
+            "height": 85,
+            "left": 402.09765625,
+            "right": 1197.90234375,
+            "top": 895,
+            "width": 795.8046875,
+            "x": 402.09765625,
+            "y": 895
+          }
+        }
+      ],
+      "overlaps": [],
+      "outside": []
+    },
+    {
+      "viewport": [
+        844,
+        390
+      ],
+      "boxes": [
+        {
+          "name": "map-controls",
+          "rect": {
+            "bottom": 280,
+            "height": 140,
+            "left": 740,
+            "right": 832,
+            "top": 140,
+            "width": 92,
+            "x": 740,
+            "y": 140
+          }
+        },
+        {
+          "name": "bc26-top",
+          "rect": {
+            "bottom": 84,
+            "height": 72,
+            "left": 12,
+            "right": 832,
+            "top": 12,
+            "width": 820,
+            "x": 12,
+            "y": 12
+          }
+        },
+        {
+          "name": "bc26-right-tools bc26-panel",
+          "rect": {
+            "bottom": 160,
+            "height": 54,
+            "left": 12,
+            "right": 250,
+            "top": 106,
+            "width": 238,
+            "x": 12,
+            "y": 106
+          }
+        },
+        {
+          "name": "bc26-corner-date",
+          "rect": {
+            "bottom": 383,
+            "height": 22,
+            "left": 12,
+            "right": 83.65625,
+            "top": 361,
+            "width": 71.65625,
+            "x": 12,
+            "y": 361
+          }
+        },
+        {
+          "name": "bc26-bottom bc26-panel",
+          "rect": {
+            "bottom": 358,
+            "height": 66.59375,
+            "left": 120,
+            "right": 724,
+            "top": 291.40625,
+            "width": 604,
+            "x": 120,
+            "y": 291.40625
+          }
+        }
+      ],
+      "overlaps": [],
+      "outside": []
+    }
+  ],
+  "layerActions": {
+    "selectedCloses": true,
+    "xCloses": true,
+    "resetClosesAndRestoresNormal": true
+  }
+}

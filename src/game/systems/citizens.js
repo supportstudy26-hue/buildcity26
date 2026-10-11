@@ -20,7 +20,7 @@ export function startJourney(s,c,goal,route,size,allowTransit=true) {
 }
 export function updateCitizens(s, calendar, route, size) {
   const time=s.clock.seconds%DAY_SECONDS,weekday=calendar.weekday!==0&&calendar.weekday!==6;
-  const control=roadControllers(s);
+  const control=roadControllers(s),roadSpeedFactor=weatherState(s).roadSpeedFactor;
   const firms=new Map(s.firms.map(f=>[f.id,f]));
   for(const c of s.citizens) {
     const work=firms.get(c.work);
@@ -39,7 +39,7 @@ export function updateCitizens(s, calendar, route, size) {
       j.graphVersion=s.graphVersion;c.state=valid?(j.mode==='car'?'in-vehicle':'walking'):'blocked';c.waitReason=valid?'':'Đường trên hành trình đã bị phá hoặc ngắt kết nối';
     }
     if(c.state==='blocked')continue;
-    const controlled=j.laneVersion===1?control(c):{speed:j.speed,reason:''};j.actualSpeed=controlled.speed*(j.mode==='car'?weatherState(s).roadSpeedFactor:1);c.waitReason=controlled.reason;
+    const controlled=j.laneVersion===1?control(c):{speed:j.speed,reason:''};j.actualSpeed=controlled.speed*(j.mode==='car'?roadSpeedFactor:1);c.waitReason=controlled.reason;
     let remaining=j.actualSpeed*STEP_SECONDS;
     while(remaining>0&&j.segment<j.path.length-1) {
       const a=j.path[j.segment],b=j.path[j.segment+1],length=distanceMeters(a,b),needed=length-j.distance;

@@ -10,7 +10,7 @@
 .bc26-ui .bc26-brand{min-width:185px}.bc26-ui .bc26-logo{width:44px;height:44px}.bc26-ui .bc26-top-actions{flex-wrap:wrap;max-width:194px}
 .bc26-ui .bc26-statusbar{bottom:116px;right:88px;max-width:calc(100% - 120px);flex-wrap:wrap}
 .bc26-ui .bc26-time-rate{white-space:nowrap}
-.bc26-ui .bc26-tip{bottom:107px;left:20px;transform:none;max-width:calc(100% - 420px);background:#142330;color:#adc0cd;border:1px solid #32495a}
+.bc26-ui .bc26-tip{bottom:107px;left:190px;transform:none;max-width:calc(100% - 420px);background:#142330;color:#adc0cd;border:1px solid #32495a}
 .bc26-ui .bc26-card .building-thumb{width:90px;height:84px;float:right;margin:0 0 8px 8px;background:#253e47;border-radius:10px}
 .bc26-ui .bc26-card .building-thumb img{width:100%;height:100%;object-fit:contain}
 .bc26-ui .bc26-card{display:flow-root}
@@ -45,42 +45,114 @@ body[data-screen=game] dialog:not(.auth-layout):not(.account-dialog) .action.pri
 body[data-screen=game] dialog:not(.auth-layout):not(.account-dialog) .warn{color:#ffadb0}
 body[data-screen=game] dialog:not(.auth-layout):not(.account-dialog) .good{color:#7ad6b0}
 body[data-photo=true] #game :is(.bc26-ui,.map-controls,.minimap,.floating){display:none!important}
-@media(max-width:1150px){.bc26-ui .bc26-top-actions{max-width:100px}.bc26-ui .bc26-brand{min-width:150px}.bc26-ui .bc26-stat strong{font-size:15px}.bc26-ui .bc26-side{top:135px}.bc26-ui .bc26-right-tools{top:135px}}
-@media(max-width:860px){.bc26-ui .bc26-top-actions{flex-wrap:nowrap;max-width:none;height:64px}.bc26-ui .bc26-brand{min-width:0}.bc26-ui .bc26-brand strong{max-width:130px}.bc26-ui .bc26-side{top:175px}.bc26-ui .bc26-right-tools{top:175px}.bc26-ui .bc26-statusbar{right:75px;bottom:115px;max-width:calc(100% - 95px)}.bc26-ui .bc26-tip{max-width:calc(100% - 100px);bottom:89px;left:12px}.bc26-ui .bc26-weather{display:none}#game .map-controls{right:12px;bottom:110px}#game .minimap{left:12px;bottom:148px;width:112px}#game .minimap canvas{width:92px;height:60px}}
-@media(max-width:560px){.bc26-ui .bc26-top-actions .bc26-icon-btn{width:44px}.bc26-ui .bc26-brand strong{max-width:100px}.bc26-ui .bc26-logo{display:none}.bc26-ui .bc26-side{top:211px;width:calc(100% - 89px)}.bc26-ui .bc26-mission :is([data-mission-desc],.bc26-progress,.bc26-rewards,[data-mission-progress],[data-mission-pct]){display:none}.bc26-ui .bc26-mission h3{margin-block:6px}.bc26-ui .bc26-mission-open{margin-top:2px}.bc26-ui .bc26-right-tools{top:211px;max-height:calc(100% - 385px)}.bc26-ui .bc26-statusbar{font-size:10px;gap:3px;bottom:112px;padding:4px 8px}.bc26-ui .bc26-time-rate{flex-basis:100%;text-align:center}.bc26-ui .bc26-clock{font-size:10px}.bc26-ui .bc26-speeds button{padding:0 6px}.bc26-ui .bc26-tip{bottom:83px;font-size:10px}#game .minimap{display:none}.bc26-ui .bc26-toast{top:211px}.bc26-ui .bc26-stat-sub{max-width:128px;overflow:hidden;text-overflow:ellipsis}.bc26-ui .bc26-bottom .bc26-tool{min-width:63px}.bc26-ui .bc26-bottom{width:calc(100% - 24px);max-width:none}.bc26-ui .bc26-backdrop{padding:12px 12px 88px}}
-@media(max-height:500px){.bc26-ui .bc26-side,.bc26-ui .bc26-tip,#game .minimap{display:none}.bc26-ui .bc26-top{top:6px;left:6px;right:6px;flex-wrap:nowrap}.bc26-ui .bc26-stats{order:0;flex-basis:auto;grid-template-columns:1fr 1fr}.bc26-ui .bc26-brand{min-width:140px;flex:0}.bc26-ui .bc26-stat{min-height:38px;padding:3px}.bc26-ui .bc26-stat small,.bc26-ui .bc26-stat-sub{display:none}.bc26-ui .bc26-top-actions{max-width:100px;flex-wrap:wrap;height:auto}.bc26-ui .bc26-top-actions .bc26-icon-btn{height:38px}.bc26-ui .bc26-right-tools{top:105px;max-height:calc(100% - 190px)}.bc26-ui .bc26-statusbar{bottom:95px}.bc26-ui .bc26-backdrop{padding:8px 12px 88px}.bc26-ui .bc26-bottom{bottom:6px}}
 
-/* These explicit scoped rules override earlier palette compatibility styles. */
-#game .map-controls .map-btn{background:#142330!important;color:#f0f5fa!important;border-color:#32495a!important}
+/* The camera controls occupy a separate corner from management actions. */
+#game{min-height:0;--hud-left:max(12px,env(safe-area-inset-left));--hud-right:max(12px,env(safe-area-inset-right));--hud-top:max(12px,env(safe-area-inset-top));--hud-bottom:env(safe-area-inset-bottom)}
+#game .map-controls{top:auto!important;left:auto!important;z-index:12;display:grid;grid-template-columns:repeat(3,48px);width:auto;gap:4px}
+#game .map-controls .map-btn{padding:0;background:#142330!important;color:#f0f5fa!important;border-color:#32495a!important}
 #game .bc26-top-actions{flex-wrap:nowrap;max-width:none}
 .bc26-ui .bc26-tip:empty{display:none}
-@media(max-height:500px){#game .bc26-top-actions{flex-wrap:wrap;max-width:100px}}
+#game .bc26-corner-date{position:absolute;left:max(20px,env(safe-area-inset-left));bottom:calc(12px + var(--hud-bottom));font-size:12px;line-height:18px;color:#f0f5fa;background:#142330d9;padding:4px 9px;border-radius:7px;pointer-events:none;font-variant-numeric:tabular-nums}
 
-#game .map-controls{z-index:12}
-/* A short landscape viewport must remain the actual viewport, not a 480px canvas. */
-#game{min-height:0}
+/* Layers are a compact, dismissible picker, not a permanent inspector. */
+#game #layersPanel{width:320px;max-width:calc(100% - 40px);padding:12px;right:20px;bottom:218px;max-height:calc(100% - 140px);z-index:25;backdrop-filter:none}
+#game #layersPanel .panel-title{padding-bottom:0;margin:0 0 8px;letter-spacing:1px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+#game #layersClose{width:44px;height:44px;flex-shrink:0;color:#f0f5fa;background:#243c4b;border:1px solid #426577;border-radius:9px;font-size:24px}
+#game #layerOptions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+#game .floating .layer-option{min-height:44px;padding:7px 8px;gap:7px;line-height:1.3;border:1px solid #32495a;background:#1c3040;font-size:11px}
+#game .floating .layer-option i{flex-shrink:0}
+#game .floating .layer-option.active{border-color:#7ad6b0;background:#28463e}
+#game #layersPanel .layer-legend summary{cursor:pointer;min-height:24px;display:flex;align-items:center}
+#game #layersPanel .layer-legend p{margin:0 0 3px;line-height:1.4;color:#adc0cd}
+#game #layersPanel .layer-legend{grid-column:1/-1;margin:4px 0 0;font-size:10px;line-height:1.4;color:#adc0cd}
+#game #layersReset{min-height:44px;width:100%;margin-top:8px;padding:8px;background:#243c4b;color:#f0f5fa;border:1px solid #426577;font-size:11px}
+
+.arrival-steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:0;list-style:none}
+.arrival-steps li{padding:14px;border:1px solid var(--line);border-radius:12px;background:#1c3040}
+.arrival-steps li.arrival-next{border-color:var(--mint)}
+.arrival-steps strong,.arrival-steps small{display:block}
+.arrival-steps small{margin:7px 0;color:var(--muted);line-height:1.5}
+.arrival-steps .action{width:100%;white-space:normal;min-height:44px}
+
+@media(max-width:1150px){
+ .bc26-ui .bc26-brand{min-width:150px}
+ .bc26-ui .bc26-stat strong{font-size:15px}
+ .bc26-ui .bc26-stat-copy{overflow:hidden}
+ .bc26-ui .bc26-stat strong,.bc26-ui .bc26-stat-sub{overflow:hidden;text-overflow:ellipsis}
+ .bc26-ui .bc26-side,.bc26-ui .bc26-right-tools{top:135px}
+}
+@media(max-width:860px){
+ #game .bc26-top{top:var(--hud-top);left:var(--hud-left);right:var(--hud-right);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px}
+ #game .bc26-brand{grid-column:1;grid-row:1;min-width:0;height:52px;padding:6px 10px;overflow:hidden}
+ #game .bc26-brand strong{max-width:200px}
+ #game .bc26-top-actions{grid-column:2;grid-row:1;height:52px;padding:4px;gap:0}
+ #game .bc26-top-actions .bc26-icon-btn{width:44px;height:44px}
+ #game .bc26-stats{grid-column:1/-1;grid-row:2;order:initial;grid-template-columns:1.25fr 1fr 1fr 1fr;padding:4px;gap:2px}
+ #game .bc26-stat{min-height:48px;padding:4px 6px;gap:6px}
+ #game .bc26-stat strong{font-size:14px}
+ #game .bc26-stat-sub{font-size:9px}
+ #game .bc26-side{top:calc(var(--hud-top) + 126px)}
+ #game .bc26-right-tools{top:calc(var(--hud-top) + 126px);right:var(--hud-right)}
+ #game .bc26-bottom{bottom:calc(42px + var(--hud-bottom));max-width:calc(100% - 24px - env(safe-area-inset-left) - env(safe-area-inset-right));overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin}
+ #game .bc26-tip{bottom:calc(126px + var(--hud-bottom));left:calc(var(--hud-left) + 126px);max-width:calc(100% - 190px)}
+ #game .map-controls{right:var(--hud-right);bottom:calc(126px + var(--hud-bottom))}
+ #game .minimap{left:var(--hud-left);right:auto;bottom:calc(148px + var(--hud-bottom));width:112px}
+ #game .minimap canvas{width:92px;height:60px}
+ #game .bc26-toast{top:calc(var(--hud-top) + 130px)}
+}
 @media(max-width:560px){
- .bc26-ui .bc26-side,.bc26-ui .bc26-right-tools{top:232px}
- .bc26-ui .bc26-time-rate{display:none}
- .bc26-ui .bc26-clock{flex-basis:100%;font-size:9px}
- .bc26-ui .bc26-statusbar{justify-content:flex-start;min-height:64px}
- .bc26-ui .bc26-tip{display:none}
-}
-@media(max-height:500px){
- #game .bc26-top{flex-wrap:nowrap}
- #game .bc26-stats{order:0;flex-basis:0;grid-template-columns:repeat(4,minmax(0,1fr));padding:4px;gap:0}
- #game .bc26-stat{min-width:0;min-height:40px;gap:4px}
+ #game .bc26-ui{--bc-radius:13px}
+ #game .bc26-brand{padding:5px 8px}
+ #game .bc26-logo{display:none}
+ #game .bc26-brand strong{max-width:100px;font-size:12px}
+ #game .bc26-overline{font-size:8px;letter-spacing:.6px}
+ #game .bc26-level{font-size:10px;gap:5px;margin-top:2px}
+ #game .bc26-xp-track{width:38px}
+ #game .bc26-stats{grid-template-columns:1fr 1fr}
+ #game .bc26-stat{min-height:44px;padding:3px 5px}
+ #game .bc26-stat .bc26-stat-icon{width:24px;height:30px;border-radius:7px}
+ #game .bc26-stat-icon svg{width:20px;height:20px}
  #game .bc26-stat strong{font-size:13px}
- #game .bc26-stat .bc26-stat-icon{width:20px;height:30px}
- #game .bc26-brand{min-width:130px}
- #game .bc26-statusbar{bottom:100px}
+ #game .bc26-stat small{font-size:9px}
+ #game .bc26-stat-sub{display:none}
+ /* All mission actions stay in the dedicated drawer; the map stays open. */
+ #game .bc26-side,#game .minimap,#game .bc26-tip{display:none}
+ #game .bc26-right-tools{top:calc(var(--hud-top) + 160px);display:flex;flex-direction:row;padding:4px;gap:3px;height:54px;max-height:none;overflow:visible;right:var(--hud-right)}
+ #game .bc26-right-tools .bc26-icon-btn{width:44px;height:44px}
+ #game .map-controls{grid-template-columns:repeat(2,44px);gap:4px;bottom:calc(116px + var(--hud-bottom));right:var(--hud-right)}
+ #game .map-controls .map-btn{width:44px;height:44px;min-width:44px}
+ #game .bc26-bottom{bottom:calc(34px + var(--hud-bottom));left:var(--hud-left);right:var(--hud-right);transform:none;width:auto;max-width:none;padding:4px;gap:2px}
+ #game .bc26-bottom .bc26-tool{min-width:62px;min-height:56px;gap:4px;padding:5px 6px}
+ #game .bc26-bottom .bc26-tool span{font-size:10px}
+ #game .bc26-bottom svg{width:22px;height:22px}
+ #game .bc26-corner-date{left:var(--hud-left);bottom:calc(7px + var(--hud-bottom));font-size:10px;padding:2px 7px}
+ #game .bc26-toast{top:calc(var(--hud-top) + 224px);font-size:11px;max-width:calc(100% - 24px)}
+ #game .bc26-backdrop{padding:var(--hud-top) var(--hud-right) calc(110px + var(--hud-bottom)) var(--hud-left)}
+ #game #layersPanel{left:var(--hud-left);right:var(--hud-right);width:auto;max-width:none;bottom:calc(110px + var(--hud-bottom));max-height:calc(100% - 140px - var(--hud-bottom) - var(--hud-top));border-radius:14px}
+ .arrival-steps{grid-template-columns:1fr}
 }
-@media(max-height:500px) and (min-width:700px){
- #game .bc26-top{height:96px;align-items:center}
- #game .bc26-brand{height:64px;padding:6px;overflow:hidden}
- #game .bc26-stats{height:64px;align-items:center;overflow:hidden}
- #game .bc26-stat{height:44px;overflow:hidden}
- #game .bc26-stat strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
- #game .bc26-top-actions{display:grid;grid-template-columns:44px 44px;height:88px;padding:0;gap:0;flex-shrink:0}
- #game .bc26-top-actions .bc26-icon-btn{min-height:44px;height:44px}
+/* Landscape phones keep controls outside the central construction area. */
+@media(max-height:500px) and (min-width:561px){
+ #game .bc26-side,#game .bc26-tip,#game .minimap{display:none}
+ #game .bc26-top{top:var(--hud-top);left:var(--hud-left);right:var(--hud-right);display:flex;flex-wrap:nowrap;height:72px;gap:6px}
+ #game .bc26-brand{flex:0 1 140px;min-width:100px;height:64px;padding:6px}
+ #game .bc26-logo{display:none}
+ #game .bc26-stats{flex:1;grid-template-columns:repeat(4,minmax(0,1fr));height:64px;gap:0}
+ #game .bc26-stat{min-width:0;min-height:44px;padding:3px;gap:4px}
+ #game .bc26-stat small,#game .bc26-stat-sub{display:none}
+ #game .bc26-stat strong{font-size:12px}
+ #game .bc26-stat .bc26-stat-icon{width:22px;height:30px}
+ #game .bc26-stat-icon svg{width:20px;height:20px}
+ #game .bc26-top-actions{display:grid;grid-template-columns:44px 44px;padding:0;gap:0;height:88px;flex-shrink:0}
+ #game .bc26-top-actions .bc26-icon-btn{width:44px;height:44px}
+ #game .bc26-right-tools{top:calc(var(--hud-top) + 94px);left:var(--hud-left);right:auto;display:flex;gap:2px;height:54px;max-height:none;overflow:visible;padding:4px}
+ #game .map-controls{right:var(--hud-right);bottom:calc(110px + var(--hud-bottom));grid-template-columns:repeat(2,44px)}
+ #game .map-controls .map-btn{width:44px;min-width:44px}
+ #game .bc26-bottom{bottom:calc(32px + var(--hud-bottom));max-width:calc(100% - 240px - env(safe-area-inset-left) - env(safe-area-inset-right));min-width:0;overflow-x:auto;padding:4px}
+ #game .bc26-bottom .bc26-tool{min-height:56px}
+ #game .bc26-corner-date{left:var(--hud-left);bottom:calc(7px + var(--hud-bottom));font-size:10px;padding:2px 7px}
+ #game .bc26-backdrop{padding:var(--hud-top) var(--hud-right) calc(100px + var(--hud-bottom)) var(--hud-left)}
+ #game #layersPanel{width:440px;right:var(--hud-right);bottom:calc(108px + var(--hud-bottom));max-height:calc(100% - 124px - var(--hud-bottom) - var(--hud-top))}
+ #game #layerOptions{grid-template-columns:repeat(4,minmax(0,1fr))}
+ #game .bc26-toast{top:calc(var(--hud-top) + 94px)}
 }

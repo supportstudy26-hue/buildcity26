@@ -5,14 +5,18 @@ import {capacityFactor} from '../../config/building-economy.js';
 // Only map a kind when the corresponding game system actually operates.
 export const KIND_TOOLS=Object.freeze({house:['residential'],shop:['commercial'],office:['commercial'],power_source:['smallPower','power'],pump:['smallWater','water','waterPump'],sewer_outlet:['smallSewage','sewage','treatmentPlant'],waste_depot:['waste','wasteCenter'],primary_school:['school'],secondary_school:['secondarySchool'],clinic:['clinic'],hospital:['hospital'],fire_station:['fire','fireCenter'],police_station:['police','policeCenter'],park:['park','plaza'],bus_depot:['bus'],bus_stop:['busStop'],university:['university']});
 export const metricKey=n=>JSON.stringify([n.metric,Object.entries(n.filters||{}).sort(([a],[b])=>a.localeCompare(b))]);
-export const leaves=n=>n?.all?n.all.flatMap(leaves):n?.any?n.any.flatMap(leaves):[n];
+// Catalogue groups use all/any; evaluated groups use children. Keep both so
+// compound objectives expose their real readings in the HUD and mission panel.
+export const leaves=n=>n?.all?n.all.flatMap(leaves):n?.any?n.any.flatMap(leaves):Array.isArray(n?.children)?n.children.flatMap(leaves):n?[n]:[];
 const good=value=>Number.isFinite(value)?{valid:true,value}:{valid:false,reason:'Chưa có mẫu hợp lệ'};
 const absent=reason=>({valid:false,reason});
 export function kindMatches(t,kind){const kinds=KIND_TOOLS[kind];if(!kinds?.includes(t.kind))return false;if(kind==='office')return t.blueprint==='glass-office';if(kind==='shop')return t.blueprint!=='glass-office';return true;}
 export function operating(t){if(!t.kind||!t.connected||(t.fire||0)>=60||t.development?.status==='building')return false;const source=['power','water'].includes(serviceKind(t.kind));return source?CATALOG[t.kind]?.capacity>0:!!t.active&&capacityFactor(t)>0;}
 export function metricContext(s){const buildings=s.tiles.filter(t=>t.kind&&!isRoad(t)),occupied=s.tiles.filter(t=>t.kind==='residential'&&t.residents>0);return {buildings,occupied,workforce:s.citizens.filter(c=>c.age>=18&&c.age<65),activeFirms:new Set(s.firms.filter(f=>f.active&&s.tiles[f.home]?.active).map(f=>f.id))};}
-export function snapshotMetric(s,n,ctx=metricContext(s)){
+export const metricNeedsContext=n=>['completed_buildings','active_buildings','connected_buildings_pct','power_coverage_pct','water_coverage_pct','sewage_treated_pct','happiness_pct','employment_pct'].includes(n.metric);
+export function snapshotMetric(s,n,ctx){
  const f=n.filters||{},m=s.metrics||{},kind=f.kind;
+ if(metricNeedsContext(n))ctx??=metricContext(s);
  if(['completed_buildings','active_buildings'].includes(n.metric)){
   if(!KIND_TOOLS[kind])return absent(`Chưa có hệ thống ${contract.buildingKinds?.[kind]||kind}`);
   if(Object.keys(f).some(k=>!['kind','minTier'].includes(k)))return absent('Bộ lọc chưa hỗ trợ');

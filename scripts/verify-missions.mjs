@@ -13,7 +13,8 @@ const a=client(),b=client();let stage='register';
 async function api(path,body,token){const r=await fetch(new URL(path,base),{method:'POST',headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},body:JSON.stringify(body),signal:AbortSignal.timeout(65000)});const data=await r.json();return {status:r.status,data};}
 async function register(suffix){const r=await api('/api/account',{action:'register',username:'qa_mission_'+suffix+'_'+tag,password,cityName:'QA nhiệm vụ '+suffix,requestId:randomUUID(),regionId:'31-start'});assert.equal(r.status,201);return r.data;}
 try{
- const ra=await register('a'),rb=await register('b'),sa=await a.auth.setSession(ra.session),sb=await b.auth.setSession(rb.session);assert.ifError(sa.error);assert.ifError(sb.error);
+ const ra=await register('a');stage='authenticate A';const sa=await a.auth.setSession(ra.session);if(sa.error)throw Object.assign(new Error('Auth QA failed'),{code:sa.error.code||sa.error.status});
+ stage='register B';const rb=await register('b');stage='authenticate B';const sb=await b.auth.setSession(rb.session);if(sb.error)throw Object.assign(new Error('Auth QA failed'),{code:sb.error.code||sb.error.status});
  // /api/account intentionally returns only access/refresh tokens. Resolve the
  // identity through Auth instead of assuming its response exposes session.user.
  assert.ok(sa.data.user?.id&&sb.data.user?.id&&sa.data.user.id!==sb.data.user.id);

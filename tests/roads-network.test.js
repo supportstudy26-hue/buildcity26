@@ -30,6 +30,14 @@ test('one-way edges reject reverse cars but allow pedestrians; pedestrian roads 
  place(s,4,18,'pedestrian');assert.equal(route(s,index(0,18),index(7,18),'car').length,0);assert.equal(route(s,index(0,18),index(7,18),'bus').length,0);assert.equal(route(s,index(0,18),index(7,18),'walk').length,8);
  assert.equal(roadEdgeAllowed(s,index(1,18),index(2,18),'car'),true);assert.equal(roadEdgeAllowed(s,index(2,18),index(1,18),'car'),false);
 });
+test('cached routes isolate callers and rebuild after removal, direction changes and load',()=>{
+ const s=city();for(let x=0;x<8;x++)assert.ok(place(s,x,18,x===0?'road':'roadOneWay').ok);
+ const from=index(0,18),to=index(7,18),path=route(s,from,to);assert.equal(path.length,8);path.pop();assert.equal(route(s,from,to).length,8);
+ assert.ok(command(s,'road-direction',{tile:index(4,18),direction:'west'}).ok);assert.deepEqual(route(s,from,to),[]);assert.equal(route(s,from,to,'walk').length,8);
+ assert.ok(command(s,'road-direction',{tile:index(4,18),direction:'east'}).ok);assert.equal(route(s,from,to).length,8);
+ const loaded=validateSave(serialize(s));assert.ok(place(loaded,4,18,'bulldoze').ok);assert.deepEqual(route(loaded,from,to),[]);assert.equal(route(s,from,to).length,8);
+ assert.ok(place(loaded,4,18,'roadOneWay').ok);assert.equal(route(loaded,from,to).length,8);
+});
 test('dedicated bus lane has a separate physical offset and remains on the legal directed graph',()=>{
  const s=city();for(let x=0;x<5;x++)place(s,x,18,'busRoad');const roads=route(s,index(0,18),index(4,18),'bus');
  const car=mobilityPath(s,index(0,18),index(4,18),roads,64,'car'),bus=mobilityPath(s,index(0,18),index(4,18),roads,64,'bus');
