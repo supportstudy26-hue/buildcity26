@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-10-11T15:53:12.458062+00:00",
+  "codeCommit": "e59a1602307006ede09db4541c90e3ace4a71586",
+  "domain": "https://buildcity26.vercel.app",
+  "httpStatus": 200,
+  "htmlMatchesBuild": true,
+  "assets": {
+    "/assets/game-07INfl5u.js": {
+      "matchesBuild": true,
+      "bytes": 23070
+    },
+    "/assets/simulation-PQvaYsvy.js": {
+      "matchesBuild": true,
+      "bytes": 887
+    },
+    "/assets/simulation-bN5BDzud.css": {
+      "matchesBuild": true,
+      "bytes": 44654
+    },
+    "/assets/game-CF2ewfaK.css": {
+      "matchesBuild": true,
+      "bytes": 98830
+    },
+    "/brand.svg": {
+      "matchesBuild": true,
+      "bytes": 596
+    },
+    "/service-worker.js": {
+      "matchesBuild": true,
+      "bytes": 5516
+    }
+  },
+  "vercel": [
+    {
+      "state": "success",
+      "target_url": "https://vercel.com/build-city26/buildcity26/HEiiQpxDDQuZB1j7n6QdiqyMhNyf",
+      "description": "Deployment has completed"
+    }
+  ],
+  "ci": [
+    {
+      "name": "validate",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/supportstudy26-hue/buildcity26/actions/runs/38152945751/job/114509979619"
+    }
+  ]
+}
