@@ -30,7 +30,7 @@ import {missionViews} from './game/systems/progression.js';
 import { formatMoney } from './config/money.js';
 import { PLAY_SECONDS_PER_SECOND, STEP_SECONDS, WATER_PER_PERSON, LEGACY_BC_FACTOR, NEW_CITY_CASH_BC } from './config/simulation.js';
 import { consumeSteps, calendar, simulationDelta } from './game/systems/clock.js';
-import { createCity, createEmptyCity, analyze, stepSimulation, executeCommand, place, serialize, validateSave, CATALOG, SIZE, index, isRoad, addBusLine, borrow, repay } from './game/core.js';
+import { createCity, createEmptyCity, analyze, prepareEducation, stepSimulation, executeCommand, place, serialize, validateSave, CATALOG, SIZE, index, isRoad, addBusLine, borrow, repay } from './game/core.js';
 import { createRenderer } from './game/render/renderer-host.js';
 import {surfaceHeight,slopeAt} from './game/systems/terrain.js';
 import { saveLocal, loadLocal, localEnvelope, localKey } from './services/local-storage.js';
@@ -174,6 +174,7 @@ function updateHud(){
  snapshot.catalogue=hudCatalogue;hud.update(snapshot);
 }
 function update(){
+ if(prepareEducation(city)){changeId++;sync.changed();}
  if(!city.metrics)analyze(city);if(document.activeElement!==$('cityName'))$('cityName').value=city.name;
  $('mapSizeText').textContent=city.world?.geography?city.world.geography.provinceName+' · '+((city.world.widthMeters||SIZE*20)/1000).toLocaleString('vi-VN')+' KM':SIZE+' × '+SIZE+' · '+(SIZE*20/1000).toLocaleString('vi-VN')+' KM';updateMapSource();updateWeatherControl();
  if(!$('detailBody').contains(document.activeElement)){if(tracked)inspectCitizen(tracked);else if(selected)inspect(selected);else if(!modal.open)news();}

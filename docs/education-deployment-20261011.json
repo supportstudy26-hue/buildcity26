@@ -1,0 +1,29 @@
+{
+  "url": "https://buildcity26.vercel.app",
+  "http": 200,
+  "deployment": "CEmiFfQNovAuazVHsd6bcSH2m6gB",
+  "commit": "ab923b8bd777e197f4d51873f1540f5f7a5e5a8b",
+  "assets": [
+    {
+      "asset": "/assets/game-NPYeIA39.js",
+      "matchesLocalBuild": true
+    },
+    {
+      "asset": "/assets/app-D8sAr8xa.js",
+      "matchesLocalBuild": true,
+      "educationUiPresent": true
+    },
+    {
+      "asset": "/assets/simulation-PQvaYsvy.js",
+      "matchesLocalBuild": true
+    },
+    {
+      "asset": "/assets/simulation-bN5BDzud.css",
+      "matchesLocalBuild": true
+    },
+    {
+      "asset": "/assets/game-D-QO0qA6.css",
+      "matchesLocalBuild": true
+    }
+  ]
+}

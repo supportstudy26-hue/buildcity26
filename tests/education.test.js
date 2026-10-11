@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createCity,createEmptyCity,executeCommand,index,serialize,validateSave,stepSimulation,analyze,SIZE,random} from '../src/game/core.js';
+import {createCity,createEmptyCity,executeCommand,index,serialize,validateSave,prepareEducation,stepSimulation,analyze,SIZE,random} from '../src/game/core.js';
 import {createClock} from '../src/game/systems/clock.js';
 import {reconcileSociety} from '../src/game/systems/foundation.js';
 import {educationSnapshot,reconcileEducation,schoolSnapshot,updateEducation} from '../src/game/systems/education.js';
@@ -90,4 +90,12 @@ test('utility loss stops attendance immediately and a school upgrade increases f
  run(s,1400);assert.ok((campaign(s).counters[key]||0)>0);assert.ok(command(s,8,17,'bulldoze').ok);
  const count=campaign(s).counters[key]||0;run(s,90);assert.equal(schoolSnapshot(s,i).capacity,0);assert.equal(campaign(s).counters[key]||0,count);assert.ok(schoolSnapshot(s,i).reason.includes('điện'));
  assert.doesNotThrow(()=>validateSave(serialize(s)));
+});
+
+test('a paused legacy save exposes its existing schools immediately without advancing time or rewards',()=>{
+ const raw=serialize(createCity());delete raw.educationVersion;for(const c of raw.citizens){delete c.study;if(raw.firms.find(f=>f.school&&f.id===c.work))c.work=null;}raw.firms=raw.firms.filter(f=>!f.school);raw.playback.paused=true;
+ const s=validateSave(raw),clock=structuredClone(s.clock),money=s.money,ids=s.citizens.map(c=>c.id),receipts=structuredClone(s.progression.receipts);
+ assert.equal(prepareEducation(s),true);assert.equal(schoolSnapshot(s,index(10,14)).staff.length,6);assert.ok(educationSnapshot(s).assigned>0);
+ assert.deepEqual(s.clock,clock);assert.equal(s.money,money);assert.deepEqual(s.citizens.map(c=>c.id),ids);assert.deepEqual(s.progression.receipts,receipts);assert.equal(s.playback.paused,true);
+ const prepared=serialize(s);assert.equal(prepareEducation(s),false);assert.deepEqual(serialize(s),prepared);assert.doesNotThrow(()=>validateSave(prepared));
 });

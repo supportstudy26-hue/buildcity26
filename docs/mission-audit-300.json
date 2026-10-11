@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-11T06:42:46.015Z",
+  "generatedAt": "2026-10-11T06:52:20.138Z",
   "catalogueId": "bc26-main-300-v1",
   "scope": "Static provider/condition/dependency/XP/unlock audit plus unmodified empty/starter read probes. Not a certification of all gameplay or live cloud deployment.",
   "summary": {
@@ -332,6 +332,22 @@
       "name": "npm run build",
       "passed": true,
       "scope": "8.49s; Vite build with two existing >500kB lazy chunks; no lint/typecheck scripts"
+    },
+    {
+      "name": "education/campaign/audit after paused-load fix",
+      "passed": true,
+      "counts": {
+        "tests": 25,
+        "pass": 25,
+        "fail": 0,
+        "skipped": 0
+      },
+      "scope": "24.35s; nine education tests including paused legacy preparation without clock/cash/ID/reward changes"
+    },
+    {
+      "name": "final npm run build",
+      "passed": true,
+      "scope": "15.46s; application/core paused-load preparation, two existing large lazy chunks remain"
     }
   ],
   "sourceManifest": [
@@ -373,7 +389,7 @@
     },
     {
       "file": "src/game/core.js",
-      "sha256": "e55ad26e6b3859339b8dfbf94a6d1e2679a045a9b1956d73369f294df0ec23f1"
+      "sha256": "7f526e695a393618cb32ae9208ddee4801f94d6de2c1df50d01037cabc427979"
     },
     {
       "file": "src/game/geography/city.js",
@@ -465,7 +481,7 @@
     },
     {
       "file": "tests/education.test.js",
-      "sha256": "109ab38ecda0cbe03cc19237f6208eb65ce18ee500daf1f6ca3aff1653902093"
+      "sha256": "d2329414c609f574e8f9e88a3ac6038bb5bd2bdc4bbf170d5f91a0cf7c745fd1"
     },
     {
       "file": "tests/foundation.test.js",

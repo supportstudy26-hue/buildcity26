@@ -169,8 +169,12 @@ export function validateSave(raw){
 }
 
 // Stable simulation step. Renderer never mutates the world.
+export function prepareEducation(s){
+  if(s.educationVersion===1)return false;
+  reconcileSociety(s,SIZE,random);return true;
+}
 export function stepSimulation(s){
-  if(s.educationVersion!==1)reconcileSociety(s,SIZE,random);
+  prepareEducation(s);
   const previous=s.day,weatherWindow=weatherState(s).window,c=clockStep(s);if(weatherState(s).window!==weatherWindow)analyze(s);
   if(c.day!==previous)dailyUpdate(s);
   if(updateConstruction(s)){s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);updateProgression(s,true);}

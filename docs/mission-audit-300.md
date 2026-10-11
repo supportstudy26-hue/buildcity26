@@ -1,6 +1,6 @@
 # Kiểm toán 300 nhiệm vụ Build City 26
 
-Tạo lúc 2026-10-11T06:42:46.015Z. Catalogue `bc26-main-300-v1`.
+Tạo lúc 2026-10-11T06:52:20.138Z. Catalogue `bc26-main-300-v1`.
 
 Code khai báo **110 nhiệm vụ có provider**, **190 thiếu provider**. Kết quả 104/196 trước đây đã thay đổi. Đây không phải số nhiệm vụ đã playtest hoàn tất.
 
@@ -24,6 +24,8 @@ Chạy lại: `node scripts/audit-missions.mjs --verify`. JSON chứa condition 
 | npm test | PASS | Full repository, 73.52s; education subset at six tests, plus legacy saves, accounts, RLS database, clock, renderer and missions |
 | tests/education.test.js final | PASS | 9.41s; actual trips/study, stage 6 unlock/hold/reward, old save, teacher capacity, upgrade, utility loss, demolition and bounded server replay |
 | npm run build | PASS | 8.49s; Vite build with two existing >500kB lazy chunks; no lint/typecheck scripts |
+| education/campaign/audit after paused-load fix | PASS | 24.35s; nine education tests including paused legacy preparation without clock/cash/ID/reward changes |
+| final npm run build | PASS | 15.46s; application/core paused-load preparation, two existing large lazy chunks remain |
 | Đọc condition 300 ID | PASS | Empty/starter không sửa metric; so availability với evaluator |
 | Prerequisite DAG | PASS | Không vòng và không ID mồ côi |
 | EXP 1–100 | PASS | 297 nhiệm vụ: 4230468; cấp 100; 3 cuối thêm 125732 lifetime XP; tối đa 100 |
