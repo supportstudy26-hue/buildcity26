@@ -1,4 +1,5 @@
 import {LANDMARKS} from '../config/landmarks.js';
+import {ARRIVAL_BALANCE} from '../config/resident-arrivals.js';
 import {ROAD_PROFILES,DIRECTION_VECTORS} from '../config/road-profiles.js';
 import {isJunction} from './systems/junctions.js';
 import {decodeCity} from '../services/city-codec.js';
@@ -58,6 +59,9 @@ export function analyze(s){
   const {connected,services,roadAt,pop,jobs,homes,upkeep,powerNeed,waterNeed,power,water,sewage}=analyzeUtilities(s);
   let happySum=0,pollutionSum=0,occupied=0;
   const workforce=Math.floor(pop*.55);const employment=workforce?Math.min(1,jobs/workforce):1;
+  // A tiny settlement should not lose the full satisfaction penalty as soon as
+  // its second resident arrives. Job statistics remain unchanged.
+  const employmentPenalty=(1-employment)*22*Math.min(1,pop/ARRIVAL_BALANCE.starterPopulation);
   const roadCount=s.tiles.filter(isRoad).length;
   const landscape=s.tiles.flatMap((a,n)=>LANDMARKS[a.kind]&&a.active?[{n,range:LANDMARKS[a.kind].range,amenity:LANDMARKS[a.kind].amenity}]:[]);
   s.network={connected,services,roadAt};
@@ -66,7 +70,7 @@ export function analyze(s){
   s.tiles.forEach((t,i)=>{
     if(t.kind==='residential'){
       t.landscapeBonus=Math.min(6,Math.max(0,...landscape.filter(a=>distance(i,a.n)<=a.range).map(a=>a.amenity)));
-      const h=clamp(72+t.landscapeBonus+Math.min(18,t.services.filter(k=>!['bus','waste','sewage'].includes(k)).length*5)+ (t.services.includes('waste')?4:-5)-t.pollution*.4-(t.garbage||0)*.1-(t.crime||0)*.15-(t.fire||0)*.3-(100-(t.health??100))*.12-(1-employment)*22-(100-traffic)*.1-Math.max(0,s.taxes.residential-10)*2-(!t.connected?28:0)-(!t.power?25:0)-(!t.water?25:0),0,100);
+      const h=clamp(72+t.landscapeBonus+Math.min(18,t.services.filter(k=>!['bus','waste','sewage'].includes(k)).length*5)+ (t.services.includes('waste')?4:-5)-t.pollution*.4-(t.garbage||0)*.1-(t.crime||0)*.15-(t.fire||0)*.3-(100-(t.health??100))*.12-employmentPenalty-(100-traffic)*.1-Math.max(0,s.taxes.residential-10)*2-(!t.connected?28:0)-(!t.power?25:0)-(!t.water?25:0),0,100);
       t.happiness=Math.round(h);happySum+=h*t.residents;pollutionSum+=t.pollution*t.residents;occupied+=t.residents;
     }
   });

@@ -27,13 +27,13 @@ test('zero residents become real arrivals after gate connection and three starte
  for(let n=0;n<60;n++)stepSimulation(s);assert.equal(s.citizens.length,0);assert.match(populationStatus(s).label,/cổng/);
  const plan=entryConnectionPlan(s,home);for(const i of plan.tiles)assert.ok(build(s,i,'road').ok);assert.equal(arrivalReady(s.tiles[home]),true);
  hud=makeHudSnapshot(s);assert.equal(hud.electricity.coveragePct,100);assert.equal(hud.water.coveragePct,100);
- for(let n=0;n<60;n++)stepSimulation(s);assert.equal(s.citizens.length,1);assert.equal(s.citizens[0].journey.origin,cityEntry(s));assert.equal(s.citizens[0].journey.purpose,'move-in');
+ for(let n=0;n<30;n++)stepSimulation(s);assert.equal(s.citizens.length,1);assert.equal(s.citizens[0].journey.origin,cityEntry(s));assert.equal(s.citizens[0].journey.purpose,'move-in');
  const copy=validateSave(JSON.parse(JSON.stringify(serialize(s))));assert.deepEqual(copy.citizens,s.citizens);assert.equal(copy.money,s.money);assert.equal(copy.tiles[home].connected,true);
 });
-test('job shortages name the actual next step, and a working shop permits more residents',()=>{
+test('job shortages suggest a working shop while residents continue settling',()=>{
  const s=isolated(),home=index(5,19),plan=entryConnectionPlan(s,home);for(const i of plan.tiles)assert.ok(build(s,i,'road').ok);
  for(const [x,k] of [[4,'smallPower'],[5,'smallWater'],[6,'smallSewage']])assert.ok(place(s,x,17,k).ok);
- for(let n=0;n<180;n++)stepSimulation(s);assert.ok(s.citizens.length>0);assert.equal(populationStatus(s).needsJobs,true);assert.match(populationStatus(s).label,/việc làm/);
+ for(let n=0;n<180;n++)stepSimulation(s);assert.ok(s.citizens.length>0);assert.equal(populationStatus(s).needsJobs,true);assert.match(populationStatus(s).label,/Đang đón/);assert.match(populationStatus(s).detail,/việc/);assert.equal(s.metrics.unemployment,100);assert.ok(s.tiles[home].happiness>=55);
  const before=s.citizens.length;assert.ok(place(s,7,17,'commercial').ok);assert.ok(s.metrics.jobs>0);for(let n=0;n<60;n++)stepSimulation(s);assert.ok(s.citizens.length>before);assert.equal(populationStatus(s).needsJobs,undefined);
 });
 test('occupied gate, stale plans and insufficient funds never silently replace buildings or change cash',()=>{

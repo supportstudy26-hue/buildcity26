@@ -3,6 +3,7 @@ import {emit} from './events.js';
 import { clamp } from './world.js';
 import { random } from './rng.js';
 import { residentCapacity } from '../../config/building-economy.js';
+import {arrivalReady,arrivalPace} from './resident-arrivals.js';
 export function updateLegacyServices(s){
   const m=s.metrics,c=campaign(s);c.waste={at:s.clock.seconds,generated:0,collected:0};
   s.tiles.forEach((t,i)=>{
@@ -24,7 +25,7 @@ export function updateLegacyServices(s){
     if(t.development)return; // Clock-based contracts/arrivals supersede daily random growth.
     // Pending zones are handled by updateDevelopment, including legacy saves.
     if(t.kind==='residential'){
-      if(t.active&&t.happiness>=48&&t.residents<residentCapacity(t)&&random(s)<m.demand.residential/100){t.residents=Math.min(residentCapacity(t),t.residents+1+Math.floor(random(s)*3));}
+      if(arrivalReady(t)&&random(s)<Math.max(.1,m.demand.residential/100)*Math.min(1,arrivalPace(s,t).rate)){t.residents=Math.min(residentCapacity(t),t.residents+1+Math.floor(random(s)*3));}
       else if((!t.active||t.happiness<35)&&t.residents>0)t.residents=Math.max(0,t.residents-1);
       // Existing levels stay intact; every new level now needs a paid upgrade contract.
     }

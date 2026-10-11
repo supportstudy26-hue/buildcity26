@@ -1,0 +1,433 @@
+{
+  "performance": {
+    "elapsedSeconds": 10,
+    "frames": 259,
+    "medianFps": 29.7,
+    "p95FrameMs": 50.10000000000582,
+    "cpuTickMedianMs": 0.29999998211860657,
+    "cpuTickP95Ms": 0.7000000178813934,
+    "longTasks": 1,
+    "longTaskMaxMs": 57,
+    "workerTickMs": null,
+    "mode": "3d",
+    "quality": "low",
+    "qualityPreference": "auto",
+    "pixelRatio": 1,
+    "triangles": 13632,
+    "regions": 16,
+    "drawCalls": 28,
+    "geometries": 11,
+    "textures": 1,
+    "fps": 29,
+    "citizens": 4,
+    "sharedMaterials": 12,
+    "camera": {
+      "target": [
+        110,
+        1.8,
+        370
+      ],
+      "distance": 220,
+      "yaw": 0.7853981633974483,
+      "polar": 0.92
+    },
+    "night": false,
+    "activeActors": 4,
+    "visibleActors": 4,
+    "renderedActors": 4,
+    "visibleSignals": 0,
+    "actorBudget": 30,
+    "population": 4,
+    "buildings": 5,
+    "roads": 11,
+    "simulationSeconds": 76,
+    "playback": {
+      "rule": "casual-time5-v1",
+      "multiplier": 1,
+      "paused": false,
+      "observe": false
+    },
+    "viewport": [
+      1280,
+      720
+    ],
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+    "platform": "MacIntel",
+    "logicalCores": 2,
+    "deviceMemoryGB": 8,
+    "heapBytes": 29132932,
+    "scenario": "Game đang chơi + HUD thật",
+    "meanFps": 25.9
+  },
+  "earlyGrowth": {
+    "name": "QA Đón dân dễ hơn",
+    "day": 0,
+    "seconds": 91,
+    "playback": {
+      "rule": "casual-time5-v1",
+      "multiplier": 1,
+      "paused": false,
+      "observe": false
+    },
+    "money": 9830800,
+    "population": 4,
+    "jobs": 0,
+    "workforce": 2,
+    "homes": 68,
+    "happiness": 36,
+    "unemployment": 100,
+    "traffic": 100,
+    "environment": 88,
+    "power": 0,
+    "powerNeed": 4,
+    "water": 15,
+    "waterNeed": 0.6,
+    "sewage": 0,
+    "sewageNeed": 0.6,
+    "garbage": 0,
+    "busForecast": 0,
+    "fires": 0,
+    "highCrime": 0,
+    "busPassengers": 0,
+    "transitCost": 0,
+    "busLines": 0,
+    "congestedRoads": 0,
+    "taxIncome": 320,
+    "transitIncome": 0,
+    "loanInterest": 0,
+    "income": 320,
+    "expenses": 411,
+    "net": -91,
+    "roadCount": 11,
+    "demand": {
+      "residential": 5,
+      "commercial": 36,
+      "industrial": 32
+    },
+    "residentArrival": {
+      "label": "Đang đón dân · khoảng 12 giây thực nữa",
+      "tile": 1220,
+      "conditions": [
+        {
+          "name": "Nối đường từ nhà về cổng vùng",
+          "title": "Nối đường",
+          "short": "nối đường về cổng",
+          "ok": true,
+          "tool": "road",
+          "required": true
+        },
+        {
+          "name": "Nước sạch được cấp tới nhà",
+          "title": "Cấp nước sạch",
+          "short": "thiếu nước sạch",
+          "ok": true,
+          "tool": "smallWater",
+          "required": true
+        },
+        {
+          "name": "Nhà không bị cháy lớn",
+          "title": "Nhà an toàn",
+          "short": "nhà đang cháy lớn",
+          "ok": true,
+          "tool": "fire",
+          "required": true
+        },
+        {
+          "name": "Điện giúp dân chuyển đến nhanh hơn",
+          "title": "Cấp điện",
+          "short": "thiếu điện",
+          "ok": false,
+          "tool": "smallPower",
+          "required": false
+        },
+        {
+          "name": "Nước thải giúp môi trường và tốc độ đón dân tốt hơn",
+          "title": "Xử lý nước thải",
+          "short": "chưa xử lý nước thải",
+          "ok": false,
+          "tool": "smallSewage",
+          "required": false
+        },
+        {
+          "name": "Hài lòng từ 55% giúp đón dân nhanh hơn",
+          "title": "Chất lượng sống",
+          "short": "hài lòng thấp",
+          "ok": false,
+          "tool": "park",
+          "required": false
+        }
+      ],
+      "ready": 4,
+      "waiting": 0,
+      "pace": {
+        "starter": true,
+        "rate": 0.8064727272727272,
+        "interval": 75,
+        "remaining": 57,
+        "realSeconds": 12,
+        "needsJobs": true
+      },
+      "needsJobs": true,
+      "detail": "2 người cần việc · 0 chỗ làm. Dân vẫn chuyển đến; thêm cửa hàng để tăng việc làm và hài lòng."
+    },
+    "geography": null
+  },
+  "paused": {
+    "name": "QA Đón dân dễ hơn",
+    "day": 0,
+    "seconds": 761,
+    "playback": {
+      "rule": "casual-time5-v1",
+      "multiplier": 1,
+      "paused": true,
+      "observe": false
+    },
+    "money": 9830800,
+    "population": 35,
+    "jobs": 0,
+    "workforce": 19,
+    "homes": 68,
+    "happiness": 30,
+    "unemployment": 100,
+    "traffic": 100,
+    "environment": 88,
+    "power": 0,
+    "powerNeed": 35,
+    "water": 15,
+    "waterNeed": 5.25,
+    "sewage": 0,
+    "sewageNeed": 5.25,
+    "garbage": 0,
+    "busForecast": 0,
+    "fires": 0,
+    "highCrime": 0,
+    "busPassengers": 0,
+    "transitCost": 0,
+    "busLines": 0,
+    "congestedRoads": 0,
+    "taxIncome": 2800,
+    "transitIncome": 0,
+    "loanInterest": 0,
+    "income": 2800,
+    "expenses": 535,
+    "net": 2265,
+    "roadCount": 11,
+    "demand": {
+      "residential": 5,
+      "commercial": 44,
+      "industrial": 49
+    },
+    "residentArrival": {
+      "label": "Sẵn sàng đón dân · đang tạm dừng",
+      "tile": 1221,
+      "conditions": [
+        {
+          "name": "Nối đường từ nhà về cổng vùng",
+          "title": "Nối đường",
+          "short": "nối đường về cổng",
+          "ok": true,
+          "tool": "road",
+          "required": true
+        },
+        {
+          "name": "Nước sạch được cấp tới nhà",
+          "title": "Cấp nước sạch",
+          "short": "thiếu nước sạch",
+          "ok": true,
+          "tool": "smallWater",
+          "required": true
+        },
+        {
+          "name": "Nhà không bị cháy lớn",
+          "title": "Nhà an toàn",
+          "short": "nhà đang cháy lớn",
+          "ok": true,
+          "tool": "fire",
+          "required": true
+        },
+        {
+          "name": "Điện giúp dân chuyển đến nhanh hơn",
+          "title": "Cấp điện",
+          "short": "thiếu điện",
+          "ok": false,
+          "tool": "smallPower",
+          "required": false
+        },
+        {
+          "name": "Nước thải giúp môi trường và tốc độ đón dân tốt hơn",
+          "title": "Xử lý nước thải",
+          "short": "chưa xử lý nước thải",
+          "ok": false,
+          "tool": "smallSewage",
+          "required": false
+        },
+        {
+          "name": "Hài lòng từ 55% giúp đón dân nhanh hơn",
+          "title": "Chất lượng sống",
+          "short": "hài lòng thấp",
+          "ok": false,
+          "tool": "park",
+          "required": false
+        }
+      ],
+      "ready": 3,
+      "waiting": 0,
+      "pace": {
+        "starter": true,
+        "rate": 0.7327272727272728,
+        "interval": 82,
+        "remaining": 16,
+        "realSeconds": 4,
+        "needsJobs": true
+      },
+      "needsJobs": true,
+      "detail": "19 người cần việc · 0 chỗ làm. Dân vẫn chuyển đến; thêm cửa hàng để tăng việc làm và hài lòng."
+    },
+    "geography": null
+  },
+  "reloaded": {
+    "name": "QA Đón dân dễ hơn",
+    "day": 0,
+    "seconds": 761,
+    "playback": {
+      "rule": "casual-time5-v1",
+      "multiplier": 1,
+      "paused": true,
+      "observe": false
+    },
+    "money": 9830800,
+    "population": 35,
+    "jobs": 0,
+    "workforce": 19,
+    "homes": 68,
+    "happiness": 30,
+    "unemployment": 100,
+    "traffic": 100,
+    "environment": 88,
+    "power": 0,
+    "powerNeed": 35,
+    "water": 15,
+    "waterNeed": 5.25,
+    "sewage": 0,
+    "sewageNeed": 5.25,
+    "garbage": 0,
+    "busForecast": 0,
+    "fires": 0,
+    "highCrime": 0,
+    "busPassengers": 0,
+    "transitCost": 0,
+    "busLines": 0,
+    "congestedRoads": 0,
+    "taxIncome": 2800,
+    "transitIncome": 0,
+    "loanInterest": 0,
+    "income": 2800,
+    "expenses": 535,
+    "net": 2265,
+    "roadCount": 11,
+    "demand": {
+      "residential": 5,
+      "commercial": 44,
+      "industrial": 49
+    },
+    "residentArrival": {
+      "label": "Sẵn sàng đón dân · đang tạm dừng",
+      "tile": 1221,
+      "conditions": [
+        {
+          "name": "Nối đường từ nhà về cổng vùng",
+          "title": "Nối đường",
+          "short": "nối đường về cổng",
+          "ok": true,
+          "tool": "road",
+          "required": true
+        },
+        {
+          "name": "Nước sạch được cấp tới nhà",
+          "title": "Cấp nước sạch",
+          "short": "thiếu nước sạch",
+          "ok": true,
+          "tool": "smallWater",
+          "required": true
+        },
+        {
+          "name": "Nhà không bị cháy lớn",
+          "title": "Nhà an toàn",
+          "short": "nhà đang cháy lớn",
+          "ok": true,
+          "tool": "fire",
+          "required": true
+        },
+        {
+          "name": "Điện giúp dân chuyển đến nhanh hơn",
+          "title": "Cấp điện",
+          "short": "thiếu điện",
+          "ok": false,
+          "tool": "smallPower",
+          "required": false
+        },
+        {
+          "name": "Nước thải giúp môi trường và tốc độ đón dân tốt hơn",
+          "title": "Xử lý nước thải",
+          "short": "chưa xử lý nước thải",
+          "ok": false,
+          "tool": "smallSewage",
+          "required": false
+        },
+        {
+          "name": "Hài lòng từ 55% giúp đón dân nhanh hơn",
+          "title": "Chất lượng sống",
+          "short": "hài lòng thấp",
+          "ok": false,
+          "tool": "park",
+          "required": false
+        }
+      ],
+      "ready": 3,
+      "waiting": 0,
+      "pace": {
+        "starter": true,
+        "rate": 0.7327272727272728,
+        "interval": 82,
+        "remaining": 16,
+        "realSeconds": 4,
+        "needsJobs": true
+      },
+      "needsJobs": true,
+      "detail": "19 người cần việc · 0 chỗ làm. Dân vẫn chuyển đến; thêm cửa hàng để tăng việc làm và hài lòng."
+    },
+    "geography": null
+  },
+  "mobile": {
+    "viewport": [
+      390,
+      844
+    ],
+    "layout": {
+      "closeRect": [
+        313,
+        76.296875,
+        44,
+        44
+      ],
+      "contentWidth": 358,
+      "modal": [
+        15,
+        63.296875,
+        360,
+        717.3984375
+      ],
+      "scrollHeight": 800,
+      "scrollWidth": 358,
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    "optionalPowerButton": {
+      "modalClosed": true,
+      "selectedTool": "smallPower"
+    },
+    "hardwarePhone": false
+  }
+}

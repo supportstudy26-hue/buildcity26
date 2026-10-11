@@ -1,5 +1,7 @@
 # Tiếp tục Build City 26
 
+Chặng mới nhất: nhập cư casual dễ hơn. Chỉ bắt buộc nhà còn chỗ, đường đúng cổng, nước sạch và không cháy lớn. Điện/nước thải/hài lòng/việc làm là yếu tố tốc độ; dưới100dân base30giây game/người/nhà, sau100 base60giây. Phạt thất nghiệp tăng dần trước100. Đọc src/config/resident-arrivals.js; giữ buffer save[0,60), clock1:5, ID/tiền/receipts, không SQL mới. Bảng đón dân ba điều kiện + phần tiện ích thu gọn + nút tiếp tục khi pause. Full235 PASS gồm20test chưa phát hành, focus12PASS, build5,06s; browser0→35dân chỉ có đường+nước, save giữ. Bằng chứng/giới hạn mới nhất trong implementation-status. Không đưa điều kiện48%/điện/nước thải bắt buộc ở phần lịch sử trở lại game.
+
 Giữ repo hiện tại, dữ liệu người chơi, tên công trình/ID và clock mặc định 1 giây thực = 5 giây game. Yêu cầu mới nhất: tài khoản/thành phố mới khởi đầu **10 tỷ ₫ game = 10.000.000 BC**, không reset tiền bản lưu đang có. Công trình hiện ngay khi đặt; giữ mô phỏng điều kiện hoạt động/cư dân. Không dùng API AI hoặc tài nguyên sao chép.
 
 GitHub supportstudy26-hue/buildcity26 → Vercel https://buildcity26.vercel.app/; đã có quyền push/deploy, không xin lại. Secret chỉ server. Supabase migration mới nhất đã chạy `202610110001_one_active_city.sql`; tạo mới phải review/xác nhận thay cũ, backup rồi RPC atomic/CAS. RLS/login/recovery/two device/receipt QA live đã có bằng chứng trong implementation-status. Không dùng tài khoản người chơi để thử phá/xóa thành phố.

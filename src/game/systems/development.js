@@ -1,5 +1,6 @@
 import {PRIVATE_PLANS,privatePlan,privateBuildPrice,residentCapacity} from '../../config/building-economy.js';
-import {arrivalReady} from './resident-arrivals.js';
+import {arrivalReady,arrivalPace} from './resident-arrivals.js';
+import {ARRIVAL_BALANCE} from '../../config/resident-arrivals.js';
 import {STEP_SECONDS} from '../../config/simulation.js';
 import {entityId,emit} from './events.js';
 export const DEVELOPMENT_RULE='private-casual-15min-v1';
@@ -31,7 +32,7 @@ export function updateDevelopment(s){
  for(const i of s._developmentQueue||[])if(materializeBuilding(s,i).ok)changed=true;
  // Early casual arrivals follow the same clock, not a day-long random tick.
  for(const i of s._developmentHomes||[]){const t=s.tiles[i];if(t.development?.version===1&&arrivalReady(t)){
-  t.development.arrivals+=STEP_SECONDS;if(t.development.arrivals>=60){t.development.arrivals-=60;t.residents++;changed=true;}
+  t.development.arrivals+=STEP_SECONDS*arrivalPace(s,t).rate;if(t.development.arrivals+1e-8>=ARRIVAL_BALANCE.progressPerResident){t.development.arrivals=Math.max(0,t.development.arrivals-ARRIVAL_BALANCE.progressPerResident);t.residents++;changed=true;}
  }
  }
  return changed;
