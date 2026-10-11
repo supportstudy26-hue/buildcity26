@@ -1,3 +1,4 @@
+import {pierParts} from './infrastructure-parts.js';
 import {landmarkDesign,landmarkParts} from './landmark-parts.js';
 import {facilityDesign,facilityParts} from './facility-designs.js';
 import {artForBuilding} from '../../config/building-art.js';
@@ -30,6 +31,7 @@ export const ARCHITECTURE_NAMES=Object.freeze([...homes,...shops,...factories,..
 export {designHash} from './design-variation.js';
 import {designHash} from './design-variation.js';
 export function buildingDesign(t,x,y){
+  if(t.kind==='bridgePier')return {id:'bridgePier',name:'Trụ cầu chữ T · 6 m',width:10,depth:5,height:6,footprint:[20,20],procedural:true};
   const hash=designHash(x,y),level=Math.max(1,Number(t.level)||1);
   const list=t.kind==='residential'?(level>=3?towers:homes):t.kind==='commercial'?shops:t.kind==='industrial'?factories:null;
   if(!list)return landmarkDesign(t)||facilityDesign(t);
@@ -37,6 +39,7 @@ export function buildingDesign(t,x,y){
   return{...item,artId:artForBuilding(t.kind,item.id).id,footprint:[20,20],entrance:[0,0,8.5],height:item.id==='townhouse'?(t.development?level+2:level===1?3:level===2?4:6)*3+2.5:towers.some(d=>d.id===item.id)?((item.id==='twin-apartment'?8:item.id==='balcony-apartment'?6:4)+Math.max(0,level-1))*3.1+3.5:floors?floors*3.1:item.height,floors,wall:walls[(hash>>>4)%walls.length],roofColor:roofs[(hash>>>9)%roofs.length],accent:['#529d98','#d89159','#7e9db4','#b56a53'][(hash>>>14)%4]};
 }
 export function buildingParts(t,x,y,cx,cz,base,overlay=null,tile=null){
+  if(t.kind==='bridgePier')return pierParts(cx,cz,base,6,tile,overlay);
   const design=buildingDesign(t,x,y);if(!design)return[];if(landmarkDesign(t))return landmarkParts(t,cx,cz,base,overlay,tile);if(facilityDesign(t))return facilityParts(t,cx,cz,base,overlay,tile);
   const reference=referenceBuildingParts(design,t,cx,cz,base,overlay,tile);if(reference)return reference;
   const parts=[],{id,width:w,depth:d,height:h,roof,roofColor,accent}=design,color=overlay||design.wall;

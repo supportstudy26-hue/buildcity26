@@ -15,7 +15,7 @@ export function startJourney(s,c,goal,route,size,allowTransit=true) {
   let mode=c.busPlan?'walk':c.vehicle?'car':'walk';let roads=route(s,c.retryOrigin??c.goal,goal,mode);
   if(!roads.length&&mode==='car'){mode='walk';roads=route(s,c.retryOrigin??c.goal,goal,mode);}
   if(!roads.length) {c.state='blocked';c.waitReason='Chưa có đường nối nguồn và đích';c.retryGoal=goal;return;}
-  c.journey={id:`trip-${c.id}-${s.clock.step}`,origin:c.goal,destination:goal,mode,speed:mode==='car'?50/3.6:c.walkSpeed,path:mobilityPath(s,c.goal,goal,roads,size,mode,c.position),laneVersion:1,segment:0,distance:0,departedAt:s.clock.seconds,graphVersion:s.graphVersion};
+  c.journey={id:`trip-${c.id}-${s.clock.step}`,origin:c.goal,destination:goal,mode,speed:mode==='car'?90/3.6:c.walkSpeed,path:mobilityPath(s,c.goal,goal,roads,size,mode,c.position),laneVersion:1,segment:0,distance:0,departedAt:s.clock.seconds,graphVersion:s.graphVersion};
   if(c.busPlan?.stage==='walk-to-stop'){const line=s.busLines.find(l=>l.id===c.busPlan.line),dock=line&&busDock(s,line,line.stops.indexOf(goal));if(dock)c.journey.path[c.journey.path.length-1]={...dock.door};}
   if(c.missionTrip&&!c.busPlan)c.missionTrip.mode=mode;
   c.goal=goal;c.retryGoal=null;c.retryOrigin=null;c.state=mode==='car'?'in-vehicle':'walking';c.waitReason='';emit(s,'trip-started',c.id,{destination:goal,mode});

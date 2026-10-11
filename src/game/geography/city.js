@@ -21,7 +21,7 @@ function cellAverage(h,i){const x=i%64,y=Math.floor(i/64);return(h[y*65+x]+h[y*6
 export function geographyBuildRule(s,tile,kind){
   const g=s.world?.geography;if(!g||kind==='bulldoze')return {ok:true,factor:1};
   if(!g.insideProvince[tile])return {ok:false,message:'Ô đất nằm ngoài địa phương được chọn.'};
-  const slope=slopeAt(s.world,tile,SIZE),road=ROAD_KINDS.includes(kind);
+  const slope=slopeAt(s.world,tile,SIZE),road=ROAD_KINDS.includes(kind)||kind==='bridgePier';
   if(s.tiles[tile].terrain==='water'&&!road)return {ok:false,message:'Không xây công trình trên biển, hồ hoặc sông. Chưa có công trình hỗ trợ mặt nước.'};
   if(!s.tiles[tile].terrain.startsWith('water')&&Math.min(...cellHeights(s.world,tile,SIZE))<0)return {ok:false,message:'Đất thấp hơn mực biển. Chưa có hệ thống đê/bảo vệ ngập.'};
   // Roads use supported terraces and ramps on hills. Keep the building limit:

@@ -1,7 +1,8 @@
+import {roadProfile} from '../../config/road-profiles.js';
 // View-only framing: never changes the city, simulation or saved camera controls.
 export function cityFocus(s,width=1280){
   const size=s.mapSize||64,buildings=[],roads=[];
-  s.tiles.forEach((t,i)=>{if(t.kind||t.zone)(['road','avenue'].includes(t.kind)?roads:buildings).push(i);});
+  s.tiles.forEach((t,i)=>{if(t.kind||t.zone)(roadProfile(t)?roads:buildings).push(i);});
   const points=buildings.length?buildings:roads;
   if(!points.length){const i=s.world?.geography?.entryTile??18*size;return {x:Math.min(size-1,i%size+2),y:Math.floor(i/size),distance:width<600?320:240};}
   let minX=size,maxX=0,minY=size,maxY=0;

@@ -1,11 +1,12 @@
 import {roadProfile} from '../../config/road-profiles.js';
+import {roadHasFrontage} from '../systems/road-network.js';
 import {SIZE,neighbors,isRoad} from '../systems/world.js';
 import {surfaceHeight} from '../systems/terrain.js';
 // Buildings retain their save IDs and footprint. Their local +Z doorway faces
 // the adjacent connected road; decoration never changes navigation/collision.
 export function orientBuildingToRoad(s,i,parts,base){
  const x=i%SIZE,y=Math.floor(i/SIZE),cx=(x+.5)*20,cz=(y+.5)*20;
- const candidates=neighbors(i).filter(n=>isRoad(s.tiles[n])).sort((a,b)=>Number(s.tiles[b].connected)-Number(s.tiles[a].connected)||a-b);
+ const candidates=neighbors(i).filter(n=>roadHasFrontage(s.tiles[n])).sort((a,b)=>Number(s.tiles[b].connected)-Number(s.tiles[a].connected)||a-b);
  if(!candidates.length)return parts;
  const road=candidates[0],dx=road%SIZE-x,dz=Math.floor(road/SIZE)-y,yaw=Math.atan2(dx,dz),cos=Math.cos(yaw),sin=Math.sin(yaw);
  const rotated=parts.map(p=>{const px=p.position[0]-cx,pz=p.position[2]-cz;return {...p,position:[cx+px*cos+pz*sin,p.position[1],cz-px*sin+pz*cos],rotation:{...p.rotation,yaw:(p.rotation?.yaw||0)+yaw}};});
@@ -14,7 +15,7 @@ export function orientBuildingToRoad(s,i,parts,base){
  return rotated;
 }
 export function streetFurniture(s,i,base,width){
- const t=s.tiles[i];if(t.terrain==='water'||(roadProfile(t)?.trees?i%2!==0:i%4!==0))return[];
+ const t=s.tiles[i];if(roadProfile(t)?.frontage===false||t.terrain==='water'||(roadProfile(t)?.trees?i%2!==0:i%4!==0))return[];
  const x=i%SIZE,y=Math.floor(i/SIZE),cx=(x+.5)*20,cz=(y+.5)*20,parts=[];
  const add=(shape,px,py,pz,w,h,d,color,role,material='concrete')=>parts.push({shape,position:[px,py,pz],scale:[w,h,d],color,role,material,detail:true,tile:i});
  // Sparse road-side detail is outside lane centres and away from junctions.

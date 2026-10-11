@@ -27,16 +27,16 @@ export function objectiveProgress(condition){
  return condition.ok?1:condition.operator==='lte'?0:condition.target>0?Math.max(0,Math.min(1,condition.value/condition.target)):0;
 }
 export function utilitySnapshot(s,kind,ctx=metricContext(s)){
- const consumers=ctx.buildings.filter(t=>(!LANDMARKS[t.kind]||LANDMARKS[t.kind][kind]>0)&&!['power','water','busStop'].includes(serviceKind(t.kind)));
+ const consumers=ctx.buildings.filter(t=>(!LANDMARKS[t.kind]||LANDMARKS[t.kind][kind]>0)&&!CATALOG[t.kind]?.infrastructure&&!['power','water','busStop'].includes(serviceKind(t.kind)));
  const served=consumers.filter(t=>t[kind]).length;
  return {coveragePct:consumers.length?served/consumers.length*100:undefined,served,denominator:consumers.length,definition:'Công trình được cấp đủ tải trong phạm vi và nối đường, gồm nhà trống đang chờ dân. Không tính nguồn điện/nước và điểm dừng. Nhu cầu tiêu thụ tăng khi dân chuyển đến.',capacity:s.metrics[kind],demand:s.metrics[kind+'Need'],unit:kind==='power'?'kW':'m³/ngày',activeBuildings:ctx.buildings.filter(t=>serviceKind(t.kind)===kind&&operating(t)).length};
 }
 function cityAlerts(s){
  const alerts=[];
  const add=(id,title,message,icon,test)=>{const i=s.tiles.findIndex(test);if(i>=0)alerts.push({id,title,message,icon,location:{x:i%64,y:Math.floor(i/64)}});};
- add('disconnected','Công trình mất kết nối','Nối đường từ cổng vùng đến công trình.','road',t=>t.kind&&!!!roadProfile(t)&&!t.connected);
- add('power','Thiếu điện','Kiểm tra phạm vi, đường nối và công suất trạm điện.','electricity',t=>t.kind&&!roadProfile(t)&&!['power','smallPower'].includes(t.kind)&&!t.power);
- add('water','Thiếu nước sạch','Kiểm tra phạm vi và công suất trạm cấp nước.','water',t=>t.kind&&!roadProfile(t)&&!['water','smallWater','waterPump'].includes(t.kind)&&!t.water);
+ add('disconnected','Công trình mất kết nối','Nối đường từ cổng vùng đến công trình.','road',t=>t.kind&&!CATALOG[t.kind]?.infrastructure&&!!!roadProfile(t)&&!t.connected);
+ add('power','Thiếu điện','Kiểm tra phạm vi, đường nối và công suất trạm điện.','electricity',t=>t.kind&&!CATALOG[t.kind]?.infrastructure&&!roadProfile(t)&&!['power','smallPower'].includes(t.kind)&&!t.power);
+ add('water','Thiếu nước sạch','Kiểm tra phạm vi và công suất trạm cấp nước.','water',t=>t.kind&&!CATALOG[t.kind]?.infrastructure&&!roadProfile(t)&&!['water','smallWater','waterPump'].includes(t.kind)&&!t.water);
  add('sewage','Thiếu xử lý nước thải','Trạm xử lý cần điện, nước và đường.','sewage',t=>t.kind==='residential'&&!t.sewage);
  add('fire','Công trình đang cháy','Bố trí cứu hỏa có tiện ích và kết nối.','fire',t=>t.fire>0);
  add('congestion','Đường quá tải','Nâng đại lộ hoặc bổ sung tuyến xe buýt phù hợp.','transport',t=>!!roadProfile(t)&&t.trafficLoad>t.trafficCapacity);

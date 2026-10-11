@@ -14,6 +14,7 @@ home.querySelectorAll('[data-home-action]').forEach(button=>button.onclick=async
  const status=document.getElementById('landingStatus');status.hidden=false;status.textContent='Đang mở thành phố…';button.disabled=true;
  try{const api=await loadGame();status.hidden=true;
   if(action==='play')api.startBuilding();
+  else if(action==='continue'){showGame();api.enterGame();}
   else if(action==='login'||action==='register')api.openAccount(action);
   else if(action==='map')api.openGeography();
   else if(action==='guide')api.openGuide();

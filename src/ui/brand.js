@@ -1,0 +1,4 @@
+// Original SVG mark: a tiled roof, a stepped skyline and a river/road ribbon.
+// Shared by the landing page, account forms, HUD and favicon; no image runtime.
+export const BRAND_PATHS=`<rect width="64" height="64" rx="18" fill="#174d43"/><path d="M13 43V29l10-7 10 7v14" fill="#e8d5aa"/><path d="m11 29 12-9 12 9" fill="none" stroke="#f5e9d0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M35 43V15h13v28" fill="#a5d4bc"/><path d="M48 43V26h6v17" fill="#70b79e"/><path d="M39 21h5m-5 7h5m-5 7h5M20 34h6" stroke="#174d43" stroke-width="2.5" stroke-linecap="round"/><path d="M10 48h43l-12 6H17" fill="#d1ae70"/><path d="M28 48h9" stroke="#fff1d4" stroke-width="2" stroke-linecap="round"/>`;
+export function brandMark(size=48){return `<svg class="brand-symbol" width="${size}" height="${size}" viewBox="0 0 64 64" aria-hidden="true" focusable="false">${BRAND_PATHS}</svg>`;}

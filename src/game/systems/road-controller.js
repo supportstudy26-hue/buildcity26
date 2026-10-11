@@ -1,4 +1,5 @@
 import {roadProfile} from '../../config/road-profiles.js';
+import {position,SIZE} from './world.js';
 import {isJunction,junctionAllows} from './junctions.js';
 const direction=j=>{const a=j.path[j.segment],b=j.path[j.segment+1],dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);return d?[dx/d,dy/d]:[0,0];};
 export function roadControllers(s){
@@ -15,6 +16,12 @@ export function roadControllers(s){
   const next=j.path[j.segment+1],road=next.road;
   const current=j.path[j.segment].road,p=roadProfile(s.tiles[road??current]);
   if(p&&j.mode!=='walk')speed=Math.min(speed,p.speed/3.6);
+  if(p?.circle&&next.roundaboutEntry&&j.mode!=='walk'&&current!==road){
+   const centre=position(road,SIZE,s),bx=Math.floor(centre.x/20),by=Math.floor(centre.y/20);let occupied=false;
+   for(let oy=-1;oy<=1;oy++)for(let ox=-1;ox<=1;ox++)for(const o of buckets.get(`${bx+ox},${by+oy}`)||[])if(o.id!==c.id&&Math.abs((o.z||0)-centre.z)<2&&Math.hypot(o.x-centre.x,o.y-centre.y)<p.circle.outer-.25)occupied=true;
+   const remaining=Math.hypot(next.x-c.position.x,next.y-c.position.y);
+   if(occupied){speed=Math.min(speed,Math.max(0,remaining-.8));reason='Nhường xe trong vòng xuyến';}
+  }
   if(road!=null&&isJunction(s,road)){
    const remaining=Math.hypot(next.x-c.position.x,next.y-c.position.y);
    const stop=(p?.width||12)/2+1,allowed=junctionAllows(s,road,dx,dy,j.mode);
@@ -30,7 +37,7 @@ export function roadControllers(s){
   if(j.mode==='car'){
    const x=Math.floor(c.position.x/20),y=Math.floor(c.position.y/20);
    for(let oy=-1;oy<=1;oy++)for(let ox=-1;ox<=1;ox++)for(const other of buckets.get(`${x+ox},${y+oy}`)||[]){
-    if(other.id===c.id||other.heading[0]*dx+other.heading[1]*dy<.80)continue;
+    if(Math.abs((other.z||0)-(c.position.z||0))>2||other.id===c.id||other.heading[0]*dx+other.heading[1]*dy<.80)continue;
     const rx=other.x-c.position.x,ry=other.y-c.position.y,ahead=rx*dx+ry*dy,side=Math.abs(-rx*dy+ry*dx);
     const gap=(c.kind==='bus'?6:2)+(other.length?other.length/2:2)+3;
     if(ahead>0&&side<1.9&&ahead<gap+j.speed){const safe=Math.max(0,ahead-gap);if(safe<speed){speed=safe;reason='Giữ khoảng cách với xe phía trước';}}

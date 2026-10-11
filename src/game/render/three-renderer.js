@@ -10,6 +10,7 @@ import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js'
 import {actorArt,citizenMotion,worldMobilityParts} from './mobility-models.js';
 import {placementGhost} from './build-ghost.js';
 import {createGableGeometry} from './gable-geometry.js';
+import {roadRingGeometry} from './road-ring.js';
 import * as T from 'three';
 import {STEP_SECONDS} from '../../config/simulation.js';
 import {SIZE,isRoad,CATALOG} from '../core.js';
@@ -22,12 +23,13 @@ export class ThreeCityRenderer{
   constructor(input,mini,getCity,view){
     this.canvas=input;this.view=view;this.mini=mini;this.mc=mini.getContext('2d');this.getCity=getCity;
     this.mode='3d';this.tool='inspect';this.layer='normal';this.night=false;this.follow=null;this.selected=null;this.hover=null;this.lastPaths=-1;this.renderAlpha=0;this.dragMode='pan';this.dead=false;
-    this.gpu=new T.WebGLRenderer({canvas:view,antialias:false,powerPreference:'low-power'});this.gpu.outputColorSpace=T.SRGBColorSpace;
+    this.gpu=new T.WebGLRenderer({canvas:view,antialias:true,powerPreference:'low-power'});this.gpu.outputColorSpace=T.SRGBColorSpace;
     this.scene=new T.Scene();this.scene.background=new T.Color('#e3edf2');this.scene.fog=new T.Fog('#e3edf2',1100,2400);
     this.camera=new T.PerspectiveCamera(43,1,.3,4000);this.target=vec(310,2,370);this.distance=410;this.yaw=Math.PI/4;this.polar=.86;
     this.sun=new T.DirectionalLight('#fff4df',2.1);this.sun.position.set(-300,900,180);this.sun.castShadow=true;this.sun.shadow.camera.left=-700;this.sun.shadow.camera.right=700;this.sun.shadow.camera.top=700;this.sun.shadow.camera.bottom=-700;this.sun.shadow.camera.near=1;this.sun.shadow.camera.far=1800;this.sun.shadow.bias=-.0004;this.scene.add(this.sun);
     this.ambient=new T.HemisphereLight('#eaf4ff','#547361',1.15);this.scene.add(this.ambient);this.scene.add(this.sun.target);
     this.geometries={rounded:new RoundedBoxGeometry(1,1,1,1,.10),sphere:new T.SphereGeometry(.5,8,6),gable:createGableGeometry(T),box:new T.BoxGeometry(1,1,1),window:new T.BoxGeometry(1,1,1),cone:new T.ConeGeometry(.5,1,7),cylinder:new T.CylinderGeometry(.5,.5,1,10),ico:new T.IcosahedronGeometry(.5,0)};
+    for(const [shape,kind] of [['roadRing1','roundabout'],['roadRing2','roundabout2']]){const p=roadProfile(kind);this.geometries[shape]=roadRingGeometry(T,p.circle.island,p.circle.outer);}
     this.material=new T.MeshLambertMaterial();this.windowMaterial=new T.MeshStandardMaterial({roughness:.28,metalness:.12,emissive:'#ffca81',emissiveIntensity:0});this.tileMaterial=new T.MeshLambertMaterial();this.metalMaterial=new T.MeshStandardMaterial({roughness:.58,metalness:.3});this.lampMaterial=new T.MeshBasicMaterial({color:'#fff5d4'});
     this.groundMaterial=new T.MeshLambertMaterial({vertexColors:true});this.waterMaterial=new T.MeshLambertMaterial({color:'#379bbc',transparent:true,opacity:.94});
     this.ghostGroup=new T.Group();this.scene.add(this.ghostGroup);this.connectionGroup=new T.Group();this.scene.add(this.connectionGroup);this.ghostMaterial=new T.MeshBasicMaterial({transparent:true,opacity:.36,depthWrite:false});this.pickables=[];this.regions=new Map();this.actorGroup=new T.Group();this.scene.add(this.actorGroup);this.actorMeshes=new Map();

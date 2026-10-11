@@ -50,7 +50,8 @@ CATALOG.school.description='120 chỗ cho trẻ 6–11 tuổi, tối đa 6 giáo
 CATALOG.secondarySchool.description='240 chỗ cho trẻ 12–17 tuổi, tối đa 12 giáo viên cư dân. Học sinh có đường và chỗ học thật; giáo viên phải đến lớp để giảng dạy. Học ngày thường 8–14h, cần đầy đủ tiện ích. Vận hành gồm nhân sự.';
 for(const [kind,p] of Object.entries(ROAD_PROFILES))CATALOG[kind]={...CATALOG[kind],name:p.name,cost:profilePrice(kind),upkeep:p.upkeep,color:'#536a6c',group:'roads',description:roadDescription(kind)};
 for(const [kind,d] of Object.entries(LANDMARKS))CATALOG[kind]={...d,color:'#9bba8e',group:'parks',description:landmarkDescription(kind),decorative:true};
+CATALOG.bridgePier={name:'Trụ cầu chữ T · 6 m',cost:80000,upkeep:50,color:'#a7b8be',group:'roads',infrastructure:true,decorative:true,description:'Trụ bê tông, móng và xà mũ cao 6 m. Đặt cầu cạn cao tốc trên cùng ô để hoàn thiện; giá trụ đã trả được khấu trừ một lần. Trụ chưa có mặt cầu không cho xe chạy, không cấp điện/nước. Có thể đặt trên đất hoặc mặt nước.'};
 export const serviceKind=kind=>CATALOG[kind]?.service||kind;
-export const BUILDINGS = Object.keys(CATALOG).filter(k=>['utilities','services','parks','transport'].includes(CATALOG[k].group));
+export const BUILDINGS = Object.keys(CATALOG).filter(k=>['utilities','services','parks','transport'].includes(CATALOG[k].group)||CATALOG[k].infrastructure);
 export const ZONES = ['residential','commercial','industrial'];
 export const ROADS = ROAD_KINDS;

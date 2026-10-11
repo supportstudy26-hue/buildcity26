@@ -104,7 +104,7 @@ export function place(s,x,y,kind,designId=null){
     const refund=Math.floor((t.historicalCost||0)*.25);recordCash(s,`demolish-${s.nextEntityId++}`,'salvage',refund,t.assetId);Object.assign(t,{kind:null,zone:null,level:0,residents:0,age:0,garbage:0,hazard:0,fire:0,crime:0,health:100,education:0,assetId:null,historicalCost:0,development:null,upgrade:null,blueprint:null,roadDirection:null,junctionControl:null});s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);return {ok:true,cost:-refund};
   }
   if(t.kind||t.zone){
-    if(ROADS.includes(t.kind)&&ROADS.includes(kind)&&t.kind!==kind){
+    if(ROADS.includes(t.kind)&&ROADS.includes(kind)&&t.kind!==kind||t.kind==='bridgePier'&&kind==='highwayViaduct'){
       const cost=quote.cost;
       recordCash(s,`upgrade-${s.nextEntityId++}`,'road-upgrade',-cost,t.assetId);t.historicalCost=(t.historicalCost||0)+cost;t.kind=kind;t.footprint={width:ROAD_PROFILES[kind].width,depth:20};if(ROAD_PROFILES[kind].oneWay)t.roadDirection??='east';else delete t.roadDirection;s.graphVersion++;analyze(s);return {ok:true,cost};
     }
@@ -146,7 +146,8 @@ export function validateSave(raw){
     if(t.kind&&ZONES.includes(t.kind)&&t.zone!==t.kind)throw new Error('Phân khu không khớp công trình.');
     if(t.kind&&!ZONES.includes(t.kind)&&t.zone)throw new Error('Công trình không khớp phân khu.');
     if(t.kind&&t.level<1||t.kind!=='residential'&&t.residents!==0)throw new Error('Dữ liệu công trình không khớp.');
-    if(t.terrain==='water'&&(t.zone||t.kind&&!ROADS.includes(t.kind)))throw new Error('Công trình trên sông không hợp lệ.');
+    if(t.terrain==='water'&&(ROAD_PROFILES[t.kind]?.circle||ROAD_PROFILES[t.kind]?.ramp))throw new Error('Vòng xuyến hoặc nhánh cầu trên mặt nước không hợp lệ.');
+    if(t.terrain==='water'&&(t.zone||t.kind&&!ROADS.includes(t.kind)&&t.kind!=='bridgePier'))throw new Error('Công trình trên sông không hợp lệ.');
     const garbage=t.garbage??0;if(!Number.isFinite(garbage)||garbage<0||garbage>100)throw new Error('Dữ liệu rác không hợp lệ.');
     const condition={hazard:t.hazard??0,fire:t.fire??0,crime:t.crime??0,health:t.health??100,education:t.education??0};
     if(Object.values(condition).some(n=>!Number.isFinite(n)||n<0||n>100))throw new Error('Tình trạng dịch vụ hoặc sự cố không hợp lệ.');

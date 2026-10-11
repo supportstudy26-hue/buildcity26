@@ -15,7 +15,7 @@ import {landmarkThumbnail} from '../src/ui/mesh-thumbnail.js';
 const city=()=>createEmptyCity({world:createTerrain(64,{flat:true}),startingCash:10000000});
 const command=(s,type,payload)=>executeCommand(s,{id:`qa-${s.commandSequence+1}`,sequence:s.commandSequence+1,type,payload});
 test('profiles quote the same metre-based cost charged by placement; upgrades retain asset identity and rebuild navigation',()=>{
- const s=city();for(let x=0;x<12;x++)assert.ok(place(s,x,18,'road').ok);
+ const s=city();for(let x=0;x<24;x++)assert.ok(place(s,x,18,'road').ok);
  for(const [n,k] of ROAD_KINDS.entries()){const x=n+1,i=index(x,18),before=s.money,q=placementQuote(s,i,k),id=s.tiles[i].assetId;if(k==='road')continue;assert.ok(q.ok);assert.ok(place(s,x,18,k).ok);assert.equal(before-s.money,q.cost);assert.equal(s.tiles[i].assetId,id);assert.equal(s.tiles[i].footprint.width,roadProfile(k).width);
   assert.ok(roadParts(s,x,18).every(p=>p.scale.every(v=>v>0)&&p.position.every(Number.isFinite)));
  }

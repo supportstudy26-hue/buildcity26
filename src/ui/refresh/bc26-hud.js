@@ -1,6 +1,7 @@
 import {patchView} from '../patch-view.js';
 import {normalizeSearch} from '../hud-snapshot.js';
 import { ICONS } from './icons.generated.js';
+import {brandMark} from '../brand.js';
 
 /** A UI adapter only. The host game owns simulation, costs, permissions and saving. */
 export function createCityHud(container, initialSnapshot = {}, onAction = () => {}) {
@@ -35,12 +36,12 @@ export function createCityHud(container, initialSnapshot = {}, onAction = () => 
   for(const[id,label]of[['terrain','Địa hình'],['bulldoze','Tháo dỡ']]){const n=el('button','bc26-tool');n.type='button';n.innerHTML=icon(id)+`<span>${label}</span>`;n.setAttribute('aria-label',label);n.setAttribute('aria-pressed','false');n.dataset.tool=id;n.addEventListener('click',()=>{selectTool(id);closeDrawer();emit('tool',{tool:id});});q('.bc26-bottom').append(n);}
   for(const[id,label,type]of[['map','Bản đồ Việt Nam','map'],['layers','Lớp dữ liệu','layers'],['mission','Nhiệm vụ','missions'],['ranking','Bảng xếp hạng','ranking'],['budget','Ngân sách','budget']])q('.bc26-right-tools').append(button(label,id,()=>type==='budget'?openDrawer({type:'stat',id:'money'}):type==='missions'?openDrawer({type:'mission'}):emit(type)));
   q('.bc26-mission-open').addEventListener('click',()=>openDrawer({type:'mission'}));
-  q('.bc26-logo').replaceChildren(button('Trang chủ','home',()=>emit('home')));
+  const homeButton=button('Trang chủ','home',()=>emit('home'));homeButton.innerHTML=brandMark(40);q('.bc26-logo').replaceChildren(homeButton);
   const inspect=button('Khám phá / xem công trình','search',()=>{selectTool('inspect');closeDrawer();emit('tool',{tool:'inspect'});});q('.bc26-bottom').prepend(inspect);
   const closeBtn=button('Đóng bảng','close',closeDrawer);q('.bc26-drawer-header').append(closeBtn);
   q('.bc26-backdrop').addEventListener('click',e=>{if(e.target===q('.bc26-backdrop'))closeDrawer();});
   root.addEventListener('keydown',e=>{if(!opened)return;if(e.key==='Escape'){e.preventDefault();e.stopPropagation();closeDrawer();return;}if(e.key==='Tab'){const candidates=[...q('.bc26-drawer').querySelectorAll('button:not(:disabled),input:not(:disabled),[tabindex="0"]')].filter(x=>!x.hidden);if(!candidates.length){e.preventDefault();return;}const first=candidates[0],last=candidates.at(-1);if(e.shiftKey&&(document.activeElement===first||document.activeElement===q('.bc26-drawer'))){e.preventDefault();last.focus();}else if(!e.shiftKey&&(document.activeElement===last||document.activeElement===q('.bc26-drawer'))){e.preventDefault();first.focus();}}});
-  function selectTool(id){root.querySelectorAll('[data-tool]').forEach(n=>n.setAttribute('aria-pressed',String(n.dataset.tool===id)));set('.bc26-tip',`Công cụ: ${tools.find(x=>x[0]===id)?.[1]||({terrain:'Địa hình',bulldoze:'Tháo dỡ'}[id])||id}`);}
+  function selectTool(id){root.querySelectorAll('[data-tool]').forEach(n=>n.setAttribute('aria-pressed',String(n.dataset.tool===id)));set('.bc26-tip',`Công cụ: ${tools.find(x=>x[0]===id)?.[1]||({inspect:'Quan sát',terrain:'Địa hình',bulldoze:'Tháo dỡ'}[id])||id}`);}
   function closeDrawer(){if(opened?.type==='building')emit('closePanel');catalogueRefresh=null;drawerSignature=null;q('.bc26-backdrop').hidden=true;opened=null;q('.bc26-top').inert=false;q('.bc26-side').inert=false;q('.bc26-bottom').inert=false;q('.bc26-right-tools').inert=false;if(previousFocus?.isConnected)previousFocus.focus();}
   function openDrawer(spec){if(opened?.type===spec.type&&opened?.id===spec.id)return;catalogueRefresh=null;drawerSignature=null;if(!opened)previousFocus=document.activeElement;opened=spec;renderDrawer();q('.bc26-backdrop').hidden=false;for(const s of['.bc26-top','.bc26-side','.bc26-bottom','.bc26-right-tools'])q(s).inert=true;closeBtn.focus();}
   function detailRow(parent,label,value){const n=el('div','bc26-detail-row');n.append(el('span',null,label),el('strong',null,value));parent.append(n);}

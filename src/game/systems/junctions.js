@@ -1,7 +1,8 @@
 import {roadProfile} from '../../config/road-profiles.js';
 import {neighbors,SIZE} from './world.js';
-export function junctionApproaches(s,i){return neighbors(i).filter(n=>s.network?.connected.has(n)&&roadProfile(s.tiles[n])?.modes.includes('car'));}
-export function isJunction(s,i){return s.network?.connected.has(i)&&roadProfile(s.tiles[i])?.modes.includes('car')&&junctionApproaches(s,i).length>=3;}
+import {roadConnectionAllowed} from './road-network.js';
+export function junctionApproaches(s,i){return neighbors(i).filter(n=>roadConnectionAllowed(s,i,n)&&s.network?.connected.has(n)&&roadProfile(s.tiles[n])?.modes.includes('car'));}
+export function isJunction(s,i){return !roadProfile(s.tiles[i])?.circle&&!roadProfile(s.tiles[i])?.motorway&&s.network?.connected.has(i)&&roadProfile(s.tiles[i])?.modes.includes('car')&&junctionApproaches(s,i).length>=3;}
 // One protected approach at a time also protects left turns. 2 s amber + 2 s
 // clearance separate vehicle phases; all vehicle approaches stop for pedestrians.
 // A shared simulation clock drives meshes and vehicles, including save/load.
