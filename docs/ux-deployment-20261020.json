@@ -1,0 +1,72 @@
+{
+  "sourceCommit": "710109fd951c5a82d13860cfd51ca9e8297ca201",
+  "domain": "https://buildcity26.vercel.app",
+  "deployment": "Hwq2RWYjYf7DTuq1qeBXn5pZnC43",
+  "files": [
+    {
+      "path": "/",
+      "httpStatus": 200,
+      "bytes": 8848,
+      "sha256": "86b5dc7e7b50d3e0c1af2f20489bd90fd4af90b61f10eea2f8d156cbc008388d",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "/assets/game-BpkrTdl6.js",
+      "httpStatus": 200,
+      "bytes": 23070,
+      "sha256": "32ac68dfb842dfcd686cdc1b310a6918f7f50452339635819c2e0965085d884c",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "/assets/simulation-PQvaYsvy.js",
+      "httpStatus": 200,
+      "bytes": 887,
+      "sha256": "f4e06257362630a97996dc9bb59317c176f4f1aa666d2a70e257004093146643",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "/assets/simulation-bN5BDzud.css",
+      "httpStatus": 200,
+      "bytes": 44654,
+      "sha256": "9a3584bc31d54662898e3ed03dcbc935987ef4c731acbd5d473927b3c26ebc9a",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "/assets/game-DYIt3K8w.css",
+      "httpStatus": 200,
+      "bytes": 103332,
+      "sha256": "9064ae17a4238b01e225da7bde8d41046ce2300c3a86ca07ee98bd9916100710",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "/service-worker.js",
+      "httpStatus": 200,
+      "bytes": 5516,
+      "sha256": "96bb28fbe9a76f658bdc374fc19b2245d2689c30772fa9084b57d608e84e69b7",
+      "matchesLocalBuild": true
+    },
+    {
+      "path": "/brand.svg",
+      "httpStatus": 200,
+      "bytes": 596,
+      "sha256": "70f56c43b9063daf10627674c3715d63bf1d8ba71e3adda30f8a9bc81949d9ab",
+      "matchesLocalBuild": true
+    }
+  ],
+  "allMatch": true,
+  "checks": [
+    {
+      "name": "validate",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/supportstudy26-hue/buildcity26/actions/runs/39399994628/job/118552026510"
+    }
+  ],
+  "statuses": [
+    {
+      "context": "Vercel",
+      "state": "success",
+      "target_url": "https://vercel.com/build-city26/buildcity26/Hwq2RWYjYf7DTuq1qeBXn5pZnC43"
+    }
+  ]
+}

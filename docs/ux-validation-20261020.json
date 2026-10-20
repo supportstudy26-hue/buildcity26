@@ -41,7 +41,7 @@
   },
   "authRlsChanged": false,
   "sqlMigrationRequired": false,
-  "deploymentVerified": false,
+  "deploymentVerified": true,
   "responsive": [
     {
       "outside": [],
@@ -105,5 +105,14 @@
       "width": 1280,
       "height": 720
     }
+  },
+  "releaseCodeCommit": "710109fd951c5a82d13860cfd51ca9e8297ca201",
+  "vercelDeployment": "Hwq2RWYjYf7DTuq1qeBXn5pZnC43",
+  "ci": "success",
+  "productionLegacyPreserved": {
+    "population": 176,
+    "moneyBC": 12000000,
+    "seconds": 28273,
+    "paused": true
   }
 }
