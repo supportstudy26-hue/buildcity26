@@ -14,7 +14,7 @@ test('144 stable exact frames, 16 groups and original files match all 25 SHA has
  // Frames are silhouette crops, not equal thirds of the atlas.
  assert.notEqual(assets[0].frame.width,assets[0].atlasWidth/3);
 });
-test('43 original articulated designs have finite parts and separately identified pivots; unsupported models stay explicit',()=>{
+test('50 original articulated designs have finite parts and separately identified pivots; unsupported models stay explicit',()=>{
  let count=0;
  for(const a of Object.values(MobilityArtRegistry)){
   const d=mobilityDesign(a.id),parts=mobilityParts(a.id,{speed:1.3,distance:2});
@@ -23,7 +23,7 @@ test('43 original articulated designs have finite parts and separately identifie
   for(const p of parts){assert.ok(p.position.every(Number.isFinite));assert.ok(p.scale.every(x=>Number.isFinite(x)&&x>0));}
   assert.ok(parts.some(p=>p.pivot==='body'||p.pivot==='spine'));
   assert.ok(parts.some(p=>p.pivot?.includes('wheel')||p.pivot?.includes('thigh')));
- }assert.equal(count,43);
+ }assert.equal(count,50);
 });
 test('children have different head/leg proportions; stopped limbs and wheels do not use wall clock',()=>{
  const child=mobilityParts('pv-child-boy'),adult=mobilityParts('pv-adult-man');

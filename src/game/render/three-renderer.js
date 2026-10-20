@@ -1,3 +1,5 @@
+import {municipalActors} from '../systems/municipal-jobs.js';
+import {freightActors} from '../systems/logistics.js';
 import {roadProfile} from '../../config/road-profiles.js';
 import {isJunction} from '../systems/junctions.js';
 import {signalGlows} from './junction-parts.js';
@@ -80,20 +82,21 @@ export class ThreeCityRenderer{
     const parts=[],profile=PROFILES[this.quality],budget=actorBudget(s.citizens.length,this.quality,this.width<600);
     if(this.actorCity!==s||this.actorStep!==s.clock.step){
       this.actorCity=s;this.actorStep=s.clock.step;
-      this.activeCitizens=s.citizens.filter(c=>c.journey||c.state==='waiting-bus');
+      this.activeCitizens=s.citizens.filter(c=>!c.municipalAssignment&&(c.journey||c.state==='waiting-bus'));
       this.activeBuses=s.vehicles.filter(v=>v.kind==='bus'&&v.busPhase&&v.busPhase!=='depot');
+      this.activeFleet=[...municipalActors(s),...freightActors(s)];
       this.actorVehicles=new Map(s.vehicles.map(v=>[v.id,v]));
     }
     const vehicles=this.actorVehicles,point=vec(0,0,0),self=this;let visibleCount=0;
     function* candidates(){
       for(const c of self.activeCitizens){const p=self.actorPosition(c);point.set(p.x,p.z+1,p.y);if(!self.frustum.containsPoint(point))continue;visibleCount++;yield {c,p,d:point.distanceToSquared(self.camera.position)};}
-      for(const c of self.activeBuses){const p=self.actorPosition(c);point.set(p.x,p.z+2,p.y);if(!self.frustum.containsPoint(point))continue;visibleCount++;yield {c,p,d:point.distanceToSquared(self.camera.position),bus:true};}
+      for(const c of [...self.activeBuses,...self.activeFleet]){const p=self.actorPosition(c);point.set(p.x,p.z+2,p.y);if(!self.frustum.containsPoint(point))continue;visibleCount++;yield {c,p,d:point.distanceToSquared(self.camera.position),bus:true};}
     }
     const selected=nearestActors(candidates(),budget,this.follow);
     this.visibleActors=visibleCount;this.renderedActors=selected.length;
     for(const {c,p,d,bus} of selected){
       const journey=c.journey||c.trip,target=journey?.path[journey.segment+1],angle=target?Math.atan2(target.x-p.x,target.y-p.y):(c.visualYaw||0),distance=Math.sqrt(d),lod=distance<90?0:distance<profile.details+this.distance*.45?1:2;
-      const id=bus?vehicleArtId(c):c.journey?.mode==='car'?vehicles.get(c.vehicle)?.artId: c.artId;
+      const id=bus?(c.artId||vehicleArtId(c)):c.journey?.mode==='car'?vehicles.get(c.vehicle)?.artId: c.artId;
       const motion=bus?{speed:c.speed,distance:Math.max(0,(c.travelled||0)-(c.trip&&this.renderAlpha?(1-this.renderAlpha)*c.speed:0)),doors:c.doors,night:this.night}:citizenMotion(s,c,this.renderAlpha);
       parts.push(...worldMobilityParts(id||actorArt(s,c),motion,lod,p,angle,c.id));
     }
@@ -115,7 +118,7 @@ export class ThreeCityRenderer{
     this.visibleSignals=junctions.length;
   }
   minimap(){const s=this.getCity(),c=this.mc,w=this.mini.width,h=this.mini.height;for(let i=0;i<s.tiles.length;i++){const t=s.tiles[i];c.fillStyle=t.terrain==='water'?'#4c9eb7':isRoad(t)?'#4c6a70':CATALOG[t.kind||t.zone]?.color||'#7ba583';c.fillRect(i%SIZE*w/SIZE,Math.floor(i/SIZE)*h/SIZE,w/SIZE+.2,h/SIZE+.2);}drawEntryMini(c,s,w,h);c.strokeStyle='#fff';c.strokeRect(this.target.x/(SIZE*20)*w-10,this.target.z/(SIZE*20)*h-7,20,14);}
-  frame(ms){if(this.dead)return;this.raf=requestAnimationFrame(this.frame);if(document.hidden||document.body?.dataset.screen==='home'||!frameDue(ms,this.lastDraw,PROFILES[this.quality].fps))return;this.lastDraw=ms;const s=this.getCity();if(this.follow){const c=s.citizens.find(c=>c.id===this.follow)||s.vehicles.find(v=>v.id===this.follow);if(c){const p=this.actorPosition(c);this.target.x=p.x;this.target.z=p.y;}}
+  frame(ms){if(this.dead)return;this.raf=requestAnimationFrame(this.frame);if(document.hidden||document.body?.dataset.screen==='home'||!frameDue(ms,this.lastDraw,PROFILES[this.quality].fps))return;this.lastDraw=ms;const s=this.getCity();if(this.follow){const c=s.citizens.find(c=>c.id===this.follow)||s.vehicles.find(v=>v.id===this.follow)||[...municipalActors(s),...freightActors(s)].find(v=>v.id===this.follow);if(c){const p=this.actorPosition(c);this.target.x=p.x;this.target.z=p.y;}}
     this.updateCamera();if(ms-(this.lastCheck||0)>250||this.lastPaths<0){this.rebuild(s);this.lastCheck=ms;this.lastPaths=s.day;}
     const night=this.night;this.scene.background.set(night?'#182e3b':'#e3edf2');this.scene.fog.color.copy(this.scene.background);this.sun.intensity=night?.3:2.1;this.ambient.intensity=night?.75:1.15;this.windowMaterial.emissiveIntensity=night?.8:0;this.windowMaterial.color.set(night?'#ffe1a3':'#c4e6ef');
     this.matrix.multiplyMatrices(this.camera.projectionMatrix,this.camera.matrixWorldInverse);this.frustum.setFromProjectionMatrix(this.matrix);for(const r of this.regions.values()){const distance=r.center.distanceTo(this.target),limit=PROFILES[this.quality].details+this.distance*.35,selected=this.selected&&this.selected.x>=r.x&&this.selected.x<r.x+REGION&&this.selected.y>=r.y&&this.selected.y<r.y+REGION;r.detailed=detailVisible(r.detailed,distance,limit,selected);for(const m of r.assets.children){if(m.userData.detail)m.visible=r.detailed;m.castShadow=this.quality==='high'&&distance<600&&!m.userData.detail;}}

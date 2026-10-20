@@ -1,10 +1,12 @@
+import {LOGISTICS_BUILDINGS,logisticsBuildingParts} from './logistics-parts.js';
 import {designHash} from './design-variation.js';
 import {BUILDING_ART,artForBuilding} from '../../config/building-art.js';
 const heights={smallPower:8.6,power:8.6,smallWater:6.3,water:17,waterPump:8.3,smallSewage:5.8,sewage:7,treatmentPlant:8,waste:6.3,wasteCenter:9,school:8.1,secondarySchool:11,university:14.3,clinic:8,hospital:19,fire:10.3,fireCenter:14.3,police:11,policeCenter:18,bus:8,busStop:3.6,park:7,plaza:5.8,sportsPark:5.8};
-export function facilityDesign(t){const art=artForBuilding(t.kind);return heights[t.kind]?{id:t.kind,artId:BUILDING_ART[t.kind],name:art.nameVi,height:heights[t.kind]+(t.upgrade?(t.level-1)*3.5:0),width:18,depth:18,entrance:[0,0,8.5],footprint:[20,20]}:null;}
+export function facilityDesign(t){const logistics=LOGISTICS_BUILDINGS[t.kind];if(logistics)return {procedural:true,id:t.kind,name:logistics.name,height:logistics.height,width:18,depth:18,entrance:[0,0,8.5],footprint:[20,20]};const art=artForBuilding(t.kind);return heights[t.kind]?{id:t.kind,artId:BUILDING_ART[t.kind],name:art.nameVi,height:heights[t.kind]+(t.upgrade?(t.level-1)*3.5:0),width:18,depth:18,entrance:[0,0,8.5],footprint:[20,20]}:null;}
 // Low-poly metre-scale reconstructions of the supplied PNG references. Shared primitives,
 // no baked vehicles/occupancy, no change to service capacity or saved state.
 export function facilityParts(t,cx,cz,base,overlay=null,tile=null){
+ if(LOGISTICS_BUILDINGS[t.kind])return logisticsBuildingParts(t,cx,cz,base,overlay,tile);
  const design=facilityDesign(t);if(!design)return[];
  const parts=[],hash=designHash(Math.floor(cx/20),Math.floor(cz/20)),cream=overlay||['#ece5d2','#e1e4d7','#e5dcc9'][(hash>>>4)%3],teal=overlay||['#377f85','#547f83','#427b72'][(hash>>>9)%3],roof=['#ab6246','#b67852','#9b6148'][(hash>>>12)%3],steel='#849599',glass='#76b0b4',green='#73966c',pave='#c9cec0';
  const add=(shape,x,y,z,w,h,d,color,detail=false,rotation=null)=>parts.push({shape,position:[cx+x,base+y,cz+z],scale:[w,h,d],color:overlay||color,detail,rotation,material:shape==='window'?'glass':shape==='gable'?'tile':color===steel?'metal':color===green?'leaf':'concrete',tile});

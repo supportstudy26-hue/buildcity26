@@ -1,6 +1,6 @@
 import {gzipSync,gunzipSync,strToU8,strFromU8} from 'three/examples/jsm/libs/fflate.module.js';
 const FORMAT='bc26-city-payload-gzip-v1',MAX_RAW=16_000_000,MAX_CLOUD=2_000_000;
-const FIELDS=['tiles','world','households','citizens','firms','vehicles','contracts','commandReceipts','events','privateInvestment'];
+const FIELDS=['leisure','healthcare','municipal','logistics','tiles','world','households','citizens','firms','vehicles','contracts','commandReceipts','events','privateInvestment'];
 const byteLength=value=>strToU8(JSON.stringify(value)).length;
 function hash(bytes){let h=2166136261;for(const b of bytes)h=Math.imul(h^b,16777619)>>>0;return h.toString(16).padStart(8,'0');}
 function base64(bytes){let binary='';for(let i=0;i<bytes.length;i+=32768)binary+=String.fromCharCode(...bytes.subarray(i,i+32768));return btoa(binary);}

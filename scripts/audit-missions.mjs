@@ -52,6 +52,18 @@ const providers={
  public_transit_share_pct:[['src/game/systems/campaign.js','function sampleWindows'],['src/game/systems/campaign.js',"if(e.type==='trip-arrived')"]],
  operating_profit_per_game_minute:[['src/game/systems/campaign.js','function sampleWindows'],['src/game/systems/economy.js','export function dailyFinance']]
 };
+Object.assign(providers,{
+ health_access_pct:[['src/game/systems/healthcare.js','export function healthcareSnapshot']],
+ fire_access_pct:[['src/game/systems/municipal-access.js','export function municipalAccess']],
+ security_access_pct:[['src/game/systems/municipal-access.js','export function municipalAccess']],
+ healthy_trees:[['src/game/systems/leisure.js','export function leisureSnapshot']],
+ walkable_housing_pct:[['src/game/systems/leisure.js','export function walkableHousing']],
+ supply_fulfillment_pct:[['src/game/systems/logistics.js','export function logisticsSnapshot']],
+ delivered_units:[['src/game/systems/logistics.js','export function updateLogistics'],['src/game/systems/campaign.js','export function recordMissionEvent']],
+ visitors_served:[['src/game/systems/leisure.js','export function updateLeisure'],['src/game/systems/campaign.js','export function recordMissionEvent']],
+ completed_jobs:[...providers.completed_jobs,['src/game/systems/healthcare.js','export function updateHealthcare'],['src/game/systems/municipal-jobs.js','export function updateMunicipal']],
+ waste_collected_pct:[['src/game/systems/municipal-jobs.js','export function updateMunicipal'],['src/game/systems/campaign.js','function sampleWindows']]
+});
 const systems={
  foundation:{name:'Nhu cầu, đường tiếp cận, điện/nước, ngân sách và nhân lực dịch vụ',dependsOn:[],order:1},
  education:{name:'Chỗ học, đến trường, đào tạo, tốt nghiệp',dependsOn:['foundation'],order:2},
@@ -100,10 +112,10 @@ function systemFor(n){
 const missingRequirements={
  foundation:'Phải có nguồn nhu cầu thật, điều kiện vận hành, đường hợp lệ, công suất, chi phí và nhân lực; sau đó nối bộ đọc metric.',
  education:'Tiểu học/trung học đã có chỗ học, giáo viên, hành trình và lượt học. Còn thiếu ghi danh nghề/đại học và chu kỳ đào tạo/tốt nghiệp.',
- health:'Thiếu bệnh nhân/giường/công suất, đường tiếp cận, hoàn tất khám điều trị và vận chuyển cấp cứu áp dụng kết quả.',
- emergency:'Thiếu job kiểm tra/patrol có cooldown và kết quả thật, công suất tiếp cận và thời gian đáp ứng.',
- amenities:'Thiếu người sử dụng cơ sở thật/cooldown/công suất hoặc cây sống, vị trí hợp lệ và tuyến đi bộ tới tiện ích.',
- economy_logistics:'Thiếu loại công trình hoạt động đúng vai trò, đơn hàng, tồn kho, vận chuyển và xác nhận nhận hàng; hình mẫu kho/xưởng chưa đủ.',
+ health:'Khám/điều trị, giường, nhân lực và hành trình đi bộ đã có. Vận chuyển bằng xe cấp cứu, chuyển viện và các bộ lọc chuyên biệt còn thiếu.',
+ emergency:'Đã có xe cứu hỏa/tuần tra/kiểm tra có cooldown và kết quả. Các bộ lọc hoặc chỉ số thời gian đáp ứng chưa được hỗ trợ vẫn khóa rõ.',
+ amenities:'Công viên có khách tới, dùng rồi về, công suất/cooldown và cây. Thư viện, văn hóa và thể thao chuyên biệt chưa có đầy đủ vận hành riêng.',
+ economy_logistics:'Đã có nông trại, chế biến, kho, đơn và xe nhận/giao hàng. Logistics liên tỉnh/cảng và các bộ lọc tuyến vận tải nâng cao chưa có.',
  road_transit:'Thiếu bãi đỗ và chỗ đỗ đang phục vụ, độ trễ chuyến hoàn thành hoặc hành trình có chuyển ít nhất hai tuyến.',
  districts:'Thiếu vùng được đặt tên có ranh giới/diện tích và nhà có cư dân, cùng metric đếm quận.',
  utilities_environment:'Thiếu công trình đúng vai trò và mô phỏng phân phối/xử lý/tái chế; ô nhiễm tổng hiện tại không chứng minh không khí/tiếng ồn.',
@@ -171,6 +183,10 @@ function evidenceFor(n){
  if(['active_routes','passenger_trips','public_transit_share_pct','commute_minutes'].includes(n.metric))tests.add('tests/bus-operations.test.js');
  if(['waste_collected_pct','completed_jobs','happiness_pct','operating_profit_per_game_minute','debt','treasury'].includes(n.metric))tests.add('tests/economy-services.test.js');
  if(n.metric==='school_access_pct'||n.filters?.service==='school_attendance'||['primary_school','secondary_school'].includes(n.filters?.kind))tests.add('tests/education.test.js');
+ if(n.metric==='health_access_pct'||n.filters?.service==='healthcare')tests.add('tests/healthcare.test.js');
+ if(['fire_access_pct','security_access_pct','waste_collected_pct'].includes(n.metric)||['firefighting','fire_inspection','security_patrol','waste_collection'].includes(n.filters?.service))tests.add('tests/municipal-jobs.test.js');
+ if(['delivered_units','supply_fulfillment_pct'].includes(n.metric)||['farm','warehouse','food_factory','industrial_plant'].includes(n.filters?.kind))tests.add('tests/logistics.test.js');
+ if(['visitors_served','healthy_trees','walkable_housing_pct'].includes(n.metric))tests.add('tests/leisure.test.js');
  if(n.metric==='verified_save_count')tests.add('tests/campaign-database.test.js');
  return [...tests].filter(f=>existsSync(resolve(root,f)));
 }
@@ -187,12 +203,12 @@ function notesFor(n){
  const notes=[];
  if(['active_buildings','power_coverage_pct','water_coverage_pct','sewage_treated_pct'].includes(n.metric))notes.push('Provider hiện có chỉ chứng minh trạng thái vận hành/cấp tiện ích theo code hiện tại; chưa chứng minh phân công nhân viên hoặc công suất dịch vụ theo từng người.');
  if(n.metric==='traffic_flow_pct')notes.push('Điểm traffic hiện tính từ tải chuyến đi dự báo trong analyzeTraffic, không phải độ trễ chuyến xe đã hoàn thành.');
- if(n.metric==='completed_jobs'&&n.filters?.service==='waste_collection')notes.push('Thu gom thật làm giảm garbage và phát event; hiện xử lý theo ô/chu kỳ dịch vụ, chưa chứng minh xe rác hoàn tất tuyến và công suất toàn depot.');
+ if(n.metric==='completed_jobs'&&n.filters?.service==='waste_collection')notes.push('Xe có nhân viên, tải giới hạn và đường thật. Lượt thu gom chỉ ghi khi chở rác về trạm, không ghi từ coverage.');
  if(n.metric==='waste_collected_pct')notes.push('Tỷ lệ chu kỳ thu gom có thể gồm backlog đã thu; tổng collected không chỉ theo cohort rác vừa phát sinh.');
- if(n.metric==='operating_profit_per_game_minute')notes.push('Cửa sổ lọc ledger categories legacy-tax-estimate, maintenance-and-interest, bus-fare; doanh thu vẫn có phần legacy ước tính theo mô phỏng.');
+ if(n.metric==='operating_profit_per_game_minute')notes.push('Cửa sổ lấy các khoản vận hành đã ghi sổ, gồm thuế bán hàng và chi hàng hóa/y tế/công vụ. Thuế cơ bản vẫn có phần legacy ước tính; loại trừ vay và tiền thưởng.');
  if(n.metric==='employment_pct')notes.push('Mẫu số hiện lấy mọi cư dân 18–64; không có trạng thái muốn làm việc riêng.');
  if(n.metric==='school_access_pct'||n.filters?.service==='school_attendance'||['primary_school','secondary_school'].includes(n.filters?.kind))notes.push('Chỗ học giới hạn theo tuổi, đường, phạm vi, ngân sách và giáo viên tuyển thật. Lượt học cần học sinh và giáo viên tới trường, học 60 giây game; đây là lượt học/ngày, chưa phải tốt nghiệp.');
- if(n.filters?.kind==='university'||n.filters?.kind==='hospital')notes.push('Có công trình và tác động coverage; catalogue thừa nhận chưa có chỗ học/ghi danh/bằng cấp hoặc giường bệnh/hàng đợi riêng.');
+ if(n.filters?.kind==='university')notes.push('Đại học chưa có tuyển sinh, khóa học và tốt nghiệp riêng.');
  return notes;
 }
 
@@ -222,7 +238,7 @@ export function buildMissionAudit({checks=[],generatedAt=new Date().toISOString(
  const progression=auditProgression(),unlockAudit=auditUnlocks();
  const trackedFiles=new Set(['src/config/missions/missions-300.json','src/config/missions/metric-contract.json','src/config/missions/levels-1-100.json','src/config/missions/unlocks.json','src/config/catalog.js','src/config/building-economy.js','src/config/progression.js','src/game/core.js','src/game/systems/upgrades.js','scripts/audit-missions.mjs']);
  for(const m of rows)for(const n of m.metrics){for(const r of [...n.provider,...n.dispatchEvidence,...n.relatedCode])if(existsSync(resolve(root,r.file)))trackedFiles.add(r.file);for(const f of n.testFiles)trackedFiles.add(f);}
- return {schemaVersion:1,generatedAt,catalogueId:JSON.parse(read('src/config/missions/missions-300.json')).catalogueId,scope:'Static provider/condition/dependency/XP/unlock audit plus unmodified empty/starter read probes. Not a certification of all gameplay or live cloud deployment.',summary:{missionCount:rows.length,providerSupported:supported.length,missingProvider:unsupported.length,dependencyReachableWithProviders:reachable.length,providerSupportedButPrerequisiteBlocked:blockedByDependency.length,totalNotReachableWithProviders:rows.length-reachable.length,missingMetricFilterCount:filterGroups.size,firstMissingProvider:unsupported[0]?.id||null,firstCampaignBarrier:unsupported.filter(m=>m.stage===unsupported[0]?.stage).map(m=>m.id),earlierReport104196Matches:supported.length===104&&unsupported.length===196,fixtureAvailabilityAgreement:probeErrors.length===0,fixtureAvailabilityMismatches:probeErrors},blockedMissionIds:unsupported.map(m=>m.id),dependencyBlockedSupportedMissionIds:blockedByDependency.map(m=>m.id),checks,sourceManifest:[...trackedFiles].sort().map(file=>({file,sha256:createHash('sha256').update(read(file)).digest('hex')})),prerequisites:graph,progression,unlocks:unlockAudit,missingByMetricFilter:[...filterGroups.values()].map(g=>({...g,missionCount:g.missionIds.length})).sort((a,b)=>b.missionCount-a.missionCount||a.key.localeCompare(b.key)),repairOrder:repairs,limitations:['providerSupported nghĩa là evaluateCondition.supported và bộ lọc thực tế có dispatch; chưa có test chơi riêng đủ mục tiêu cho từng nhiệm vụ.','dependencyReachableWithProviders chỉ xét provider + dependency + curve; không chứng minh tiền, đất, dân, thời gian, nhân lực hoặc tier chơi được.','empty/starter là fixture do createCity tạo ra, chưa chọn địa lý Vietnam và chưa claim hết prerequisite. Các giá trị thiếu nhu cầu/baseline/window vẫn phải invalid.','Các metric có provider vẫn có hạn chế hợp đồng ghi ở từng leaf: nhân lực/công suất dịch vụ, thu gom không có chuyến xe và traffic từ tải dự báo.','Có module rail/aviation không có nghĩa mission kind/mode đã được nối. Audit lấy metricSupport/campaign làm nguồn tình trạng và ghi module liên quan.','Suite unit/database cục bộ không chứng minh tài khoản production, RLS trực tuyến, bản Vercel hoặc hiệu năng browser.'],missions:rows};
+ return {schemaVersion:1,generatedAt,catalogueId:JSON.parse(read('src/config/missions/missions-300.json')).catalogueId,scope:'Static provider/condition/dependency/XP/unlock audit plus unmodified empty/starter read probes. Not a certification of all gameplay or live cloud deployment.',summary:{missionCount:rows.length,providerSupported:supported.length,missingProvider:unsupported.length,dependencyReachableWithProviders:reachable.length,providerSupportedButPrerequisiteBlocked:blockedByDependency.length,totalNotReachableWithProviders:rows.length-reachable.length,missingMetricFilterCount:filterGroups.size,firstMissingProvider:unsupported[0]?.id||null,firstCampaignBarrier:unsupported.filter(m=>m.stage===unsupported[0]?.stage).map(m=>m.id),earlierReport104196Matches:supported.length===104&&unsupported.length===196,fixtureAvailabilityAgreement:probeErrors.length===0,fixtureAvailabilityMismatches:probeErrors},blockedMissionIds:unsupported.map(m=>m.id),dependencyBlockedSupportedMissionIds:blockedByDependency.map(m=>m.id),checks,sourceManifest:[...trackedFiles].sort().map(file=>({file,sha256:createHash('sha256').update(read(file)).digest('hex')})),prerequisites:graph,progression,unlocks:unlockAudit,missingByMetricFilter:[...filterGroups.values()].map(g=>({...g,missionCount:g.missionIds.length})).sort((a,b)=>b.missionCount-a.missionCount||a.key.localeCompare(b.key)),repairOrder:repairs,limitations:['providerSupported nghĩa là evaluateCondition.supported và bộ lọc thực tế có dispatch; chưa có test chơi riêng đủ mục tiêu cho từng nhiệm vụ.','dependencyReachableWithProviders chỉ xét provider + dependency + curve; không chứng minh tiền, đất, dân, thời gian, nhân lực hoặc tier chơi được.','empty/starter là fixture do createCity tạo ra, chưa chọn địa lý Vietnam và chưa claim hết prerequisite. Các giá trị thiếu nhu cầu/baseline/window vẫn phải invalid.','Các metric có provider vẫn có hạn chế hợp đồng ghi ở từng leaf: nhân lực/công suất dịch vụ, các loại vận tải còn thiếu và traffic từ tải dự báo.','Có module rail/aviation không có nghĩa mission kind/mode đã được nối. Audit lấy metricSupport/campaign làm nguồn tình trạng và ghi module liên quan.','Suite unit/database cục bộ không chứng minh tài khoản production, RLS trực tuyến, bản Vercel hoặc hiệu năng browser.'],missions:rows};
 }
 
 const esc=s=>String(s??'').replaceAll('|','\\|').replaceAll('\n',' ');

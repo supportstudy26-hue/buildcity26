@@ -1,3 +1,4 @@
+import {LOGISTICS_BUILDINGS,logisticsBuildingParts} from '../game/render/logistics-parts.js';
 import {LANDMARKS} from '../config/landmarks.js';
 import {pierParts,roundaboutParts} from '../game/render/infrastructure-parts.js';
 import {descriptorThumbnail,landmarkThumbnail} from './mesh-thumbnail.js';
@@ -6,6 +7,7 @@ import {buildingThumbnail} from './building-thumbnails.js';
 import {CATALOG,serviceKind} from '../config/catalog.js';
 // Supplied measured-frame thumbnails; original land-road SVGs remain code-native.
 export function buildingPreview(kind){
+ if(LOGISTICS_BUILDINGS[kind])return descriptorThumbnail(logisticsBuildingParts({kind}));
  if(kind==='bridgePier')return descriptorThumbnail(pierParts(0,0,0));
  const profile=roadProfile(kind);
  if(profile?.circle)return descriptorThumbnail(roundaboutParts(0,0,0,profile));

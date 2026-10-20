@@ -1,3 +1,7 @@
+import {reconcileLeisure} from './leisure.js';
+import {reconcileHealthcare} from './healthcare.js';
+import {reconcileMunicipal} from './municipal-jobs.js';
+import {reconcileLogistics} from './logistics.js';
 import {startJourney} from './citizens.js';
 import {route} from './roads.js';
 import {position,index} from './world.js';
@@ -22,7 +26,7 @@ export function reconcileSociety(s,size,rng,{arriving=false}={}) {
   initializeWorld(s,size);
   const source={seed:s.societySeed};
   const added=reconcileHouseholds(s,size,()=>rng(source));s.societySeed=source.seed;
-  reconcileFirms(s);s.educationVersion=1;reconcileEducation(s,{force:true});reconcileVehicles(s);
+  reconcileFirms(s);reconcileHealthcare(s,{force:true});reconcileMunicipal(s);reconcileLogistics(s);reconcileLeisure(s,{force:true});s.educationVersion=1;reconcileEducation(s,{force:true});reconcileVehicles(s);
   if(arriving){const entry=s.world?.geography?.entryTile??index(0,18);for(const c of added){if(!s.tiles[c.home].connected)continue;c.goal=entry;c.position=position(entry,size,s);startJourney(s,c,c.home,route,size,false);if(c.journey){c.journey.purpose='move-in';if(c.missionTrip)c.missionTrip.purpose='move-in';}}}
   updateVehicles(s);
 }

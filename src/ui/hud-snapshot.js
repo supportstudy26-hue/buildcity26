@@ -13,7 +13,7 @@ import {DISPLAY_DONG_PER_BC} from '../config/money.js';
 // Presentation conversion only: saves, formulas and transaction checks remain BC.
 export const hudMoney=v=>Number.isFinite(v)?v*DISPLAY_DONG_PER_BC:undefined;
 export const normalizeSearch=s=>String(s).normalize('NFD').replace(/\p{Diacritic}/gu,'').replace(/đ/gi,'d').toLocaleLowerCase('vi');
-const category=k=>({roads:'road',zones:k,utilities:'utilities',services:'health',parks:'park',transport:'transport'}[CATALOG[k].group]);
+const category=k=>['farm','foodFactory','freightWarehouse'].includes(k)?'industrial':({roads:'road',zones:k,utilities:'utilities',services:'health',parks:'park',transport:'transport'}[CATALOG[k].group]);
 const glyph=k=>({power:'electricity',water:'water',sewage:'sewage',waste:'waste',school:'education',clinic:'health',fire:'fire',police:'police',park:'park',bus:'transport',busStop:'transport'}[serviceKind(k)]||k);
 // Cached static catalogue; no thumbnails/icons/catalogue are added to city saves.
 export const HUD_CATALOGUE=Object.freeze([

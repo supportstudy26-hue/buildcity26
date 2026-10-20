@@ -1,3 +1,7 @@
+import {updateLeisure} from './systems/leisure.js';
+import {updateHealthcare} from './systems/healthcare.js';
+import {updateMunicipal} from './systems/municipal-jobs.js';
+import {updateLogistics} from './systems/logistics.js';
 import {LANDMARKS} from '../config/landmarks.js';
 import {ARRIVAL_BALANCE} from '../config/resident-arrivals.js';
 import {ROAD_PROFILES,DIRECTION_VECTORS} from '../config/road-profiles.js';
@@ -175,7 +179,7 @@ export function validateSave(raw){
 
 // Stable simulation step. Renderer never mutates the world.
 export function prepareEducation(s){
-  if(s.educationVersion===1)return false;
+  if(s.educationVersion===1&&s.healthcareVersion===1&&s.municipal?.version===1&&s.logistics?.version===1&&s.leisureVersion===1)return false;
   reconcileSociety(s,SIZE,random);return true;
 }
 export function stepSimulation(s){
@@ -184,7 +188,7 @@ export function stepSimulation(s){
   if(c.day!==previous)dailyUpdate(s);
   if(updateConstruction(s)){s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random);updateProgression(s,true);}
   if([updateDevelopment(s),updateUpgrades(s)].some(Boolean)){s.graphVersion++;analyze(s);reconcileSociety(s,SIZE,random,{arriving:true});updateProgression(s,true);}
-  reconcileEducation(s);updateCitizens(s,c,route,SIZE);updateVehicles(s);updateEducation(s,emit);updateProgression(s);
+  reconcileEducation(s);updateCitizens(s,c,route,SIZE);updateVehicles(s);updateEducation(s,emit);updateHealthcare(s,emit);updateMunicipal(s,emit);updateLogistics(s,emit);updateLeisure(s,emit);updateProgression(s);
   return s.clock.seconds;
 }
 function initializeWorldCompatibility(s){initializeWorld(s,SIZE);}

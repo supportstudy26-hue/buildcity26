@@ -1,3 +1,4 @@
+import {FLEET_DESIGNS,fleetParts} from './service-vehicle-parts.js';
 import {MobilityArtRegistry,artHash,citizenArtId,vehicleArtId} from '../../config/mobility-art.js';
 const C={skin:'#e7bc97',hair:'#263a40',cream:'#eadfc9',teal:'#68bca8',navy:'#385469',coral:'#cd8167',glass:'#517982',rubber:'#2b3c43',metal:'#a6b5b5',gold:'#e6bb63'};
 const people={
@@ -32,7 +33,7 @@ const buses={
 };
 export function mobilityDesign(id){
  const a=MobilityArtRegistry[id];if(!a)return null;const k=a.semanticKey;
- const p=people[k],v=cars[k]||buses[k];if(!p&&!v)return null;
+ const fleet=FLEET_DESIGNS[k];const p=people[k],v=cars[k]||buses[k]||(fleet?[fleet.width,fleet.height,fleet.length]:null);if(!p&&!v)return null;
  return{id,name:a.nameVi,profile:a.animationProfile,dimensions:p?[.60,p[0],.46]:v.slice(0,3),capacity:buses[k]?.[4]??(k==='family-minivan'?7:4),anchor:p?'feet':'footprint',wheelRadius:p?.[3]==='wheelchair'?.3:v?.[2]>6?.48:.32};
 }
 function builder(){const parts=[];return{parts,add:(shape,position,scale,color,rotation={},pivot=null)=>parts.push({shape,position,scale,color,rotation,pivot})};}
@@ -121,7 +122,7 @@ function busParts(k,motion,lod){
  if(k==='articulated-bus')add('rounded',[0,h*.55,-1.2],[w*.92,h*.76,.8],C.rubber,{},'accordion');
  return parts;
 }
-export function mobilityParts(id,motion={},lod=0){const k=MobilityArtRegistry[id]?.semanticKey;if(people[k])return personParts(k,motion,lod);if(cars[k])return carParts(k,motion,lod);if(buses[k])return busParts(k,motion,lod);return [];}
+export function mobilityParts(id,motion={},lod=0){const k=MobilityArtRegistry[id]?.semanticKey;if(people[k])return personParts(k,motion,lod);if(cars[k])return carParts(k,motion,lod);if(buses[k])return busParts(k,motion,lod);if(FLEET_DESIGNS[k])return fleetParts(k,motion,lod);return [];}
 export function citizenMotion(s,c,renderAlpha){
  const j=c.journey,moving=j&&c.state!=='blocked'&&(j.actualSpeed??j.speed)>0;
  const speed=moving?(j.actualSpeed??j.speed):0;

@@ -34,8 +34,8 @@ test('time batching and pause preserve logical results at different playback spe
 test('road deletion blocks a real journey without teleporting and restoration resumes it',()=>{
   const s=createCity();until(s,8*3600);const c=s.citizens.find(c=>c.journey&&c.journey.path.slice(c.journey.segment+1).some(p=>p.road!=null));assert.ok(c);
   const road=c.journey.path.slice(c.journey.segment+1).find(p=>p.road!=null).road;
-  assert.ok(command(s,'place',{x:road%SIZE,y:Math.floor(road/SIZE),kind:'bulldoze'}).ok);const position={...c.position};stepSimulation(s);
-  assert.equal(c.state,'blocked');assert.deepEqual(c.position,position);assert.equal(c.attendance,0);
+  assert.ok(command(s,'place',{x:road%SIZE,y:Math.floor(road/SIZE),kind:'bulldoze'}).ok);const position={...c.position},attendance=c.attendance;stepSimulation(s);
+  assert.equal(c.state,'blocked');assert.deepEqual(c.position,position);assert.equal(c.attendance,attendance);
   assert.ok(command(s,'place',{x:road%SIZE,y:Math.floor(road/SIZE),kind:'road'}).ok);stepSimulation(s);assert.notEqual(c.state,'blocked');assert.notDeepEqual(c.position,position);
 });
 test('command replay is idempotent, conflicting payload/sequence cannot spend or borrow',()=>{
@@ -52,8 +52,8 @@ test('park commands complete immediately; old funded contracts load without a se
  const contract=s.contracts[0];assert.equal(contract.status,'completed');assert.equal(contract.progress,1);assert.equal(contract.escrow,0);assert.equal(cash-s.money,contract.paid);
  const loaded=validateSave(serialize(s));assert.deepEqual(serialize(loaded),serialize(s));const after=loaded.money;
  assert.equal(command(loaded,'cancel-construction',{id:contract.id}).ok,false);assert.equal(loaded.money,after);
- const old=createCity();assert.ok(startConstruction(old,at,'park',150000,1).ok);const reserved=old.money;until(old,450);
- const restored=validateSave(serialize(old));assert.equal(restored.tiles[at].kind,'park');assert.equal(restored.contracts[0].status,'completed');assert.equal(restored.money,reserved);assert.deepEqual(serialize(validateSave(serialize(restored))),serialize(restored));
+ const old=createCity();assert.ok(startConstruction(old,at,'park',150000,1).ok);until(old,450);const beforeLoad=old.money;
+ const restored=validateSave(serialize(old));assert.equal(restored.tiles[at].kind,'park');assert.equal(restored.contracts[0].status,'completed');assert.equal(restored.money,beforeLoad);assert.equal(restored.contracts[0].paid,150000);assert.deepEqual(serialize(validateSave(serialize(restored))),serialize(restored));
 });
 test('calendar uses real months and Vietnamese đồng display uses one stable conversion',()=>{
   assert.equal(calendar(0).daysInMonth,31);assert.equal(calendar(31*86400).daysInMonth,28);assert.equal(calendar(59*86400).daysInMonth,31);

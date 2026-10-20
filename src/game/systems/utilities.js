@@ -1,3 +1,6 @@
+import {healthcarePosts} from './healthcare.js';
+import {municipalPosts} from './municipal-jobs.js';
+import {logisticsPosts} from './logistics.js';
 import {LANDMARKS} from '../../config/landmarks.js';
 import {weatherState} from './weather.js';
 import {residentCapacity,jobsCapacity,capacityFactor,MAINTENANCE_FACTORS} from '../../config/building-economy.js';
@@ -16,7 +19,7 @@ export function analyzeUtilities(s){
   s.tiles.forEach((t,i)=>{
     t.connected=isRoad(t)?connected.has(i):neighbors(i).some(n=>connected.has(n)&&roadHasFrontage(s.tiles[n]));
     if(t.connected)roadAt.set(i,isRoad(t)?i:neighbors(i).find(n=>connected.has(n)&&roadHasFrontage(s.tiles[n])));
-    if(BUILDINGS.includes(t.kind)&&t.connected){services[t.kind].push(i);if(serviceKind(t.kind)!==t.kind)services[serviceKind(t.kind)].push(i);}
+    if(BUILDINGS.includes(t.kind)&&t.connected){services[t.kind].push(i);if(serviceKind(t.kind)!==t.kind)(services[serviceKind(t.kind)]??=[]).push(i);}
     if(t.kind)upkeep+=(CATALOG[t.kind]?.upkeep||0)*(t.upgrade?MAINTENANCE_FACTORS[t.level]:1)*(s.budgets?.[serviceKind(t.kind)]??100)/100;
     if(t.zone)zones.push(i);
     if(t.kind==='residential'){pop+=t.residents;homes+=residentCapacity(t);}
@@ -24,7 +27,7 @@ export function analyzeUtilities(s){
   });
   powerNeed*=weather.powerDemandFactor;waterNeed*=weather.waterDemandFactor;
   const power=Math.round(services.power.reduce((n,i)=>n+CATALOG[s.tiles[i].kind].capacity*capacityFactor(s.tiles[i]),0)*(s.budgets?.power??100)/100), water=Math.round(services.water.reduce((n,i)=>n+CATALOG[s.tiles[i].kind].capacity*capacityFactor(s.tiles[i]),0)*WATER_PER_PERSON*(s.budgets?.water??100)/100);
-  const covered=(kind,i)=>services[kind].some(n=>distance(i,n)<=CATALOG[s.tiles[n].kind].range*Math.sqrt(capacityFactor(s.tiles[n])*(s.budgets?.[kind]??100)/100));
+  const covered=(kind,i)=>(services[kind]||[]).some(n=>distance(i,n)<=CATALOG[s.tiles[n].kind].range*Math.sqrt(capacityFactor(s.tiles[n])*(s.budgets?.[kind]??100)/100));
   const industrial=s.tiles.flatMap((t,i)=>t.kind==='industrial'||serviceKind(t.kind)==='waste'?[i]:[]);
   // Allocate scarce supply to public facilities first, then businesses/homes.
   // A small shortage must not switch every building off simultaneously.
@@ -52,7 +55,7 @@ export function analyzeUtilities(s){
     t.serviceStrengths=Object.fromEntries(t.services.map(kind=>[kind,Math.max(0,...services[kind].filter(n=>distance(i,n)<=CATALOG[s.tiles[n].kind].range*Math.sqrt(capacityFactor(s.tiles[n])*(s.budgets?.[kind]??100)/100)).map(n=>capacityFactor(s.tiles[n])))]));
     if(t.active&&t.kind==='commercial')jobs+=jobsCapacity(t);
     if(t.active&&t.kind==='industrial')jobs+=jobsCapacity(t);
-    if(t.active&&schoolPosts(t))jobs+=schoolPosts(t);
+    if(t.active)jobs+=schoolPosts(t)+healthcarePosts(t)+municipalPosts(t)+logisticsPosts(t);
   });
   return {connected,services,roadAt,pop,jobs,homes,upkeep,powerNeed,waterNeed,power,water,sewage};
 }

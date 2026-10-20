@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {createCity,createEmptyCity,place,analyze,serialize,validateSave,index,tick,stepSimulation,CATALOG} from '../src/game/core.js';
 import {BUILDINGS,serviceKind} from '../src/config/catalog.js';
 import {chunkParts} from '../src/game/render/scene-data.js';
+import {LOGISTICS_PROFILES} from '../src/config/logistics.js';
 
 test('empty start has no prebuilt assets, agents, debt or XP and retains the old starting city',()=>{
  const old=createCity(),before=serialize(old),empty=createEmptyCity({world:old.world,name:old.name});
@@ -41,17 +42,18 @@ test('extended public-service ranges affect coverage without double-counting hap
  place(s,0,18,'bulldoze');assert.ok(!s.tiles[index(16,17)].services.includes('clinic'));assert.equal(s.metrics.water,0);
 });
 test('larger waste collection decreases real accumulated garbage faster',()=>{
- const s=createCity();place(s,13,20,'wasteCenter'); // needs adjacent road; choose x10 beside vertical x11
- place(s,10,15,'wasteCenter');const t=s.tiles[index(12,17)];t.garbage=40;const old=t.garbage;
- tick(s);assert.ok(t.wasteCollection===8);assert.ok(t.garbage<old-4);
+ const cities=['waste','wasteCenter'].map(kind=>{const s=createCity();place(s,19,25,'bulldoze');assert.ok(place(s,10,15,kind).ok);s.clock.seconds=8*3600;s.clock.step=s.clock.seconds;for(const t of s.tiles)if(t.kind==='residential')t.garbage=40;analyze(s);for(let i=0;i<900;i++)stepSimulation(s);return s;});
+ assert.ok(cities[1].municipal.waste.collected>cities[0].municipal.waste.collected);
+ assert.ok(cities[1].tiles[index(12,17)].garbage<cities[0].tiles[index(12,17)].garbage);
+ for(const s of cities)assert.doesNotThrow(()=>validateSave(serialize(s)));
 });
-test('all 24 facilities survive saves and have light geometry; old saves remain readable',()=>{
- assert.equal(BUILDINGS.filter(k=>!CATALOG[k].decorative).length,24);
+test('all 27 service/logistics facilities survive saves and have bounded geometry; old saves remain readable',()=>{
+ assert.equal(BUILDINGS.filter(k=>!CATALOG[k].decorative).length,27);
  for(const kind of BUILDINGS){
   const s=createEmptyCity({startingCash:12000000});assert.ok(place(s,2,12,kind).ok);const raw=serialize(s),loaded=validateSave(JSON.parse(JSON.stringify(raw)));
   assert.deepEqual(serialize(loaded),raw);
   const parts=chunkParts(loaded,0,0).filter(p=>p.tile===index(2,12));assert.ok(parts.length>0);assert.ok(parts.length<68,kind);
-  assert.ok(CATALOG[kind].upkeep>0);assert.ok(CATALOG[serviceKind(kind)]);
+  assert.ok(CATALOG[kind].upkeep>0);assert.ok(CATALOG[serviceKind(kind)]||LOGISTICS_PROFILES[serviceKind(kind)]);
  }
  assert.equal(validateSave(serialize(createCity())).metrics.population,176);
 });

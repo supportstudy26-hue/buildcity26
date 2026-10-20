@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {createCity,serialize,validateSave,place,tick,analyze,index,SIZE,neighbors,addBusLine,busRoute} from '../src/game/core.js';
+import {createCity,serialize,validateSave,place,tick,stepSimulation,analyze,index,SIZE,neighbors,addBusLine,busRoute} from '../src/game/core.js';
 const old=JSON.parse(readFileSync(new URL('./fixtures/legacy-v1.json',import.meta.url),'utf8'));
 test('original 38x38 save migrates to 64x64 without moving or losing any tile',()=>{const s=validateSave(old);assert.equal(SIZE,64);assert.equal(s.tiles.length,4096);for(let y=0;y<38;y++)for(let x=0;x<38;x++){const prior=old.tiles[y*38+x],now=s.tiles[index(x,y)];for(const key of Object.keys(prior))assert.deepEqual(now[key],prior[key]);}assert.equal(s.money,old.money*100);assert.equal(s.day,old.day);assert.deepEqual(s.taxes,old.taxes);assert.equal(s.metrics.population,176);assert.equal(serialize(s).schemaVersion,6);});
 test('new outer land can be built on and v2 saves round-trip',()=>{const s=createCity();assert.equal(place(s,44,42,'road').ok,true);assert.deepEqual(serialize(validateSave(serialize(s))),serialize(s));});
@@ -9,7 +9,15 @@ test('invalid map size, garbage and transit payloads cannot replace a city',()=>
 test('simulation trips originate at homes, end at workplaces and traverse adjacent roads',()=>{const s=createCity();assert.ok(s.network.trips.length>0);for(const trip of s.network.trips){assert.equal(s.tiles[trip.from].kind,'residential');assert.ok(['commercial','industrial','school','secondarySchool'].includes(s.tiles[trip.to].kind));assert.ok(s.firms.some(f=>f.home===trip.to&&f.active));for(let j=1;j<trip.path.length;j++)assert.ok(neighbors(trip.path[j-1]).includes(trip.path[j]));}assert.ok(s.tiles.some(t=>t.trafficLoad>0));});
 test('upgrading a busy road doubles local capacity and preserves its assigned trips',()=>{const s=createCity(),i=s.tiles.findIndex(t=>t.kind==='road'&&t.trafficLoad>0),before=s.tiles[i].trafficLoad;assert.equal(place(s,i%SIZE,Math.floor(i/SIZE),'avenue').ok,true);assert.equal(s.tiles[i].trafficCapacity,90);assert.equal(s.tiles[i].trafficLoad,before);});
 test('bridge upgrade charges only added deck area, without paying piers twice',()=>{const s=createCity(),i=s.tiles.findIndex(t=>t.terrain==='water');place(s,i%SIZE,Math.floor(i/SIZE),'road');const before=s.money;const r=place(s,i%SIZE,Math.floor(i/SIZE),'avenue');assert.equal(r.cost,42000);assert.equal(before-s.money,42000);});
-test('uncollected garbage accumulates and connected collection removes it',()=>{const s=createCity(),home=s.tiles[index(12,17)];place(s,19,25,'bulldoze');for(let i=0;i<15;i++)tick(s);assert.ok(home.garbage>0);const before=home.garbage;assert.equal(place(s,10,17,'waste').ok,true);for(let i=0;i<15;i++)tick(s);assert.ok(home.garbage<before);});
+test('uncollected garbage accumulates and staffed routed vehicles physically collect it',()=>{
+ const s=createCity(),home=s.tiles[index(12,17)];place(s,19,25,'bulldoze');s.clock.seconds=8*3600;s.clock.step=s.clock.seconds;
+ for(let i=0;i<120;i++)stepSimulation(s);assert.ok(home.garbage>0);
+ home.garbage=12;const before=home.garbage;assert.equal(place(s,10,17,'waste').ok,true);
+ assert.equal(home.garbage,before); // Building coverage alone cannot collect.
+ for(let i=0;i<900;i++)stepSimulation(s);
+ assert.ok(home.garbage<before);assert.ok(s.municipal.history.some(j=>j.service==='waste_collection'&&j.target===index(12,17)&&j.status==='completed'));
+ assert.doesNotThrow(()=>validateSave(serialize(s)));
+});
 test('sewage shortage increases pollution and restoring treatment clears that cause',()=>{const s=createCity(),home=s.tiles[index(12,17)],before=home.pollution;place(s,7,19,'bulldoze');assert.equal(home.sewage,false);assert.ok(home.pollution>before);place(s,7,19,'sewage');assert.equal(home.sewage,true);assert.equal(home.pollution,before);});
 function withTransit(){const s=createCity();assert.ok(place(s,17,13,'bus').ok);assert.ok(place(s,13,11,'busStop').ok);assert.ok(place(s,19,13,'busStop').ok);return s;}
 test('bus routes require a depot, connected stops and a contiguous loop',()=>{const s=withTransit(),stops=[index(13,11),index(19,13)];const valid=busRoute(s,stops);assert.equal(valid.ok,true);for(let i=1;i<valid.path.length;i++)assert.ok(neighbors(valid.path[i-1]).includes(valid.path[i]));place(s,17,13,'bulldoze');assert.equal(busRoute(s,stops).ok,false);});

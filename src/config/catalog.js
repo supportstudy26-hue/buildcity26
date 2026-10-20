@@ -1,3 +1,4 @@
+import {LOGISTICS_CATALOG} from './logistics.js';
 import {LANDMARKS,landmarkDescription} from './landmarks.js';
 import {ROAD_PROFILES,ROAD_KINDS,profilePrice,roadDescription} from './road-profiles.js';
 import { LEGACY_BC_FACTOR } from './simulation.js';
@@ -51,6 +52,12 @@ CATALOG.secondarySchool.description='240 chỗ cho trẻ 12–17 tuổi, tối �
 for(const [kind,p] of Object.entries(ROAD_PROFILES))CATALOG[kind]={...CATALOG[kind],name:p.name,cost:profilePrice(kind),upkeep:p.upkeep,color:'#536a6c',group:'roads',description:roadDescription(kind)};
 for(const [kind,d] of Object.entries(LANDMARKS))CATALOG[kind]={...d,color:'#9bba8e',group:'parks',description:landmarkDescription(kind),decorative:true};
 CATALOG.bridgePier={name:'Trụ cầu chữ T · 6 m',cost:80000,upkeep:50,color:'#a7b8be',group:'roads',infrastructure:true,decorative:true,description:'Trụ bê tông, móng và xà mũ cao 6 m. Đặt cầu cạn cao tốc trên cùng ô để hoàn thiện; giá trụ đã trả được khấu trừ một lần. Trụ chưa có mặt cầu không cho xe chạy, không cấp điện/nước. Có thể đặt trên đất hoặc mặt nước.'};
+for(const [kind,entry] of Object.entries(LOGISTICS_CATALOG))CATALOG[kind]={...entry,description:entry.desc};
+CATALOG.clinic.description='8 giường, 4 vị trí nhân viên y tế. Cư dân tới cơ sở theo đường, chờ giường, khám và trở về. Vật tư khám được trừ khi tiếp nhận; ca trực và tiện ích quyết định năng lực.';
+CATALOG.hospital.description='48 giường, 12 vị trí nhân viên y tế. Có hàng đợi, giường, khám thường và điều trị ca nặng. Chỉ phục hồi khi người bệnh và nhân viên cùng có mặt; cần đường, điện, nước và nước thải.';
+for(const kind of ['fire','fireCenter'])CATALOG[kind].description='Đội cư dân có ca trực, xe cứu hỏa theo tuyến đường tới nơi cháy, sử dụng nước để dập rồi về trạm. Thiếu người, tiện ích hoặc đường thì yêu cầu chờ; không dập cháy từ xa.';
+for(const kind of ['police','policeCenter'])CATALOG[kind].description='Nhân viên cư dân tuần tra bằng xe trên mạng đường thực. Đến nơi mới giảm mất an ninh; hàng đợi, thời gian đáp ứng và ca trực được lưu.';
+for(const kind of ['waste','wasteCenter'])CATALOG[kind].description='Xe rác với tải giới hạn thu gom tại nhà rồi đưa về trạm. Cần nhân viên có mặt, đường đi và tiện ích; rác tích tụ khi chậm phục vụ.';
 export const serviceKind=kind=>CATALOG[kind]?.service||kind;
 export const BUILDINGS = Object.keys(CATALOG).filter(k=>['utilities','services','parks','transport'].includes(CATALOG[k].group)||CATALOG[k].infrastructure);
 export const ZONES = ['residential','commercial','industrial'];

@@ -1,3 +1,5 @@
+import {leisureJourneyReserved,leisureArrivalState} from './leisure.js';
+import {healthcareJourneyReserved,healthcareArrivalState} from './healthcare.js';
 import {remainingRouteValid} from './road-network.js';
 import {weatherState} from './weather.js';
 import {chooseBusPlan,busDock} from './bus-planning.js';
@@ -26,13 +28,16 @@ export function updateCitizens(s, calendar, route, size) {
   const firms=new Map(s.firms.map(f=>[f.id,f]));
   for(const c of s.citizens) {
     const work=firms.get(c.work);
+    if(c.municipalAssignment)continue;
+    const shift=work?.serviceShift?Math.max(0,work.employees.indexOf(c.id))%3:null;
+    const onShift=shift==null?time>=c.schedule.depart&&time<c.schedule.return:Math.floor(time/(8*3600))===shift;
     if(c.state==='on-bus')continue;
     if(c.state==='waiting-bus'){if(!s.busLines.some(l=>l.id===c.busPlan?.line)){const goal=c.busPlan.destination;c.busPlan=null;c.state='home';startJourney(s,c,goal,route,size,false);}else continue;}
     if(c.state==='blocked'&&!c.journey&&c.retryGoal!=null&&c.retryVersion!==s.graphVersion){c.retryVersion=s.graphVersion;startJourney(s,c,c.retryGoal,route,size);}
-    if(!c.journey&&c.state!=='blocked') {
-      if(c.state==='home'||c.state==='sleeping') {c.state=time<6*3600||time>=22*3600?'sleeping':'home';if(weekday&&schoolEnrollmentValid(s,c)&&time>=SCHOOL_DEPART&&time<SCHOOL_END)startJourney(s,c,c.study.tile,route,size);else if(weekday&&work?.active&&time>=(work.school?TEACHER_DEPART:c.schedule.depart)&&time<c.schedule.return) startJourney(s,c,work.home,route,size);}
+    if(!c.journey&&c.state!=='blocked'&&!healthcareJourneyReserved(c)&&!leisureJourneyReserved(c)) {
+      if(c.state==='home'||c.state==='sleeping') {c.state=time<6*3600||time>=22*3600?'sleeping':'home';if(weekday&&schoolEnrollmentValid(s,c)&&time>=SCHOOL_DEPART&&time<SCHOOL_END)startJourney(s,c,c.study.tile,route,size);else if(work?.active&&((work.serviceShift&&onShift)||(weekday&&(work.school?time>=TEACHER_DEPART&&time<c.schedule.return:onShift)))) startJourney(s,c,work.home,route,size);}
       else if(c.state==='at-school'&&(!weekday||time>=SCHOOL_END||c.goal!==c.study?.tile||!schoolEnrollmentValid(s,c)))startJourney(s,c,c.home,route,size);
-      else if(c.state==='at-work'&&(time>=c.schedule.return||work?.home!==c.goal||!work?.active)) startJourney(s,c,c.home,route,size);
+      else if(c.state==='at-work'&&((work?.serviceShift?!onShift:time>=c.schedule.return)||work?.home!==c.goal||!work?.active)) startJourney(s,c,c.home,route,size);
     }
     const j=c.journey;if(!j)continue;
     if(j.graphVersion!==s.graphVersion) {
@@ -55,7 +60,7 @@ export function updateCitizens(s, calendar, route, size) {
       const id=j.id;c.journey=null;
       if(c.busPlan?.stage==='walk-to-stop'){c.state='waiting-bus';c.busPlan.stage='waiting';c.waitingSince=s.clock.seconds;c.waitReason='Chờ xe buýt tại điểm dừng';emit(s,'bus-queue-entered',c.id,{line:c.busPlan.line,stop:c.goal});continue;}
       if(c.busPlan?.stage==='walk-from-stop')c.busPlan=null;
-      c.state=c.goal===c.home?'home':c.missionTrip?.purpose==='school'?'at-school':'at-work';
+      c.state=c.goal===c.home?'home':healthcareArrivalState(c,c.goal)||leisureArrivalState(c,c.goal)||(c.missionTrip?.purpose==='school'?'at-school':'at-work');
       if(c.state==='at-work') c.attendance++;
       const trip=c.missionTrip;c.missionTrip=null;
       emit(s,'trip-arrived',c.id,{trip:trip?.id||id,origin:trip?.origin??j.origin,destination:c.goal,mode:trip?.mode||j.mode,purpose:trip?.purpose||(c.goal===c.home?'home':'work'),duration:s.clock.seconds-(trip?.startedAt??j.departedAt)});

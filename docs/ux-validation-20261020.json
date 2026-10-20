@@ -1,0 +1,109 @@
+{
+  "version": "0.6.0",
+  "fullSuite": {
+    "tests": 293,
+    "pass": 293,
+    "fail": 0,
+    "skip": 0,
+    "includesUnreleasedPrototypeTests": 20,
+    "wallTimeUsable": false
+  },
+  "finalHudOperations": {
+    "tests": 10,
+    "pass": 10,
+    "fail": 0
+  },
+  "build": {
+    "passed": true,
+    "seconds": 5.8,
+    "largeChunksWarning": true
+  },
+  "mobile": {
+    "width": 390,
+    "height": 844,
+    "horizontalOverflow": 0,
+    "topBottom": 128,
+    "managementTop": 140,
+    "catalogueWidth": 366,
+    "catalogueClientWidth": 364,
+    "catalogueScrollWidth": 364,
+    "selectButtonHeight": 44,
+    "physicalDevice": false
+  },
+  "buildingFlow": {
+    "catalogueAutoCloses": true,
+    "houseBuiltByPointer": true,
+    "housingBefore": 384,
+    "housingAfter": 392,
+    "permitBC": 800,
+    "populationPreserved": 176,
+    "reloadPreserved": true
+  },
+  "authRlsChanged": false,
+  "sqlMigrationRequired": false,
+  "deploymentVerified": false,
+  "responsive": [
+    {
+      "outside": [],
+      "overflow": 0,
+      "overlaps": [],
+      "viewport": [
+        320,
+        568
+      ]
+    },
+    {
+      "outside": [],
+      "overflow": 0,
+      "overlaps": [],
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "outside": [],
+      "overflow": 0,
+      "overlaps": [],
+      "viewport": [
+        768,
+        1024
+      ]
+    },
+    {
+      "outside": [],
+      "overflow": 0,
+      "overlaps": [],
+      "viewport": [
+        844,
+        390
+      ]
+    }
+  ],
+  "finalMissionAuditTests": {
+    "tests": 6,
+    "pass": 6,
+    "fail": 0
+  },
+  "uiStability": {
+    "durationMs": 5009,
+    "frames": 283,
+    "images": 7,
+    "maxVisibleImages": 1,
+    "controls": 8,
+    "childRemovals": 0,
+    "textChanges": 0,
+    "blankImageFrames": 0,
+    "detachedImageFrames": 0,
+    "maxLayoutShiftPx": 0,
+    "imagesRetained": true,
+    "controlsRetained": true,
+    "scrollBefore": 0,
+    "scrollAfter": 0,
+    "focusRetained": true,
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    }
+  }
+}

@@ -1,3 +1,5 @@
+import {municipalActors} from './systems/municipal-jobs.js';
+import {freightActors} from './systems/logistics.js';
 import {cityFocus} from './render/city-focus.js';
 import {cityEntry} from './systems/city-entry.js';
 import {drawEntryMini} from './render/entry-marker.js';
@@ -89,12 +91,12 @@ export class CityRenderer {
   refreshCars(s){this.cars=[];for(const [j,trip] of (s.network.trips||[]).slice(0,64).entries()){if(trip.path.length>1&&trip.vehicles>0)this.cars.push({from:trip.from,to:trip.to,path:trip.path,offset:j*1.78,color:['#f6e9cb','#e3a274','#a8d0df','#ecd080'][j%4],bus:false});}for(const line of (s.network.busLines||[]).filter(l=>l.ok))for(let j=0;j<line.vehicles;j++)if(line.path.length>1)this.cars.push({path:line.path,offset:j*line.path.length/line.vehicles,color:'#f0be80',bus:true});}
   drawCars(s){
     const c=this.ctx;this.actorPoints=[];
-    if(this.actorCity!==s||this.actorStep!==s.clock.step){this.actorCity=s;this.actorStep=s.clock.step;this.activeActors=[...s.citizens.filter(a=>a.journey||a.state==='waiting-bus'),...s.vehicles.filter(v=>v.kind==='bus'&&v.busPhase&&v.busPhase!=='depot')];}
+    if(this.actorCity!==s||this.actorStep!==s.clock.step){this.actorCity=s;this.actorStep=s.clock.step;this.activeActors=[...s.citizens.filter(a=>!a.municipalAssignment&&(a.journey||a.state==='waiting-bus')),...s.vehicles.filter(v=>v.kind==='bus'&&v.busPhase&&v.busPhase!=='depot'),...municipalActors(s),...freightActors(s)];}
     const self=this;
     function* candidates(){for(const actor of self.activeActors){const at=self.project(actor.position.x/20-.5,actor.position.y/20-.5,actor.position.z*2.6);if(at.x<0||at.x>self.width||at.y<0||at.y>self.height)continue;yield{c:actor,at,d:(at.x-self.width/2)**2+(at.y-self.height/2)**2};}}
     for(const {c:actor,at} of nearestActors(candidates(),actorBudget(s.citizens.length,'medium',this.width<600),this.follow)){
       this.actorPoints.push({id:actor.id,x:at.x,y:at.y});
-      const j=actor.journey||actor.trip,target=j?.path[j.segment+1],yaw=target?Math.atan2(target.x-actor.position.x,target.y-actor.position.y):(actor.visualYaw||0),bus=actor.kind==='bus';
+      const j=actor.journey||actor.trip,target=j?.path[j.segment+1],yaw=target?Math.atan2(target.x-actor.position.x,target.y-actor.position.y):(actor.visualYaw||0),bus=['bus','municipal','freight'].includes(actor.kind);
       const motion=bus?{distance:actor.travelled||0,speed:actor.speed,doors:actor.doors}:citizenMotion(s,actor,0);
       const parts=worldMobilityParts(bus?vehicleArtId(actor):actorArt(s,actor),motion,this.zoom>1.7?1:2,actor.position,yaw,actor.id).sort((a,b)=>(a.position[0]+a.position[2])-(b.position[0]+b.position[2]));
       for(const p of parts){const [x,z,y]=p.position,[w,h,d]=p.scale,bottom=(z-h/2)*2.6;
@@ -136,7 +138,7 @@ export class CityRenderer {
     if(this.night){c.fillStyle='#16364c50';c.fillRect(0,0,this.width,this.height);}
   }
   minimap(){const s=this.getCity(),c=this.mc,w=this.mini.width,h=this.mini.height;c.fillStyle='#7ba583';c.fillRect(0,0,w,h);const sx=w/SIZE,sy=h/SIZE;s.tiles.forEach((t,i)=>{c.fillStyle=t.terrain==='water'?'#4c9eb7':isRoad(t)?'#496469':CATALOG[t.kind||t.zone]?.color||'#7ba583';c.fillRect(i%SIZE*sx,Math.floor(i/SIZE)*sy,sx+.3,sy+.3);});drawEntryMini(c,s,w,h);const mid=this.tileAt(this.width/2,this.height/2);if(mid){c.strokeStyle='#fff';c.lineWidth=1;c.strokeRect(mid.x*sx-12,mid.y*sy-8,24,16);}}
-  frame(ms){const dt=this.lastFrame===undefined?0:Math.min(1,(ms-this.lastFrame)/1000);this.lastFrame=ms;const s=this.getCity();this.time=(s?.clock?.seconds||0)/20;if(this.follow){const actor=s?.citizens.find(c=>c.id===this.follow)||s?.vehicles.find(v=>v.id===this.follow);if(actor){const x=actor.position.x/20-.5,y=actor.position.y/20-.5;this.pan.x=-(x-y)*22*this.zoom;this.pan.y=-(x+y)*11*this.zoom;}}if(s&&this.lastPaths!==s.day){this.lastPaths=s.day;this.refreshCars(s);this.minimap();}if(!document.hidden&&document.body?.dataset.screen!=='home'&&(this.width>=600||ms-(this.lastDraw||0)>=33)){this.draw();this.lastDraw=ms;}this.raf=requestAnimationFrame(this.frame);}
+  frame(ms){const dt=this.lastFrame===undefined?0:Math.min(1,(ms-this.lastFrame)/1000);this.lastFrame=ms;const s=this.getCity();this.time=(s?.clock?.seconds||0)/20;if(this.follow){const actor=s?.citizens.find(c=>c.id===this.follow)||s?.vehicles.find(v=>v.id===this.follow)||[...municipalActors(s),...freightActors(s)].find(v=>v.id===this.follow);if(actor){const x=actor.position.x/20-.5,y=actor.position.y/20-.5;this.pan.x=-(x-y)*22*this.zoom;this.pan.y=-(x+y)*11*this.zoom;}}if(s&&this.lastPaths!==s.day){this.lastPaths=s.day;this.refreshCars(s);this.minimap();}if(!document.hidden&&document.body?.dataset.screen!=='home'&&(this.width>=600||ms-(this.lastDraw||0)>=33)){this.draw();this.lastDraw=ms;}this.raf=requestAnimationFrame(this.frame);}
   reset(){this.lastPaths=-1;this.selected=null;this.center();}
   destroy(){cancelAnimationFrame(this.raf);}
 }

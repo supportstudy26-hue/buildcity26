@@ -1,3 +1,4 @@
+import {LOGISTICS_BUILDINGS} from '../src/game/render/logistics-parts.js';
 import {pierParts} from '../src/game/render/infrastructure-parts.js';
 import {terrainHeight} from '../src/game/systems/terrain.js';
 import {LANDMARKS} from '../src/config/landmarks.js';
@@ -17,14 +18,14 @@ test('every active buildable has an explicit reference and all 216 measured fram
  assert.equal(Object.keys(BuildingArtRegistry).length,216);
  const original=JSON.parse(readFileSync(new URL('../art-source/Build_City_26_Building_Art/manifest.json',import.meta.url)));
  for(const a of original.assets){const mapped=BuildingArtRegistry[a.id];assert.deepEqual(mapped.frame,a.frame);assert.deepEqual(mapped.anchor,a.anchor);assert.ok(a.frame.x+a.frame.width<=1254&&a.frame.y+a.frame.height<=1254);}
- for(const kind of Object.keys(CATALOG).filter(k=>!['inspect','bulldoze'].includes(k)&&!ROAD_KINDS.includes(k)&&!LANDMARKS[k]&&!CATALOG[k].infrastructure))assert.ok(artForBuilding(kind),kind);
+ for(const kind of Object.keys(CATALOG).filter(k=>!['inspect','bulldoze'].includes(k)&&!ROAD_KINDS.includes(k)&&!LANDMARKS[k]&&!CATALOG[k].infrastructure))assert.ok(artForBuilding(kind)||LOGISTICS_BUILDINGS[kind],kind);
  for(const kind of ROAD_KINDS)assert.ok(roadProfile(kind)&&CATALOG[kind].cost>0,kind);
  assert.equal(Object.keys(BUILDING_ART).length,29);
 });
 test('facilities have distinct silhouettes within their core footprint and never invent residents/stock',()=>{
  const fingerprints=new Set();
  for(const kind of BUILDINGS){const t={kind,level:1,garbage:0},d=buildingDesign(t,4,18),parts=buildingParts(t,4,18,0,0,0);
-  if(LANDMARKS[kind]||CATALOG[kind].infrastructure)assert.equal(d.procedural,true);else assert.equal(d.artId,BUILDING_ART[kind]);assert.ok(Math.max(...parts.map(p=>p.position[1]+p.scale[1]/2))<=d.height+.001,kind);assert.ok(parts.length>=5&&parts.length<=65,kind);
+  if(LANDMARKS[kind]||CATALOG[kind].infrastructure||LOGISTICS_BUILDINGS[kind])assert.equal(d.procedural,true);else assert.equal(d.artId,BUILDING_ART[kind]);assert.ok(Math.max(...parts.map(p=>p.position[1]+p.scale[1]/2))<=d.height+.001,kind);assert.ok(parts.length>=5&&parts.length<=65,kind);
   for(const p of parts){assert.ok(p.scale.every(v=>Number.isFinite(v)&&v>0),kind);assert.ok(p.position.every(Number.isFinite),kind);assert.ok(Math.abs(p.position[0])+p.scale[0]/2<=10&&Math.abs(p.position[2])+p.scale[2]/2<=10,kind);assert.ok(p.position[1]-p.scale[1]/2>=-.01,kind);}
   fingerprints.add(JSON.stringify(parts.map(p=>[p.shape,p.position,p.scale])));
  }

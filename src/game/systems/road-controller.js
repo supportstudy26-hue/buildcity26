@@ -1,16 +1,18 @@
 import {roadProfile} from '../../config/road-profiles.js';
 import {position,SIZE} from './world.js';
 import {isJunction,junctionAllows} from './junctions.js';
-const direction=j=>{const a=j.path[j.segment],b=j.path[j.segment+1],dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);return d?[dx/d,dy/d]:[0,0];};
+const direction=j=>{const a=j.path[j.segment],b=j.path[j.segment+1]||a,dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);return d?[dx/d,dy/d]:[0,0];};
 export function roadControllers(s){
  // Spatial grid bounds neighbour work independently of population. Snapshot makes
  // decisions independent of entity update order; positions remain owned by core.
  const buckets=new Map();
- for(const c of s.citizens)if(c.journey?.mode==='car'&&c.state!=='blocked'){
+ for(const c of s.citizens)if(!c.municipalAssignment&&c.journey?.mode==='car'&&c.state!=='blocked'){
   const x=Math.floor(c.position.x/20),y=Math.floor(c.position.y/20),key=`${x},${y}`;
   if(!buckets.has(key))buckets.set(key,[]);buckets.get(key).push({id:c.id,...c.position,heading:direction(c.journey)});
  }
  for(const v of s.vehicles)if(v.kind==='bus'&&v.busPhase&&v.busPhase!=='depot'){const key=`${Math.floor(v.position.x/20)},${Math.floor(v.position.y/20)}`;if(!buckets.has(key))buckets.set(key,[]);buckets.get(key).push({id:v.id,...v.position,heading:v.trip?direction(v.trip):[Math.sin(v.visualYaw||0),Math.cos(v.visualYaw||0)],length:12});}
+ const fleet=[...(s.municipal?.depots||[]).flatMap(d=>d.fleet||[]),...(s.logistics?.trucks||[])];
+ for(const v of fleet)if(v.journey&&v.position){const key=`${Math.floor(v.position.x/20)},${Math.floor(v.position.y/20)}`;if(!buckets.has(key))buckets.set(key,[]);buckets.get(key).push({id:v.id,...v.position,heading:direction(v.journey),length:v.kind==='freight'?8:7});}
  return c=>{
   const j=c.journey,[dx,dy]=direction(j);let speed=j.speed,reason='';
   const next=j.path[j.segment+1],road=next.road;
@@ -39,7 +41,7 @@ export function roadControllers(s){
    for(let oy=-1;oy<=1;oy++)for(let ox=-1;ox<=1;ox++)for(const other of buckets.get(`${x+ox},${y+oy}`)||[]){
     if(Math.abs((other.z||0)-(c.position.z||0))>2||other.id===c.id||other.heading[0]*dx+other.heading[1]*dy<.80)continue;
     const rx=other.x-c.position.x,ry=other.y-c.position.y,ahead=rx*dx+ry*dy,side=Math.abs(-rx*dy+ry*dx);
-    const gap=(c.kind==='bus'?6:2)+(other.length?other.length/2:2)+3;
+    const gap=(c.kind==='bus'?6:c.kind==='freight'?4:c.kind==='municipal'?3.5:2)+(other.length?other.length/2:2)+3;
     if(ahead>0&&side<1.9&&ahead<gap+j.speed){const safe=Math.max(0,ahead-gap);if(safe<speed){speed=safe;reason='Giữ khoảng cách với xe phía trước';}}
    }
   }

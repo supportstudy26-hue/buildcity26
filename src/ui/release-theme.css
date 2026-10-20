@@ -184,3 +184,70 @@ body[data-screen=game] #modal:not(.auth-layout):not(.account-dialog) svg.ui-icon
 }
 @media(max-width:380px){.landing-brand{font-size:17px}.landing-brand small{display:none}.landing-brand .brand-symbol{width:34px;height:34px}.landing-account button{font-size:11px;padding:8px}}
 @media(prefers-reduced-motion:reduce){.landing-primary,.landing-secondary{transition:none}}
+
+/* 0.6: keep the live map open; secondary information stays in one drawer. */
+#game .bc26-top{gap:8px}
+#game .bc26-top .bc26-panel{border-top-width:1px}
+#game .bc26-brand{padding:8px 12px;min-width:190px}
+#game .bc26-stats{padding:4px}
+#game .bc26-stat{padding:6px 8px}
+#game .bc26-stat strong{font-size:18px}
+#game .bc26-top-actions{gap:0;padding:5px}
+#game .bc26-right-tools{top:108px;padding:5px;gap:3px;border-radius:14px}
+#game .bc26-right-tools .bc26-icon-btn{width:44px;height:44px;position:relative}
+#game .bc26-ready-dot{position:absolute;top:7px;right:7px;width:8px;height:8px;border-radius:50%;background:#f1cb70;border:2px solid #173e33}
+#game .bc26-bottom{padding:5px;border-radius:15px}
+#game .bc26-tool{min-height:60px;min-width:63px;padding:6px 8px}
+#game .bc26-tool span{font-size:10px}
+#game .bc26-bottom>.bc26-icon-btn{align-self:center;width:44px;height:44px}
+#game .bc26-backdrop{padding-top:100px;background:#15382c20}
+#game .bc26-drawer{width:390px;padding:16px;border-radius:16px;overscroll-behavior:contain}
+#game .bc26-drawer-header{position:sticky;top:-16px;z-index:2;background:var(--bc-panel);padding:12px 0;margin:-4px 0 10px;border-bottom:1px solid var(--bc-line)}
+#game .bc26-drawer h2{font-size:18px}
+#game .bc26-drawer [data-drawer-content]>.bc26-muted{font-size:11px;line-height:1.5}
+#game .bc26-build-card{display:grid;grid-template-columns:76px minmax(0,1fr);gap:10px;align-items:start;padding:10px;margin:9px 0}
+#game .bc26-build-image{grid-column:1;grid-row:1;width:76px;height:76px;border-radius:10px;background:#e8efe2;display:grid;place-items:center;overflow:hidden}
+#game .bc26-build-image :is(.building-thumb,.asset-preview){float:none;width:76px;height:76px;margin:0;background:none}
+#game .bc26-build-image :is(img,svg){width:100%;height:100%;object-fit:contain}
+#game .bc26-build-copy{grid-column:2;min-width:0}
+#game .bc26-build-copy .bc26-card-head{display:block}
+#game .bc26-build-copy strong{font-size:13px;line-height:1.4}
+#game .bc26-build-price{display:block;color:#326b42;font-weight:700;font-size:12px;margin-top:4px;overflow-wrap:anywhere}
+#game .bc26-build-upkeep{display:block;color:var(--bc-muted);font-size:10px;margin-top:3px}
+#game .bc26-build-more{margin-top:5px;font-size:11px;color:var(--bc-muted)}
+#game .bc26-build-more summary{cursor:pointer;min-height:32px;display:flex;align-items:center;gap:5px;color:#376b4b;list-style:none}
+#game .bc26-build-more summary::before{content:'+';font-size:15px}
+#game .bc26-build-more[open] summary::before{content:'−'}
+#game .bc26-build-more .bc26-detail-row{font-size:10px;flex-wrap:wrap;padding:6px 0}
+#game .bc26-card .bc26-build-select{grid-column:1/-1;margin:0;min-height:44px;font-weight:650}
+#game .bc26-tip{pointer-events:none;max-width:calc(100% - 430px);white-space:normal;line-height:1.4;border-radius:10px;padding:6px 10px}
+#game .bc26-ui:has(.bc26-backdrop:not([hidden])) .bc26-tip{display:none}
+body[data-screen=game] .hub-advanced{border-top:1px solid var(--line);margin-top:14px;padding-top:5px}
+body[data-screen=game] .hub-advanced>summary{cursor:pointer;color:var(--muted);min-height:44px;display:flex;align-items:center;gap:8px;font-size:13px}
+body[data-screen=game] .hub-advanced>summary::before{content:'+'}
+body[data-screen=game] .hub-advanced[open]>summary::before{content:'−'}
+@media(max-width:860px){
+ #game .bc26-brand{min-width:0;padding:6px 9px}
+ #game .bc26-right-tools{top:calc(var(--hud-top) + 150px)}
+ #game .bc26-backdrop{padding-top:calc(var(--hud-top) + 150px)}
+}
+@media(max-width:560px){
+ #game .bc26-stat strong{font-size:12px}
+ #game .bc26-brand{min-width:0}
+ #game .bc26-top-actions{padding:3px}
+ #game .bc26-right-tools{top:calc(var(--hud-top) + 128px);height:52px;padding:3px;gap:0}
+ #game .bc26-backdrop{padding:var(--hud-top) var(--hud-right) calc(102px + var(--hud-bottom)) var(--hud-left)}
+ #game .bc26-drawer{width:100%;padding:12px;max-height:100%}
+ #game .bc26-drawer-header{top:-12px;padding:8px 0}
+ #game .bc26-build-card{grid-template-columns:68px minmax(0,1fr);gap:8px}
+ #game .bc26-build-image{width:68px;height:68px}
+ #game .bc26-tool{min-height:54px;min-width:60px;padding:4px 6px}
+ #game .bc26-tip:not([hidden]){display:block;left:var(--hud-left);right:112px;bottom:calc(104px + var(--hud-bottom));max-width:none;font-size:10px}
+ #game .bc26-toast{top:calc(var(--hud-top) + 192px)}
+}
+@media(max-height:500px) and (min-width:561px){
+ #game .bc26-right-tools{top:calc(var(--hud-top) + 86px)}
+ #game .bc26-backdrop{padding-top:var(--hud-top);padding-bottom:calc(95px + var(--hud-bottom))}
+ #game .bc26-brand{min-width:100px}
+ #game .bc26-tip{bottom:102px;left:var(--hud-left);max-width:calc(100% - 160px)}
+}

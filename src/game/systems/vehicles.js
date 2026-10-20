@@ -26,7 +26,8 @@ export function updateVehicles(s) {
   for(const v of s.vehicles) {
     if(v.kind==='bus')continue;
     const c=citizens.get(v.owner); if(!c) continue;
-    if(c.journey?.mode==='car') {v.position={...c.position};v.state=c.state==='blocked'?'blocked':'travelling';v.speed=c.state==='blocked'?0:(c.journey.actualSpeed??c.journey.speed);v.travelled=c.travelled||0;v.goal=c.goal;v.passengers=[c.id];}
+    if(c.municipalAssignment){v.state='parked';v.speed=0;v.passengers=[];v.position=position(c.municipalAssignment.facility,s.mapSize,s);}
+    else if(c.journey?.mode==='car') {v.position={...c.position};v.state=c.state==='blocked'?'blocked':'travelling';v.speed=c.state==='blocked'?0:(c.journey.actualSpeed??c.journey.speed);v.travelled=c.travelled||0;v.goal=c.goal;v.passengers=[c.id];}
     else {v.state='parked';v.speed=0;v.passengers=[];v.position={...c.position};}
   }
   updateBuses(s);
